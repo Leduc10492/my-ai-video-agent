@@ -1,6 +1,6 @@
 ---
 name: mckee-rewrite-plan
-description: Build McKee-based rewrite plans for scripts and narratives. Stage structural fixes, scene triage, and polish phases. Use when user requests revision strategy, rewrite planning, fix planning, or asks "how do I fix this story".
+description: Internal McKee rewrite-plan plugin for structure repair packets. Stage structural fixes, scene triage, and polish phases when screenwriter-workflow or mckee-coordinator requests McKee rewrite support, or when the user explicitly asks for McKee revision strategy. Returns a rewrite packet, not final script artifact ownership.
 ---
 
 # McKee Rewrite Plan
@@ -99,13 +99,11 @@ Always follow this order:
 
 **Never skip levels.** A broken structure cannot be fixed with better dialogue.
 
-## Output Directory
+## Output Boundary
 
-Work within standard deliverables structure:
-- Read: `deliverables/10_story/01_script_v*.md` and `01_audit_report_v*.md`
-- Output plan in agent's response (not saved as separate file)
-- Modified script saves to: `deliverables/10_story/01_script_v{N+1}.md`
-- Archive old version using `version-management`
+Return a rewrite packet to `screenwriter-workflow`.
+Do not save modified scripts directly.
+Do not archive previous versions or update changelog directly.
 
 Rewrite plan should include:
 - Revision goals

@@ -1,6 +1,6 @@
 ---
 name: mckee-audit
-description: Audit story structure using McKee principles. Diagnose story/act/scene issues, identify causality problems, rank fixes by severity (P0-P3). Use when user requests script review, story diagnosis, structural analysis, or asks "what's wrong with my story".
+description: Internal McKee audit plugin for story structure packets. Diagnose story/act/scene issues, identify causality problems, and rank fixes by severity (P0-P3). Use when screenwriter-workflow or mckee-coordinator requests McKee audit support, or when the user explicitly asks for McKee diagnosis. Returns an audit packet, not final audit artifact ownership.
 ---
 
 # McKee Story Audit
@@ -105,12 +105,11 @@ Logline:
 
 Full template in `../mckee-shared/templates/audit-report.md`.
 
-## Output Directory
+## Output Boundary
 
-Save to standard deliverables structure:
-- Input: `deliverables/10_story/01_script_v*.md` (read latest version)
-- Output: `deliverables/10_story/01_audit_report_v{N}.md`
-- Use `artifact-formatter` for metadata
+Return an audit packet to `screenwriter-workflow`.
+Do not save `deliverables/10_story/01_audit_report_v{N}.md` directly.
+Do not update artifact metadata, archives, or changelog directly.
 
 Audit report should include:
 - 目标与限制

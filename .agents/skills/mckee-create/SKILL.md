@@ -1,13 +1,15 @@
 ---
 name: mckee-create
-description: Create original stories using McKee principles. Generate scripts, outlines, or narrative concepts with clear structure, causality, and value change. Use when user requests story creation, script writing, plot development, or asks to "write a story about X".
+description: Create McKee structure packets for original story premises with clear causality, value change, crisis, climax, and scene-function support. Use only when invoked by screenwriter-workflow or mckee-coordinator, or when the user explicitly asks for McKee structure creation. Returns structure support, not final screenplay ownership.
 ---
 
 # McKee Story Creator
 
 ## Overview
 
-Create original stories guided by McKee principles: structure before style, causality over coincidence, value change through conflict.
+Create McKee structure support guided by McKee principles: structure before style, causality over coincidence, value change through conflict.
+
+This skill does not own final screenplay artifacts. For user-facing script creation, `screenwriter-workflow` owns Story Bone intake, draft layers, screenplay prose, versioning, audit gates, and DOCX export.
 
 ## Output Language
 
@@ -15,10 +17,10 @@ Default to Simplified Chinese for all user-facing story creation output unless t
 
 ## Quick Start
 
-1. Clarify premise, genre, length, and target audience
+1. Receive a confirmed or inferred Story Bone, premise, genre, length, and target audience from `screenwriter-workflow`
 2. Design value arc (what changes from start to end)
 3. Build story spine (inciting incident → crisis → climax)
-4. Develop scenes with conflict and turning points
+4. Develop scene functions with conflict and turning points
 5. Verify causality and obligatory scene delivery
 
 ## Core Creation Principles
@@ -35,7 +37,9 @@ Default to Simplified Chinese for all user-facing story creation output unless t
 ## Creation Workflow
 
 ### 1. Premise & Setup
-Ask user (if not provided):
+Use the Story Bone supplied by `screenwriter-workflow`. If a core premise field is missing, return the missing field as a blocker instead of asking a long questionnaire.
+
+Required context:
 - **Premise**: What's the story about in one sentence?
 - **Genre**: Drama, thriller, comedy, etc.
 - **Length**: 3-min short, 30-min episode, 2-hour feature?
@@ -84,16 +88,18 @@ Only after structure locks:
 
 ## Output Format
 
-Deliver:
+Return a structure packet:
 1. **Logline** (1-2 sentences)
 2. **Story spine** (inciting incident, crisis, climax, resolution)
-3. **Scene-by-scene outline** or **full script** (user's choice)
+3. **Scene-function outline** (scene purpose, desire, opposition, turn, aftermath)
 4. **McKee analysis** (value arc, causality chain, structure notes)
+5. **Risks and rewrite priorities** (P0-P3 when useful)
 
 Optionally create:
 - Beat sheet (detailed scene breakdown)
 - Character profiles (desire, flaw, arc)
-- Storyboards/shot lists (if visual medium)
+
+Do not return a final screenplay draft unless `screenwriter-workflow` explicitly asks for a bounded structure-to-draft helper pass. Even then, final user-facing script ownership stays with `screenwriter-workflow`.
 
 ## Common Pitfalls to Avoid
 
@@ -124,13 +130,13 @@ Example adaptations:
 - `../mckee-shared/analysis/scene-analysis.md` - Scene design method
 - `../mckee-shared/core/principles.md` - Core McKee principles (brief)
 
-## Output Directory
+## Output Boundary
 
-Save to standard deliverables structure:
-- Path: `deliverables/10_story/01_script_v{N}.md`
-- Use `artifact-formatter` for metadata
-- Use `version-management` for archiving
-- Task types: `script`, `outline`, `concept`
+Do not save directly to `deliverables/10_story/`.
+Do not archive previous script versions.
+Do not write `01_script_v{N}.md` or `01_audit_report_v{N}.md`.
+
+Hand structure packets back to `screenwriter-workflow`, which owns artifact metadata, versioning, changelog, and downstream impact.
 
 Decision log should include:
 - Premise and constraints

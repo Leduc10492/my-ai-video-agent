@@ -9,6 +9,18 @@
 
 ---
 
+## [2026-05-31] - Shotlist-First Workflow Hardening
+
+### Changed
+- Consolidated the active workflow around `script -> audit -> guides -> shotlist breakdown -> Seedance/Higgsfield shotlist HTML + previews -> QA`.
+- Replaced the old visual-planning slot family with `shotlist.breakdown` and `shotlist.primary`; future planning artifacts use `deliverables/30_breakdown/03_shotlist_breakdown_v{N}.md`.
+- Clarified that the shotlist HTML is the prompt source of truth and that QA independently reviews, but does not replace, generation hard gates.
+- Updated `AGENTS.md`, `README.md`, `ARCHITECTURE.md`, `CODEX_SKILL_AUDIT.md`, `AGENT_SKILL_PLACEMENT_GUIDE.md`, `CODEX_REVIEW.md`, role specs, formatter/versioning skills, QA skills, and validation scripts.
+
+### Removed
+- Retired old active workflow skills for board prompts, art prompts, art platform adapters, standalone video prompts, and standalone motion design.
+- Retired old standalone art and animation role configs from active routing.
+
 ## [2026-05-31] - Sketch Shotlist Workflow
 
 ### Added
@@ -24,12 +36,32 @@
 
 ---
 
+## [2026-05-31] - Script Workflow Cleanup
+
+### Removed
+- `.agents/skills/script-workflow/SKILL.md`: removed the legacy McKee-first script workflow so `screenwriter-workflow` remains the only script.primary entrance.
+
+### Changed
+- `.agents/skills/mckee-*`: clarified that McKee skills return structure, audit, rewrite, scene, pacing, variation, or source packets and do not own final script artifacts.
+- `.codex/agents/script-writer.toml`, `.agents/skill_registry.md`: tightened script-stage routing around `screenwriter-workflow` plus `mckee-coordinator`.
+- `README.md`, `ARCHITECTURE.md`, `CODEX_SKILL_AUDIT.md`, `AGENT_SKILL_PLACEMENT_GUIDE.md`: removed legacy script-workflow references and updated current story-stage/generated-asset status.
+
+---
+
+## [2026-05-31] - Video Prompt Phase 4
+
+### Added
+- `deliverables/60_motion/06_video_prompts_v1.md`: created the `SB071-SB080` Seedance 2.0 prompt sheet with 52 continuous prompt envelopes (`P377-P428`), using approved storyboard v4 blocking and `generated_ref_v1` text DNA references.
+- `deliverables/60_motion/Shotlist_SB071_SB080_ZH_v1.html`: created the self-contained Chinese production HTML shotlist with searchable/filterable prompt rows and copy buttons.
+
+---
+
 ## [2026-05-31] - Reference Image Prompt Prep
 
 ### Added
-- `deliverables/50_art/generated_ref_v1/README.md`: 建立 `SB071-SB080` 缺失参考图首批生成目录与 `text_dna_draft` 状态说明。
+- `deliverables/50_art/generated_ref_v1/README.md`: 建立 `SB071-SB080` 缺失参考图生成目录与 `text_dna_draft` 状态说明。
 - `deliverables/50_art/generated_ref_v1/reference_image_prompts_v1.md`: 为 `SB071-SB080` 缺图表的 22 个资产补齐可直接用于内置 image generation 的提示词。
-- `deliverables/50_art/generated_ref_v1/*.png`: 生成并归档首批 7 张文本 DNA 草图参考图，覆盖 Yuna 灾难日、成人 Ren、成人 Yuna、学校体育馆、学校山丘冲击、神社台阶、红绳道具。
+- `deliverables/50_art/generated_ref_v1/*.png`: 生成并归档 22 张文本 DNA 草图参考图，覆盖 `SB071-SB080` 缺图表中的人物、配角、群众/车辆、关键场景和红绳道具。
 
 ---
 

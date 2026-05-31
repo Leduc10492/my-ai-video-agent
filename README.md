@@ -1,8 +1,8 @@
 # AI Video Workflow Package
 
-This repository is a Markdown-first workflow package for AI video creation. It is designed for Codex to move a project from story concept or script to production-ready video assets through versioned files, local role workflows, and QA gates.
+This repository is a Markdown-first workflow package for AI video creation. It is designed for Codex to move a project from story concept or script to production-ready Seedance/Higgsfield shotlist assets through versioned files, local role workflows, and QA gates.
 
-The current repository state is workflow-only: test production artifacts have been archived, and `deliverables/` is reserved for the next active project.
+The current workflow is shotlist-first: standalone board-prompt, art-prompt, and video-prompt stages have been retired from the active path.
 
 ## Codex Entry
 
@@ -21,11 +21,9 @@ Use [AGENTS.md](AGENTS.md) as the active project rule entrypoint.
 concept or script
   -> Screenwriter-mode script and optional McKee-style audit
   -> asset guide and style guide
-  -> structured storyboard
-  -> storyboard image prompts
-  -> art prompts and keyframes
-  -> video motion prompts
-  -> or Higgsfield/Seedance shotlist HTML with e-conte previews
+  -> shotlist breakdown and spatial-blocking prep
+  -> Seedance/Higgsfield shotlist HTML with 15-second prompt envelopes
+  -> rough e-conte previews and optional generated video tests
   -> QA and regression checks
 ```
 
@@ -36,10 +34,10 @@ concept or script
 | `project-director` | `.codex/agents/project-director.toml` | Scan state, route work, check preconditions, track downstream impact |
 | `script-writer` | `.codex/agents/script-writer.toml` | Create, audit, revise, time, or expand scripts using Screenwriter mode and McKee structure plugins |
 | `guide-director` | `.codex/agents/guide-director.toml` | Create asset and style guides, register reference images, and define visual continuity |
-| `storyboard-director` | `.codex/agents/storyboard-director.toml` | Convert scripts into shot tables, storyboard prompts, or Higgsfield/Seedance shotlist HTML |
-| `artist-director` | `.codex/agents/artist-director.toml` | Produce still-image prompts and keyframe generation plans |
-| `animation-director` | `.codex/agents/animation-director.toml` | Produce text-to-video/image-to-video prompts, or Higgsfield/Seedance shotlist HTML |
-| `qa-check` | `.codex/agents/qa-check.toml` | Validate structure, locks, versions, continuity, generated assets, and regressions |
+| `storyboard-director` | `.codex/agents/storyboard-director.toml` | Own shotlist breakdowns, asset/blocking gates, Seedance/Higgsfield HTML, e-conte previews, and batch QA handoff |
+| `qa-check` | `.codex/agents/qa-check.toml` | Validate structure, locks, versions, spatial continuity, prompt executability, generated assets, and regressions |
+
+The role name `storyboard-director` is retained for compatibility, but its active responsibility is shotlist-first planning and production.
 
 ## Replaceable Skill Slots
 
@@ -50,11 +48,9 @@ Use `.agents/skill_registry.md` as the assembly layer for swappable implementati
 | `script.primary` | `screenwriter-workflow` | Script-stage writing, audit, quality gates, timing, revision, and export controller |
 | `story.mckee_router` | `mckee-coordinator` | Structure, audit, rewrite, scene, pacing, variation, and source plugins |
 | `guides.primary` | `guide-workflow` | Asset and style guides |
-| `storyboard.prompt_adapter` | `storyboard-nanobanana` | Storyboard prompt batches |
-| `shotlist.primary` | `sketch-shotlist-workflow` | Higgsfield/Seedance production HTML with 15-second prompt envelopes and e-conte previews |
-| `art.prompt_builder` | `art-prompt-workflow` | Still-image and keyframe prompts |
-| `video.prompt_builder` | `video-prompt-workflow` | Video generation prompt artifacts |
-| `video.motion_adapter` | `video-motion-design` | Camera and subject motion rules |
+| `shotlist.breakdown` | `shotlist-breakdown-workflow` | Shot-block map, prompt-envelope ranges, asset requirements, and spatial-blocking prep |
+| `shotlist.primary` | `sketch-shotlist-workflow` | Seedance/Higgsfield production HTML with 15-second prompt envelopes and e-conte previews |
+| `qa.primary` | `qa-workflow` | Stage, batch, regression, final, and workflow QA |
 
 To replace an implementation, add or choose a real skill under `.agents/skills/`, update the registry slot, and keep the canonical output path stable.
 
@@ -79,16 +75,8 @@ deliverables/
 │   ├── 02_style_guide_v{N}.md
 │   └── refs/
 ├── 30_breakdown/
-│   └── 03_storyboard_v{N}.md
-├── 40_boards/
-│   ├── 04_storyboard_prompts_v{N}.md
-│   └── generated/
-├── 50_art/
-│   ├── 05_art_prompts_v{N}.md
-│   ├── generated/
-│   └── generated_ref_v{N}/
+│   └── 03_shotlist_breakdown_v{N}.md
 └── 60_motion/
-    ├── 06_video_prompts_v{N}.md
     ├── Shotlist_<scope>_ZH_v{N}.html
     ├── shotlist_previews_<scope>_v{N}/
     └── generated/
@@ -96,14 +84,14 @@ deliverables/
 
 Historical versions live under matching `archives/<stage>/` directories. Do not create `deliverables/*/archive/`.
 
+Legacy `03_storyboard_v{N}.md` and local companion prompt files may remain on disk as historical inputs, but the active workflow writes `03_shotlist_breakdown_v{N}.md` and shotlist HTML.
+
 ## Generated Assets
 
 - `deliverables/20_guides/refs/`: local reference images declared by the latest asset guide.
-- `deliverables/40_boards/generated/`: generated storyboard sheets.
-- `deliverables/50_art/generated/`: draft or review art keyframes.
-- `deliverables/50_art/generated_ref_v{N}/`: production candidate keyframes generated with required local references attached.
+- `deliverables/50_art/generated_ref_v{N}/`: local generated references; production-approved only when the manifest says `image_reference_bound`.
+- `deliverables/60_motion/shotlist_previews_<scope>_v{N}/`: rough e-conte previews embedded in Seedance/Higgsfield shotlist HTML.
 - `deliverables/60_motion/generated/`: generated video clips or platform exports, if saved locally.
-- `deliverables/60_motion/shotlist_previews_<scope>_v{N}/`: rough line-art e-conte previews embedded in Higgsfield/Seedance shotlist HTML.
 
 Each generated directory should include a `README.md` or manifest with source artifact, asset count, `reference_mode`, and known limitations.
 
@@ -127,10 +115,12 @@ Every production deliverable starts with artifact metadata:
 ---
 ```
 
-Before downstream work, check latest versions, upstream IDs, locks, style/asset guide requirements, reference image paths, generated asset manifests, shot counts, and duration consistency.
+Before downstream work, check latest versions, upstream IDs, locks, guide/reference requirements, shot-block counts, prompt-envelope IDs, spatial continuity, embedded preview paths, generated asset manifests, and production feasibility.
+
+`sketch-shotlist-workflow` owns generation hard gates. `qa-workflow` provides independent review, regression checks, and persistent reports.
 
 ## Current State
 
-- Test deliverables and generated assets were moved to `archives/` on 2026-05-20.
-- Current active story-stage deliverables include `deliverables/10_story/01_script_v5.md`, `01_audit_report_v5.md`, and the derived DOCX export.
-- Latest workflow hardening pass: Screenwriter-first script routing, iteration quality gates, skill slot registry, guide stage coverage, replaceable storyboard/video adapters, and a project-local Higgsfield/Seedance shotlist path with embedded e-conte previews.
+- Current local story-stage locks point to `deliverables/10_story/01_script_v10.md`, `01_audit_report_v10.md`, and the derived DOCX export when those local generated files are present.
+- Story scripts, source-comparison material, DOCX/PDF exports, generated image folders, generated video tests, and archives are local generated artifacts and are ignored by Git by default.
+- Latest workflow hardening pass: Screenwriter-first script routing, McKee structure-packet plugins, guide stage coverage, shotlist breakdown migration, Seedance/Higgsfield HTML as prompt source of truth, batch quality gates, and QA checklists for prompt executability.

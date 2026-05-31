@@ -17,10 +17,9 @@ deliverables/
 ├── 00_admin/          # 管理目录（本目录）
 ├── 10_story/          # 剧本和审核报告
 ├── 20_guides/         # 资产和风格指南
-├── 30_breakdown/      # 分镜表
-├── 40_boards/         # 分镜提示词和图像
-├── 50_art/            # 美术提示词和参考
-└── 60_motion/         # 视频提示词和关键帧
+├── 30_breakdown/      # shotlist breakdown / 空间阻塞准备
+├── 50_art/            # 本地生成参考图（如存在）
+└── 60_motion/         # Seedance/Higgsfield shotlist HTML、预览和生成测试
 
 archives/              # 历史版本归档
 ```
@@ -33,10 +32,9 @@ archives/              # 历史版本归档
 | 审核 | `10_story/01_audit_report_v{N}.md` |
 | 资产 | `20_guides/02_asset_guide_v{N}.md` |
 | 风格 | `20_guides/02_style_guide_v{N}.md` |
-| 分镜 | `30_breakdown/03_storyboard_v{N}.md` |
-| 分镜提示词 | `40_boards/04_storyboard_prompts_v{N}.md` |
-| 美术提示词 | `50_art/05_art_prompts_v{N}.md` |
-| 视频提示词 | `60_motion/06_video_prompts_v{N}.md` |
+| Shotlist Breakdown | `30_breakdown/03_shotlist_breakdown_v{N}.md` |
+| Shotlist HTML | `60_motion/Shotlist_<scope>_ZH_v{N}.html` |
+| Shotlist 预览 | `60_motion/shotlist_previews_<scope>_v{N}/manifest.md` |
 
 ## 🔄 版本管理
 

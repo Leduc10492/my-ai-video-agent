@@ -6,8 +6,8 @@ Current and archived deliverables both use `_v{N}` suffixes.
 
 Example:
 
-- current: `deliverables/30_breakdown/03_storyboard_v2.md`
-- archived: `archives/30_breakdown/03_storyboard_v1.md`
+- current: `deliverables/30_breakdown/03_shotlist_breakdown_v2.md`
+- archived: `archives/30_breakdown/03_shotlist_breakdown_v1.md`
 
 Use simple numeric suffixes: `v1`, `v2`, `v10`. Do not use `v001`.
 

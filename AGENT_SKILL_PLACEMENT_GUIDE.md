@@ -23,9 +23,9 @@ Those rules are project-specific and should stay with the project.
 | --- | --- | --- |
 | Project routing rules | Project `AGENTS.md` | Each project can have different outputs, locks, and stage rules |
 | Subagent roles | Project `.codex/agents/` | Read/write scopes and stage responsibilities depend on the project structure |
-| Workflow skills | Project `.agents/skills/` | Skills such as `guide-workflow`, `storyboard-workflow`, `sketch-shotlist-workflow`, and `video-prompt-workflow` depend on local paths |
-| Reusable method skills | Global, after validation | McKee analysis, platform prompt rules, or motion design can be useful across projects |
-| Platform adapter skills | Prefer global skill plus project registry selection | Banana storyboard prompts or video platform prompts can be reused, while the project registry maps them into this workflow |
+| Workflow skills | Project `.agents/skills/` | Skills such as `screenwriter-workflow`, `guide-workflow`, `shotlist-breakdown-workflow`, `sketch-shotlist-workflow`, and `qa-workflow` depend on local paths |
+| Reusable method skills | Global, after validation | McKee analysis and generic shotlist-builder method references can be useful across projects |
+| Platform knowledge | Prefer global skill plus project wrapper | Seedance/Higgsfield prompt knowledge can be reused, while the project wrapper owns local output paths and QA gates |
 
 ## Practical Model
 
@@ -42,7 +42,7 @@ Then update:
 
 - `deliverables/00_admin/locks.md`
 - project-specific deliverables
-- `.agents/skill_registry.md`, if the project uses different prompt or generation skills
+- `.agents/skill_registry.md`, if the project uses different shotlist or QA implementations
 
 ## When To Promote A Skill To Global
 
@@ -56,17 +56,14 @@ Promote a skill to global only when all of these are true:
 Good global candidates:
 
 - McKee analysis and rewrite methods
-- Storyboard prompt adapters for a specific platform
-- Art platform prompt rules
-- Video platform prompt rules
-- Motion design language
+- generic shotlist-builder prompt-quality rules
+- reusable Seedance/Higgsfield platform knowledge
 
 Better project-local candidates:
 
 - `screenwriter-workflow`
-- `script-workflow`
 - `guide-workflow`
-- `storyboard-workflow`
+- `shotlist-breakdown-workflow`
 - `sketch-shotlist-workflow`
 - `artifact-formatter`
 - `version-management`
@@ -90,34 +87,29 @@ Those boundaries depend on the project structure. A global subagent is more like
 
 Use `.agents/skill_registry.md` as the assembly layer.
 
-For example, to replace the Banana storyboard prompt skill, update the `storyboard.prompt_adapter` slot:
+For shotlist breakdown:
 
 ```markdown
-| `storyboard.prompt_adapter` | `new-storyboard-skill` | `storyboard-director` | `deliverables/40_boards/04_storyboard_prompts_v{N}.md` |
+| `shotlist.breakdown` | `new-breakdown-skill` | `storyboard-director` | `deliverables/30_breakdown/03_shotlist_breakdown_v{N}.md` |
+```
+
+For Seedance/Higgsfield HTML:
+
+```markdown
+| `shotlist.primary` | `new-shotlist-skill` | `storyboard-director` | `deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html` |
 ```
 
 The replacement skill must still satisfy the slot interface:
 
-- accepts the latest storyboard and guide inputs
-- preserves canonical shot IDs
-- writes or supports `04_storyboard_prompts_v{N}.md`
-- records batch ranges and reference mode
-- respects the image reference contract
-- does not change project storage paths unless the user explicitly asks for a migration
+- accepts latest script, guides, locks, and optional scope
+- preserves `SB###` and `P###` IDs
+- preserves shot row order and source scene mapping
+- writes or supports the canonical output path
+- records reference mode and known limitations
+- runs internal prompt hard gates or documents equivalent gating
+- hands off to `qa.primary`
 
-Use the same pattern for video:
-
-```markdown
-| `video.prompt_builder` | `new-video-prompt-skill` | `animation-director` | `deliverables/60_motion/06_video_prompts_v{N}.md` |
-```
-
-For Higgsfield/Seedance shotlist HTML, use the project-local `shotlist.primary` slot instead of editing the global Higgsfield skill:
-
-```markdown
-| `shotlist.primary` | `sketch-shotlist-workflow` | `storyboard-director` / `animation-director` | `deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html` |
-```
-
-That slot may reuse global platform knowledge, but it owns project-specific output paths, preview manifests, and embedded e-conte image handling.
+Do not introduce a separate board-prompt, art-prompt, or standalone video-prompt chain unless the user explicitly approves a new migration.
 
 ## Bottom Line
 

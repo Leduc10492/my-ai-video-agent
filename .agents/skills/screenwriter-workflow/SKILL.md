@@ -160,7 +160,7 @@ For a complete or near-complete draft:
 1. Preserve the user's material as source truth.
 2. Diagnose structure before polishing dialogue.
 3. When revising, keep edits scoped to the requested goal.
-4. If the revision changes story facts, list downstream guide/storyboard/prompt artifacts that may need inspection.
+4. If the revision changes story facts, list downstream guide, shotlist breakdown, shotlist HTML, preview, and QA artifacts that may need inspection.
 
 ## Iteration Quality Gate
 
@@ -213,4 +213,4 @@ After script work, report:
 
 Report the handoff in Simplified Chinese by default.
 
-Next normal stage is `guide-director` / `guides.primary`, not storyboard directly, unless the user explicitly skips guides.
+Next normal stage is `guide-director` / `guides.primary`, then `shotlist.breakdown`, unless the user explicitly skips guides.

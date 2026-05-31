@@ -1,6 +1,6 @@
 ---
 name: mckee-scene-doctor
-description: Repair individual scenes using McKee principles. Fix desire, opposition, turning points, and value change in specific scenes. Use when user requests scene-level fixes, mentions "this scene feels flat", or asks to improve a particular moment.
+description: Internal McKee scene-doctor plugin for scene repair packets. Fix desire, opposition, turning points, and value change when screenwriter-workflow or mckee-coordinator requests McKee scene support, or when the user explicitly asks for McKee scene diagnosis. Returns repair notes, not final script artifact ownership.
 ---
 
 # McKee Scene Doctor
@@ -113,12 +113,11 @@ Full template in `../mckee-shared/templates/scene-doctor.md`.
 
 See `../mckee-shared/analysis/scene-analysis.md` for detailed analysis method.
 
-## Output Directory
+## Output Boundary
 
-Work within standard deliverables structure:
-- Read: `deliverables/10_story/01_script_v*.md`
-- Output: Modified script to `deliverables/10_story/01_script_v{N+1}.md`
-- Archive old version using `version-management`
+Return scene repair notes to `screenwriter-workflow`.
+Do not save modified scripts directly.
+Do not archive previous versions or update changelog directly.
 
 Scene repair notes should include:
 - Scene diagnosis

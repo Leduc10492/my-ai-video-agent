@@ -3,7 +3,10 @@
 ## Quick Decision Tree
 
 ```
-Want to CREATE a new story from scratch?
+General screenplay creation request?
+└─ Yes → screenwriter-workflow first
+
+screenwriter-workflow has a confirmed Story Bone and needs McKee structure support?
 └─ Yes → mckee-create
 
 User has existing script/outline?
@@ -18,13 +21,13 @@ User has existing script/outline?
 
 ## Detailed Workflow Descriptions
 
-### mckee-create ✨ NEW
+### mckee-create
 **When to use:**
-- User wants to write a NEW story from scratch
-- Has premise/idea but needs structure and development
-- Requests like: "write a story about X", "create a script", "help me develop this concept"
+- `screenwriter-workflow` needs a structure packet after Story Bone intake
+- User explicitly asks for McKee structure creation
+- A premise/idea needs McKee value arc, story spine, crisis, climax, and scene-function support
 
-**Output:** Complete story/script with McKee structure analysis
+**Output:** Structure packet with McKee analysis. Final script artifacts belong to `screenwriter-workflow`.
 
 ### mckee-audit
 **When to use:**
@@ -80,7 +83,7 @@ User has existing script/outline?
 
 | Workflow | Typical Token Load |
 |----------|-------------------|
-| **mckee-create** | **~15K** |
+| **mckee-create** | **~8K** |
 | mckee-audit | ~2.5K |
 | mckee-rewrite-plan | ~1.5K |
 | mckee-scene-doctor | ~1K |
@@ -91,7 +94,7 @@ User has existing script/outline?
 ## Workflow Combinations
 
 Common sequences:
-1. **mckee-create** → **mckee-audit** (create then refine)
+1. **screenwriter-workflow** → **mckee-create** → **screenwriter-workflow** (Story Bone, structure packet, screenplay draft)
 2. **mckee-audit** → **mckee-rewrite-plan** → **mckee-scene-doctor** (full revision)
 3. **mckee-scene-doctor** → **mckee-expand-pace** (scene-level refinement)
 4. **mckee-audit** → **mckee-variations** (explore alternatives after diagnosis)

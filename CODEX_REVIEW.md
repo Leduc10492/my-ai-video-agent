@@ -1,12 +1,12 @@
 # Codex Project Review
 
-Review date: 2026-05-25
+Review date: 2026-05-31
 
 ## Current Shape
 
-This repository is a Markdown-first AI video workflow package, not a runnable app. It defines a file-based production pipeline for Codex to move a story concept or script through script/audit, asset and style guides, storyboard, image prompts, art/keyframe prompts, motion prompts, optional Higgsfield/Seedance shotlist HTML, and QA.
+This repository is a Markdown-first AI video workflow package, not a runnable app. It defines a file-based production pipeline for Codex to move a story concept or script through script/audit, asset and style guides, shotlist breakdown, Seedance/Higgsfield HTML, rough e-conte previews, generated video tests, and QA.
 
-The repository is currently workflow-only. The previous test production content has been moved to `archives/`, and `deliverables/` is ready for the next active project.
+The repository is workflow-only. Generated production assets can exist locally under `deliverables/` for tests or active work and are kept out of Git unless explicitly requested.
 
 ## Rule Structure
 
@@ -26,16 +26,14 @@ The project policy still defaults to local execution in the parent thread. When 
 flowchart TD
     A["User concept or script"] --> B["Script + optional McKee audit"]
     B --> C["Asset guide + style guide"]
-    C --> D["Structured storyboard"]
-    D --> E["Storyboard prompt sheets"]
-    D --> S["Higgsfield/Seedance shotlist HTML + e-conte previews"]
-    D --> F["Still art prompts + keyframes"]
-    F --> G["Video motion prompts"]
+    C --> D["Shotlist breakdown + spatial blocking prep"]
+    D --> E["Seedance/Higgsfield shotlist HTML"]
+    E --> F["Rough e-conte previews"]
+    E --> G["Optional generated video tests"]
     B --> H["QA checks"]
     C --> H
     D --> H
     E --> H
-    S --> H
     F --> H
     G --> H
 ```
@@ -44,22 +42,23 @@ flowchart TD
 
 | Area | State |
 | --- | --- |
-| Production deliverables | Empty, ready for next project |
+| Active deliverables | Versioned script/audit and local shotlist production artifacts may exist under `deliverables/` |
 | Archived test deliverables | Preserved under `archives/<stage>/` |
 | Admin files | Present under `deliverables/00_admin/` |
 | QA reports | Present under `deliverables/00_admin/qa_reports/` |
-| Custom agents | 7 configs under `.codex/agents/<id>.toml` |
+| Custom agents | Active configs under `.codex/agents/<id>.toml` |
 | Skill registry | Present under `.agents/skill_registry.md` |
-| Repo skills | 24 skills under `.agents/skills/<skill>/SKILL.md` |
+| Repo skills | Active skills under `.agents/skills/<skill>/SKILL.md` |
 
 ## Main Findings
 
-1. The workflow package is now Codex-oriented and project-agnostic.
-2. The role and skill layer now uses Codex-standard project directories plus a slot registry for replaceable skill implementations.
-3. Guide-stage ownership is now explicit through `guide-director` and `guide-workflow`.
-4. The strongest architectural choices are still the same: versioned artifacts, archived history, explicit locks, local reference-image gates, canonical generated-asset folders, and persisted QA reports.
-5. The remaining operational gap is tooling portability: helper scripts are PowerShell-first, and this environment does not currently have `pwsh`.
+1. The workflow package is Codex-oriented and project-agnostic.
+2. The role and skill layer uses Codex-standard project directories plus a slot registry for replaceable skill implementations.
+3. Guide-stage ownership is explicit through `guide-director` and `guide-workflow`.
+4. The active visual production path is now shotlist-first; old standalone board-prompt, art-prompt, and video-prompt stages are retired.
+5. Long-task drift is controlled by batch splitting, prompt hard gates inside `sketch-shotlist-workflow`, and independent `qa-workflow` checks.
+6. The remaining operational gap is tooling portability: helper scripts are PowerShell-first, and this environment may not have `pwsh`.
 
 ## Recommended Next Step
 
-Keep the Markdown workflow and `.agents/skill_registry.md` as the source of truth. The next useful automation is a portable validator that reports latest versions, missing prerequisites, unresolved QA issues, generated asset manifest status, and registry slot defaults that point to missing or incompatible skills.
+Keep the Markdown workflow and `.agents/skill_registry.md` as the source of truth. The next useful automation is a portable validator that reports latest versions, missing prerequisites, unresolved QA issues, generated asset manifest status, shotlist HTML preview path status, and registry slot defaults that point to missing or incompatible skills.

@@ -21,10 +21,9 @@ function Get-Metadata {
 function Get-LatestVersionedFile {
   param([string]$Dir, [string]$Pattern)
   if (!(Test-Path -LiteralPath $Dir)) { return $null }
-  $files = Get-ChildItem -LiteralPath $Dir -File -Filter $Pattern
   $latest = $null
-  foreach ($file in $files) {
-    if ($file.Name -match '_v(\d+)\.md$') {
+  foreach ($file in (Get-ChildItem -LiteralPath $Dir -File -Filter $Pattern -ErrorAction SilentlyContinue)) {
+    if ($file.Name -match '_v(\d+)\.(md|html)$') {
       $versionNumber = [int]$Matches[1]
       if ($null -eq $latest -or $versionNumber -gt $latest.VersionNumber) {
         $latest = [pscustomobject]@{ File = $file; VersionNumber = $versionNumber }
@@ -37,12 +36,11 @@ function Get-LatestVersionedFile {
 $stages = @(
   @{ Stage='Script'; Dir='deliverables/10_story'; Pattern='01_script_v*.md'; Required=$true },
   @{ Stage='Audit'; Dir='deliverables/10_story'; Pattern='01_audit_report_v*.md'; Required=$false },
-  @{ Stage='Asset Guide'; Dir='deliverables/20_guides'; Pattern='02_asset_guide_v*.md'; Required=$true },
-  @{ Stage='Style Guide'; Dir='deliverables/20_guides'; Pattern='02_style_guide_v*.md'; Required=$true },
-  @{ Stage='Storyboard'; Dir='deliverables/30_breakdown'; Pattern='03_storyboard_v*.md'; Required=$true },
-  @{ Stage='Storyboard Prompts'; Dir='deliverables/40_boards'; Pattern='04_storyboard_prompts_v*.md'; Required=$true },
-  @{ Stage='Art Prompts'; Dir='deliverables/50_art'; Pattern='05_art_prompts_v*.md'; Required=$true },
-  @{ Stage='Video Prompts'; Dir='deliverables/60_motion'; Pattern='06_video_prompts_v*.md'; Required=$true }
+  @{ Stage='Asset Guide'; Dir='deliverables/20_guides'; Pattern='02_asset_guide_v*.md'; Required=$false },
+  @{ Stage='Style Guide'; Dir='deliverables/20_guides'; Pattern='02_style_guide_v*.md'; Required=$false },
+  @{ Stage='Shotlist Breakdown'; Dir='deliverables/30_breakdown'; Pattern='03_shotlist_breakdown_v*.md'; Required=$false },
+  @{ Stage='Legacy Planning Input'; Dir='deliverables/30_breakdown'; Pattern='03_storyboard_v*.md'; Required=$false },
+  @{ Stage='Shotlist HTML'; Dir='deliverables/60_motion'; Pattern='Shotlist_*_ZH_v*.html'; Required=$false }
 )
 
 $rows = foreach ($stage in $stages) {
@@ -59,7 +57,8 @@ $rows = foreach ($stage in $stages) {
     }
     continue
   }
-  $meta = Get-Metadata -Path $latest.File.FullName
+
+  $meta = if ($latest.File.Extension -eq '.md') { Get-Metadata -Path $latest.File.FullName } else { [pscustomobject]@{ Version="v$($latest.VersionNumber)"; Id=''; Upstream='' } }
   [pscustomobject]@{
     Stage = $stage.Stage
     Status = 'Ready'
@@ -80,35 +79,37 @@ function Get-ReferenceMode {
   return ''
 }
 
-$imageRows = New-Object System.Collections.Generic.List[object]
-$imageRows.Add([pscustomobject]@{
-  Stage = 'Character Refs'
-  Count = @(Get-ChildItem -LiteralPath (Join-Path $Root 'deliverables/20_guides/refs') -File -Include *.png,*.jpg,*.jpeg -ErrorAction SilentlyContinue).Count
+$assetRows = New-Object System.Collections.Generic.List[object]
+
+$guideRefs = Join-Path $Root 'deliverables/20_guides/refs'
+$assetRows.Add([pscustomobject]@{
+  Stage = 'Guide Refs'
+  Count = @(Get-ChildItem -LiteralPath $guideRefs -File -Include *.png,*.jpg,*.jpeg -ErrorAction SilentlyContinue).Count
   ReferenceMode = 'source'
   Dir = 'deliverables/20_guides/refs'
 }) | Out-Null
 
-foreach ($dir in @(Get-ChildItem -LiteralPath (Join-Path $Root 'deliverables/40_boards') -Directory -Filter 'generated*' -ErrorAction SilentlyContinue | Sort-Object Name)) {
-  $imageRows.Add([pscustomobject]@{
-    Stage = 'Storyboard Sheets'
+foreach ($dir in @(Get-ChildItem -LiteralPath (Join-Path $Root 'deliverables/50_art') -Directory -Filter 'generated_ref*' -ErrorAction SilentlyContinue | Sort-Object Name)) {
+  $assetRows.Add([pscustomobject]@{
+    Stage = 'Generated References'
     Count = @(Get-ChildItem -LiteralPath $dir.FullName -File -Filter '*.png' -ErrorAction SilentlyContinue).Count
     ReferenceMode = Get-ReferenceMode -ReadmePath (Join-Path $dir.FullName 'README.md')
     Dir = $dir.FullName.Substring($Root.Length + 1)
   }) | Out-Null
 }
 
-foreach ($dir in @(Get-ChildItem -LiteralPath (Join-Path $Root 'deliverables/50_art') -Directory -Filter 'generated*' -ErrorAction SilentlyContinue | Sort-Object Name)) {
-  $imageRows.Add([pscustomobject]@{
-    Stage = 'Art Keyframes'
+foreach ($dir in @(Get-ChildItem -LiteralPath (Join-Path $Root 'deliverables/60_motion') -Directory -Filter 'shotlist_previews_*' -ErrorAction SilentlyContinue | Sort-Object Name)) {
+  $assetRows.Add([pscustomobject]@{
+    Stage = 'Shotlist Previews'
     Count = @(Get-ChildItem -LiteralPath $dir.FullName -File -Filter '*.png' -ErrorAction SilentlyContinue).Count
-    ReferenceMode = Get-ReferenceMode -ReadmePath (Join-Path $dir.FullName 'README.md')
+    ReferenceMode = Get-ReferenceMode -ReadmePath (Join-Path $dir.FullName 'manifest.md')
     Dir = $dir.FullName.Substring($Root.Length + 1)
   }) | Out-Null
 }
 
 Write-Host ''
-Write-Host 'Image assets:' -ForegroundColor Cyan
-$imageRows | Format-Table -AutoSize
+Write-Host 'Generated/reference assets:' -ForegroundColor Cyan
+$assetRows | Format-Table -AutoSize
 
 $missingRequired = @($rows | Where-Object { $_.Status -eq 'Missing' })
 if ($missingRequired.Count -gt 0) {

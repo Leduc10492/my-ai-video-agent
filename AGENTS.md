@@ -2,15 +2,14 @@
 
 ## Project Identity
 
-This repository is a file-based AI video creation workflow package. It is not a runnable software app. Its purpose is to guide Codex from a story concept or script to production-ready video creation assets:
+This repository is a file-based AI video creation workflow package. It is not a runnable software app. Its purpose is to guide Codex from a story concept or script to production-ready Seedance/Higgsfield shotlist assets:
 
 1. script and McKee-style audit
 2. asset and style guides
-3. structured storyboard
-4. storyboard image prompts
-5. final art prompts and keyframes
-6. video motion prompts or Higgsfield/Seedance shotlist HTML
-7. QA and regression checks
+3. shotlist breakdown and spatial-blocking prep
+4. Seedance/Higgsfield shotlist HTML with 15-second prompt envelopes
+5. rough e-conte previews and generated video test manifests when requested
+6. QA and regression checks
 
 The workflow is project-agnostic. Do not hardcode a story title, character name, reference image path, shot count, platform choice, or duration unless it appears in the current `deliverables/` state, `locks.md`, or the user's latest request.
 
@@ -23,7 +22,7 @@ The workflow is project-agnostic. Do not hardcode a story title, character name,
 - Default execution is local in the current thread unless the user explicitly asks for subagents, parallel agents, delegation, or names a specific subagent.
 - When spawning, load the matching subagent spec and pass it as the role/task instructions to the spawned Codex agent.
 - Only spawn parallel Codex agents when the user explicitly asks for parallel agents or delegation.
-- When a legacy file says "call a skill", read the matching `.agents/skills/<skill>/SKILL.md` and follow the relevant procedure locally.
+- When a legacy file says "call a skill", read the matching active `.agents/skills/<skill>/SKILL.md` if the skill still exists; otherwise map to the active shotlist-first skill listed below.
 - `deliverables/` is the source of truth for current project state. `archives/` is historical reference unless the user asks to restore or inspect archived material.
 
 ## State Scan
@@ -46,11 +45,10 @@ Current path patterns:
 - `deliverables/10_story/01_audit_report_v{N}.md`
 - `deliverables/20_guides/02_asset_guide_v{N}.md`
 - `deliverables/20_guides/02_style_guide_v{N}.md`
-- `deliverables/30_breakdown/03_storyboard_v{N}.md`
-- `deliverables/40_boards/04_storyboard_prompts_v{N}.md`
-- `deliverables/50_art/05_art_prompts_v{N}.md`
-- `deliverables/60_motion/06_video_prompts_v{N}.md`
+- `deliverables/30_breakdown/03_shotlist_breakdown_v{N}.md`
 - `deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html`
+
+Legacy planning files such as `deliverables/30_breakdown/03_storyboard_v{N}.md` may be read as historical input. The next saved planning artifact must use `03_shotlist_breakdown_v{N}.md`.
 
 Admin files are intentionally unversioned:
 
@@ -61,11 +59,9 @@ Admin files are intentionally unversioned:
 Generated asset directories are intentionally unversioned or batch-versioned by folder:
 
 - `deliverables/20_guides/refs/`: local reference images declared by the latest asset guide
-- `deliverables/40_boards/generated/`: generated storyboard sheets
-- `deliverables/50_art/generated/`: draft or review art keyframes that are not reference-bound
-- `deliverables/50_art/generated_ref_v{N}/`: production candidate keyframes generated with required image references
+- `deliverables/50_art/generated_ref_v{N}/`: local generated references, only production-approved when the manifest says `image_reference_bound`
+- `deliverables/60_motion/shotlist_previews_<scope>_v{N}/`: generated rough e-conte preview images embedded in shotlist HTML
 - `deliverables/60_motion/generated/`: generated video clips or platform exports, if saved locally
-- `deliverables/60_motion/shotlist_previews_<scope>_v{N}/`: generated rough e-conte preview images for Higgsfield/Seedance shotlist HTML
 
 Every generated asset directory should include a `README.md` or manifest with source artifact, asset count, reference mode, and known limitations.
 
@@ -115,10 +111,10 @@ Use these role responsibilities locally by default. Use the matching subagent sp
 - `project-director`: `.codex/agents/project-director.toml`
 - `script-writer`: `.codex/agents/script-writer.toml`
 - `guide-director`: `.codex/agents/guide-director.toml`
-- `storyboard-director`: `.codex/agents/storyboard-director.toml`
-- `artist-director`: `.codex/agents/artist-director.toml`
-- `animation-director`: `.codex/agents/animation-director.toml`
+- `storyboard-director`: `.codex/agents/storyboard-director.toml` (shotlist-first visual planning and production)
 - `qa-check`: `.codex/agents/qa-check.toml`
+
+The old standalone art and animation agent roles are retired from the active workflow. Existing local generated references or generated video tests may still be read as inputs.
 
 ## Skill Assembly Slots
 
@@ -129,11 +125,9 @@ Important slots:
 - `script.primary`: creates, revises, audits, times, and exports script artifacts for `deliverables/10_story/`; current default is `screenwriter-workflow`.
 - `story.mckee_router`: routes structure, audit, rewrite, scene repair, pacing, variation, and source tasks for script work; current default is `mckee-coordinator`.
 - `guides.primary`: creates asset and style guides for `deliverables/20_guides/`.
-- `storyboard.prompt_adapter`: creates `04_storyboard_prompts_v{N}.md`; current default is `storyboard-nanobanana`.
-- `shotlist.primary`: creates Higgsfield/Seedance production HTML with 15-second prompt envelopes and embedded e-conte preview images; current default is `sketch-shotlist-workflow`.
-- `art.prompt_builder` and `art.platform_adapter`: create still-image prompt artifacts and platform-specific prompt blocks.
-- `video.prompt_builder` and `video.motion_adapter`: create `06_video_prompts_v{N}.md`; current defaults are `video-prompt-workflow` and `video-motion-design`.
-- `qa.primary`: performs stage, regression, final, and workflow QA.
+- `shotlist.breakdown`: creates `03_shotlist_breakdown_v{N}.md`; current default is `shotlist-breakdown-workflow`.
+- `shotlist.primary`: creates Seedance/Higgsfield production HTML with 15-second prompt envelopes and embedded e-conte preview images; current default is `sketch-shotlist-workflow`.
+- `qa.primary`: performs stage, batch, regression, final, and workflow QA.
 
 When replacing a skill, do not change canonical deliverable paths. Add or select a real skill under `.agents/skills/<skill>/SKILL.md`, update `.agents/skill_registry.md`, and verify the replacement satisfies the slot interface before using it for production work.
 
@@ -150,13 +144,11 @@ When the user explicitly asks for subagents, parallel agents, delegation, or nam
 
 Do not spawn an agent for the immediate blocking task if doing the work locally is the shorter critical path.
 
-When legacy workflow files mention missing granular skills such as `storyboard-output-format`, `art-platform-jimeng`, or `qa-script-check`, map them to the actual consolidated skills:
+When legacy workflow files mention missing granular skills, map them to the active consolidated skills:
 
-- storyboard output and prompt generation: `storyboard-workflow`, `storyboard-analysis`, `storyboard-nanobanana`
+- legacy visual-prompt or standalone motion-prompt requests: use `shotlist-breakdown-workflow` and `sketch-shotlist-workflow` instead
 - Higgsfield/Seedance shotlist HTML with preview images: `sketch-shotlist-workflow`
 - asset and style guide generation: `guide-workflow`
-- art platform rules: `art-prompt-workflow`, `art-platform-rules`
-- video platform rules: `video-prompt-workflow`, `video-motion-design`
 - QA checks: `qa-workflow`, `qa-checklists`
 - formatting and versioning: `artifact-formatter`, `version-management`
 
@@ -165,36 +157,34 @@ When legacy workflow files mention missing granular skills such as `storyboard-o
 Use this sequence unless the user asks for a specific stage:
 
 1. Script: produce or update `01_script_v{N}.md`; optionally produce `01_audit_report_v{N}.md`.
-2. Guides: produce or update asset and style guides before visual prompt work using `guide-workflow` or the `guides.primary` slot replacement.
-3. Storyboard: produce or update `03_storyboard_v{N}.md`.
-4. Board prompts: produce or update `04_storyboard_prompts_v{N}.md`.
-5. Art prompts: produce or update `05_art_prompts_v{N}.md`.
-6. Keyframes: generate or register keyframes under the canonical generated asset directories when requested.
-7. Video prompts: produce or update `06_video_prompts_v{N}.md`.
-8. QA: check locks, upstream version consistency, character DNA, visual continuity, generated asset manifests, motion logic, and downstream impact.
+2. Guides: produce or update asset and style guides before visual production work using `guide-workflow` or the `guides.primary` slot replacement.
+3. Shotlist breakdown: produce or update `03_shotlist_breakdown_v{N}.md` with shot-block rows, prompt-envelope ranges, asset requirements, spatial-blocking gates, and QA notes.
+4. Shotlist HTML: produce or update `Shotlist_<scope>_ZH_v{N}.html` and optional rough e-conte previews through `shotlist.primary`.
+5. QA: check locks, upstream version consistency, character DNA, reference status, spatial continuity, prompt-envelope quality, embedded preview paths, generated asset manifests, video test results, and downstream impact.
 
-For a Higgsfield/Seedance shotlist request, use `shotlist.primary` after script and optional guide checks. It may produce `Shotlist_<scope>_ZH_v{N}.html` and rough e-conte previews directly, without forcing separate `04_storyboard_prompts_v{N}.md`, `05_art_prompts_v{N}.md`, and `06_video_prompts_v{N}.md` artifacts for the same scope.
+The shotlist HTML is the prompt source of truth for Seedance/Higgsfield production. Do not create separate board-prompt, art-prompt, or standalone video-prompt artifacts for the same active scope.
 
 If a user asks for a specific stage, do that stage directly after checking prerequisites.
 
-## Image Generation Contract
+## Reference Image Contract
 
-Local reference images declared in the latest asset guide are production inputs, not decorative documentation. Markdown image links inside the asset guide do not automatically reach an image model.
+Local reference images declared in the latest asset guide are production inputs, not decorative documentation. Markdown image links inside the asset guide do not automatically reach an image or video model.
 
-Before generating any image that contains a named character or continuity-critical object:
+Before producing any prompt or generation test that contains a named character or continuity-critical object:
 
-1. Read the latest `02_asset_guide_v{N}.md`.
-2. Resolve every relevant local reference image path from that asset guide.
+1. Read the latest `02_asset_guide_v{N}.md`, if present.
+2. Resolve every relevant local reference image path from that asset guide or generated-reference manifest.
 3. Confirm the referenced image files exist on disk.
-4. Load or attach the matching reference images into the active image-generation context before calling the image tool or external platform.
-5. State each reference image role in the prompt, for example `<Character> identity reference`, `<Character> costume reference`, or `<Object> prop reference`.
-6. Use text DNA from the asset guide only as a supplement to visual references, not as a replacement.
+4. State each reference image role in the prompt or handle, for example `<Character> identity reference`, `<Character> costume reference`, or `<Object> prop reference`.
+5. Use text DNA only as a supplement to visual references, not as a replacement.
 
-If the active image tool or platform cannot consume required image references, mark outputs as `text_only_draft` or `text_dna_draft` in the generated folder README and do not treat them as continuity-approved production assets.
+If the active platform cannot consume required image references, mark outputs as `text_only_draft`, `text_dna_draft`, or `prompt_only` and do not treat them as continuity-approved production assets.
 
-Use `image_reference_bound` in the generated folder README only when the required local reference images were actually attached or loaded during generation.
+Use `image_reference_bound` only when the required local reference images were actually attached or loaded during generation.
 
 ## Quality Gates
+
+Generation hard gates live inside `shotlist.primary`; independent review lives in `qa.primary`.
 
 Before changing downstream artifacts, verify:
 
@@ -204,11 +194,12 @@ Before changing downstream artifacts, verify:
 - artifact `version` matches the filename suffix
 - upstream artifact IDs exist in current or archived artifacts
 - character descriptions match the latest asset guide when one exists
-- character reference image paths in the latest asset guide exist on disk
-- production image generation used relevant local image references, not text-only descriptions
+- character reference image paths in the latest asset guide or generated-reference manifest exist on disk
 - style work has a style guide, or the absence is called out explicitly
-- storyboard shot counts and duration agree across script, storyboard, board prompts, art prompts, and video prompts
-- Higgsfield/Seedance shotlist prompt envelopes agree with preview manifest entries and embedded image paths
+- shot-block counts, duration, source scene mapping, and prompt-envelope ranges agree
+- prompt envelopes include reference facts, planted camera, first-frame composition, physical action path, unique micro-beats, shot-specific failure locks, adjacent-beat boundaries, and reference status labels
+- long tasks are split into batches and cannot be merged until each batch passes generation hard gates and QA
+- shotlist prompt envelopes agree with preview manifest entries and embedded image paths
 - generated asset folders include manifests with source artifact, count, reference mode, and limitations
 - any replacement skill selected in `.agents/skill_registry.md` exists and satisfies the relevant slot interface
 
@@ -217,8 +208,9 @@ If an upstream artifact changes, list downstream artifacts that may need inspect
 ## QA Output
 
 - Quick state checks can be reported in chat only.
-- Stage QA, final QA, workflow audits, and regression checks that affect future work should be saved under `deliverables/00_admin/qa_reports/`.
-- QA findings should separate structural checks, continuity checks, production feasibility, and creative taste recommendations.
+- Stage QA, batch QA, final QA, workflow audits, and regression checks that affect future work should be saved under `deliverables/00_admin/qa_reports/`.
+- QA findings should separate structural checks, spatial continuity, prompt executability, reference status, platform production risk, and creative taste recommendations.
+- Shotlist QA should cite concrete `SB###` and `P###` IDs when applicable.
 
 ## P0 Structural Guardrails
 
@@ -238,6 +230,6 @@ These rules protect the project from drifting while it is Markdown-first and man
 
 ## Communication
 
-Be concrete and file-backed. Report current state, blocker, and next action. Keep creative judgment separated from structural QA: structure, continuity, and production feasibility are checks; taste is a recommendation.
+Be concrete and file-backed. Report current state, blocker, and next action. Keep creative judgment separated from structural QA: structure, continuity, prompt executability, reference status, and production feasibility are checks; taste is a recommendation.
 
-For story/script work, McKee packets, audits, QA findings, iteration gates, shotlists, and user-facing handoffs, default to Simplified Chinese unless the user explicitly requests another language. Keep file paths, artifact IDs, version suffixes, fixed decision tokens, and standard screenplay labels unchanged when useful.
+For story/script work, McKee packets, audits, QA findings, iteration gates, shotlists, and user-facing handoffs, default to Simplified Chinese unless the user explicitly requests another language. Keep file paths, artifact IDs, version suffixes, fixed decision tokens, `SB###` / `P###` IDs, and standard screenplay labels unchanged when useful.

@@ -1,11 +1,11 @@
 ---
 name: qa-workflow
-description: Run quality assurance for the file-based AI video workflow, including artifact metadata checks, stage QA, regression checks after upstream changes, and persistent QA report creation.
+description: Run quality assurance for the shotlist-first file-based AI video workflow, including artifact metadata checks, shotlist breakdown QA, prompt-envelope batch QA, HTML/preview validation, generated video test review, and regression checks.
 ---
 
 # QA Workflow
 
-Use this skill when the user asks to check quality, continue safely, modify an upstream artifact, or validate project state before generating downstream outputs.
+Use this skill when the user asks to check quality, continue safely, modify an upstream artifact, validate project state before generating downstream outputs, or review Seedance/Higgsfield shotlist batches.
 
 This is the current default implementation for the `qa.primary` slot in `.agents/skill_registry.md`.
 
@@ -13,7 +13,7 @@ This is the current default implementation for the `qa.primary` slot in `.agents
 
 Default to Simplified Chinese for all user-facing QA output unless the user explicitly requests another language.
 
-This includes chat findings, persistent QA reports, table headers, issue descriptions, evidence, suggested fixes, downstream impact, and status summaries. Keep file paths, artifact IDs, version suffixes, skill IDs, status tokens, and P0/P1/P2/P3 severity labels unchanged.
+This includes chat findings, persistent QA reports, table headers, issue descriptions, evidence, suggested fixes, downstream impact, and status summaries. Keep technical tokens such as paths, artifact IDs, reference modes, `SB###`, `P###`, and `P0/P1/P2/P3` unchanged.
 
 ## Inputs
 
@@ -21,17 +21,22 @@ This includes chat findings, persistent QA reports, table headers, issue descrip
 - `.agents/skill_registry.md` when checking workflow architecture or replacement skills
 - Latest relevant deliverables in the affected stage
 - Upstream deliverables listed in artifact metadata
+- Shotlist HTML and preview manifest when applicable
+- Generated asset or generated video test manifests when applicable
 - `qa-checklists` for stage-specific checks
 
 ## Trigger Points
 
 Run QA:
 
-1. before entering a downstream stage
-2. after editing any upstream artifact
-3. before saving a new version
-4. after generating art/video prompts
-5. when user asks "检查一下", "有没有问题", "当前状态", or "能不能继续"
+1. before entering Phase 4 shotlist HTML generation
+2. after each 4-8 prompt-envelope production batch
+3. before merging any scope above 10 prompt envelopes
+4. after shotlist HTML and previews are complete
+5. after real video generation tests are saved
+6. after editing any upstream artifact
+7. before saving a new production version
+8. when user asks "检查一下", "有没有问题", "当前状态", or "能不能继续"
 
 ## QA Modes
 
@@ -39,6 +44,7 @@ Run QA:
 | --- | --- | --- |
 | State check | User asks progress/current state | concise status in chat |
 | Stage QA | One stage just finished | issue list + optional report |
+| Batch QA | A 4-8 prompt-envelope batch is drafted | `SB###` / `P###` findings before merge |
 | Regression QA | Upstream changed | impacted downstream list |
 | Final QA | Before delivery/export | persistent report recommended |
 
@@ -46,16 +52,25 @@ Run QA:
 
 Always check:
 
-- production deliverables use `_v{N}.md`
+- production deliverables use `_v{N}` naming where applicable
 - artifact metadata exists
-- artifact `version` matches filename suffix
+- artifact `version` matches the filename suffix
 - `upstream` IDs exist in current or archived artifacts
 - required upstream files exist
 - `locks` are not contradicted
 - latest numeric version is used
 - default skills listed in `.agents/skill_registry.md` exist and preserve canonical output paths
 
-For generated image work, also run `scripts/validate-generated-assets.ps1`. This separates draft review images from production-ready reference-bound keyframes.
+For shotlist work, also check:
+
+- `03_shotlist_breakdown_v{N}.md` exists before large Phase 4 work, or legacy input is explicitly marked as migration source
+- `SB###` rows, prompt-envelope IDs, and source scene mapping are consistent
+- prompt envelopes include reference facts, planted camera, first-frame composition, physical action path, unique micro-beats, shot-specific failure locks, adjacent-beat boundary, and reference status
+- preview manifest entries match HTML prompt envelopes
+- HTML preview paths are relative and files exist
+- generated video tests are labeled with source prompt envelope, reference mode, and known limitations
+
+For generated image/video work, run `scripts/validate-generated-assets.ps1` when `pwsh` is available, or perform an equivalent shell fallback.
 
 ## Stage Checks
 
@@ -63,11 +78,10 @@ Use `qa-checklists` sections:
 
 - script
 - asset/style guide
-- storyboard
-- storyboard prompts
-- art prompts
-- generated assets
-- video prompts
+- shotlist breakdown
+- shotlist prompt envelope
+- shotlist HTML/preview
+- generated assets and generated video tests
 - regression matrix
 
 ## Persistent QA Reports
@@ -81,13 +95,24 @@ Use this report shape:
 ```markdown
 # QA 报告: <阶段>
 - 日期: YYYY-MM-DD
-- 范围: <检查的文件>
+- 范围: <检查的文件或 SB/P range>
 - 结果: pass / pass-with-warnings / blocked
 
 ## 问题清单
 
-| 优先级 | 文件 | 问题 | 证据 | 建议修复 | 状态 |
+| 优先级 | 文件 / ID | 问题 | 证据 | 建议修复 | 状态 |
 | --- | --- | --- | --- | --- | --- |
+
+## 分类结论
+
+| 分类 | 结论 |
+| --- | --- |
+| 结构 | ... |
+| 空间连续性 | ... |
+| Prompt 可执行性 | ... |
+| Reference Status | ... |
+| 平台生产风险 | ... |
+| 创作口味建议 | ... |
 
 ## 下游影响
 
@@ -107,7 +132,7 @@ If the user only asks for a quick read, report in chat and do not create a file 
 ## Output Principles
 
 - Lead with blockers.
-- Separate structural problems from creative opinions.
-- Give concrete file paths and affected shot/beat IDs.
+- Separate structure, spatial continuity, prompt executability, reference status, platform production risk, and taste recommendations.
+- Give concrete file paths and affected `SB###` / `P###` IDs.
 - Do not rewrite creative content during QA unless the user asks for fixes.
-- Use Chinese section names such as `结构问题`, `连续性问题`, `生产可行性`, `创作口味建议`, and `下游影响` when they make the report easier to scan.
+- Do not replace `sketch-shotlist-workflow` internal hard gates; QA verifies that those gates were applied and catches missed failures.

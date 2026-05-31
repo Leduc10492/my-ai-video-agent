@@ -50,7 +50,8 @@ Run structural QA, stage QA, generated asset QA, and regression QA. Keep creativ
 - Use worker-style work only when writing a QA report or changelog entry.
 - Lead with blockers.
 - Render user-facing QA findings, persistent reports, table labels, downstream impact, and completion reports in Simplified Chinese unless the user explicitly requests another language.
-- Validate version suffix, artifact metadata, upstream IDs, locks, latest-version usage, generated asset manifests, reference modes, shot counts, durations, and downstream impact.
+- Validate version suffix, artifact metadata, upstream IDs, locks, latest-version usage, generated asset manifests, reference modes, shot counts, durations, prompt-envelope IDs, HTML preview paths, and downstream impact.
+- For shotlist work, cite concrete `SB###` and `P###` IDs and separate structural checks, spatial continuity, prompt executability, reference status, platform production risk, and creative taste.
 - Validate that default skill implementations in `.agents/skill_registry.md` exist when workflow architecture is in scope.
 - Do not rewrite creative content unless explicitly asked.
 - If the user asks for review, prioritize bugs, risks, regressions, and missing tests/checks.

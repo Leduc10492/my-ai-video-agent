@@ -1,21 +1,22 @@
 ---
 name: artifact-formatter
-description: Format deliverable files with standard Artifact metadata (id, version, upstream, locks). Use when creating or validating any deliverable file.
+description: Format deliverable files with standard Artifact metadata (id, version, upstream, locks). Use when creating or validating any active production deliverable.
 ---
 
 # Artifact Formatter
 
-Ensure all deliverable files have consistent metadata and follow standard paths.
+Ensure all active deliverable files have consistent metadata and follow the shotlist-first path contract.
 
 ## When to Use
 
 - Creating new deliverable files
 - Validating existing file format
 - Checking upstream dependencies
+- Migrating legacy planning files into the active shotlist breakdown path
 
 ## Artifact Metadata Template
 
-All deliverables MUST include this frontmatter:
+All production deliverables must include this frontmatter:
 
 ```markdown
 # Artifact: <Type>
@@ -23,118 +24,119 @@ All deliverables MUST include this frontmatter:
 - version: v<number>
 - upstream: [<upstream artifact ids>]
 - locks:
-  - must_keep: [required elements]
-  - must_avoid: [prohibited content]
-  - budget_notes: [constraints]
+  - must_keep:
+    - ...
+  - must_avoid:
+    - ...
+  - budget_notes:
+    - ...
 
 ---
-
-[Content here]
 ```
 
 ## Field Specifications
 
 ### ID Format
+
 - Pattern: `A-yyyymmdd-nnn`
 - Example: `A-20260121-001`
-- Rule: New ID per file, same ID across versions
+- Rule: new ID per artifact family, same ID across versions
 
 ### Version Format
-- Pattern: `v1`, `v2`, `v3`...
+
+- Pattern: `v1`, `v2`, `v3`
 - Start: `v1`
 - Increment: +1 per update
 
 ### Upstream
+
 - List of artifact IDs this file depends on
-- Empty for root artifacts (script)
+- Empty for root artifacts such as a first script
 - Example: `[A-20260121-001]`
 
 ### Locks
+
 ```markdown
 locks:
   must_keep:
-    - Core plot points (from script)
-    - Character traits (from script)
+    - Core plot points from script
   must_avoid:
-    - Violence (global)
-    - Political content (global)
+    - Prohibited content or known failure modes
   budget_notes:
     - Duration: 5 minutes
-    - Max scenes: 8
 ```
 
-## Standard File Paths (Contract)
+## Standard File Paths
 
-**DO NOT modify these paths**:
+Do not modify these active paths unless the user explicitly approves a migration:
 
-### Admin (00_admin/)
-```
+### Admin
+
+```text
 deliverables/00_admin/README.md
 deliverables/00_admin/locks.md
 deliverables/00_admin/changelog.md
 ```
 
-### Script Stage (10_story/)
-```
+### Script
+
+```text
 deliverables/10_story/01_script_v{N}.md
 deliverables/10_story/01_audit_report_v{N}.md
 ```
 
-### Guides (20_guides/)
-```
+### Guides
+
+```text
 deliverables/20_guides/02_asset_guide_v{N}.md
 deliverables/20_guides/02_style_guide_v{N}.md
 ```
 
-### Storyboard (30_breakdown/, 40_boards/)
-```
-deliverables/30_breakdown/03_storyboard_v{N}.md
-deliverables/40_boards/04_storyboard_prompts_v{N}.md
-deliverables/40_boards/generated/
+### Shotlist Breakdown
+
+```text
+deliverables/30_breakdown/03_shotlist_breakdown_v{N}.md
 ```
 
-### Art (50_art/)
-```
-deliverables/50_art/05_art_prompts_v{N}.md
-deliverables/50_art/generated/
-deliverables/50_art/generated_ref_v{N}/
-```
+Legacy `03_storyboard_v{N}.md` files can be read as migration inputs. New planning artifacts should use the active shotlist breakdown path.
 
-### Video (60_motion/)
-```
-deliverables/60_motion/06_video_prompts_v{N}.md
-deliverables/60_motion/generated/
+### Shotlist Production
+
+```text
+deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html
+deliverables/60_motion/shotlist_previews_<scope>_v{N}/manifest.md
+deliverables/60_motion/generated/<run_id>/README.md
 ```
 
 ## Dependency Graph
 
-```
-01_script_v{N}.md (root)
-    ↓
-    ├→ 01_audit_report_v{N}.md
-    ├→ 02_asset_guide_v{N}.md
-    ├→ 02_style_guide_v{N}.md
-    └→ 03_storyboard_v{N}.md
-           ↓
-           ├→ 04_storyboard_prompts_v{N}.md
-           ├→ 05_art_prompts_v{N}.md ← 02_*_guide_v{N}.md
-           └→ 06_video_prompts_v{N}.md ← 05_art_prompts_v{N}.md / generated_ref_v{N}/ (optional)
+```text
+01_script_v{N}.md
+  -> 01_audit_report_v{N}.md
+  -> 02_asset_guide_v{N}.md + 02_style_guide_v{N}.md
+  -> 03_shotlist_breakdown_v{N}.md
+      -> Shotlist_<scope>_ZH_v{N}.html
+          -> shotlist_previews_<scope>_v{N}/manifest.md
+          -> generated/<run_id>/README.md
 ```
 
 ## Validation Checklist
 
-- [ ] Path matches standard contract
-- [ ] ID format correct (A-yyyymmdd-nnn)
-- [ ] Version format correct (v1, v2...)
-- [ ] Upstream IDs exist and valid
-- [ ] Locks inherited from upstream
+- [ ] Path matches active standard contract.
+- [ ] ID format is correct.
+- [ ] Version format is correct.
+- [ ] Upstream IDs exist and are valid.
+- [ ] Locks are inherited or consciously updated.
+- [ ] Reference mode is explicit for generated assets.
+- [ ] `SB###` and `P###` IDs are preserved where applicable.
 
 ## Common Errors
 
 | Error | Correct |
-|-------|---------|
-| `02_asset_guides.md` | `02_asset_guide.md` |
+| --- | --- |
+| `02_asset_guides.md` | `02_asset_guide_v{N}.md` |
 | `deliverables/guides/` | `deliverables/20_guides/` |
+| `03_storyboard_v{N}.md` as a new file | `03_shotlist_breakdown_v{N}.md` |
 | upstream: `01_script_v1.md` | upstream: `[A-20260121-001]` |
 
 **File templates**: See `references/file-templates.md`

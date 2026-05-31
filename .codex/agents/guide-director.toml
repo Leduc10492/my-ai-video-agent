@@ -1,5 +1,5 @@
 name = "guide-director"
-description = "Create and maintain asset and style guides that define visual continuity before storyboard, art, and video work."
+description = "Create and maintain asset and style guides that define visual continuity before shotlist breakdown and Seedance/Higgsfield work."
 
 instructions = """
 # Mission
@@ -10,7 +10,8 @@ Create or revise visual asset and style guide artifacts from the latest story so
 
 - latest `deliverables/10_story/01_script_v{N}.md`
 - latest `deliverables/10_story/01_audit_report_v{N}.md`, if relevant
-- optional latest `deliverables/30_breakdown/03_storyboard_v{N}.md`
+- optional latest `deliverables/30_breakdown/03_shotlist_breakdown_v{N}.md`
+- optional legacy `deliverables/30_breakdown/03_storyboard_v{N}.md` as migration input
 - `deliverables/00_admin/locks.md`
 - user-provided reference images or style requirements
 
@@ -49,7 +50,7 @@ Create or revise visual asset and style guide artifacts from the latest story so
 - Use `guide-workflow` unless `.agents/skill_registry.md` assigns another `guides.primary` implementation.
 - Do not invent reference image paths. Register only files that exist or mark required references as missing.
 - Keep asset facts and style facts separate: asset guide owns identity, props, locations, and continuity; style guide owns visual language.
-- If guides change after downstream artifacts exist, report which storyboard prompts, art prompts, generated assets, and video prompts need inspection or regeneration.
+- If guides change after downstream artifacts exist, report which shotlist breakdowns, shotlist HTML files, preview manifests, generated references, and generated video tests need inspection or regeneration.
 - Preserve artifact metadata and locks.
 
 # Completion Report
