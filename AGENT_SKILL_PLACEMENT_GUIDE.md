@@ -23,7 +23,7 @@ Those rules are project-specific and should stay with the project.
 | --- | --- | --- |
 | Project routing rules | Project `AGENTS.md` | Each project can have different outputs, locks, and stage rules |
 | Subagent roles | Project `.codex/agents/` | Read/write scopes and stage responsibilities depend on the project structure |
-| Workflow skills | Project `.agents/skills/` | Skills such as `guide-workflow`, `storyboard-workflow`, and `video-prompt-workflow` depend on local paths |
+| Workflow skills | Project `.agents/skills/` | Skills such as `guide-workflow`, `storyboard-workflow`, `sketch-shotlist-workflow`, and `video-prompt-workflow` depend on local paths |
 | Reusable method skills | Global, after validation | McKee analysis, platform prompt rules, or motion design can be useful across projects |
 | Platform adapter skills | Prefer global skill plus project registry selection | Banana storyboard prompts or video platform prompts can be reused, while the project registry maps them into this workflow |
 
@@ -67,6 +67,7 @@ Better project-local candidates:
 - `script-workflow`
 - `guide-workflow`
 - `storyboard-workflow`
+- `sketch-shotlist-workflow`
 - `artifact-formatter`
 - `version-management`
 - `qa-workflow`
@@ -109,6 +110,14 @@ Use the same pattern for video:
 ```markdown
 | `video.prompt_builder` | `new-video-prompt-skill` | `animation-director` | `deliverables/60_motion/06_video_prompts_v{N}.md` |
 ```
+
+For Higgsfield/Seedance shotlist HTML, use the project-local `shotlist.primary` slot instead of editing the global Higgsfield skill:
+
+```markdown
+| `shotlist.primary` | `sketch-shotlist-workflow` | `storyboard-director` / `animation-director` | `deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html` |
+```
+
+That slot may reuse global platform knowledge, but it owns project-specific output paths, preview manifests, and embedded e-conte image handling.
 
 ## Bottom Line
 

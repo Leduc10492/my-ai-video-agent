@@ -1,10 +1,10 @@
 name = "storyboard-director"
-description = "Convert scripts into structured storyboard shot tables and storyboard prompt batches."
+description = "Convert scripts into structured storyboard shot tables, storyboard prompt batches, or Higgsfield/Seedance shotlist HTML."
 
 instructions = """
 # Mission
 
-Turn the latest script into a production-ready shot table, then produce storyboard prompt batches when requested.
+Turn the latest script into a production-ready shot table, then produce storyboard prompt batches when requested. For Higgsfield/Seedance production HTML, route through the `shotlist.primary` slot instead of separately producing storyboard prompts, art prompts, and motion prompts.
 
 # Inputs
 
@@ -12,12 +12,15 @@ Turn the latest script into a production-ready shot table, then produce storyboa
 - latest `deliverables/20_guides/02_asset_guide_v{N}.md`, if available
 - latest `deliverables/20_guides/02_style_guide_v{N}.md`, if available
 - latest `deliverables/30_breakdown/03_storyboard_v{N}.md`, when generating storyboard prompts
+- optional scene or shot range when building a Higgsfield/Seedance shotlist
 - global locks
 
 # Outputs
 
 - `deliverables/30_breakdown/03_storyboard_v{N}.md`
 - `deliverables/40_boards/04_storyboard_prompts_v{N}.md`
+- `deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html`, when using `shotlist.primary`
+- `deliverables/60_motion/shotlist_previews_<scope>_v{N}/manifest.md`, when preview images are generated
 - generated storyboard image manifest if storyboard sheets are generated
 
 # Read Scope
@@ -28,14 +31,17 @@ Turn the latest script into a production-ready shot table, then produce storyboa
 - `deliverables/10_story/**`
 - `deliverables/20_guides/**`
 - `deliverables/30_breakdown/**`
+- `deliverables/60_motion/**`
 - `.agents/skills/**`
 
 # Write Scope
 
 - `deliverables/30_breakdown/**`
 - `deliverables/40_boards/**`
+- `deliverables/60_motion/**`
 - `archives/30_breakdown/**`
 - `archives/40_boards/**`
+- `archives/60_motion/**`
 - `deliverables/00_admin/changelog.md`
 
 # Relevant Skill Slots
@@ -43,6 +49,7 @@ Turn the latest script into a production-ready shot table, then produce storyboa
 - `storyboard.analysis`
 - `storyboard.table`
 - `storyboard.prompt_adapter`
+- `shotlist.primary`
 - `artifact.formatter`
 - `version.manager`
 
@@ -51,12 +58,15 @@ Turn the latest script into a production-ready shot table, then produce storyboa
 - `storyboard-analysis`
 - `storyboard-workflow`
 - `storyboard-nanobanana`
+- `sketch-shotlist-workflow`
 
 # Operating Rules
 
 - Use `storyboard-analysis` before drafting or revising shot structure.
 - Use `storyboard-workflow` for output schema and versioning.
 - Use `.agents/skill_registry.md` to select the `storyboard.prompt_adapter`; the current default is `storyboard-nanobanana`.
+- Use `.agents/skill_registry.md` to select `shotlist.primary` for Higgsfield/Seedance HTML, 15-second prompt envelopes, and embedded line-art e-conte previews.
+- Do not run the normal storyboard prompt adapter and the Higgsfield shotlist path for the same scope unless the user explicitly asks for both.
 - Maintain shot count and duration consistency.
 - Every shot must have visible action/composition, duration, camera, narrative function, and continuity notes.
 - Prompts for named characters must use asset-guide DNA; if images become continuity anchors, apply the reference-image rules from `AGENTS.md`.
@@ -68,5 +78,5 @@ Return:
 - files created/updated/archived
 - shot count and duration totals
 - missing guides or assumptions
-- downstream impact on art prompts and video prompts
+- downstream impact on art prompts and video prompts, or note that the Higgsfield shotlist path already produced Seedance prompt envelopes
 """

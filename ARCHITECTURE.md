@@ -1,7 +1,7 @@
 # Codex Workflow Architecture
 
-Version: 7.0  
-Updated: 2026-05-25
+Version: 7.1
+Updated: 2026-05-31
 
 ## Overview
 
@@ -31,12 +31,12 @@ On macOS Finder, `.codex/` and `.agents/` are hidden by default. Press `Cmd+Shif
 
 | Role | Spec | Primary skills |
 | --- | --- | --- |
-| `project-director` | `.codex/agents/project-director.toml` | `artifact-formatter`, `version-management`, `qa-workflow` |
+| `project-director` | `.codex/agents/project-director.toml` | `artifact-formatter`, `version-management`, `qa-workflow`, slot routing |
 | `script-writer` | `.codex/agents/script-writer.toml` | `screenwriter-workflow`, McKee skill set |
 | `guide-director` | `.codex/agents/guide-director.toml` | `guide-workflow`, `artifact-formatter`, `version-management` |
-| `storyboard-director` | `.codex/agents/storyboard-director.toml` | `storyboard-workflow`, `storyboard-analysis`, `storyboard-nanobanana` |
+| `storyboard-director` | `.codex/agents/storyboard-director.toml` | `storyboard-workflow`, `storyboard-analysis`, `storyboard-nanobanana`, `sketch-shotlist-workflow` |
 | `artist-director` | `.codex/agents/artist-director.toml` | `art-prompt-workflow`, `art-platform-rules` |
-| `animation-director` | `.codex/agents/animation-director.toml` | `video-prompt-workflow`, `video-motion-design` |
+| `animation-director` | `.codex/agents/animation-director.toml` | `video-prompt-workflow`, `video-motion-design`, `sketch-shotlist-workflow` |
 | `qa-check` | `.codex/agents/qa-check.toml` | `qa-workflow`, `qa-checklists` |
 
 ## Skill Assembly Slots
@@ -49,6 +49,7 @@ Workflow stages call slots, not only hardwired skill names. The current slot map
 | `story.mckee_router` | `mckee-coordinator` | structure, audit, rewrite, scene, pacing, variation, and source packets |
 | `guides.primary` | `guide-workflow` | `02_asset_guide_v{N}.md`, `02_style_guide_v{N}.md` |
 | `storyboard.prompt_adapter` | `storyboard-nanobanana` | `04_storyboard_prompts_v{N}.md` |
+| `shotlist.primary` | `sketch-shotlist-workflow` | `Shotlist_<scope>_ZH_v{N}.html` plus e-conte preview manifest/images |
 | `art.prompt_builder` | `art-prompt-workflow` | `05_art_prompts_v{N}.md` |
 | `art.platform_adapter` | `art-platform-rules` | platform syntax inside art prompts |
 | `video.prompt_builder` | `video-prompt-workflow` | `06_video_prompts_v{N}.md` |
@@ -58,12 +59,12 @@ Replacement skills must satisfy the slot interface, preserve canonical output pa
 
 ## Skill Inventory
 
-There are 23 skill directories under `.agents/skills/`, each with a `SKILL.md`:
+There are 24 skill directories under `.agents/skills/`, each with a `SKILL.md`:
 
 - General tools: `artifact-formatter`, `version-management`
 - Script/Screenwriter/McKee: `screenwriter-workflow`, `script-workflow` (legacy compatibility), `mckee-coordinator`, `mckee-create`, `mckee-audit`, `mckee-rewrite-plan`, `mckee-scene-doctor`, `mckee-expand-pace`, `mckee-variations`, `mckee-source`, `mckee-shared`
 - Guides: `guide-workflow`
-- Storyboard: `storyboard-workflow`, `storyboard-analysis`, `storyboard-nanobanana`
+- Storyboard/Shotlist: `storyboard-workflow`, `storyboard-analysis`, `storyboard-nanobanana`, `sketch-shotlist-workflow`
 - Art: `art-prompt-workflow`, `art-platform-rules`
 - Video: `video-prompt-workflow`, `video-motion-design`
 - QA: `qa-workflow`, `qa-checklists`
@@ -95,6 +96,8 @@ deliverables/
 │   └── generated_ref_v{N}/
 └── 60_motion/
     ├── 06_video_prompts_v{N}.md
+    ├── Shotlist_<scope>_ZH_v{N}.html
+    ├── shotlist_previews_<scope>_v{N}/
     └── generated/
 ```
 
@@ -111,6 +114,8 @@ Archived versions use the same stage names under `archives/`.
       -> 05_art_prompts_v{N}.md
           -> generated_ref_v{N}/ keyframes
           -> 06_video_prompts_v{N}.md
+      -> Shotlist_<scope>_ZH_v{N}.html
+          -> shotlist_previews_<scope>_v{N}/
 ```
 
 ## Generated Asset Contract
@@ -124,6 +129,8 @@ Generated folders must include a manifest or README with:
 - known limitations
 
 Production character keyframes must be generated with relevant local references loaded or attached. Text DNA alone is not sufficient for `image_reference_bound`.
+
+Higgsfield/Seedance e-conte previews are review aids. They must be manifest-backed and embedded into the shotlist HTML with relative image paths, but they are not production keyframes unless a later stage explicitly promotes and regenerates them under the keyframe contract.
 
 ## QA Strategy
 
@@ -150,4 +157,4 @@ Important scripts:
 
 ## Current State
 
-As of 2026-05-30, the reusable role/skill rules live in Codex-standard project directories. The workflow now has Screenwriter-first script routing, iteration quality gates, explicit guide-stage ownership, and a skill assembly registry for replacing storyboard, art, video, and QA implementations without changing the deliverable contract.
+As of 2026-05-31, the reusable role/skill rules live in Codex-standard project directories. The workflow now has Screenwriter-first script routing, iteration quality gates, explicit guide-stage ownership, a skill assembly registry for replacing storyboard, art, video, and QA implementations, and a project-local Sketch/Seedance shotlist route that embeds rough e-conte previews without changing the standard storyboard/art/video contracts.

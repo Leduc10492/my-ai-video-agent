@@ -4,7 +4,7 @@ Review date: 2026-05-25
 
 ## Current Shape
 
-This repository is a Markdown-first AI video workflow package, not a runnable app. It defines a file-based production pipeline for Codex to move a story concept or script through script/audit, asset and style guides, storyboard, image prompts, art/keyframe prompts, motion prompts, and QA.
+This repository is a Markdown-first AI video workflow package, not a runnable app. It defines a file-based production pipeline for Codex to move a story concept or script through script/audit, asset and style guides, storyboard, image prompts, art/keyframe prompts, motion prompts, optional Higgsfield/Seedance shotlist HTML, and QA.
 
 The repository is currently workflow-only. The previous test production content has been moved to `archives/`, and `deliverables/` is ready for the next active project.
 
@@ -28,12 +28,14 @@ flowchart TD
     B --> C["Asset guide + style guide"]
     C --> D["Structured storyboard"]
     D --> E["Storyboard prompt sheets"]
+    D --> S["Higgsfield/Seedance shotlist HTML + e-conte previews"]
     D --> F["Still art prompts + keyframes"]
     F --> G["Video motion prompts"]
     B --> H["QA checks"]
     C --> H
     D --> H
     E --> H
+    S --> H
     F --> H
     G --> H
 ```
@@ -48,7 +50,7 @@ flowchart TD
 | QA reports | Present under `deliverables/00_admin/qa_reports/` |
 | Custom agents | 7 configs under `.codex/agents/<id>.toml` |
 | Skill registry | Present under `.agents/skill_registry.md` |
-| Repo skills | 22 skills under `.agents/skills/<skill>/SKILL.md` |
+| Repo skills | 24 skills under `.agents/skills/<skill>/SKILL.md` |
 
 ## Main Findings
 

@@ -9,6 +9,21 @@
 
 ---
 
+## [2026-05-31] - Sketch Shotlist Workflow
+
+### Added
+- `.agents/skills/sketch-shotlist-workflow/`: project-local fork of the Higgsfield shotlist builder pattern, with copied reference material, Seedance 2.0 prompt-envelope rules, and rough e-conte preview handling.
+- `.agents/skills/sketch-shotlist-workflow/templates/econte-preview-prompt.template.md`: prompt template for vertical manga-style line-art storyboard previews per 15-second envelope.
+- `.agents/skills/sketch-shotlist-workflow/templates/preview-manifest.template.md`: manifest template mapping prompt envelope IDs to source shots and preview image paths.
+
+### Changed
+- `.agents/skill_registry.md`: added `shotlist.primary` with `sketch-shotlist-workflow` as the project-local default for Seedance production HTML.
+- `.codex/agents/project-director.toml`, `.codex/agents/storyboard-director.toml`, `.codex/agents/animation-director.toml`: routed Higgsfield/Seedance shotlist work through `shotlist.primary` instead of forcing separate storyboard prompt, art prompt, and video prompt artifacts.
+- `.gitignore`: ignored generated `shotlist_previews_*` folders by default.
+- `AGENTS.md`, `README.md`, `ARCHITECTURE.md`, `CODEX_SKILL_AUDIT.md`, `CODEX_REVIEW.md`, `AGENT_SKILL_PLACEMENT_GUIDE.md`: documented the local shotlist route, preview asset folder, and slot contract.
+
+---
+
 ## [2026-05-31] - Reference Image Prompt Prep
 
 ### Added

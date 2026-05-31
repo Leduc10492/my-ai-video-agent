@@ -1,6 +1,6 @@
 # Codex Skill Audit
 
-Audit date: 2026-05-30
+Audit date: 2026-05-31
 Scope: `AGENTS.md`, `.codex/agents/`, `.agents/skill_registry.md`, `.agents/skills/`, `deliverables/`, `archives/`, `scripts/`  
 Current result: structurally usable, slot-based, and aligned to Codex-standard project directories.
 
@@ -26,7 +26,7 @@ Latest workflow audit report:
 | --- | --- |
 | `.codex/agents/<id>.toml` | 7 custom agent configs present |
 | `.agents/skill_registry.md` | Present; maps stable slots to default skills |
-| `.agents/skills/*/SKILL.md` | 23/23 present |
+| `.agents/skills/*/SKILL.md` | 24/24 present |
 | Explicit `references/*.md` links | No missing files found in latest audit |
 | Obvious ghost skill references | None found outside compatibility mapping |
 | Current production deliverables | Story stage active: `01_script_v5.md`, `01_audit_report_v5.md`, derived DOCX |
@@ -42,6 +42,7 @@ Latest workflow audit report:
 | Custom agents | Done | `.codex/agents/<id>.toml` defines mission, reads, writes, skills, and completion report |
 | Guide stage ownership | Done | Added `guide-director` and `guide-workflow` for asset/style guide creation |
 | Replaceable skill slots | Done | `.agents/skill_registry.md` defines defaults and replacement interfaces |
+| Sketch shotlist route | Done | Added project-local `sketch-shotlist-workflow` for Seedance HTML, prompt envelopes, and e-conte previews |
 | Versioned file contract | Done | Current deliverables use `_v{N}.md` |
 | Generated asset contract | Done | Canonical paths are defined in `AGENTS.md`, `README.md`, and `ARCHITECTURE.md` |
 | Reference image hard gate | Done | Production image generation must load local refs when available |
@@ -54,7 +55,7 @@ Latest workflow audit report:
 | General tools | `artifact-formatter`, `version-management` | Usable |
 | Script/Screenwriter/McKee | `screenwriter-workflow` plus McKee structure plugins; `script-workflow` retained for legacy compatibility | Usable; includes Screenwriter-first drafting, timing, audit, iteration quality gates, and DOCX export |
 | Guides | `guide-workflow` | Usable; fills asset/style guide stage before visual prompt work |
-| Storyboard | `storyboard-workflow`, `storyboard-analysis`, `storyboard-nanobanana` | Usable; `storyboard-nanobanana` is a replaceable prompt adapter |
+| Storyboard/Shotlist | `storyboard-workflow`, `storyboard-analysis`, `storyboard-nanobanana`, `sketch-shotlist-workflow` | Usable; `storyboard-nanobanana` remains the replaceable board prompt adapter, while `sketch-shotlist-workflow` handles the Seedance HTML fast path |
 | Art | `art-prompt-workflow`, `art-platform-rules` | Usable; platform adapter is replaceable and production depends on loaded image refs |
 | Video | `video-prompt-workflow`, `video-motion-design` | Usable; prompt and motion adapters are replaceable, image-to-video should prefer `generated_ref_v{N}/` keyframes |
 | QA | `qa-workflow`, `qa-checklists` | Usable |

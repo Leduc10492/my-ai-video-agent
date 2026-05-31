@@ -25,6 +25,7 @@ Do not change canonical deliverable paths just to fit a new skill. If a replacem
 | `storyboard.analysis` | `storyboard-analysis` | `storyboard-director` | analysis feeding `03_storyboard_v{N}.md` |
 | `storyboard.table` | `storyboard-workflow` | `storyboard-director` | `deliverables/30_breakdown/03_storyboard_v{N}.md` |
 | `storyboard.prompt_adapter` | `storyboard-nanobanana` | `storyboard-director` | `deliverables/40_boards/04_storyboard_prompts_v{N}.md` |
+| `shotlist.primary` | `sketch-shotlist-workflow` | `storyboard-director` / `animation-director` | `deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html` plus e-conte previews |
 | `art.prompt_builder` | `art-prompt-workflow` | `artist-director` | `deliverables/50_art/05_art_prompts_v{N}.md` |
 | `art.platform_adapter` | `art-platform-rules` | `artist-director` | platform-specific prompt blocks inside `05_art_prompts_v{N}.md` |
 | `video.prompt_builder` | `video-prompt-workflow` | `animation-director` | `deliverables/60_motion/06_video_prompts_v{N}.md` |
@@ -126,6 +127,32 @@ Compatibility requirements:
 - Must not turn rough storyboard sheets into final art prompts.
 - Must state whether outputs are `text_dna_draft`, `text_only_draft`, or `image_reference_bound` when generation occurs.
 - Must follow the image reference contract from `AGENTS.md` for character-critical sheets.
+
+### `shotlist.primary`
+
+Inputs:
+
+- Latest script or storyboard
+- Optional latest asset guide and style guide
+- Optional storyboard sheets, keyframes, uploaded references, or user-provided scope
+- Global locks and any requested Higgsfield/Seedance settings
+
+Outputs:
+
+- `deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html`
+- `deliverables/60_motion/shotlist_previews_<scope>_v{N}/manifest.md`
+- Preview images under `deliverables/60_motion/shotlist_previews_<scope>_v{N}/`
+- Optional `06_video_prompts_v{N}.md` only when a Markdown prompt artifact is also requested
+
+Compatibility requirements:
+
+- Must preserve the shot row order, shot IDs, scene order, prompt envelope IDs, and prompt envelope grouping.
+- Must keep 15-second Seedance prompt envelopes intact when adding preview images.
+- Must embed preview thumbnails in the HTML with relative `<img src>` paths, not only list file paths.
+- Must mark previews as `text_only_draft`, `text_dna_draft`, `image_reference_bound`, or `prompt_only`.
+- Must not claim rough e-conte previews are production keyframes.
+- Must keep generated preview folders manifest-backed and treat them as generated assets.
+- Must render shotlists, prompt labels, manifest notes, and user-facing handoffs in Simplified Chinese unless the user explicitly requests another language.
 
 ### `art.prompt_builder`
 

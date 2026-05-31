@@ -9,7 +9,7 @@ This repository is a file-based AI video creation workflow package. It is not a 
 3. structured storyboard
 4. storyboard image prompts
 5. final art prompts and keyframes
-6. video motion prompts
+6. video motion prompts or Higgsfield/Seedance shotlist HTML
 7. QA and regression checks
 
 The workflow is project-agnostic. Do not hardcode a story title, character name, reference image path, shot count, platform choice, or duration unless it appears in the current `deliverables/` state, `locks.md`, or the user's latest request.
@@ -50,6 +50,7 @@ Current path patterns:
 - `deliverables/40_boards/04_storyboard_prompts_v{N}.md`
 - `deliverables/50_art/05_art_prompts_v{N}.md`
 - `deliverables/60_motion/06_video_prompts_v{N}.md`
+- `deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html`
 
 Admin files are intentionally unversioned:
 
@@ -64,6 +65,7 @@ Generated asset directories are intentionally unversioned or batch-versioned by 
 - `deliverables/50_art/generated/`: draft or review art keyframes that are not reference-bound
 - `deliverables/50_art/generated_ref_v{N}/`: production candidate keyframes generated with required image references
 - `deliverables/60_motion/generated/`: generated video clips or platform exports, if saved locally
+- `deliverables/60_motion/shotlist_previews_<scope>_v{N}/`: generated rough e-conte preview images for Higgsfield/Seedance shotlist HTML
 
 Every generated asset directory should include a `README.md` or manifest with source artifact, asset count, reference mode, and known limitations.
 
@@ -128,6 +130,7 @@ Important slots:
 - `story.mckee_router`: routes structure, audit, rewrite, scene repair, pacing, variation, and source tasks for script work; current default is `mckee-coordinator`.
 - `guides.primary`: creates asset and style guides for `deliverables/20_guides/`.
 - `storyboard.prompt_adapter`: creates `04_storyboard_prompts_v{N}.md`; current default is `storyboard-nanobanana`.
+- `shotlist.primary`: creates Higgsfield/Seedance production HTML with 15-second prompt envelopes and embedded e-conte preview images; current default is `sketch-shotlist-workflow`.
 - `art.prompt_builder` and `art.platform_adapter`: create still-image prompt artifacts and platform-specific prompt blocks.
 - `video.prompt_builder` and `video.motion_adapter`: create `06_video_prompts_v{N}.md`; current defaults are `video-prompt-workflow` and `video-motion-design`.
 - `qa.primary`: performs stage, regression, final, and workflow QA.
@@ -150,6 +153,7 @@ Do not spawn an agent for the immediate blocking task if doing the work locally 
 When legacy workflow files mention missing granular skills such as `storyboard-output-format`, `art-platform-jimeng`, or `qa-script-check`, map them to the actual consolidated skills:
 
 - storyboard output and prompt generation: `storyboard-workflow`, `storyboard-analysis`, `storyboard-nanobanana`
+- Higgsfield/Seedance shotlist HTML with preview images: `sketch-shotlist-workflow`
 - asset and style guide generation: `guide-workflow`
 - art platform rules: `art-prompt-workflow`, `art-platform-rules`
 - video platform rules: `video-prompt-workflow`, `video-motion-design`
@@ -168,6 +172,8 @@ Use this sequence unless the user asks for a specific stage:
 6. Keyframes: generate or register keyframes under the canonical generated asset directories when requested.
 7. Video prompts: produce or update `06_video_prompts_v{N}.md`.
 8. QA: check locks, upstream version consistency, character DNA, visual continuity, generated asset manifests, motion logic, and downstream impact.
+
+For a Higgsfield/Seedance shotlist request, use `shotlist.primary` after script and optional guide checks. It may produce `Shotlist_<scope>_ZH_v{N}.html` and rough e-conte previews directly, without forcing separate `04_storyboard_prompts_v{N}.md`, `05_art_prompts_v{N}.md`, and `06_video_prompts_v{N}.md` artifacts for the same scope.
 
 If a user asks for a specific stage, do that stage directly after checking prerequisites.
 
@@ -202,6 +208,7 @@ Before changing downstream artifacts, verify:
 - production image generation used relevant local image references, not text-only descriptions
 - style work has a style guide, or the absence is called out explicitly
 - storyboard shot counts and duration agree across script, storyboard, board prompts, art prompts, and video prompts
+- Higgsfield/Seedance shotlist prompt envelopes agree with preview manifest entries and embedded image paths
 - generated asset folders include manifests with source artifact, count, reference mode, and limitations
 - any replacement skill selected in `.agents/skill_registry.md` exists and satisfies the relevant slot interface
 

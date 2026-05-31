@@ -25,6 +25,7 @@ concept or script
   -> storyboard image prompts
   -> art prompts and keyframes
   -> video motion prompts
+  -> or Higgsfield/Seedance shotlist HTML with e-conte previews
   -> QA and regression checks
 ```
 
@@ -35,9 +36,9 @@ concept or script
 | `project-director` | `.codex/agents/project-director.toml` | Scan state, route work, check preconditions, track downstream impact |
 | `script-writer` | `.codex/agents/script-writer.toml` | Create, audit, revise, time, or expand scripts using Screenwriter mode and McKee structure plugins |
 | `guide-director` | `.codex/agents/guide-director.toml` | Create asset and style guides, register reference images, and define visual continuity |
-| `storyboard-director` | `.codex/agents/storyboard-director.toml` | Convert scripts into shot tables and storyboard prompts |
+| `storyboard-director` | `.codex/agents/storyboard-director.toml` | Convert scripts into shot tables, storyboard prompts, or Higgsfield/Seedance shotlist HTML |
 | `artist-director` | `.codex/agents/artist-director.toml` | Produce still-image prompts and keyframe generation plans |
-| `animation-director` | `.codex/agents/animation-director.toml` | Produce text-to-video or image-to-video motion prompts |
+| `animation-director` | `.codex/agents/animation-director.toml` | Produce text-to-video/image-to-video prompts, or Higgsfield/Seedance shotlist HTML |
 | `qa-check` | `.codex/agents/qa-check.toml` | Validate structure, locks, versions, continuity, generated assets, and regressions |
 
 ## Replaceable Skill Slots
@@ -50,6 +51,7 @@ Use `.agents/skill_registry.md` as the assembly layer for swappable implementati
 | `story.mckee_router` | `mckee-coordinator` | Structure, audit, rewrite, scene, pacing, variation, and source plugins |
 | `guides.primary` | `guide-workflow` | Asset and style guides |
 | `storyboard.prompt_adapter` | `storyboard-nanobanana` | Storyboard prompt batches |
+| `shotlist.primary` | `sketch-shotlist-workflow` | Higgsfield/Seedance production HTML with 15-second prompt envelopes and e-conte previews |
 | `art.prompt_builder` | `art-prompt-workflow` | Still-image and keyframe prompts |
 | `video.prompt_builder` | `video-prompt-workflow` | Video generation prompt artifacts |
 | `video.motion_adapter` | `video-motion-design` | Camera and subject motion rules |
@@ -87,6 +89,8 @@ deliverables/
 │   └── generated_ref_v{N}/
 └── 60_motion/
     ├── 06_video_prompts_v{N}.md
+    ├── Shotlist_<scope>_ZH_v{N}.html
+    ├── shotlist_previews_<scope>_v{N}/
     └── generated/
 ```
 
@@ -99,6 +103,7 @@ Historical versions live under matching `archives/<stage>/` directories. Do not 
 - `deliverables/50_art/generated/`: draft or review art keyframes.
 - `deliverables/50_art/generated_ref_v{N}/`: production candidate keyframes generated with required local references attached.
 - `deliverables/60_motion/generated/`: generated video clips or platform exports, if saved locally.
+- `deliverables/60_motion/shotlist_previews_<scope>_v{N}/`: rough line-art e-conte previews embedded in Higgsfield/Seedance shotlist HTML.
 
 Each generated directory should include a `README.md` or manifest with source artifact, asset count, `reference_mode`, and known limitations.
 
@@ -128,4 +133,4 @@ Before downstream work, check latest versions, upstream IDs, locks, style/asset 
 
 - Test deliverables and generated assets were moved to `archives/` on 2026-05-20.
 - Current active story-stage deliverables include `deliverables/10_story/01_script_v5.md`, `01_audit_report_v5.md`, and the derived DOCX export.
-- Latest workflow hardening pass: Screenwriter-first script routing, iteration quality gates, skill slot registry, guide stage coverage, and replaceable storyboard/video adapters.
+- Latest workflow hardening pass: Screenwriter-first script routing, iteration quality gates, skill slot registry, guide stage coverage, replaceable storyboard/video adapters, and a project-local Higgsfield/Seedance shotlist path with embedded e-conte previews.

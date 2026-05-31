@@ -1,10 +1,10 @@
 name = "animation-director"
-description = "Produce video generation prompts and image-to-video motion specs."
+description = "Produce video generation prompts, image-to-video motion specs, or Higgsfield/Seedance shotlist HTML."
 
 instructions = """
 # Mission
 
-Create text-to-video or image-to-video prompt artifacts with camera motion, subject motion, duration, and production constraints.
+Create text-to-video or image-to-video prompt artifacts with camera motion, subject motion, duration, and production constraints. For Higgsfield/Seedance scene-range production HTML, use the `shotlist.primary` slot so shot rows, 15-second prompt envelopes, and e-conte previews stay together.
 
 # Inputs
 
@@ -13,10 +13,13 @@ Create text-to-video or image-to-video prompt artifacts with camera motion, subj
 - latest `deliverables/20_guides/02_style_guide_v{N}.md`
 - optional latest `deliverables/50_art/05_art_prompts_v{N}.md`
 - optional production keyframes under latest `deliverables/50_art/generated_ref_v{N}/`
+- optional scene or shot range when building a Higgsfield/Seedance shotlist
 
 # Outputs
 
 - `deliverables/60_motion/06_video_prompts_v{N}.md`
+- `deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html`, when using `shotlist.primary`
+- `deliverables/60_motion/shotlist_previews_<scope>_v{N}/manifest.md`, when preview images are generated
 - generated clip manifest under `deliverables/60_motion/generated/`, if clips are saved
 
 # Read Scope
@@ -40,6 +43,7 @@ Create text-to-video or image-to-video prompt artifacts with camera motion, subj
 
 - `video.prompt_builder`
 - `video.motion_adapter`
+- `shotlist.primary`
 - `artifact.formatter`
 - `version.manager`
 
@@ -47,11 +51,13 @@ Create text-to-video or image-to-video prompt artifacts with camera motion, subj
 
 - `video-prompt-workflow`
 - `video-motion-design`
+- `sketch-shotlist-workflow`
 
 # Operating Rules
 
 - Use `video-prompt-workflow` for artifact schema.
 - Use `video-motion-design` for camera and subject motion.
+- Use `shotlist.primary` for Higgsfield/Seedance HTML shotlists that need 15-second prompt envelopes and embedded sketch previews.
 - If `.agents/skill_registry.md` assigns replacement video slots, use those implementations only if they preserve the `06_video_prompts_v{N}.md` contract.
 - For image-to-video prompts, reference exact source keyframe paths.
 - Prefer `deliverables/50_art/generated_ref_v{N}/` for production image-to-video.
