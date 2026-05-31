@@ -70,28 +70,34 @@ deliverables/
 ├── 10_story/
 │   ├── 01_script_v{N}.md
 │   └── 01_audit_report_v{N}.md
-├── 20_guides/
+├── 20_assets/
 │   ├── 02_asset_guide_v{N}.md
 │   ├── 02_style_guide_v{N}.md
-│   └── refs/
-├── 30_breakdown/
-│   └── 03_shotlist_breakdown_v{N}.md
-└── 60_motion/
-    ├── Shotlist_<scope>_ZH_v{N}.html
-    ├── shotlist_previews_<scope>_v{N}/
-    └── generated/
+│   ├── refs/
+│   └── generated_ref_v{N}/
+└── 30_shotlist/
+    ├── 03_shotlist_breakdown_v{N}.md
+    └── scenes/
+        └── <scope>_v{N}/
+            ├── Shotlist_<scope>_ZH_v{N}.html
+            ├── manifest.md
+            ├── assets/
+            ├── previews/
+            ├── generated/
+            └── qa/
 ```
 
 Historical versions live under matching `archives/<stage>/` directories. Do not create `deliverables/*/archive/`.
 
-Legacy `03_storyboard_v{N}.md` and local companion prompt files may remain on disk as historical inputs, but the active workflow writes `03_shotlist_breakdown_v{N}.md` and shotlist HTML.
+Legacy `03_storyboard_v{N}.md` and local companion prompt files may remain on disk as historical inputs, but the active workflow writes `03_shotlist_breakdown_v{N}.md` and scene-scoped shotlist HTML packages under `30_shotlist/scenes/`.
 
 ## Generated Assets
 
-- `deliverables/20_guides/refs/`: local reference images declared by the latest asset guide.
-- `deliverables/50_art/generated_ref_v{N}/`: local generated references; production-approved only when the manifest says `image_reference_bound`.
-- `deliverables/60_motion/shotlist_previews_<scope>_v{N}/`: rough e-conte previews embedded in Seedance/Higgsfield shotlist HTML.
-- `deliverables/60_motion/generated/`: generated video clips or platform exports, if saved locally.
+- `deliverables/20_assets/refs/`: common local reference images declared by the latest asset guide.
+- `deliverables/20_assets/generated_ref_v{N}/`: common local generated references; production-approved only when the manifest says `image_reference_bound`.
+- `deliverables/30_shotlist/scenes/<scope>_v{N}/assets/`: scene-specific assets only; common assets should be referenced from `20_assets`.
+- `deliverables/30_shotlist/scenes/<scope>_v{N}/previews/`: rough e-conte previews embedded in the scene shotlist HTML.
+- `deliverables/30_shotlist/scenes/<scope>_v{N}/generated/`: generated video clips or platform exports for that scene package, if saved locally.
 
 Each generated directory should include a `README.md` or manifest with source artifact, asset count, `reference_mode`, and known limitations.
 

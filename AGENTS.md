@@ -43,12 +43,12 @@ Current path patterns:
 
 - `deliverables/10_story/01_script_v{N}.md`
 - `deliverables/10_story/01_audit_report_v{N}.md`
-- `deliverables/20_guides/02_asset_guide_v{N}.md`
-- `deliverables/20_guides/02_style_guide_v{N}.md`
-- `deliverables/30_breakdown/03_shotlist_breakdown_v{N}.md`
-- `deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html`
+- `deliverables/20_assets/02_asset_guide_v{N}.md`
+- `deliverables/20_assets/02_style_guide_v{N}.md`
+- `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`
+- `deliverables/30_shotlist/scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html`
 
-Legacy planning files such as `deliverables/30_breakdown/03_storyboard_v{N}.md` may be read as historical input. The next saved planning artifact must use `03_shotlist_breakdown_v{N}.md`.
+Legacy planning files such as `deliverables/30_shotlist/03_storyboard_v{N}.md` may be read as historical input. The next saved planning artifact must use `03_shotlist_breakdown_v{N}.md`.
 
 Admin files are intentionally unversioned:
 
@@ -56,14 +56,15 @@ Admin files are intentionally unversioned:
 - `deliverables/00_admin/locks.md`
 - `deliverables/00_admin/changelog.md`
 
-Generated asset directories are intentionally unversioned or batch-versioned by folder:
+Asset and shotlist package directories are intentionally unversioned or package-versioned by folder:
 
-- `deliverables/20_guides/refs/`: local reference images declared by the latest asset guide
-- `deliverables/50_art/generated_ref_v{N}/`: local generated references, only production-approved when the manifest says `image_reference_bound`
-- `deliverables/60_motion/shotlist_previews_<scope>_v{N}/`: generated rough e-conte preview images embedded in shotlist HTML
-- `deliverables/60_motion/generated/`: generated video clips or platform exports, if saved locally
+- `deliverables/20_assets/refs/`: common local reference images declared by the latest asset guide
+- `deliverables/20_assets/generated_ref_v{N}/`: common local generated references, only production-approved when the manifest says `image_reference_bound`
+- `deliverables/30_shotlist/scenes/<scope>_v{N}/assets/`: scene-specific assets only; common assets should be referenced from `deliverables/20_assets/`
+- `deliverables/30_shotlist/scenes/<scope>_v{N}/previews/`: generated rough e-conte preview images embedded in the scene shotlist HTML
+- `deliverables/30_shotlist/scenes/<scope>_v{N}/generated/`: generated video clips or platform exports for that scene package, if saved locally
 
-Every generated asset directory should include a `README.md` or manifest with source artifact, asset count, reference mode, and known limitations.
+Every generated asset directory or scene package should include a `README.md` or manifest with source artifact, asset count, reference mode, common-asset links, scene-specific asset list, and known limitations.
 
 ## Artifact Format
 
@@ -124,7 +125,7 @@ Important slots:
 
 - `script.primary`: creates, revises, audits, times, and exports script artifacts for `deliverables/10_story/`; current default is `screenwriter-workflow`.
 - `story.mckee_router`: routes structure, audit, rewrite, scene repair, pacing, variation, and source tasks for script work; current default is `mckee-coordinator`.
-- `guides.primary`: creates asset and style guides for `deliverables/20_guides/`.
+- `guides.primary`: creates asset and style guides plus common reference manifests for `deliverables/20_assets/`.
 - `shotlist.breakdown`: creates `03_shotlist_breakdown_v{N}.md`; current default is `shotlist-breakdown-workflow`.
 - `shotlist.primary`: creates Seedance/Higgsfield production HTML with 15-second prompt envelopes and embedded e-conte preview images; current default is `sketch-shotlist-workflow`.
 - `qa.primary`: performs stage, batch, regression, final, and workflow QA.
@@ -159,7 +160,7 @@ Use this sequence unless the user asks for a specific stage:
 1. Script: produce or update `01_script_v{N}.md`; optionally produce `01_audit_report_v{N}.md`.
 2. Guides: produce or update asset and style guides before visual production work using `guide-workflow` or the `guides.primary` slot replacement.
 3. Shotlist breakdown: produce or update `03_shotlist_breakdown_v{N}.md` with shot-block rows, prompt-envelope ranges, asset requirements, spatial-blocking gates, and QA notes.
-4. Shotlist HTML: produce or update `Shotlist_<scope>_ZH_v{N}.html` and optional rough e-conte previews through `shotlist.primary`.
+4. Shotlist HTML: produce or update `deliverables/30_shotlist/scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html` and optional rough e-conte previews through `shotlist.primary`.
 5. QA: check locks, upstream version consistency, character DNA, reference status, spatial continuity, prompt-envelope quality, embedded preview paths, generated asset manifests, video test results, and downstream impact.
 
 The shotlist HTML is the prompt source of truth for Seedance/Higgsfield production. Do not create separate board-prompt, art-prompt, or standalone video-prompt artifacts for the same active scope.

@@ -21,7 +21,7 @@ This includes chat findings, persistent QA reports, table headers, issue descrip
 - `.agents/skill_registry.md` when checking workflow architecture or replacement skills
 - Latest relevant deliverables in the affected stage
 - Upstream deliverables listed in artifact metadata
-- Shotlist HTML and preview manifest when applicable
+- Scene package shotlist HTML and preview manifest when applicable
 - Generated asset or generated video test manifests when applicable
 - `qa-checklists` for stage-specific checks
 
@@ -31,7 +31,7 @@ Run QA:
 
 1. before entering Phase 4 shotlist HTML generation
 2. after each 4-8 prompt-envelope production batch
-3. before merging any scope above 10 prompt envelopes
+3. before merging any scope above 10 prompt envelopes into a scene package index
 4. after shotlist HTML and previews are complete
 5. after real video generation tests are saved
 6. after editing any upstream artifact
@@ -68,9 +68,11 @@ For shotlist work, also check:
 - prompt envelopes include reference facts, planted camera, first-frame composition, physical action path, unique micro-beats, shot-specific failure locks, adjacent-beat boundary, and reference status
 - preview manifest entries match HTML prompt envelopes
 - HTML preview paths are relative and files exist
+- shotlist HTML lives under `deliverables/30_shotlist/scenes/<scope>_v{N}/`
+- common references come from `deliverables/20_assets/`, while scene package `assets/` contains only scene-specific additions or explicit overrides
 - generated video tests are labeled with source prompt envelope, reference mode, and known limitations
 
-For generated image/video work, run `scripts/validate-generated-assets.ps1` when `pwsh` is available, or perform an equivalent shell fallback.
+For generated image/video work, validate manifests and paths directly: source `P###`, reference mode, scene package location, relative preview paths, file existence, and known limitations.
 
 ## Stage Checks
 

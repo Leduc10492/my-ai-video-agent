@@ -13,21 +13,31 @@ The HTML shotlist is the prompt source of truth. Do not split the same scope int
 
 Use the latest numeric version unless the user names a file or range:
 
-- Required: `deliverables/30_breakdown/03_shotlist_breakdown_v{N}.md`, `deliverables/10_story/01_script_v{N}.md`, or a legacy `deliverables/30_breakdown/03_storyboard_v{N}.md`
-- Optional: `deliverables/20_guides/02_asset_guide_v{N}.md`
-- Optional: `deliverables/20_guides/02_style_guide_v{N}.md`
-- Optional: uploaded references, local generated references, rough sketch references, keyframes, or generated video test results
+- Required: `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`, `deliverables/10_story/01_script_v{N}.md`, or a legacy `deliverables/30_shotlist/03_storyboard_v{N}.md`
+- Optional: `deliverables/20_assets/02_asset_guide_v{N}.md`
+- Optional: `deliverables/20_assets/02_style_guide_v{N}.md`
+- Optional: uploaded references, common local references under `deliverables/20_assets/`, scene-specific references under the scene package, rough sketch references, keyframes, or generated video test results
 - Optional: user-selected scene range, shot range, duration target, language, and image generation tool
 
 If only a script is available, create or update a shotlist breakdown first unless the requested scope is very small and the user explicitly wants a draft.
 
 ## Outputs
 
-Save current production files in `deliverables/60_motion/`:
+Save current production files as a scene package under `deliverables/30_shotlist/scenes/<scope>_v{N}/`:
 
 - `Shotlist_<scope>_ZH_v{N}.html`
-- `shotlist_previews_<scope>_v{N}/`
-- `shotlist_previews_<scope>_v{N}/manifest.md`
+- `manifest.md`
+- `assets/asset_manifest.md`
+- `previews/`
+- `previews/manifest.md`
+- `generated/`, only when real video tests are saved
+
+Default asset lookup order:
+
+1. Common project assets in `deliverables/20_assets/refs/` and `deliverables/20_assets/generated_ref_v{N}/`.
+2. Scene-specific assets in `deliverables/30_shotlist/scenes/<scope>_v{N}/assets/`.
+
+Do not duplicate common assets into a scene package unless the user asks for a portable export bundle. Scene `assets/` is for assets that exist only for that scene or override a common asset with an explicit manifest note.
 
 Generated preview images are review assets, not production keyframes. Mark their reference status in the manifest:
 
@@ -36,7 +46,7 @@ Generated preview images are review assets, not production keyframes. Mark their
 - `image_reference_bound`
 - `prompt_only`
 
-Generated video tests, if saved, belong under `deliverables/60_motion/generated/` with a manifest or README. They do not change the HTML source of truth.
+Generated video tests, if saved, belong under the scene package `generated/` directory with a manifest or README. They do not change the HTML source of truth.
 
 ## Four-Phase Shotlist Loop
 
@@ -133,7 +143,7 @@ The HTML must show image previews, not only local paths.
 For each prompt block:
 
 - add a preview thumbnail next to the prompt block
-- use a relative path such as `shotlist_previews_<scope>_v{N}/P377.png`
+- use a relative path such as `previews/P377.png`
 - wrap the thumbnail in a link to the full image
 - include alt text with prompt ID and source shot range
 - keep the raw path visible in small text only as secondary debug info
@@ -167,7 +177,7 @@ Before reporting completion:
 - Confirm any batch above 8 envelopes has a scene-by-scene self-audit note.
 - Confirm prompt envelope count equals preview entries, unless manifest marks `prompt_only`.
 - Confirm every `<img src>` file exists on disk.
-- Confirm no preview path is absolute when the HTML is meant to be portable inside `deliverables/60_motion/`.
+- Confirm no preview path is absolute when the HTML is meant to be portable inside its scene package.
 - Confirm generated previews do not claim to be final art or production keyframes.
 - Confirm generated assets have a manifest with source artifact, count, reference mode, and limitations.
 - Request or run `qa.primary` before merging long batches, after HTML/previews are complete, and after any real video generation test.

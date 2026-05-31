@@ -49,7 +49,7 @@ Then update:
 Promote a skill to global only when all of these are true:
 
 1. It has worked in at least two or three projects without structural edits.
-2. It does not hardcode project paths such as `deliverables/30_breakdown/`.
+2. It does not hardcode project paths such as `deliverables/30_shotlist/`.
 3. It provides a reusable capability rather than a full project workflow.
 4. It can be selected through `.agents/skill_registry.md` without changing canonical output paths.
 
@@ -90,13 +90,13 @@ Use `.agents/skill_registry.md` as the assembly layer.
 For shotlist breakdown:
 
 ```markdown
-| `shotlist.breakdown` | `new-breakdown-skill` | `storyboard-director` | `deliverables/30_breakdown/03_shotlist_breakdown_v{N}.md` |
+| `shotlist.breakdown` | `new-breakdown-skill` | `storyboard-director` | `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md` |
 ```
 
 For Seedance/Higgsfield HTML:
 
 ```markdown
-| `shotlist.primary` | `new-shotlist-skill` | `storyboard-director` | `deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html` |
+| `shotlist.primary` | `new-shotlist-skill` | `storyboard-director` | `deliverables/30_shotlist/scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html` |
 ```
 
 The replacement skill must still satisfy the slot interface:

@@ -59,8 +59,8 @@ Append to `deliverables/00_admin/changelog.md`:
 ### Changed
 - `03_shotlist_breakdown_v2.md` -> `03_shotlist_breakdown_v3.md`
   - Tightened batch ranges and spatial-blocking gates.
-  - Archived: `archives/30_breakdown/03_shotlist_breakdown_v2.md`
-  - Current: `deliverables/30_breakdown/03_shotlist_breakdown_v3.md`
+  - Archived: `archives/30_shotlist/03_shotlist_breakdown_v2.md`
+  - Current: `deliverables/30_shotlist/03_shotlist_breakdown_v3.md`
 ```
 
 ### Step 5: Confirm
@@ -88,18 +88,20 @@ archives/
 ├── 10_story/
 │   ├── 01_script_v1.md
 │   └── 01_script_v2.md
-├── 30_breakdown/
-│   └── 03_shotlist_breakdown_v1.md
-└── 60_motion/
-    └── Shotlist_SB001_SB008_ZH_v1.html
+├── 30_shotlist/
+│   ├── 03_shotlist_breakdown_v1.md
+│   └── scenes/
+│       └── SB001-SB008_v1/
+│           └── Shotlist_SB001-SB008_ZH_v1.html
 
 deliverables/
 ├── 10_story/
 │   └── 01_script_v3.md
-├── 30_breakdown/
-│   └── 03_shotlist_breakdown_v2.md
-└── 60_motion/
-    └── Shotlist_SB001_SB008_ZH_v2.html
+└── 30_shotlist/
+    ├── 03_shotlist_breakdown_v2.md
+    └── scenes/
+        └── SB001-SB008_v2/
+            └── Shotlist_SB001-SB008_ZH_v2.html
 ```
 
 ## Active File Paths
@@ -108,10 +110,10 @@ deliverables/
 | --- | --- | --- |
 | Script | `deliverables/10_story/01_script_v{N}.md` | `01_script_v3.md` |
 | Audit | `deliverables/10_story/01_audit_report_v{N}.md` | `01_audit_report_v1.md` |
-| Asset Guide | `deliverables/20_guides/02_asset_guide_v{N}.md` | `02_asset_guide_v2.md` |
-| Style Guide | `deliverables/20_guides/02_style_guide_v{N}.md` | `02_style_guide_v1.md` |
-| Shotlist Breakdown | `deliverables/30_breakdown/03_shotlist_breakdown_v{N}.md` | `03_shotlist_breakdown_v1.md` |
-| Shotlist HTML | `deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html` | `Shotlist_SB001_SB008_ZH_v1.html` |
+| Asset Guide | `deliverables/20_assets/02_asset_guide_v{N}.md` | `02_asset_guide_v2.md` |
+| Style Guide | `deliverables/20_assets/02_style_guide_v{N}.md` | `02_style_guide_v1.md` |
+| Shotlist Breakdown | `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md` | `03_shotlist_breakdown_v1.md` |
+| Shotlist HTML | `deliverables/30_shotlist/scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html` | `Shotlist_SB001-SB008_ZH_v1.html` |
 
 ## Legacy Migration
 
@@ -120,7 +122,7 @@ When migrating an existing `03_storyboard_v{N}.md` planning file:
 1. Treat it as source input, not the new output name.
 2. Preserve the artifact ID if it is the same planning artifact family.
 3. Save the next current version as `03_shotlist_breakdown_v{N+1}.md`.
-4. Archive the old planning file under `archives/30_breakdown/`.
+4. Archive the old planning file under `archives/30_shotlist/`.
 5. Record the migration in changelog.
 
 ## Error Handling

@@ -13,16 +13,16 @@ The output is not a board-prompt or art-prompt artifact. It is a production plan
 
 - Latest script: `deliverables/10_story/01_script_v{N}.md`
 - Optional audit report: `deliverables/10_story/01_audit_report_v{N}.md`
-- Optional asset guide: `deliverables/20_guides/02_asset_guide_v{N}.md`
-- Optional style guide: `deliverables/20_guides/02_style_guide_v{N}.md`
+- Optional asset guide: `deliverables/20_assets/02_asset_guide_v{N}.md`
+- Optional style guide: `deliverables/20_assets/02_style_guide_v{N}.md`
 - Global locks: `deliverables/00_admin/locks.md`
 - Optional user-selected scene, sequence, or shot range
 
-If an existing `deliverables/30_breakdown/03_storyboard_v{N}.md` is the latest planning artifact, treat it as legacy input. The next saved production breakdown must use `deliverables/30_breakdown/03_shotlist_breakdown_v{N}.md`.
+If an existing `deliverables/30_shotlist/03_storyboard_v{N}.md` is the latest planning artifact, treat it as legacy input. The next saved production breakdown must use `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`.
 
 ## Outputs
 
-- `deliverables/30_breakdown/03_shotlist_breakdown_v{N}.md`
+- `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`
 - Changelog entry and archives when revising
 - No board prompt, art prompt, or standalone video prompt file
 
@@ -88,10 +88,16 @@ Before handing off to `shotlist.primary`, list:
 - required characters, locations, props, vehicles, screens, and wardrobe states
 - missing or draft-only references
 - spatial-blocking decisions needed
-- long-task batch splits
+- long-task scene package splits under `deliverables/30_shotlist/scenes/<scope>_v{N}/`
 - reference mode allowed for the next step: `prompt_only`, `text_only_draft`, `text_dna_draft`, or `image_reference_bound`
 
-For any scope above 10 prompt envelopes, propose batches of 4-8 envelopes or one tight dramatic beat cluster. Do not recommend one unreviewed generation pass for long ranges.
+For any scope above 10 prompt envelopes, propose scene packages of 4-8 envelopes or one tight dramatic beat cluster. Do not recommend one unreviewed generation pass for long ranges.
+
+Asset handoff rule:
+
+- Common characters, locations, props, and generated references should point to `deliverables/20_assets/`.
+- Scene-specific assets should be listed for the target scene package under `deliverables/30_shotlist/scenes/<scope>_v{N}/assets/`.
+- Do not request duplicated scene-local copies of common assets unless a portable export bundle is required.
 
 ## QA Before Handoff
 

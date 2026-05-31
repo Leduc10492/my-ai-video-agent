@@ -9,11 +9,29 @@
 
 ---
 
+## [2026-05-31] - Shotlist Scene Package Layout
+
+### Changed
+- Migrated the current storage contract so `20_assets` owns common asset/style guides and shared generated references.
+- Migrated shotlist production into `30_shotlist`, with scene-scoped packages under `30_shotlist/scenes/<scope>_v{N}/`.
+- Updated active docs, skill contracts, role scopes, `.gitignore`, and validation scripts so previews, scene-specific assets, generated tests, and QA live with their scene package.
+
+### Moved / Removed
+- Moved local generated reference set from `deliverables/50_art/generated_ref_v1/` to `deliverables/20_assets/generated_ref_v1/`.
+- Moved the legacy `SB071-SB080` aggregate HTML and generated test run into `deliverables/30_shotlist/scenes/SB071-SB080_legacy_v1/`.
+- Removed the retired `50_art` and `60_motion` directory layers from the current workspace.
+
+## [2026-05-31] - Tooling Dependency Cleanup
+
+### Removed
+- Removed the PowerShell-first helper scripts from the active workflow because `pwsh` is not a required production dependency.
+- Updated active review, architecture, and QA guidance to use direct local validation checks instead of `pwsh` fallbacks.
+
 ## [2026-05-31] - Shotlist-First Workflow Hardening
 
 ### Changed
 - Consolidated the active workflow around `script -> audit -> guides -> shotlist breakdown -> Seedance/Higgsfield shotlist HTML + previews -> QA`.
-- Replaced the old visual-planning slot family with `shotlist.breakdown` and `shotlist.primary`; future planning artifacts use `deliverables/30_breakdown/03_shotlist_breakdown_v{N}.md`.
+- Replaced the old visual-planning slot family with `shotlist.breakdown` and `shotlist.primary`; future planning artifacts use `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`.
 - Clarified that the shotlist HTML is the prompt source of truth and that QA independently reviews, but does not replace, generation hard gates.
 - Updated `AGENTS.md`, `README.md`, `ARCHITECTURE.md`, `CODEX_SKILL_AUDIT.md`, `AGENT_SKILL_PLACEMENT_GUIDE.md`, `CODEX_REVIEW.md`, role specs, formatter/versioning skills, QA skills, and validation scripts.
 

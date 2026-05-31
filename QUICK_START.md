@@ -40,20 +40,21 @@ Replaceable skill implementations are listed in `.agents/skill_registry.md`. The
 
 1. Script: `deliverables/10_story/01_script_v{N}.md`
 2. Optional audit: `deliverables/10_story/01_audit_report_v{N}.md`
-3. Asset guide: `deliverables/20_guides/02_asset_guide_v{N}.md`
-4. Style guide: `deliverables/20_guides/02_style_guide_v{N}.md`
-5. Shotlist breakdown: `deliverables/30_breakdown/03_shotlist_breakdown_v{N}.md`
-6. Shotlist HTML: `deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html`
-7. E-conte previews: `deliverables/60_motion/shotlist_previews_<scope>_v{N}/`
+3. Asset guide: `deliverables/20_assets/02_asset_guide_v{N}.md`
+4. Style guide: `deliverables/20_assets/02_style_guide_v{N}.md`
+5. Shotlist breakdown: `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`
+6. Scene shotlist HTML: `deliverables/30_shotlist/scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html`
+7. E-conte previews: `deliverables/30_shotlist/scenes/<scope>_v{N}/previews/`
 8. QA report when useful: `deliverables/00_admin/qa_reports/`
 
 ## Generated Assets
 
 ```text
-deliverables/20_guides/refs/                         reference images declared by asset guide
-deliverables/50_art/generated_ref_vN/                local generated references, draft or approved by manifest
-deliverables/60_motion/shotlist_previews_<scope>_vN/ rough e-conte previews
-deliverables/60_motion/generated/                    generated clips or platform exports
+deliverables/20_assets/refs/                                      common reference images declared by asset guide
+deliverables/20_assets/generated_ref_vN/                           common generated references, draft or approved by manifest
+deliverables/30_shotlist/scenes/<scope>_vN/assets/                 scene-specific assets only
+deliverables/30_shotlist/scenes/<scope>_vN/previews/               rough e-conte previews
+deliverables/30_shotlist/scenes/<scope>_vN/generated/              generated clips or platform exports
 ```
 
 Every generated folder should have a `README.md` or manifest with:

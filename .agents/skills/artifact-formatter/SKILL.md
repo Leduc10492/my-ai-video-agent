@@ -88,14 +88,14 @@ deliverables/10_story/01_audit_report_v{N}.md
 ### Guides
 
 ```text
-deliverables/20_guides/02_asset_guide_v{N}.md
-deliverables/20_guides/02_style_guide_v{N}.md
+deliverables/20_assets/02_asset_guide_v{N}.md
+deliverables/20_assets/02_style_guide_v{N}.md
 ```
 
 ### Shotlist Breakdown
 
 ```text
-deliverables/30_breakdown/03_shotlist_breakdown_v{N}.md
+deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md
 ```
 
 Legacy `03_storyboard_v{N}.md` files can be read as migration inputs. New planning artifacts should use the active shotlist breakdown path.
@@ -103,9 +103,10 @@ Legacy `03_storyboard_v{N}.md` files can be read as migration inputs. New planni
 ### Shotlist Production
 
 ```text
-deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html
-deliverables/60_motion/shotlist_previews_<scope>_v{N}/manifest.md
-deliverables/60_motion/generated/<run_id>/README.md
+deliverables/30_shotlist/scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html
+deliverables/30_shotlist/scenes/<scope>_v{N}/manifest.md
+deliverables/30_shotlist/scenes/<scope>_v{N}/previews/manifest.md
+deliverables/30_shotlist/scenes/<scope>_v{N}/generated/<run_id>/README.md
 ```
 
 ## Dependency Graph
@@ -115,9 +116,9 @@ deliverables/60_motion/generated/<run_id>/README.md
   -> 01_audit_report_v{N}.md
   -> 02_asset_guide_v{N}.md + 02_style_guide_v{N}.md
   -> 03_shotlist_breakdown_v{N}.md
-      -> Shotlist_<scope>_ZH_v{N}.html
-          -> shotlist_previews_<scope>_v{N}/manifest.md
-          -> generated/<run_id>/README.md
+      -> scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html
+          -> scenes/<scope>_v{N}/previews/manifest.md
+          -> scenes/<scope>_v{N}/generated/<run_id>/README.md
 ```
 
 ## Validation Checklist
@@ -135,7 +136,7 @@ deliverables/60_motion/generated/<run_id>/README.md
 | Error | Correct |
 | --- | --- |
 | `02_asset_guides.md` | `02_asset_guide_v{N}.md` |
-| `deliverables/guides/` | `deliverables/20_guides/` |
+| `deliverables/guides/` | `deliverables/20_assets/` |
 | `03_storyboard_v{N}.md` as a new file | `03_shotlist_breakdown_v{N}.md` |
 | upstream: `01_script_v1.md` | upstream: `[A-20260121-001]` |
 

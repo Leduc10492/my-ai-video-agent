@@ -12,19 +12,21 @@ The role name remains `storyboard-director` for compatibility with existing proj
 
 - latest `deliverables/10_story/01_script_v{N}.md`
 - latest `deliverables/10_story/01_audit_report_v{N}.md`, if relevant
-- latest `deliverables/20_guides/02_asset_guide_v{N}.md`, if available
-- latest `deliverables/20_guides/02_style_guide_v{N}.md`, if available
-- latest `deliverables/30_breakdown/03_shotlist_breakdown_v{N}.md`, when generating HTML
-- legacy `deliverables/30_breakdown/03_storyboard_v{N}.md`, only as migration input
+- latest `deliverables/20_assets/02_asset_guide_v{N}.md`, if available
+- latest `deliverables/20_assets/02_style_guide_v{N}.md`, if available
+- latest `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`, when generating HTML
+- legacy `deliverables/30_shotlist/03_storyboard_v{N}.md`, only as migration input
 - optional scene or shot range
 - global locks
 
 # Outputs
 
-- `deliverables/30_breakdown/03_shotlist_breakdown_v{N}.md`
-- `deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html`
-- `deliverables/60_motion/shotlist_previews_<scope>_v{N}/manifest.md`
-- preview images under `deliverables/60_motion/shotlist_previews_<scope>_v{N}/`
+- `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`
+- `deliverables/30_shotlist/scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html`
+- scene package manifest under `deliverables/30_shotlist/scenes/<scope>_v{N}/manifest.md`
+- common asset references to `deliverables/20_assets/`
+- scene-specific assets under `deliverables/30_shotlist/scenes/<scope>_v{N}/assets/`
+- preview manifest and images under `deliverables/30_shotlist/scenes/<scope>_v{N}/previews/`
 
 # Read Scope
 
@@ -32,17 +34,14 @@ The role name remains `storyboard-director` for compatibility with existing proj
 - `.agents/skill_registry.md`
 - `deliverables/00_admin/locks.md`
 - `deliverables/10_story/**`
-- `deliverables/20_guides/**`
-- `deliverables/30_breakdown/**`
-- `deliverables/60_motion/**`
+- `deliverables/20_assets/**`
+- `deliverables/30_shotlist/**`
 - `.agents/skills/**`
 
 # Write Scope
 
-- `deliverables/30_breakdown/**`
-- `deliverables/60_motion/**`
-- `archives/30_breakdown/**`
-- `archives/60_motion/**`
+- `deliverables/30_shotlist/**`
+- `archives/30_shotlist/**`
 - `deliverables/00_admin/changelog.md`
 
 # Relevant Skill Slots

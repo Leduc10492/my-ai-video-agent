@@ -21,9 +21,9 @@ Do not change canonical deliverable paths just to fit a new skill. If a replacem
 | --- | --- | --- | --- |
 | `script.primary` | `screenwriter-workflow` | `script-writer` | `deliverables/10_story/01_script_v{N}.md` |
 | `story.mckee_router` | `mckee-coordinator` | `script-writer` | structure, audit, rewrite, scene, pacing, variation, and source packets |
-| `guides.primary` | `guide-workflow` | `guide-director` | `deliverables/20_guides/02_asset_guide_v{N}.md`, `02_style_guide_v{N}.md` |
-| `shotlist.breakdown` | `shotlist-breakdown-workflow` | `storyboard-director` | `deliverables/30_breakdown/03_shotlist_breakdown_v{N}.md` |
-| `shotlist.primary` | `sketch-shotlist-workflow` | `storyboard-director` | `deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html` plus preview manifest/images |
+| `guides.primary` | `guide-workflow` | `guide-director` | `deliverables/20_assets/02_asset_guide_v{N}.md`, `02_style_guide_v{N}.md` |
+| `shotlist.breakdown` | `shotlist-breakdown-workflow` | `storyboard-director` | `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md` |
+| `shotlist.primary` | `sketch-shotlist-workflow` | `storyboard-director` | `deliverables/30_shotlist/scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html` plus scene package manifests/previews |
 | `artifact.formatter` | `artifact-formatter` | all roles | artifact metadata and path contract |
 | `version.manager` | `version-management` | all writing roles | archived old version plus current new version |
 | `qa.primary` | `qa-workflow` | `qa-check` | chat QA or `deliverables/00_admin/qa_reports/` |
@@ -136,10 +136,12 @@ Inputs:
 
 Outputs:
 
-- `deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html`
-- `deliverables/60_motion/shotlist_previews_<scope>_v{N}/manifest.md`
-- Preview images under `deliverables/60_motion/shotlist_previews_<scope>_v{N}/`
-- Optional generated clip manifests under `deliverables/60_motion/generated/` when test clips are saved
+- `deliverables/30_shotlist/scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html`
+- `deliverables/30_shotlist/scenes/<scope>_v{N}/manifest.md`
+- Common asset references to `deliverables/20_assets/refs/` or `deliverables/20_assets/generated_ref_v{N}/`
+- Scene-specific assets under `deliverables/30_shotlist/scenes/<scope>_v{N}/assets/`
+- Preview manifest and images under `deliverables/30_shotlist/scenes/<scope>_v{N}/previews/`
+- Optional generated clip manifests under `deliverables/30_shotlist/scenes/<scope>_v{N}/generated/` when test clips are saved
 
 Compatibility requirements:
 
@@ -149,7 +151,7 @@ Compatibility requirements:
 - Must mark previews and generated tests as `text_only_draft`, `text_dna_draft`, `image_reference_bound`, or `prompt_only`.
 - Must not claim rough e-conte previews are production keyframes.
 - Must run internal hard gates before HTML assembly: reference facts, planted camera, first-frame composition, physical action path, unique micro-beats, shot-specific failure locks, adjacent-beat boundaries, reference status, and batch pressure checks.
-- Must split long tasks into reviewable batches; anything larger than 10 prompt envelopes cannot be merged until batch QA has passed.
+- Must split long tasks into scene packages or tight dramatic clusters; anything larger than 10 prompt envelopes cannot be merged into an index until batch QA has passed.
 - Must render shotlists, prompt labels, manifest notes, and user-facing handoffs in Simplified Chinese unless the user explicitly requests another language.
 
 ### `qa.primary`

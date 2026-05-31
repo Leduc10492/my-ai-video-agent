@@ -51,7 +51,7 @@ Workflow stages call slots, not only hardwired skill names. The current slot map
 | `story.mckee_router` | `mckee-coordinator` | structure, audit, rewrite, scene, pacing, variation, and source packets |
 | `guides.primary` | `guide-workflow` | `02_asset_guide_v{N}.md`, `02_style_guide_v{N}.md` |
 | `shotlist.breakdown` | `shotlist-breakdown-workflow` | `03_shotlist_breakdown_v{N}.md` |
-| `shotlist.primary` | `sketch-shotlist-workflow` | `Shotlist_<scope>_ZH_v{N}.html` plus e-conte preview manifest/images |
+| `shotlist.primary` | `sketch-shotlist-workflow` | scene package under `30_shotlist/scenes/<scope>_v{N}/` with HTML, manifest, previews, scene assets, and generated tests |
 | `qa.primary` | `qa-workflow` | chat QA or persistent reports under `deliverables/00_admin/qa_reports/` |
 
 Replacement skills must satisfy the slot interface, preserve canonical output paths, and keep QA/reporting behavior compatible. If a replacement needs a new storage layout, treat it as a migration rather than a slot swap.
@@ -78,16 +78,21 @@ deliverables/
 ├── 10_story/
 │   ├── 01_script_v{N}.md
 │   └── 01_audit_report_v{N}.md
-├── 20_guides/
+├── 20_assets/
 │   ├── 02_asset_guide_v{N}.md
 │   ├── 02_style_guide_v{N}.md
-│   └── refs/
-├── 30_breakdown/
-│   └── 03_shotlist_breakdown_v{N}.md
-└── 60_motion/
-    ├── Shotlist_<scope>_ZH_v{N}.html
-    ├── shotlist_previews_<scope>_v{N}/
-    └── generated/
+│   ├── refs/
+│   └── generated_ref_v{N}/
+└── 30_shotlist/
+    ├── 03_shotlist_breakdown_v{N}.md
+    └── scenes/
+        └── <scope>_v{N}/
+            ├── Shotlist_<scope>_ZH_v{N}.html
+            ├── manifest.md
+            ├── assets/
+            ├── previews/
+            ├── generated/
+            └── qa/
 ```
 
 Archived versions use the same stage names under `archives/`.
@@ -99,9 +104,9 @@ Archived versions use the same stage names under `archives/`.
   -> 01_audit_report_v{N}.md
   -> 02_asset_guide_v{N}.md + 02_style_guide_v{N}.md
   -> 03_shotlist_breakdown_v{N}.md
-      -> Shotlist_<scope>_ZH_v{N}.html
-          -> shotlist_previews_<scope>_v{N}/
-          -> generated/ video tests
+      -> scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html
+          -> scenes/<scope>_v{N}/previews/
+          -> scenes/<scope>_v{N}/generated/ video tests
       -> qa_reports/
 ```
 
@@ -135,15 +140,9 @@ The important checks are version suffixes, artifact metadata, upstream IDs, lock
 
 ## Tooling
 
-The repo includes PowerShell helper scripts under `scripts/`. In environments without `pwsh`, Codex should either run equivalent shell checks or state that the PowerShell scripts cannot be executed.
+The workflow does not require a separate validation runtime. Codex should validate project state with direct local checks: latest-version scans, metadata inspection, registry/default-skill existence checks, scene-package manifest checks, relative preview path checks, and `git diff --check`.
 
-Important scripts:
-
-- `scripts/status.ps1`
-- `scripts/validate-artifacts.ps1`
-- `scripts/validate-generated-assets.ps1`
-- `scripts/skill-audit.ps1`
-- `scripts/new-version.ps1`
+If repeatable automation is needed later, add a portable helper in a runtime already used by the repo.
 
 ## Current State
 

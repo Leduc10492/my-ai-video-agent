@@ -56,7 +56,7 @@ When reporting checklist results to the user or saving a QA report, translate ch
 
 ## Shotlist Breakdown Stage
 
-- [ ] File path is `deliverables/30_breakdown/03_shotlist_breakdown_v{N}.md`.
+- [ ] File path is `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`.
 - [ ] Legacy `03_storyboard_v{N}.md` input, if used, is explicitly marked as migration source.
 - [ ] Every shot block has `SB###`, source scene, plan, camera/lens, performance micro-beats, assets/blocking gate, and QA notes.
 - [ ] Shot-block count matches the summary table.
@@ -65,7 +65,7 @@ When reporting checklist results to the user or saving a QA report, translate ch
 - [ ] Character positions, eyelines, axis direction, entrances/exits, and spatial continuity are coherent.
 - [ ] Key props, screens, vehicles, crowd movement, and practical light sources are marked in the relevant rows.
 - [ ] Missing guides, missing references, draft reference status, and spatial-blocking gaps are visible before Phase 4.
-- [ ] Any scope above 10 prompt envelopes is split into 4-8 envelope batches or tight dramatic clusters.
+- [ ] Any scope above 10 prompt envelopes is split into scene packages of 4-8 envelopes or tight dramatic clusters.
 
 ## Shotlist Prompt Envelope QA
 
@@ -81,6 +81,8 @@ When reporting checklist results to the user or saving a QA report, translate ch
 
 ## Shotlist HTML / Preview QA
 
+- [ ] HTML is inside `deliverables/30_shotlist/scenes/<scope>_v{N}/`.
+- [ ] Common assets are referenced from `deliverables/20_assets/`; only scene-specific assets are stored under the scene package `assets/`.
 - [ ] HTML contains every expected `SB###` and `P###` in order.
 - [ ] Prompt envelope count matches the breakdown or approved scope.
 - [ ] Copy buttons, filters, or search affordances do not alter prompt text.

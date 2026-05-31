@@ -16,10 +16,8 @@
 deliverables/
 ├── 00_admin/          # 管理目录（本目录）
 ├── 10_story/          # 剧本和审核报告
-├── 20_guides/         # 资产和风格指南
-├── 30_breakdown/      # shotlist breakdown / 空间阻塞准备
-├── 50_art/            # 本地生成参考图（如存在）
-└── 60_motion/         # Seedance/Higgsfield shotlist HTML、预览和生成测试
+├── 20_assets/         # 通用资产、参考图和风格指南
+└── 30_shotlist/       # shotlist breakdown、scene HTML、预览和生成测试
 
 archives/              # 历史版本归档
 ```
@@ -30,11 +28,11 @@ archives/              # 历史版本归档
 |------|----------|
 | 剧本 | `10_story/01_script_v{N}.md` |
 | 审核 | `10_story/01_audit_report_v{N}.md` |
-| 资产 | `20_guides/02_asset_guide_v{N}.md` |
-| 风格 | `20_guides/02_style_guide_v{N}.md` |
-| Shotlist Breakdown | `30_breakdown/03_shotlist_breakdown_v{N}.md` |
-| Shotlist HTML | `60_motion/Shotlist_<scope>_ZH_v{N}.html` |
-| Shotlist 预览 | `60_motion/shotlist_previews_<scope>_v{N}/manifest.md` |
+| 资产 | `20_assets/02_asset_guide_v{N}.md` |
+| 风格 | `20_assets/02_style_guide_v{N}.md` |
+| Shotlist Breakdown | `30_shotlist/03_shotlist_breakdown_v{N}.md` |
+| Shotlist HTML | `30_shotlist/scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html` |
+| Shotlist 预览 | `30_shotlist/scenes/<scope>_v{N}/previews/manifest.md` |
 
 ## 🔄 版本管理
 

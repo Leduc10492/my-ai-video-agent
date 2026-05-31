@@ -1,7 +1,7 @@
 # Codex Skill Audit
 
 Audit date: 2026-05-31
-Scope: `AGENTS.md`, `.codex/agents/`, `.agents/skill_registry.md`, `.agents/skills/`, `deliverables/`, `archives/`, `scripts/`  
+Scope: `AGENTS.md`, `.codex/agents/`, `.agents/skill_registry.md`, `.agents/skills/`, `deliverables/`, `archives/`
 Current result: structurally usable, shotlist-first, and aligned to Codex-standard project directories.
 
 ## Current State
@@ -66,14 +66,12 @@ Retired active skills: old board prompt, art prompt, art platform adapter, stand
 | --- | --- | --- |
 | P1 | Long shotlist scopes can still drift if generated as one pass. | Keep the 4-8 envelope batch cadence and require QA before merge. |
 | P1 | Draft references can be mistaken for production continuity locks. | Keep `text_dna_draft`, `text_only_draft`, `prompt_only`, and `image_reference_bound` visible in HTML, manifests, and QA. |
-| P2 | Helper scripts are PowerShell-first and may not run where `pwsh` is unavailable. | Add shell/Python equivalents or document `pwsh` setup. |
 | P3 | Historical changelog and QA reports preserve older intermediate path terminology. | Leave historical records intact; keep active docs on the shotlist-first contract. |
 
 ## Recommended Next Cleanup
 
-1. Add portable validation scripts for environments without `pwsh`.
-2. Add blank templates for `03_shotlist_breakdown_v{N}.md` and shotlist QA reports if repeated project initialization becomes common.
-3. Add a lightweight registry validator that checks slot defaults and active agent skill references.
+1. Add blank templates for `03_shotlist_breakdown_v{N}.md` and shotlist QA reports if repeated project initialization becomes common.
+2. Add a lightweight portable registry validator if repeated manual checks become costly.
 
 ## Operating Guidance
 

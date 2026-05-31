@@ -4,12 +4,13 @@ Use these active production paths:
 
 - Script: `deliverables/10_story/01_script_v{N}.md`
 - Audit: `deliverables/10_story/01_audit_report_v{N}.md`
-- Asset guide: `deliverables/20_guides/02_asset_guide_v{N}.md`
-- Style guide: `deliverables/20_guides/02_style_guide_v{N}.md`
-- Shotlist breakdown: `deliverables/30_breakdown/03_shotlist_breakdown_v{N}.md`
-- Shotlist HTML: `deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html`
-- Shotlist previews: `deliverables/60_motion/shotlist_previews_<scope>_v{N}/manifest.md`
-- Generated video tests: `deliverables/60_motion/generated/<run_id>/README.md`
+- Asset guide: `deliverables/20_assets/02_asset_guide_v{N}.md`
+- Style guide: `deliverables/20_assets/02_style_guide_v{N}.md`
+- Shotlist breakdown: `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`
+- Shotlist HTML: `deliverables/30_shotlist/scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html`
+- Scene package manifest: `deliverables/30_shotlist/scenes/<scope>_v{N}/manifest.md`
+- Shotlist previews: `deliverables/30_shotlist/scenes/<scope>_v{N}/previews/manifest.md`
+- Generated video tests: `deliverables/30_shotlist/scenes/<scope>_v{N}/generated/<run_id>/README.md`
 
 Legacy `03_storyboard_v{N}.md` files can be read as migration inputs. New planning artifacts should use `03_shotlist_breakdown_v{N}.md`.
 
@@ -38,7 +39,7 @@ Legacy `03_storyboard_v{N}.md` files can be read as migration inputs. New planni
   -> 01_audit_report_v{N}.md
   -> 02_asset_guide_v{N}.md + 02_style_guide_v{N}.md
   -> 03_shotlist_breakdown_v{N}.md
-      -> Shotlist_<scope>_ZH_v{N}.html
-          -> shotlist_previews_<scope>_v{N}/manifest.md
-          -> generated/<run_id>/README.md
+      -> scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html
+          -> scenes/<scope>_v{N}/previews/manifest.md
+          -> scenes/<scope>_v{N}/generated/<run_id>/README.md
 ```

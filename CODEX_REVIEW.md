@@ -57,8 +57,8 @@ flowchart TD
 3. Guide-stage ownership is explicit through `guide-director` and `guide-workflow`.
 4. The active visual production path is now shotlist-first; old standalone board-prompt, art-prompt, and video-prompt stages are retired.
 5. Long-task drift is controlled by batch splitting, prompt hard gates inside `sketch-shotlist-workflow`, and independent `qa-workflow` checks.
-6. The remaining operational gap is tooling portability: helper scripts are PowerShell-first, and this environment may not have `pwsh`.
+6. Validation is performed through direct local checks unless a portable helper is added later.
 
 ## Recommended Next Step
 
-Keep the Markdown workflow and `.agents/skill_registry.md` as the source of truth. The next useful automation is a portable validator that reports latest versions, missing prerequisites, unresolved QA issues, generated asset manifest status, shotlist HTML preview path status, and registry slot defaults that point to missing or incompatible skills.
+Keep the Markdown workflow and `.agents/skill_registry.md` as the source of truth. The next useful automation, if needed, is a portable validator that reports latest versions, missing prerequisites, unresolved QA issues, generated asset manifest status, shotlist HTML preview path status, and registry slot defaults that point to missing or incompatible skills.

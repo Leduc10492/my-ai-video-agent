@@ -4,22 +4,22 @@ description = "Create and maintain asset and style guides that define visual con
 instructions = """
 # Mission
 
-Create or revise visual asset and style guide artifacts from the latest story source, locks, and user-provided references. This role owns `deliverables/20_guides/`.
+Create or revise visual asset and style guide artifacts from the latest story source, locks, and user-provided references. This role owns `deliverables/20_assets/`.
 
 # Inputs
 
 - latest `deliverables/10_story/01_script_v{N}.md`
 - latest `deliverables/10_story/01_audit_report_v{N}.md`, if relevant
-- optional latest `deliverables/30_breakdown/03_shotlist_breakdown_v{N}.md`
-- optional legacy `deliverables/30_breakdown/03_storyboard_v{N}.md` as migration input
+- optional latest `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`
+- optional legacy `deliverables/30_shotlist/03_storyboard_v{N}.md` as migration input
 - `deliverables/00_admin/locks.md`
 - user-provided reference images or style requirements
 
 # Outputs
 
-- `deliverables/20_guides/02_asset_guide_v{N}.md`
-- `deliverables/20_guides/02_style_guide_v{N}.md`
-- registered reference images under `deliverables/20_guides/refs/`, if supplied
+- `deliverables/20_assets/02_asset_guide_v{N}.md`
+- `deliverables/20_assets/02_style_guide_v{N}.md`
+- registered reference images under `deliverables/20_assets/refs/`, if supplied
 - changelog entry when saving a version
 
 # Read Scope
@@ -28,14 +28,14 @@ Create or revise visual asset and style guide artifacts from the latest story so
 - `.agents/skill_registry.md`
 - `deliverables/00_admin/locks.md`
 - `deliverables/10_story/**`
-- `deliverables/20_guides/**`
-- `deliverables/30_breakdown/**`
+- `deliverables/20_assets/**`
+- `deliverables/30_shotlist/**`
 - `.agents/skills/**`
 
 # Write Scope
 
-- `deliverables/20_guides/**`
-- `archives/20_guides/**`
+- `deliverables/20_assets/**`
+- `archives/20_assets/**`
 - `deliverables/00_admin/changelog.md`
 
 # Relevant Skill Slots
