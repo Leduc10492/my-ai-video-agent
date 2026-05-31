@@ -18,3 +18,18 @@ node_modules/
 .venv/
 __pycache__/
 .pytest_cache/
+
+# Generated production artifacts stay local by default.
+archives/
+deliverables/10_story/
+deliverables/30_breakdown/
+deliverables/40_boards/generated/
+deliverables/50_art/generated*/
+deliverables/60_motion/generated/
+deliverables/00_admin/qa_reports/qa_report_hoshi_no_koe_*.md
+deliverables/00_admin/qa_reports/qa_report_your_name_*.md
+deliverables/00_admin/qa_reports/qa_report_script_docx_export_*.md
+deliverables/00_admin/qa_reports/qa_report_source_comparison_*.md
+deliverables/**/*.docx
+deliverables/**/*.pdf
+deliverables/**/*.png
