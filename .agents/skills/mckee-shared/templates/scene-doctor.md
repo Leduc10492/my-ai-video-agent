@@ -1,21 +1,23 @@
-# Scene Doctor Table Template
+# 场景修复表模板
+
+Default rendered diagnosis language: Simplified Chinese unless the user explicitly requests another language. Keep scene IDs, file paths, artifact IDs, and screenplay labels unchanged when useful.
 
 ## Format
 
 ```
-Scene ID:
-Scene goal:
-Protagonist desire:
-Opposition:
-Tactics:
-Value at start:
-Value at end:
-Turn (how it flips):
-Aftermath (next problem):
+场景ID:
+场景目标:
+主角欲望:
+阻力:
+策略:
+开场价值:
+收场价值:
+转折（如何翻转）:
+后果（下一个问题）:
 
-Recommended changes:
-- [specific fix 1]
-- [specific fix 2]
+建议修改:
+- [具体修复1]
+- [具体修复2]
 ```
 
 ## Field Descriptions
@@ -42,4 +44,4 @@ Recommended changes:
 
 ## Usage
 
-Fill out each field before recommending changes. If any field is unclear or missing, that's likely the source of the scene's problem.
+Fill out each field before recommending changes. If any field is unclear or missing, that's likely the source of the scene's problem. Render the filled diagnosis in Chinese by default.

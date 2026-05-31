@@ -7,6 +7,10 @@ description: Quality checklists for each workflow stage (script, storyboard, art
 
 Use these checklists for stage QA, regression QA, and final delivery review.
 
+## Output Language
+
+When reporting checklist results to the user or saving a QA report, translate checklist item names and explanations into Simplified Chinese by default. Keep technical tokens such as paths, artifact IDs, reference modes, `P0/P1/P2/P3`, and `no action / inspect / regenerate / blocked` unchanged when they are part of the workflow contract.
+
 ## Artifact Structure
 
 ### Metadata

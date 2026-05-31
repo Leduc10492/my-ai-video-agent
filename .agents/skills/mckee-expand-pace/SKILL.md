@@ -9,6 +9,10 @@ description: Control narrative rhythm and density using McKee principles. Add be
 
 Adjust narrative rhythm, add pressure beats, control information flow, and manage exposition while maintaining causality and value change. Use when structure is sound but density/rhythm needs refinement.
 
+## Output Language
+
+Default to Simplified Chinese for all user-facing pacing, density, exposition, and rhythm notes unless the user explicitly requests another language. Keep file paths, artifact IDs, and fixed workflow tokens unchanged.
+
 ## Workflow (5 Steps)
 
 ### 1. Map Current Value Curve
@@ -118,21 +122,21 @@ See `../mckee-shared/pacing/mystery-suspense-irony.md` for mode mixing strategie
 
 Provide:
 ```
-Current value curve: [map of existing turns]
+当前价值曲线: [现有转折图]
 
-Beats to add:
-- [Beat X location]: [purpose and value shift]
-- [Beat Y location]: [purpose and value shift]
+建议增加的节拍:
+- [节拍X位置]: [功能和价值变化]
+- [节拍Y位置]: [功能和价值变化]
 
-Rhythm adjustments:
-- [Compress sequences A-B]: [rationale]
-- [Expand sequence C]: [rationale]
+节奏调整:
+- [压缩段落A-B]: [理由]
+- [扩展段落C]: [理由]
 
-Exposition strategy:
-- [Information Z]: [reveal timing and method]
+信息释放策略:
+- [信息Z]: [释放时机和方法]
 
-Causality check:
-- [Verification that new beats maintain causal chain]
+因果检查:
+- [确认新增节拍如何维持因果链]
 ```
 
 ## Output Directory

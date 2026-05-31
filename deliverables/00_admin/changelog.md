@@ -9,6 +9,208 @@
 
 ---
 
+## [2026-05-31] - Reference Image Prompt Prep
+
+### Added
+- `deliverables/50_art/generated_ref_v1/README.md`: 建立 `SB071-SB080` 缺失参考图首批生成目录与 `text_dna_draft` 状态说明。
+- `deliverables/50_art/generated_ref_v1/reference_image_prompts_v1.md`: 为 `SB071-SB080` 缺图表的 22 个资产补齐可直接用于内置 image generation 的提示词。
+- `deliverables/50_art/generated_ref_v1/*.png`: 生成并归档首批 7 张文本 DNA 草图参考图，覆盖 Yuna 灾难日、成人 Ren、成人 Yuna、学校体育馆、学校山丘冲击、神社台阶、红绳道具。
+
+---
+
+## [2026-05-31] - Storyboard Breakdown
+
+### Added
+- `deliverables/30_breakdown/03_storyboard_v1.md`: macro storyboard table for `01_script_v10.md`, covering the full 107-minute feature baseline in 80 production-beat shots and noting missing active asset/style guides before prompt generation.
+
+### Changed
+- `deliverables/30_breakdown/03_storyboard_v1.md` → `deliverables/30_breakdown/03_storyboard_v2.md`
+  - Re-split the storyboard using `shotlist-builder`-style shot blocks, reserving 428 future 15-second Seedance prompt envelopes and adding camera-emotion, micro-performance, asset, and spatial-blocking notes.
+  - Archived: `archives/30_breakdown/03_storyboard_v1_your-name_20260531.md`
+  - Superseded by: `deliverables/30_breakdown/03_storyboard_v3.md`
+- `deliverables/30_breakdown/03_storyboard_v2.md` → `deliverables/30_breakdown/03_storyboard_v3.md`
+  - Added Phase 3 prep for the default continuation scope `SB071-SB080`: missing asset map, top-down SVG blocking schemas, and approval gates before Seedance prompt/HTML generation.
+  - Archived: `archives/30_breakdown/03_storyboard_v2_your-name_20260531.md`
+  - Superseded by: `deliverables/30_breakdown/03_storyboard_v4.md`
+- `deliverables/30_breakdown/03_storyboard_v3.md` → `deliverables/30_breakdown/03_storyboard_v4.md`
+  - Marked `SB071-SB080` spatial blocking as approved from user feedback and recorded the remaining Phase 4 blockers: reference images / asset mapping, or explicit `text_only_draft` approval.
+  - Archived: `archives/30_breakdown/03_storyboard_v3_your-name_20260531.md`
+  - Current: `deliverables/30_breakdown/03_storyboard_v4.md`
+
+## [2026-05-31] - Hoshi no Koe Source Intake
+
+### Added
+- `deliverables/10_story/01_source_script_summary_hoshi-no-koe_v1.md`: timecoded source script summary from the user-provided DVD VobSub OCR and supplementary English PDF transcript, preserving structure/function notes without copying full source dialogue.
+- `deliverables/10_story/01_source_transcript_hoshi-no-koe_v1.md`: complete timecoded subtitle transcript document from the selected main Japanese OCR track, preserving all 199 subtitle blocks as a local source-study artifact.
+- `deliverables/00_admin/qa_reports/qa_report_hoshi_no_koe_vs_delayed_blue_v7_20260531.md`: source-parity comparison between the Hoshi no Koe transcript/summary and `01_script_delayed-blue_v7.md`, identifying v7's main gap as a weak delayed-communication engine.
+
+### Changed
+- `deliverables/00_admin/locks.md`: recorded that the Hoshi no Koe VobSub OCR is task-level comparison material and that the English PDF remains an unverified web transcript, not official screenplay proof.
+
+## [2026-05-31] - Screenwriter Iteration Workflow
+
+### Added
+- `.agents/skills/screenwriter-workflow/templates/story-bone-intake.template.md`: lightweight Story Bone intake template for locking story sentence, protagonist, want, why-now pressure, obstacle, midpoint change, final cost, ending state, avoid list, and target format before structure drafting.
+- `.agents/skills/screenwriter-workflow/templates/script-iteration-ladder.template.md`: reusable ladder for Story Bone, Structure Draft, Density Draft, Runtime Draft, Dialogue/Texture Draft, and Export Candidate screenplay iterations.
+- `deliverables/10_story/01_script_delayed-blue_v6.md`: distinguished branch rewrite of the archived `Voices of a Distant Star` / `迟来的蓝光` v5 exercise using the new iterative Screenwriter logic.
+- `deliverables/10_story/01_audit_report_delayed-blue_v6.md`: iteration gate and audit for the distinguished v6 branch rewrite.
+- `deliverables/10_story/01_script_delayed-blue_v7.md`: Human Dialogue / Anti-AI Polish rewrite of the delayed-blue branch, preserving v6 structure while restoring fuller character-specific speech.
+- `deliverables/10_story/01_audit_report_delayed-blue_v7.md`: v7 iteration gate, classifying the branch as `hold_current` after line-texture polish.
+
+### Changed
+- `.agents/skills/screenwriter-workflow/SKILL.md`: added Story Bone Intake before structure drafting, with 1-3 narrow questions for missing high-impact fields and McKee retained as a structure plugin after the skeleton is ready.
+- `.agents/skills/screenwriter-workflow/templates/script-iteration-ladder.template.md`: added the Story Bone layer and renamed generic polish into Dialogue/Texture Draft for 生活质感、普通反应、沉默和未说出口的话.
+- `.agents/skills/screenwriter-workflow/templates/iteration-quality-gate.template.md`: added Story Bone readiness, main story engine, structure drift, and concise Anti-AI checks while preserving the fixed gate decisions.
+- `.agents/skills/screenwriter-workflow/SKILL.md`: added Iterative Screenplay Mode, fixed one-primary-problem iteration rules, and clarified task-level comparison material boundaries.
+- `.agents/skills/screenwriter-workflow/templates/iteration-quality-gate.template.md`: expanded gate metrics with runtime, body lines, scene/transition units, dialogue cue count, overloaded scenes, action-chain checks, and fixed iteration decisions.
+- `.agents/skills/screenwriter-workflow/SKILL.md`, `.agents/skills/mckee-*`, `.agents/skills/qa-*`, `.agents/skill_registry.md`, `.codex/agents/qa-check.toml`, `AGENTS.md`: set story/script/audit/QA user-facing outputs to Simplified Chinese by default unless explicitly requested otherwise.
+- `deliverables/00_admin/locks.md`: recorded that the `迟来的蓝光` rewrite uses branch-specific filenames and must not be saved as generic `01_script_v11.md`.
+- `deliverables/10_story/01_script_delayed-blue_v6.md`, `01_audit_report_delayed-blue_v6.md`
+  - Archived v6 after using it as the over-compressed polish baseline.
+  - Archived: `archives/10_story/01_script_delayed-blue_v6_20260531.md`, `archives/10_story/01_audit_report_delayed-blue_v6_20260531.md`
+  - Current: `deliverables/10_story/01_script_delayed-blue_v7.md`, `deliverables/10_story/01_audit_report_delayed-blue_v7.md`
+- `deliverables/00_admin/locks.md`: updated the delayed-blue branch current file and runtime note from v6 to v7.
+
+## [2026-05-30] - Screenwriter Script Workflow Routing
+
+### Added
+- `.agents/skills/screenwriter-workflow/SKILL.md`: script-stage controller that applies Screenwriter writing mode while using McKee skills as structure plugins.
+- `deliverables/00_admin/qa_reports/qa_report_screenwriter_workflow_routing_20260530.md`: persistent QA report for the script routing change.
+
+### Changed
+- `.agents/skill_registry.md`: changed `script.primary` from `script-workflow` to `screenwriter-workflow` and added script/McKee router slot interfaces.
+- `.codex/agents/script-writer.toml`: routed script-stage work through `screenwriter-workflow` before McKee plugin selection.
+- `.agents/skills/script-workflow/SKILL.md`: marked the prior McKee-first script flow as legacy compatibility.
+- `AGENTS.md`, `README.md`, `ARCHITECTURE.md`, `CODEX_SKILL_AUDIT.md`, `AGENT_SKILL_PLACEMENT_GUIDE.md`: updated active docs for the Screenwriter-first script workflow.
+
+## [2026-05-30] - Script Stage
+
+### Added
+- `deliverables/10_story/01_script_v10.md`: fifth Screenwriter workflow draft for the `Your Name.` task, expanding v9 into about 102 scene/transition units while preserving the 107-minute target.
+- `deliverables/10_story/01_audit_report_v10.md`: v10 audit judging the draft structurally dense enough for standard screenplay DOCX export.
+- `deliverables/10_story/01_script_v10_standard_screenplay.docx`: standard screenplay-format DOCX exported from the v10 Markdown script after the comparison gate passed.
+- `deliverables/00_admin/qa_reports/qa_report_your_name_v10_export_20260530.md`: v10 comparison/export QA report, including DOCX package checks and render limitation notes.
+- `deliverables/10_story/01_script_v9.md`: fourth Screenwriter workflow draft for the `Your Name.` task, cutting v8's duplicate beats back to a 107-minute target while preserving density gains.
+- `deliverables/10_story/01_audit_report_v9.md`: audit of v9, judging it the first runtime-controlled candidate but not yet final parity.
+- `deliverables/00_admin/qa_reports/qa_report_your_name_v9_final_comparison_20260530.md`: final-comparison gate for v9, blocking final DOCX export because scene density remains below the uploaded PDF benchmark.
+- `deliverables/10_story/01_script_v8.md`: third Screenwriter workflow draft for the `Your Name.` task, adding date/misdirection, more exchange micro-scenes, rescue time pressure, and adult aftermath.
+- `deliverables/10_story/01_audit_report_v8.md`: audit of v8, judging it stronger but over target at about 114 minutes and requiring a v9 cut/polish pass.
+- `deliverables/10_story/01_script_v7.md`: second Screenwriter workflow feature-length draft for the `Your Name.` task, expanding v6's body-swap comedy, supporting cast, ritual rules, search, rescue logistics, and adult near-miss rhythm.
+- `deliverables/10_story/01_audit_report_v7.md`: audit of v7 against feature-length density, structure, logic, and comparison-readiness goals.
+- `deliverables/00_admin/qa_reports/qa_report_your_name_v7_density_check_20260530.md`: density check comparing v7 progress against the uploaded 132-page PDF's rough scene distribution.
+- `deliverables/10_story/Your-Name-Screenplay.pdf`: user-provided comparison PDF for the `Your Name.` task.
+- `deliverables/10_story/01_script_v6.md`: first Screenwriter workflow feature-length functional draft for a `Your Name.`-style comparison exercise, estimated about 106 minutes.
+- `deliverables/10_story/01_audit_report_v6.md`: audit of v6 against feature-length, structure, logic, and executable-screenplay goals.
+- `deliverables/00_admin/qa_reports/qa_report_your_name_pdf_intake_20260530.md`: intake note identifying the uploaded PDF as user-provided fan-made comparison material, not verified official screenplay.
+- `deliverables/00_admin/qa_reports/qa_report_your_name_v6_comparison_reflection_20260530.md`: comparison and reflection report documenting why v6 is below the uploaded PDF's density and structure level.
+- `deliverables/10_story/01_script_v1.md`: Screenwriter workflow test draft, an original distant-communication short inspired only by public high-level reference facts.
+- `deliverables/10_story/01_audit_report_v1.md`: McKee structure-plugin audit for `01_script_v1.md`.
+- `deliverables/10_story/01_script_v4_standard_screenplay.docx`: standard screenplay-format DOCX export generated from approved `01_script_v4.md`.
+- `deliverables/10_story/01_generated_function_index_v4.md`: generated-unit function index for future licensed-source comparison.
+- `deliverables/00_admin/qa_reports/qa_report_script_docx_export_20260530.md`: QA note for the DOCX export and render limitation.
+- `deliverables/00_admin/qa_reports/qa_report_hoshi_no_koe_source_acquisition_20260530.md`: legal source acquisition status for original `ほしのこえ` script/storyboard comparison.
+- `deliverables/00_admin/qa_reports/qa_report_hoshi_no_koe_acquisition_action_plan_20260530.md`: actionable acquisition plan for official storyboard/DVD source materials.
+- `deliverables/00_admin/qa_reports/qa_report_source_comparison_readiness_20260530.md`: readiness gate for licensed-source intake, source labels, and source function map creation.
+
+### Changed
+- `deliverables/10_story/01_script_v9.md`, `01_audit_report_v9.md`
+  - Archived v9 after using it as the compressed runtime-controlled candidate.
+  - Archived: `archives/10_story/01_script_v9_your-name_20260530.md`, `archives/10_story/01_audit_report_v9_your-name_20260530.md`
+  - Current: `deliverables/10_story/01_script_v10.md`, `deliverables/10_story/01_audit_report_v10.md`
+- `deliverables/00_admin/locks.md`
+  - Updated current baseline from v9 to v10 and recorded `01_script_v10_standard_screenplay.docx` as the current derived standard screenplay export.
+- `deliverables/10_story/01_script_v8.md`, `01_audit_report_v8.md`
+  - Archived v8 after using it as the over-target density draft.
+  - Archived: `archives/10_story/01_script_v8_your-name_20260530.md`, `archives/10_story/01_audit_report_v8_your-name_20260530.md`
+  - Current: `deliverables/10_story/01_script_v9.md`, `deliverables/10_story/01_audit_report_v9.md`
+- `deliverables/00_admin/locks.md`
+  - Updated current baseline from v8 to v9 and recorded final comparison audit as the next gate before DOCX export.
+- `deliverables/10_story/01_script_v7.md`, `01_audit_report_v7.md`
+  - Archived v7 after using it as the second density baseline.
+  - Archived: `archives/10_story/01_script_v7_your-name_20260530.md`, `archives/10_story/01_audit_report_v7_your-name_20260530.md`
+  - Current: `deliverables/10_story/01_script_v8.md`, `deliverables/10_story/01_audit_report_v8.md`
+- `deliverables/00_admin/locks.md`
+  - Updated current baseline from v7 to v8 and recorded the v9 cut/polish requirement.
+- `deliverables/10_story/01_script_v6.md`, `01_audit_report_v6.md`
+  - Archived v6 after using it as the first measurable `Your Name.` baseline.
+  - Archived: `archives/10_story/01_script_v6_your-name_20260530.md`, `archives/10_story/01_audit_report_v6_your-name_20260530.md`
+  - Current: `deliverables/10_story/01_script_v7.md`, `deliverables/10_story/01_audit_report_v7.md`
+- `deliverables/00_admin/qa_reports/qa_report_your_name_v6_comparison_reflection_20260530.md`
+  - Updated current decision to point from v6 baseline to v7 current draft and v8 next pass.
+- `deliverables/00_admin/locks.md`
+  - Updated current baseline from v6 to v7 and preserved the no-skill-edit rule.
+- `deliverables/10_story/01_script_v5.md`, `01_audit_report_v5.md`, `01_script_v5_standard_screenplay.docx`
+  - Archived the previous `迟来的蓝光` baseline before starting the `Your Name.` comparison task.
+  - Archived: `archives/10_story/01_script_v5_delayed-blue_20260530.md`, `archives/10_story/01_audit_report_v5_delayed-blue_20260530.md`, `archives/10_story/01_script_v5_standard_screenplay_20260530.docx`
+  - Current: `deliverables/10_story/01_script_v6.md`, `deliverables/10_story/01_audit_report_v6.md`
+- `deliverables/00_admin/locks.md`
+  - Updated current target to the `Your Name.` comparison task, locked the no-skill-edit rule, and recorded that the uploaded PDF is comparison material rather than verified official screenplay.
+- `deliverables/10_story/01_script_v4.md` → `deliverables/10_story/01_script_v5.md`
+  - Rebuilt the draft for the correct 20+ minute short-animation target; v5 estimates about 23:25 instead of v4's 8:30 sketch length.
+  - Archived: `archives/10_story/01_script_v4_delayed-blue_20260530.md`
+  - Current: `deliverables/10_story/01_script_v5.md`
+- `deliverables/10_story/01_audit_report_v4.md` → `deliverables/10_story/01_audit_report_v5.md`
+  - Added the corrected 22-24 minute quality gate and approved v5 for DOCX export.
+  - Archived: `archives/10_story/01_audit_report_v4_delayed-blue_20260530.md`
+  - Current: `deliverables/10_story/01_audit_report_v5.md`
+- `deliverables/10_story/01_script_v5_standard_screenplay.docx`
+  - Exported the corrected v5 script as a standard screenplay-format DOCX.
+  - Current: `deliverables/10_story/01_script_v5_standard_screenplay.docx`
+- `deliverables/10_story/01_script_v4_standard_screenplay.docx`
+  - Archived because v4 is superseded by the longer v5 script.
+  - Archived: `archives/10_story/01_script_v4_standard_screenplay_20260530.docx`
+- `deliverables/10_story/01_generated_function_index_v4.md`
+  - Archived with v4 because source comparison is now treated as a project task outside the reusable Screenwriter skill.
+  - Archived: `archives/10_story/01_generated_function_index_v4_delayed-blue_20260530.md`
+- `.agents/skills/screenwriter-workflow/SKILL.md`, `.agents/skill_registry.md`, `AGENTS.md`, `README.md`, `ARCHITECTURE.md`, `CODEX_SKILL_AUDIT.md`
+  - Removed original-source comparison from the reusable Screenwriter skill/slot contract; comparison remains a task-level project activity.
+- `.agents/skills/screenwriter-workflow/templates/licensed-source-intake-checklist.template.md`, `.agents/skills/screenwriter-workflow/templates/source-function-map.template.md`
+  - Removed comparison templates from the reusable skill after scope correction.
+- `deliverables/00_admin/locks.md`
+  - Updated current baseline to `01_script_v5.md`, target runtime to 22-24 minutes, and source comparison as task-level work outside the reusable skill.
+- `deliverables/10_story/01_script_v1.md` → `deliverables/10_story/01_script_v2.md`
+  - Improved protagonist agency, visible deep-space cost, and irreversible final send.
+  - Archived: `archives/10_story/01_script_v1_delayed-blue_20260530.md`
+  - Current: `deliverables/10_story/01_script_v2.md`
+- `deliverables/10_story/01_audit_report_v1.md` → `deliverables/10_story/01_audit_report_v2.md`
+  - Added quality comparison dimensions based on public high-level source facts.
+  - Archived: `archives/10_story/01_audit_report_v1_delayed-blue_20260530.md`
+  - Current: `deliverables/10_story/01_audit_report_v2.md`
+- `deliverables/10_story/01_script_v2.md` → `deliverables/10_story/01_script_v3.md`
+  - Compressed repeated beats, strengthened Xu Cheng's agency, and approved for DOCX export.
+  - Archived: `archives/10_story/01_script_v2_delayed-blue_20260530.md`
+  - Superseded by: `deliverables/10_story/01_script_v4.md`
+- `deliverables/10_story/01_audit_report_v2.md` → `deliverables/10_story/01_audit_report_v3.md`
+  - Final quality gate judged the original comparable script ready for standard screenplay DOCX export.
+  - Archived: `archives/10_story/01_audit_report_v2_delayed-blue_20260530.md`
+  - Superseded by: `deliverables/10_story/01_audit_report_v4.md`
+- `deliverables/10_story/01_script_v3.md` → `deliverables/10_story/01_script_v4.md`
+  - Removed the false-signal breath scene after the child-TV repair, reducing the runtime estimate from 9:05 to 8:30 while preserving story spine and copyright distance.
+  - Archived: `archives/10_story/01_script_v3_delayed-blue_20260530.md`
+  - Current: `deliverables/10_story/01_script_v4.md`
+- `deliverables/10_story/01_audit_report_v3.md` → `deliverables/10_story/01_audit_report_v4.md`
+  - Added the iteration quality gate result and approved current DOCX export.
+  - Archived: `archives/10_story/01_audit_report_v3_delayed-blue_20260530.md`
+  - Current: `deliverables/10_story/01_audit_report_v4.md`
+- `deliverables/10_story/01_script_v3_standard_screenplay.docx` → `deliverables/10_story/01_script_v4_standard_screenplay.docx`
+  - Re-exported the current standard screenplay DOCX from `01_script_v4.md`.
+  - Archived: `archives/10_story/01_script_v3_standard_screenplay_20260530.docx`
+  - Current: `deliverables/10_story/01_script_v4_standard_screenplay.docx`
+- `.agents/skills/screenwriter-workflow/SKILL.md`: added Source Comparison Mode with legal-source classification and non-reproductive function-map workflow.
+- `.agents/skills/screenwriter-workflow/templates/licensed-source-intake-checklist.template.md`: added a required intake gate for legally acquired screenplay/storyboard/DVD source material before detailed comparison.
+- `.agents/skills/screenwriter-workflow/templates/source-function-map.template.md`: added a reusable comparison template for licensed screenplay/storyboard sources.
+- `.agents/skills/screenwriter-workflow/templates/iteration-quality-gate.template.md`: added a repeatable quality gate before revisions and DOCX export.
+- `.agents/skills/screenwriter-workflow/scripts/export_screenplay_docx.js`: added a deterministic Markdown screenplay to DOCX exporter for current script artifacts.
+- `.agents/skills/screenwriter-workflow/SKILL.md`, `.agents/skill_registry.md`, `AGENTS.md`: added generated function index handling while licensed source material is unavailable.
+- `deliverables/00_admin/qa_reports/qa_report_hoshi_no_koe_source_acquisition_20260530.md`: updated with current acquisition availability and practical source route.
+- `deliverables/00_admin/qa_reports/qa_report_hoshi_no_koe_source_acquisition_20260530.md`: expanded acquisition routes with the 2017 KADOKAWA storyboard book and original DVD listing evidence.
+- `deliverables/00_admin/qa_reports/qa_report_hoshi_no_koe_acquisition_action_plan_20260530.md`: updated original DVD route with Suruga-ya availability and `動画コンテ` evidence.
+- `deliverables/00_admin/qa_reports/qa_report_hoshi_no_koe_acquisition_action_plan_20260530.md`, `qa_report_hoshi_no_koe_source_acquisition_20260530.md`, `qa_report_source_comparison_readiness_20260530.md`: refined source priority after availability recheck; original DVD is now fastest practical route, storyboard book remains cleanest official storyboard route.
+- `deliverables/00_admin/qa_reports/qa_report_hoshi_no_koe_acquisition_action_plan_20260530.md`, `qa_report_hoshi_no_koe_source_acquisition_20260530.md`, `qa_report_source_comparison_readiness_20260530.md`: upgraded the older `DVD BOOK ほしのこえ` to the strongest practical source route after confirming a complete Suruga-ya listing and a Bunken Shoin backup listing; warned against disc-only copies.
+- `deliverables/00_admin/locks.md`: synchronized active acquisition priority order to complete DVD BOOK first, original DVD second, 2017 storyboard book third.
+- `deliverables/00_admin/locks.md`: recorded the active story-stage goal, legal-source gate, priority acquisition targets, iteration gate, and DOCX export gate.
+- `AGENTS.md`, `README.md`, `ARCHITECTURE.md`, `.agents/skill_registry.md`, `CODEX_SKILL_AUDIT.md`: documented source-comparison policy, slot requirements, iteration quality gate, licensed-source intake gate, and active story-stage state.
+
 ## [2026-05-25] - Workflow Slot Architecture Hardening
 
 ### Added

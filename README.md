@@ -19,7 +19,7 @@ Use [AGENTS.md](AGENTS.md) as the active project rule entrypoint.
 
 ```text
 concept or script
-  -> script and optional McKee audit
+  -> Screenwriter-mode script and optional McKee-style audit
   -> asset guide and style guide
   -> structured storyboard
   -> storyboard image prompts
@@ -33,7 +33,7 @@ concept or script
 | Role | Spec | Responsibility |
 | --- | --- | --- |
 | `project-director` | `.codex/agents/project-director.toml` | Scan state, route work, check preconditions, track downstream impact |
-| `script-writer` | `.codex/agents/script-writer.toml` | Create, audit, revise, or expand scripts using McKee references when useful |
+| `script-writer` | `.codex/agents/script-writer.toml` | Create, audit, revise, time, or expand scripts using Screenwriter mode and McKee structure plugins |
 | `guide-director` | `.codex/agents/guide-director.toml` | Create asset and style guides, register reference images, and define visual continuity |
 | `storyboard-director` | `.codex/agents/storyboard-director.toml` | Convert scripts into shot tables and storyboard prompts |
 | `artist-director` | `.codex/agents/artist-director.toml` | Produce still-image prompts and keyframe generation plans |
@@ -46,6 +46,8 @@ Use `.agents/skill_registry.md` as the assembly layer for swappable implementati
 
 | Slot | Current Default | Purpose |
 | --- | --- | --- |
+| `script.primary` | `screenwriter-workflow` | Script-stage writing, audit, quality gates, timing, revision, and export controller |
+| `story.mckee_router` | `mckee-coordinator` | Structure, audit, rewrite, scene, pacing, variation, and source plugins |
 | `guides.primary` | `guide-workflow` | Asset and style guides |
 | `storyboard.prompt_adapter` | `storyboard-nanobanana` | Storyboard prompt batches |
 | `art.prompt_builder` | `art-prompt-workflow` | Still-image and keyframe prompts |
@@ -125,5 +127,5 @@ Before downstream work, check latest versions, upstream IDs, locks, style/asset 
 ## Current State
 
 - Test deliverables and generated assets were moved to `archives/` on 2026-05-20.
-- Current active production stages are empty.
-- Latest workflow hardening pass: skill slot registry, guide stage coverage, and replaceable storyboard/video adapters added on 2026-05-25.
+- Current active story-stage deliverables include `deliverables/10_story/01_script_v5.md`, `01_audit_report_v5.md`, and the derived DOCX export.
+- Latest workflow hardening pass: Screenwriter-first script routing, iteration quality gates, skill slot registry, guide stage coverage, and replaceable storyboard/video adapters.

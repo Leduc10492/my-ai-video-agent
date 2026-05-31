@@ -1,25 +1,27 @@
-# Rewrite Plan Template
+# 重写计划模板
+
+Default rendered plan language: Simplified Chinese unless the user explicitly requests another language. Keep file paths, artifact IDs, and fixed workflow tokens unchanged.
 
 ## Format
 
 ```
-Goal:
-Assumptions:
+目标:
+假设:
 
-Phase 1: Structural fixes
-- Fix:
-- Fix:
+阶段1: 结构修复
+- 修复:
+- 修复:
 
-Phase 2: Scene triage
-- Cut:
-- Merge:
-- Move:
-- Rewrite:
+阶段2: 场景分诊
+- 删减:
+- 合并:
+- 移动:
+- 重写:
 
-Phase 3: Dialogue and polish
-- Task:
+阶段3: 对白和润色
+- 任务:
 
-Risks:
+风险:
 ```
 
 ## Phase Descriptions
@@ -50,4 +52,4 @@ Only after structure and scenes lock:
 
 ## Usage
 
-Complete Phase 1 before moving to Phase 2. Complete Phase 2 before moving to Phase 3. Document risks and open questions.
+Complete Phase 1 before moving to Phase 2. Complete Phase 2 before moving to Phase 3. Document risks and open questions. Render the filled plan in Chinese by default.

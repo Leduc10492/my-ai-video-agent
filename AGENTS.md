@@ -124,6 +124,8 @@ Use `.agents/skill_registry.md` to resolve replaceable workflow capability slots
 
 Important slots:
 
+- `script.primary`: creates, revises, audits, times, and exports script artifacts for `deliverables/10_story/`; current default is `screenwriter-workflow`.
+- `story.mckee_router`: routes structure, audit, rewrite, scene repair, pacing, variation, and source tasks for script work; current default is `mckee-coordinator`.
 - `guides.primary`: creates asset and style guides for `deliverables/20_guides/`.
 - `storyboard.prompt_adapter`: creates `04_storyboard_prompts_v{N}.md`; current default is `storyboard-nanobanana`.
 - `art.prompt_builder` and `art.platform_adapter`: create still-image prompt artifacts and platform-specific prompt blocks.
@@ -230,3 +232,5 @@ These rules protect the project from drifting while it is Markdown-first and man
 ## Communication
 
 Be concrete and file-backed. Report current state, blocker, and next action. Keep creative judgment separated from structural QA: structure, continuity, and production feasibility are checks; taste is a recommendation.
+
+For story/script work, McKee packets, audits, QA findings, iteration gates, shotlists, and user-facing handoffs, default to Simplified Chinese unless the user explicitly requests another language. Keep file paths, artifact IDs, version suffixes, fixed decision tokens, and standard screenplay labels unchanged when useful.

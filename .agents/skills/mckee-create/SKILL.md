@@ -9,6 +9,10 @@ description: Create original stories using McKee principles. Generate scripts, o
 
 Create original stories guided by McKee principles: structure before style, causality over coincidence, value change through conflict.
 
+## Output Language
+
+Default to Simplified Chinese for all user-facing story creation output unless the user explicitly requests another language. Keep `INT.`, `EXT.`, screenplay transitions, file paths, artifact IDs, and fixed workflow tokens in their conventional form when useful.
+
 ## Quick Start
 
 1. Clarify premise, genre, length, and target audience

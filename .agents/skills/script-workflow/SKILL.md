@@ -1,11 +1,19 @@
 ---
 name: script-workflow
-description: 剧本创作工作流程。定义从接收输入到完成交接的完整流程步骤。
+description: Legacy script-stage workflow kept for compatibility with older project docs. Prefer screenwriter-workflow as script.primary; use this only to interpret older references to the previous McKee-first script flow.
 ---
 
 # 剧本创作工作流程
 
-这是`script-writer` agent的核心工作流程skill。
+这是旧版 `script-writer` 剧本流程说明。当前默认剧本阶段总控是 `screenwriter-workflow`。
+
+旧文档或历史记录提到 `script-workflow` 时，按兼容层理解：
+
+- 入口职责迁移到 `screenwriter-workflow`。
+- McKee 技能组保留为结构插件。
+- 生产输出仍遵守 `deliverables/10_story/01_script_v{N}.md` 和 `01_audit_report_v{N}.md` 的 artifact 契约。
+
+除非用户明确要求查看或恢复旧流程，不要把本文件当作默认剧本创作入口。
 
 ## 流程步骤
 

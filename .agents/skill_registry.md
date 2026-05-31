@@ -19,7 +19,7 @@ Do not change canonical deliverable paths just to fit a new skill. If a replacem
 
 | Slot | Default skill | Owner role | Stable output |
 | --- | --- | --- | --- |
-| `script.primary` | `script-workflow` | `script-writer` | `deliverables/10_story/01_script_v{N}.md` |
+| `script.primary` | `screenwriter-workflow` | `script-writer` | `deliverables/10_story/01_script_v{N}.md` |
 | `story.mckee_router` | `mckee-coordinator` | `script-writer` | script, audit, rewrite notes as requested |
 | `guides.primary` | `guide-workflow` | `guide-director` | `deliverables/20_guides/02_asset_guide_v{N}.md`, `02_style_guide_v{N}.md` |
 | `storyboard.analysis` | `storyboard-analysis` | `storyboard-director` | analysis feeding `03_storyboard_v{N}.md` |
@@ -35,6 +35,52 @@ Do not change canonical deliverable paths just to fit a new skill. If a replacem
 | `qa.checklists` | `qa-checklists` | all roles | stage-specific checks |
 
 ## Slot Interfaces
+
+### `script.primary`
+
+Inputs:
+
+- User concept, outline, script, or revision request
+- Global locks
+- Latest script and audit versions, if present
+- Optional McKee structure packets, source context, or user-provided references
+
+Outputs:
+
+- `01_script_v{N}.md` with artifact metadata when a production script is saved
+- Optional `01_audit_report_v{N}.md` when a persistent audit is requested or needed
+- Optional iteration quality gate when deciding whether to revise or export
+- Optional derived `.docx` exports when requested
+- Changelog entry and archives when revising
+
+Compatibility requirements:
+
+- Must preserve the versioned script path and artifact metadata contract.
+- Must treat McKee skills as structure plugins, not competing final script owners.
+- Must keep user-facing script work in the Screenwriter mode: visible action, concise screenplay format, one-version iteration, and Chinese output unless requested otherwise.
+- Must render audits, iteration gates, rewrite notes, timing tables, and handoff summaries in Simplified Chinese unless the user explicitly requests another language.
+- Must use an iteration quality gate before creating a new script version or exporting DOCX.
+- Must report downstream impact on guides, storyboard, prompts, keyframes, and video prompts after story changes.
+
+### `story.mckee_router`
+
+Inputs:
+
+- Current user story task
+- Latest script or draft material when present
+- Targeted analysis need: creation, audit, rewrite, scene repair, pacing, variations, or source lookup
+
+Outputs:
+
+- Structure packets, audit packets, rewrite plans, scene diagnosis, pacing notes, variations, or source excerpts
+- Final script or audit artifacts only when wrapped by `script.primary`
+
+Compatibility requirements:
+
+- Must not override `script.primary` as the default writing entrance.
+- Must load only the specific McKee sub-skill or reference needed.
+- Must render user-facing structure packets, audits, rewrite plans, scene diagnoses, pacing notes, and variations in Simplified Chinese unless the user explicitly requests another language.
+- Must keep `mckee-source` for explicit source/quote requests only.
 
 ### `guides.primary`
 
@@ -142,3 +188,4 @@ Compatibility requirements:
 
 - Must separate structure, continuity, production feasibility, and taste recommendations.
 - Must lead with blockers and list downstream impact after upstream edits.
+- Must render chat QA and persistent QA reports in Simplified Chinese unless the user explicitly requests another language.

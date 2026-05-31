@@ -9,6 +9,10 @@ description: Build McKee-based rewrite plans for scripts and narratives. Stage s
 
 Produce a phased rewrite plan that prioritizes structural fixes, then scene-level changes, then polish. Ensures causality and value change before touching dialogue or style.
 
+## Output Language
+
+Default to Simplified Chinese for all user-facing rewrite plans unless the user explicitly requests another language. Keep file paths, artifact IDs, and fixed workflow tokens unchanged.
+
 ## Workflow (5 Steps)
 
 ### 1. Define Target
@@ -63,24 +67,24 @@ See `../mckee-shared/core/story-spine.md` for structural elements.
 
 Use the Rewrite Plan template:
 ```
-Goal:
-Assumptions:
+目标:
+假设:
 
-Phase 1: Structural Fixes
-- Fix: [description with rationale]
-- Fix: [description with rationale]
+阶段1: 结构修复
+- 修复: [描述和理由]
+- 修复: [描述和理由]
 
-Phase 2: Scene Triage
-- Cut: [scene X - reason]
-- Merge: [scenes Y+Z - reason]
-- Move: [scene W - reason]
-- Rewrite: [scene V - reason]
+阶段2: 场景分诊
+- 删减: [场景X - 理由]
+- 合并: [场景Y+Z - 理由]
+- 移动: [场景W - 理由]
+- 重写: [场景V - 理由]
 
-Phase 3: Dialogue and Polish
-- Task: [specific polish tasks]
+阶段3: 对白和润色
+- 任务: [具体润色任务]
 
-Risks:
-- [potential issues with this plan]
+风险:
+- [这个计划的潜在问题]
 ```
 
 Full template in `../mckee-shared/templates/rewrite-plan.md`.

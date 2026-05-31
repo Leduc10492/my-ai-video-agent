@@ -9,6 +9,10 @@ description: Repair individual scenes using McKee principles. Fix desire, opposi
 
 Diagnose and repair a single scene to ensure it has clear desire, meaningful opposition, a turning point, and measurable value change.
 
+## Output Language
+
+Default to Simplified Chinese for all user-facing scene diagnosis and repair notes unless the user explicitly requests another language. Keep scene IDs, file paths, artifact IDs, and screenplay labels unchanged when useful.
+
 ## Workflow (4 Steps)
 
 ### 1. Clarify Desire
@@ -73,19 +77,19 @@ Use the five-step beat analysis from `../mckee-shared/analysis/scene-analysis.md
 
 Use the Scene Doctor Table:
 ```
-Scene ID: [name or number]
-Scene goal: [what protagonist wants]
-Protagonist desire: [specific immediate want]
-Opposition: [who/what blocks + how]
-Tactics: [how protagonist tries to win]
-Value at start: [e.g., Hope+, Freedom-, etc.]
-Value at end: [e.g., Hope-, Freedom+, etc.]
-Turn (how it flips): [the moment/choice that reverses value]
-Aftermath (next problem): [what pressure this creates]
+场景ID: [名称或编号]
+场景目标: [这场戏在故事里要完成什么]
+主角欲望: [具体、当下、可执行的目标]
+阻力: [谁/什么阻挡，以及如何阻挡]
+策略: [主角如何尝试获胜]
+开场价值: [例如 Hope+, Freedom-]
+收场价值: [例如 Hope-, Freedom+]
+转折: [价值翻转的时刻/选择]
+后果: [制造出的下一层压力]
 
-Recommended changes:
-- [specific fix 1]
-- [specific fix 2]
+建议修改:
+- [具体修复1]
+- [具体修复2]
 ```
 
 Full template in `../mckee-shared/templates/scene-doctor.md`.

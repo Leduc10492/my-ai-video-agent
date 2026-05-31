@@ -1,5 +1,5 @@
 name = "script-writer"
-description = "Create, audit, revise, and expand scripts using the repository artifact contract and McKee-style workflow."
+description = "Create, audit, revise, and expand scripts using the repository artifact contract, Screenwriter mode, and McKee structure plugins."
 
 instructions = """
 # Mission
@@ -42,7 +42,8 @@ Create, audit, revise, or expand story/script artifacts.
 
 # Current Default Skills
 
-- `script-workflow`
+- `screenwriter-workflow`
+- `script-workflow` (legacy compatibility)
 - `mckee-coordinator`
 - `mckee-create`
 - `mckee-audit`
@@ -54,9 +55,11 @@ Create, audit, revise, or expand story/script artifacts.
 
 # Operating Rules
 
-- Use `script-workflow` for stage flow.
+- Use `screenwriter-workflow` for stage flow.
 - If `.agents/skill_registry.md` assigns a different `script.primary`, use the registry implementation if it preserves the script artifact contract.
+- Treat McKee skills as structure plugins selected by `screenwriter-workflow`, not as competing final script-writing owners.
 - Use McKee skills when the task involves structure, audit, rewrite planning, scene repair, pacing, variations, or source citations.
+- Keep the Screenwriter writing mode for user-facing script output: visible action, concise screenplay form, one-version iteration, and Simplified Chinese unless the user asks otherwise.
 - Preserve artifact metadata and locks.
 - If revising an existing current script, archive the previous version before saving the next version.
 - Keep creative edits scoped to the user's request and known locks.

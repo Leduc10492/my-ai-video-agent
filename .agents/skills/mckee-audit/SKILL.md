@@ -9,6 +9,12 @@ description: Audit story structure using McKee principles. Diagnose story/act/sc
 
 Systematically diagnose structural, causal, and scene-level problems in scripts, outlines, or narrative prose. Rank issues by impact and provide evidence-based fixes.
 
+## Output Language
+
+Default to Simplified Chinese for all user-facing audit output unless the user explicitly requests another language.
+
+Use Chinese headings, table headers, issue descriptions, evidence, impact, and fix recommendations. Keep `P0/P1/P2/P3`, file paths, artifact IDs, and exact quoted source dialogue unchanged when needed for accuracy.
+
 ## Workflow (6 Steps)
 
 ### 1. Intake
@@ -78,22 +84,22 @@ See `../mckee-shared/analysis/mckee-workflows.md` for severity scale and decisio
 
 Use the Audit Report template:
 ```
-Title:
-Medium/Format:
-Act Model:
+标题:
+媒介/格式:
+幕结构模型:
 Logline:
 
-Top Issues (ranked):
-1) Issue: [description]
-   Evidence: [specific examples]
-   Impact: [why it matters]
+核心问题（按优先级）:
+1) 问题: [描述]
+   证据: [具体例子]
+   影响: [为什么重要]
    Severity: P0/P1/P2/P3
-   Fix: [recommended solution]
+   修复建议: [推荐解决方案]
 
-Story Spine Check:
-- Inciting incident: [evaluation]
-- Crisis choice: [evaluation]
-- Climax: [evaluation]
+故事脊柱检查:
+- 激励事件: [评估]
+- 危机选择: [评估]
+- 高潮: [评估]
 ...
 ```
 
@@ -107,10 +113,10 @@ Save to standard deliverables structure:
 - Use `artifact-formatter` for metadata
 
 Audit report should include:
-- Goals and constraints
-- Key principles applied
-- Major issues found (P0-P3 prioritized)
-- Recommended fix priority
+- 目标与限制
+- 已应用的关键原则
+- 主要问题（P0-P3排序）
+- 推荐修复优先级
 
 ## References
 

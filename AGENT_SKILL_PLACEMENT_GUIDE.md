@@ -63,6 +63,7 @@ Good global candidates:
 
 Better project-local candidates:
 
+- `screenwriter-workflow`
 - `script-workflow`
 - `guide-workflow`
 - `storyboard-workflow`

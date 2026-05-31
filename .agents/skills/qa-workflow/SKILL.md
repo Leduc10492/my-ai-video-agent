@@ -9,6 +9,12 @@ Use this skill when the user asks to check quality, continue safely, modify an u
 
 This is the current default implementation for the `qa.primary` slot in `.agents/skill_registry.md`.
 
+## Output Language
+
+Default to Simplified Chinese for all user-facing QA output unless the user explicitly requests another language.
+
+This includes chat findings, persistent QA reports, table headers, issue descriptions, evidence, suggested fixes, downstream impact, and status summaries. Keep file paths, artifact IDs, version suffixes, skill IDs, status tokens, and P0/P1/P2/P3 severity labels unchanged.
+
 ## Inputs
 
 - `deliverables/00_admin/locks.md`
@@ -73,19 +79,19 @@ For anything beyond a quick chat check, save a report under:
 Use this report shape:
 
 ```markdown
-# QA Report: <Stage>
-- date: YYYY-MM-DD
-- scope: <files checked>
-- result: pass / pass-with-warnings / blocked
+# QA 报告: <阶段>
+- 日期: YYYY-MM-DD
+- 范围: <检查的文件>
+- 结果: pass / pass-with-warnings / blocked
 
-## Findings
+## 问题清单
 
-| Priority | File | Issue | Evidence | Suggested Fix | Status |
+| 优先级 | 文件 | 问题 | 证据 | 建议修复 | 状态 |
 | --- | --- | --- | --- | --- | --- |
 
-## Downstream Impact
+## 下游影响
 
-| Changed Artifact | Impacted Artifacts | Required Action |
+| 变更 artifact | 受影响 artifact | 必要动作 |
 | --- | --- | --- |
 ```
 
@@ -104,3 +110,4 @@ If the user only asks for a quick read, report in chat and do not create a file 
 - Separate structural problems from creative opinions.
 - Give concrete file paths and affected shot/beat IDs.
 - Do not rewrite creative content during QA unless the user asks for fixes.
+- Use Chinese section names such as `结构问题`, `连续性问题`, `生产可行性`, `创作口味建议`, and `下游影响` when they make the report easier to scan.

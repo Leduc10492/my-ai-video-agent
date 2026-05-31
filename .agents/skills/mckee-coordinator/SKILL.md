@@ -9,6 +9,12 @@ description: McKee story principles coordinator. Routes story requests to specia
 
 This skill coordinates all McKee-based story work by routing requests to specialized sub-skills. Each sub-skill handles a specific workflow with minimal token overhead.
 
+## Output Language
+
+Default to Simplified Chinese for all user-facing McKee outputs unless the user explicitly requests another language.
+
+This applies to structure packets, audits, rewrite plans, scene diagnoses, pacing notes, variations, and chat summaries. Keep skill names, file paths, artifact IDs, McKee source quotes, and severity tokens such as `P0/P1/P2/P3` unchanged when needed.
+
 ## Available Sub-Skills
 
 1. **mckee-create** - Create original stories from scratch (NEW ✨)
@@ -30,7 +36,7 @@ This skill coordinates all McKee-based story work by routing requests to special
 - "variations", "alternatives", "different approach", "what if" → Use `mckee-variations`
 - "original text", "McKee says", "quote", "book reference" → Use `mckee-source`
 
-**Important**: If user wants to CREATE a new story from scratch → Use `mckee-create`  
+**Important**: If user wants to CREATE a new story from scratch → Use `mckee-create`
 **If unclear, ask the user to clarify.**
 
 ## Core Principles (Priority Order)

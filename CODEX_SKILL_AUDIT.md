@@ -1,15 +1,15 @@
 # Codex Skill Audit
 
-Audit date: 2026-05-25  
+Audit date: 2026-05-30
 Scope: `AGENTS.md`, `.codex/agents/`, `.agents/skill_registry.md`, `.agents/skills/`, `deliverables/`, `archives/`, `scripts/`  
 Current result: structurally usable, slot-based, and aligned to Codex-standard project directories.
 
 ## Current State
 
-The repository has been reset to workflow-only state for the next active project:
+The repository is workflow-first and currently contains an active story-stage Screenwriter workflow test:
 
 - Test production deliverables were moved to `archives/`.
-- `deliverables/` contains admin files and empty production stage directories.
+- `deliverables/10_story/` contains the current script, audit, and derived DOCX export.
 - `AGENTS.md` is now the generic Codex rule entrypoint.
 - `.codex/agents/<id>.toml` defines project-scoped Codex custom agents.
 - `.agents/skill_registry.md` defines replaceable workflow slots and compatibility requirements.
@@ -17,7 +17,8 @@ The repository has been reset to workflow-only state for the next active project
 
 Latest workflow audit report:
 
-- `deliverables/00_admin/qa_reports/qa_report_workflow_slot_architecture_20260525.md`
+- `deliverables/00_admin/qa_reports/qa_report_screenwriter_workflow_routing_20260530.md`
+- `deliverables/00_admin/qa_reports/qa_report_hoshi_no_koe_source_acquisition_20260530.md`
 
 ## Inventory
 
@@ -25,10 +26,10 @@ Latest workflow audit report:
 | --- | --- |
 | `.codex/agents/<id>.toml` | 7 custom agent configs present |
 | `.agents/skill_registry.md` | Present; maps stable slots to default skills |
-| `.agents/skills/*/SKILL.md` | 22/22 present |
+| `.agents/skills/*/SKILL.md` | 23/23 present |
 | Explicit `references/*.md` links | No missing files found in latest audit |
 | Obvious ghost skill references | None found outside compatibility mapping |
-| Current production deliverables | None, by request |
+| Current production deliverables | Story stage active: `01_script_v5.md`, `01_audit_report_v5.md`, derived DOCX |
 | Generated test assets | Archived |
 
 ## Codex Conversion Status
@@ -51,7 +52,7 @@ Latest workflow audit report:
 | Group | Skills | Status |
 | --- | --- | --- |
 | General tools | `artifact-formatter`, `version-management` | Usable |
-| Script/McKee | `script-workflow` plus McKee skills | Usable |
+| Script/Screenwriter/McKee | `screenwriter-workflow` plus McKee structure plugins; `script-workflow` retained for legacy compatibility | Usable; includes Screenwriter-first drafting, timing, audit, iteration quality gates, and DOCX export |
 | Guides | `guide-workflow` | Usable; fills asset/style guide stage before visual prompt work |
 | Storyboard | `storyboard-workflow`, `storyboard-analysis`, `storyboard-nanobanana` | Usable; `storyboard-nanobanana` is a replaceable prompt adapter |
 | Art | `art-prompt-workflow`, `art-platform-rules` | Usable; platform adapter is replaceable and production depends on loaded image refs |

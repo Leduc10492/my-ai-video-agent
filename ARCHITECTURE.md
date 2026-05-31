@@ -32,7 +32,7 @@ On macOS Finder, `.codex/` and `.agents/` are hidden by default. Press `Cmd+Shif
 | Role | Spec | Primary skills |
 | --- | --- | --- |
 | `project-director` | `.codex/agents/project-director.toml` | `artifact-formatter`, `version-management`, `qa-workflow` |
-| `script-writer` | `.codex/agents/script-writer.toml` | `script-workflow`, McKee skill set |
+| `script-writer` | `.codex/agents/script-writer.toml` | `screenwriter-workflow`, McKee skill set |
 | `guide-director` | `.codex/agents/guide-director.toml` | `guide-workflow`, `artifact-formatter`, `version-management` |
 | `storyboard-director` | `.codex/agents/storyboard-director.toml` | `storyboard-workflow`, `storyboard-analysis`, `storyboard-nanobanana` |
 | `artist-director` | `.codex/agents/artist-director.toml` | `art-prompt-workflow`, `art-platform-rules` |
@@ -45,6 +45,8 @@ Workflow stages call slots, not only hardwired skill names. The current slot map
 
 | Slot | Current Default | Stable Contract |
 | --- | --- | --- |
+| `script.primary` | `screenwriter-workflow` | `01_script_v{N}.md`, optional iteration gates, audit reports, timing plans, and derived DOCX exports |
+| `story.mckee_router` | `mckee-coordinator` | structure, audit, rewrite, scene, pacing, variation, and source packets |
 | `guides.primary` | `guide-workflow` | `02_asset_guide_v{N}.md`, `02_style_guide_v{N}.md` |
 | `storyboard.prompt_adapter` | `storyboard-nanobanana` | `04_storyboard_prompts_v{N}.md` |
 | `art.prompt_builder` | `art-prompt-workflow` | `05_art_prompts_v{N}.md` |
@@ -56,10 +58,10 @@ Replacement skills must satisfy the slot interface, preserve canonical output pa
 
 ## Skill Inventory
 
-There are 22 skill directories under `.agents/skills/`, each with a `SKILL.md`:
+There are 23 skill directories under `.agents/skills/`, each with a `SKILL.md`:
 
 - General tools: `artifact-formatter`, `version-management`
-- Script/McKee: `script-workflow`, `mckee-coordinator`, `mckee-create`, `mckee-audit`, `mckee-rewrite-plan`, `mckee-scene-doctor`, `mckee-expand-pace`, `mckee-variations`, `mckee-source`, `mckee-shared`
+- Script/Screenwriter/McKee: `screenwriter-workflow`, `script-workflow` (legacy compatibility), `mckee-coordinator`, `mckee-create`, `mckee-audit`, `mckee-rewrite-plan`, `mckee-scene-doctor`, `mckee-expand-pace`, `mckee-variations`, `mckee-source`, `mckee-shared`
 - Guides: `guide-workflow`
 - Storyboard: `storyboard-workflow`, `storyboard-analysis`, `storyboard-nanobanana`
 - Art: `art-prompt-workflow`, `art-platform-rules`
@@ -148,4 +150,4 @@ Important scripts:
 
 ## Current State
 
-As of 2026-05-25, the test production artifacts remain archived and the reusable role/skill rules live in Codex-standard project directories. The workflow now has explicit guide-stage ownership and a skill assembly registry for replacing storyboard, art, video, and QA implementations without changing the deliverable contract.
+As of 2026-05-30, the reusable role/skill rules live in Codex-standard project directories. The workflow now has Screenwriter-first script routing, iteration quality gates, explicit guide-stage ownership, and a skill assembly registry for replacing storyboard, art, video, and QA implementations without changing the deliverable contract.
