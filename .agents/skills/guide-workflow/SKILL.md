@@ -69,7 +69,7 @@ When registering local references:
 3. Record the reference role, such as `<Character> identity reference`, `<Character> costume reference`, `<Prop> prop reference`, or `<Location> environment reference`.
 4. If a required reference is missing, mark it `missing` and state which downstream stages are blocked for production use.
 5. Do not treat Markdown image links as automatically loaded into an image model. Downstream image generation still must attach or load the files.
-6. Keep common reusable references in `deliverables/20_assets/`; scene-specific one-off references belong under the relevant `deliverables/30_shotlist/scenes/<scope>_v{N}/assets/` package.
+6. Keep common reusable references in `deliverables/20_assets/`; scene-specific one-off references belong under the relevant `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/assets/` package.
 
 ## Save Rules
 

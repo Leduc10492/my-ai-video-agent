@@ -9,16 +9,26 @@
 
 ---
 
+## [2026-05-31] - Shotlist Builder Method Alignment
+
+### Changed
+- Aligned the project-local shotlist workflow with `/Users/miniled/Downloads/shotlist-builder.skill`: Phase 1 read script, Phase 2 asset request, Phase 3 scope/spatial blocking, Phase 4 HTML shotlist.
+- Changed active terminology from artificial shot-block split units to screenplay scenes, shot rows, and 15-second prompt envelopes.
+- Updated `shotlist-breakdown-workflow`, `sketch-shotlist-workflow`, QA skills, role specs, formatter/versioning examples, and root docs to use scene-native package names such as `scene-021_v1`.
+
+### Moved
+- Moved the old aggregate `SB071-SB080` package out of active `30_shotlist/scenes/` and into `30_shotlist/legacy/` so it remains historical material, not a current scene-package example.
+
 ## [2026-05-31] - Shotlist Scene Package Layout
 
 ### Changed
 - Migrated the current storage contract so `20_assets` owns common asset/style guides and shared generated references.
-- Migrated shotlist production into `30_shotlist`, with scene-scoped packages under `30_shotlist/scenes/<scope>_v{N}/`.
+- Migrated shotlist production into `30_shotlist`, with scene-scoped packages under `30_shotlist/scenes/<scene-scope>_v{N}/`.
 - Updated active docs, skill contracts, role scopes, `.gitignore`, and validation scripts so previews, scene-specific assets, generated tests, and QA live with their scene package.
 
 ### Moved / Removed
 - Moved local generated reference set from `deliverables/50_art/generated_ref_v1/` to `deliverables/20_assets/generated_ref_v1/`.
-- Moved the legacy `SB071-SB080` aggregate HTML and generated test run into `deliverables/30_shotlist/scenes/SB071-SB080_legacy_v1/`.
+- Moved the legacy `SB071-SB080` aggregate HTML and generated test run into `deliverables/30_shotlist/legacy/legacy_aggregate_SB071-SB080_v1/`.
 - Removed the retired `50_art` and `60_motion` directory layers from the current workspace.
 
 ## [2026-05-31] - Tooling Dependency Cleanup

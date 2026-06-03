@@ -43,8 +43,8 @@ Replaceable skill implementations are listed in `.agents/skill_registry.md`. The
 3. Asset guide: `deliverables/20_assets/02_asset_guide_v{N}.md`
 4. Style guide: `deliverables/20_assets/02_style_guide_v{N}.md`
 5. Shotlist breakdown: `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`
-6. Scene shotlist HTML: `deliverables/30_shotlist/scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html`
-7. E-conte previews: `deliverables/30_shotlist/scenes/<scope>_v{N}/previews/`
+6. Scene shotlist HTML: `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/Shotlist_<scene-scope>_ZH_v{N}.html`
+7. E-conte previews: `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/previews/`
 8. QA report when useful: `deliverables/00_admin/qa_reports/`
 
 ## Generated Assets
@@ -52,9 +52,9 @@ Replaceable skill implementations are listed in `.agents/skill_registry.md`. The
 ```text
 deliverables/20_assets/refs/                                      common reference images declared by asset guide
 deliverables/20_assets/generated_ref_vN/                           common generated references, draft or approved by manifest
-deliverables/30_shotlist/scenes/<scope>_vN/assets/                 scene-specific assets only
-deliverables/30_shotlist/scenes/<scope>_vN/previews/               rough e-conte previews
-deliverables/30_shotlist/scenes/<scope>_vN/generated/              generated clips or platform exports
+deliverables/30_shotlist/scenes/<scene-scope>_vN/assets/           scene-specific assets only
+deliverables/30_shotlist/scenes/<scene-scope>_vN/previews/         rough e-conte previews
+deliverables/30_shotlist/scenes/<scene-scope>_vN/generated/        generated clips or platform exports
 ```
 
 Every generated folder should have a `README.md` or manifest with:

@@ -31,8 +31,8 @@ archives/              # 历史版本归档
 | 资产 | `20_assets/02_asset_guide_v{N}.md` |
 | 风格 | `20_assets/02_style_guide_v{N}.md` |
 | Shotlist Breakdown | `30_shotlist/03_shotlist_breakdown_v{N}.md` |
-| Shotlist HTML | `30_shotlist/scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html` |
-| Shotlist 预览 | `30_shotlist/scenes/<scope>_v{N}/previews/manifest.md` |
+| Shotlist HTML | `30_shotlist/scenes/<scene-scope>_v{N}/Shotlist_<scene-scope>_ZH_v{N}.html` |
+| Shotlist 预览 | `30_shotlist/scenes/<scene-scope>_v{N}/previews/manifest.md` |
 
 ## 🔄 版本管理
 

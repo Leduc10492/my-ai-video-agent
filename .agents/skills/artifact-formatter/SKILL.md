@@ -103,10 +103,10 @@ Legacy `03_storyboard_v{N}.md` files can be read as migration inputs. New planni
 ### Shotlist Production
 
 ```text
-deliverables/30_shotlist/scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html
-deliverables/30_shotlist/scenes/<scope>_v{N}/manifest.md
-deliverables/30_shotlist/scenes/<scope>_v{N}/previews/manifest.md
-deliverables/30_shotlist/scenes/<scope>_v{N}/generated/<run_id>/README.md
+deliverables/30_shotlist/scenes/<scene-scope>_v{N}/Shotlist_<scene-scope>_ZH_v{N}.html
+deliverables/30_shotlist/scenes/<scene-scope>_v{N}/manifest.md
+deliverables/30_shotlist/scenes/<scene-scope>_v{N}/previews/manifest.md
+deliverables/30_shotlist/scenes/<scene-scope>_v{N}/generated/<run_id>/README.md
 ```
 
 ## Dependency Graph
@@ -116,9 +116,9 @@ deliverables/30_shotlist/scenes/<scope>_v{N}/generated/<run_id>/README.md
   -> 01_audit_report_v{N}.md
   -> 02_asset_guide_v{N}.md + 02_style_guide_v{N}.md
   -> 03_shotlist_breakdown_v{N}.md
-      -> scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html
-          -> scenes/<scope>_v{N}/previews/manifest.md
-          -> scenes/<scope>_v{N}/generated/<run_id>/README.md
+      -> scenes/<scene-scope>_v{N}/Shotlist_<scene-scope>_ZH_v{N}.html
+          -> scenes/<scene-scope>_v{N}/previews/manifest.md
+          -> scenes/<scene-scope>_v{N}/generated/<run_id>/README.md
 ```
 
 ## Validation Checklist
@@ -129,7 +129,7 @@ deliverables/30_shotlist/scenes/<scope>_v{N}/generated/<run_id>/README.md
 - [ ] Upstream IDs exist and are valid.
 - [ ] Locks are inherited or consciously updated.
 - [ ] Reference mode is explicit for generated assets.
-- [ ] `SB###` and `P###` IDs are preserved where applicable.
+- [ ] Scene labels, shot rows, and `P###` IDs are preserved where applicable.
 
 ## Common Errors
 

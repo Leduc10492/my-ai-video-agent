@@ -29,6 +29,7 @@ deliverables/30_shotlist/03_shotlist_breakdown_v*.md
 deliverables/30_shotlist/scenes/*/assets/
 deliverables/30_shotlist/scenes/*/previews/
 deliverables/30_shotlist/scenes/*/generated/
+deliverables/30_shotlist/legacy/*/generated/
 deliverables/40_boards/generated/
 deliverables/00_admin/qa_reports/qa_report_hoshi_no_koe_*.md
 deliverables/00_admin/qa_reports/qa_report_your_name_*.md

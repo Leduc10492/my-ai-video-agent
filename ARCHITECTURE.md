@@ -51,7 +51,7 @@ Workflow stages call slots, not only hardwired skill names. The current slot map
 | `story.mckee_router` | `mckee-coordinator` | structure, audit, rewrite, scene, pacing, variation, and source packets |
 | `guides.primary` | `guide-workflow` | `02_asset_guide_v{N}.md`, `02_style_guide_v{N}.md` |
 | `shotlist.breakdown` | `shotlist-breakdown-workflow` | `03_shotlist_breakdown_v{N}.md` |
-| `shotlist.primary` | `sketch-shotlist-workflow` | scene package under `30_shotlist/scenes/<scope>_v{N}/` with HTML, manifest, previews, scene assets, and generated tests |
+| `shotlist.primary` | `sketch-shotlist-workflow` | four-phase shotlist-builder loop and scene package under `30_shotlist/scenes/<scene-scope>_v{N}/` with HTML, manifest, previews, scene assets, and generated tests |
 | `qa.primary` | `qa-workflow` | chat QA or persistent reports under `deliverables/00_admin/qa_reports/` |
 
 Replacement skills must satisfy the slot interface, preserve canonical output paths, and keep QA/reporting behavior compatible. If a replacement needs a new storage layout, treat it as a migration rather than a slot swap.
@@ -86,8 +86,8 @@ deliverables/
 └── 30_shotlist/
     ├── 03_shotlist_breakdown_v{N}.md
     └── scenes/
-        └── <scope>_v{N}/
-            ├── Shotlist_<scope>_ZH_v{N}.html
+        └── <scene-scope>_v{N}/
+            ├── Shotlist_<scene-scope>_ZH_v{N}.html
             ├── manifest.md
             ├── assets/
             ├── previews/
@@ -104,9 +104,9 @@ Archived versions use the same stage names under `archives/`.
   -> 01_audit_report_v{N}.md
   -> 02_asset_guide_v{N}.md + 02_style_guide_v{N}.md
   -> 03_shotlist_breakdown_v{N}.md
-      -> scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html
-          -> scenes/<scope>_v{N}/previews/
-          -> scenes/<scope>_v{N}/generated/ video tests
+      -> scenes/<scene-scope>_v{N}/Shotlist_<scene-scope>_ZH_v{N}.html
+          -> scenes/<scene-scope>_v{N}/previews/
+          -> scenes/<scene-scope>_v{N}/generated/ video tests
       -> qa_reports/
 ```
 
@@ -132,11 +132,11 @@ QA runs at five levels:
 
 - State check: concise current status
 - Stage QA: validate one newly produced artifact
-- Batch QA: validate each 4-8 prompt-envelope batch before a long scope is merged
+- Dense scene QA: validate prompt envelopes after a scene is drafted and before previews/generated tests
 - Regression QA: evaluate downstream impact after upstream edits
 - Final/workflow QA: save a report under `deliverables/00_admin/qa_reports/`
 
-The important checks are version suffixes, artifact metadata, upstream IDs, locks, latest-version selection, reference images, generated asset manifests, shot-block count, prompt-envelope ID consistency, spatial continuity, prompt executability, embedded preview paths, and platform production risk.
+The important checks are version suffixes, artifact metadata, upstream IDs, locks, latest-version selection, reference images, generated asset manifests, scene order, shot-row count, prompt-envelope ID consistency, spatial continuity, prompt executability, embedded preview paths, and platform production risk.
 
 ## Tooling
 
@@ -146,4 +146,4 @@ If repeatable automation is needed later, add a portable helper in a runtime alr
 
 ## Current State
 
-As of 2026-05-31, the reusable role/skill rules live in Codex-standard project directories. The workflow now has Screenwriter-first script routing, iteration quality gates, explicit guide-stage ownership, shotlist breakdown as the only active visual planning layer, Seedance/Higgsfield HTML as prompt source of truth, internal prompt hard gates, and QA checklists for batch-level prompt executability.
+As of 2026-05-31, the reusable role/skill rules live in Codex-standard project directories. The workflow now has Screenwriter-first script routing, iteration quality gates, explicit guide-stage ownership, the four-phase shotlist-builder loop as the active visual production path, Seedance/Higgsfield HTML as prompt source of truth, internal prompt hard gates, and QA checklists for scene-level prompt executability.

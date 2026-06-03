@@ -26,7 +26,7 @@ The project policy still defaults to local execution in the parent thread. When 
 flowchart TD
     A["User concept or script"] --> B["Script + optional McKee audit"]
     B --> C["Asset guide + style guide"]
-    C --> D["Shotlist breakdown + spatial blocking prep"]
+    C --> D["Shotlist-builder Phase 1/2 + spatial blocking prep"]
     D --> E["Seedance/Higgsfield shotlist HTML"]
     E --> F["Rough e-conte previews"]
     E --> G["Optional generated video tests"]

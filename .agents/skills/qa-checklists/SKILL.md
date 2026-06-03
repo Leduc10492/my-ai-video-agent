@@ -9,7 +9,7 @@ Use these checklists for stage QA, batch QA, regression QA, and final delivery r
 
 ## Output Language
 
-When reporting checklist results to the user or saving a QA report, translate checklist item names and explanations into Simplified Chinese by default. Keep technical tokens such as paths, artifact IDs, reference modes, `SB###`, `P###`, `P0/P1/P2/P3`, and `no action / inspect / regenerate / blocked` unchanged when they are part of the workflow contract.
+When reporting checklist results to the user or saving a QA report, translate checklist item names and explanations into Simplified Chinese by default. Keep technical tokens such as paths, artifact IDs, reference modes, scene labels, shot-row IDs, `P###`, `P0/P1/P2/P3`, and `no action / inspect / regenerate / blocked` unchanged when they are part of the workflow contract.
 
 ## Artifact Structure
 
@@ -58,18 +58,18 @@ When reporting checklist results to the user or saving a QA report, translate ch
 
 - [ ] File path is `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`.
 - [ ] Legacy `03_storyboard_v{N}.md` input, if used, is explicitly marked as migration source.
-- [ ] Every shot block has `SB###`, source scene, plan, camera/lens, performance micro-beats, assets/blocking gate, and QA notes.
-- [ ] Shot-block count matches the summary table.
+- [ ] Scene inventory preserves screenplay order and scene labels.
+- [ ] Action beat map lists source scene, action/dialogue source, emotional turn, visual focus, asset need, and blocking need.
 - [ ] Section durations add up to the target runtime or explain variance.
-- [ ] Future `P###` prompt-envelope ranges are unique, monotonic, and tied to shot blocks.
+- [ ] Future or drafted `P###` prompt envelopes are unique, monotonic, and tied to source scene/shot rows when present.
 - [ ] Character positions, eyelines, axis direction, entrances/exits, and spatial continuity are coherent.
 - [ ] Key props, screens, vehicles, crowd movement, and practical light sources are marked in the relevant rows.
 - [ ] Missing guides, missing references, draft reference status, and spatial-blocking gaps are visible before Phase 4.
-- [ ] Any scope above 10 prompt envelopes is split into scene packages of 4-8 envelopes or tight dramatic clusters.
+- [ ] Production scope follows screenplay scenes first; overloaded scenes are split by action phase, camera setup, or reference-set change.
 
 ## Shotlist Prompt Envelope QA
 
-- [ ] Every envelope cites its source `SB###` row and `P###` ID.
+- [ ] Every envelope cites its source scene/shot row and `P###` ID.
 - [ ] Reference handles include concrete visual facts, or explicitly label `text_dna_draft`, `text_only_draft`, `prompt_only`, or `image_reference_bound`.
 - [ ] Camera is physically planted: position, facing direction, foreground/midground/background, and first-frame composition are stated.
 - [ ] Action path is decomposed into physical steps with object contact, eyeline, body movement, and end state.
@@ -81,9 +81,9 @@ When reporting checklist results to the user or saving a QA report, translate ch
 
 ## Shotlist HTML / Preview QA
 
-- [ ] HTML is inside `deliverables/30_shotlist/scenes/<scope>_v{N}/`.
+- [ ] HTML is inside `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/`.
 - [ ] Common assets are referenced from `deliverables/20_assets/`; only scene-specific assets are stored under the scene package `assets/`.
-- [ ] HTML contains every expected `SB###` and `P###` in order.
+- [ ] HTML contains every expected source scene, shot row, and `P###` in order.
 - [ ] Prompt envelope count matches the breakdown or approved scope.
 - [ ] Copy buttons, filters, or search affordances do not alter prompt text.
 - [ ] Preview manifest entry count matches prompt envelope count, unless entries are marked `prompt_only`.
@@ -110,7 +110,7 @@ When reporting checklist results to the user or saving a QA report, translate ch
 | Asset guide | prompt handles, generated references, generated video tests | DNA, costume, props, reference images |
 | Character reference image | prompt handles, previews, generated tests | identity anchor, face, hair, costume |
 | Style guide | prompt envelopes, previews, generated tests | color temperature, lighting, texture |
-| Shotlist breakdown | shotlist HTML, preview manifest, generated tests | `SB###`, `P###`, duration, composition, narrative function |
+| Shotlist breakdown | shotlist HTML, preview manifest, generated tests | scene labels, shot rows, `P###`, duration, composition, narrative function |
 | Shotlist HTML | previews, generated tests | prompt text, handles, reference mode, copy behavior |
 | Preview manifest | HTML and preview files | path existence, count parity, reference status |
 | Generated video test | prompt batch and QA report | model failure modes and retry guidance |

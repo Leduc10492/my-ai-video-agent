@@ -55,7 +55,7 @@ Latest workflow audit report:
 | General tools | `artifact-formatter`, `version-management` | Usable |
 | Script/Screenwriter/McKee | `screenwriter-workflow` plus McKee structure plugins; legacy McKee-first workflow removed | Usable; includes Story Bone intake, Screenwriter-first drafting, timing, audit, iteration quality gates, and DOCX export |
 | Guides | `guide-workflow` | Usable; fills asset/style guide stage before shotlist work |
-| Shotlist | `shotlist-breakdown-workflow`, `sketch-shotlist-workflow` | Usable; owns shot-block rows, prompt-envelope ranges, HTML source of truth, rough e-conte previews, and internal prompt hard gates |
+| Shotlist | `shotlist-breakdown-workflow`, `sketch-shotlist-workflow` | Usable; owns the four-phase shotlist-builder loop, scene inventory, asset request, spatial blocking, shot rows, prompt envelopes, HTML source of truth, rough e-conte previews, and internal prompt hard gates |
 | QA | `qa-workflow`, `qa-checklists` | Usable; now covers shotlist breakdown, prompt envelopes, HTML/previews, generated tests, and regression |
 
 Retired active skills: old board prompt, art prompt, art platform adapter, standalone video prompt, and standalone motion design workflows.
@@ -64,7 +64,7 @@ Retired active skills: old board prompt, art prompt, art platform adapter, stand
 
 | Priority | Risk | Recommended Fix |
 | --- | --- | --- |
-| P1 | Long shotlist scopes can still drift if generated as one pass. | Keep the 4-8 envelope batch cadence and require QA before merge. |
+| P1 | Long shotlist scopes can still drift if generated as one pass. | Follow screenplay scene boundaries first; split overloaded scenes by action phase, camera setup, or reference-set change and require QA before previews/generated tests. |
 | P1 | Draft references can be mistaken for production continuity locks. | Keep `text_dna_draft`, `text_only_draft`, `prompt_only`, and `image_reference_bound` visible in HTML, manifests, and QA. |
 | P3 | Historical changelog and QA reports preserve older intermediate path terminology. | Leave historical records intact; keep active docs on the shotlist-first contract. |
 

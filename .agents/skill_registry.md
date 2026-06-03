@@ -22,8 +22,8 @@ Do not change canonical deliverable paths just to fit a new skill. If a replacem
 | `script.primary` | `screenwriter-workflow` | `script-writer` | `deliverables/10_story/01_script_v{N}.md` |
 | `story.mckee_router` | `mckee-coordinator` | `script-writer` | structure, audit, rewrite, scene, pacing, variation, and source packets |
 | `guides.primary` | `guide-workflow` | `guide-director` | `deliverables/20_assets/02_asset_guide_v{N}.md`, `02_style_guide_v{N}.md` |
-| `shotlist.breakdown` | `shotlist-breakdown-workflow` | `storyboard-director` | `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md` |
-| `shotlist.primary` | `sketch-shotlist-workflow` | `storyboard-director` | `deliverables/30_shotlist/scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html` plus scene package manifests/previews |
+| `shotlist.breakdown` | `shotlist-breakdown-workflow` | `storyboard-director` | `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md` with scene inventory, action beats, asset request, and blocking queue |
+| `shotlist.primary` | `sketch-shotlist-workflow` | `storyboard-director` | `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/Shotlist_<scene-scope>_ZH_v{N}.html` plus scene package manifests/previews |
 | `artifact.formatter` | `artifact-formatter` | all roles | artifact metadata and path contract |
 | `version.manager` | `version-management` | all writing roles | archived old version plus current new version |
 | `qa.primary` | `qa-workflow` | `qa-check` | chat QA or `deliverables/00_admin/qa_reports/` |
@@ -114,14 +114,15 @@ Inputs:
 Outputs:
 
 - `03_shotlist_breakdown_v{N}.md` with artifact metadata
-- Script beat map, shot-block rows, prompt-envelope ranges, asset requirements, blocking requirements, and QA notes
+- Scene inventory, action beat map, asset request, blocking queue, reference status, and Phase 4 scope recommendations
 - Changelog entry and archives when revising
 
 Compatibility requirements:
 
-- Must preserve story order, shot IDs, duration budgets, and source scene mapping.
-- Must create rows that can feed Seedance/Higgsfield prompt envelopes without another prompt-planning artifact.
-- Must mark missing asset references, spatial blocking gaps, crowd/prop risks, and scope size before Phase 4.
+- Must preserve screenplay scene order, scene numbers or derived scene labels, duration budgets, and source scene mapping.
+- Must use the `shotlist-builder` Phase 1/2 method: read the script, identify scenes/actions/assets, then request missing assets before prompting.
+- Must mark missing asset references, spatial blocking gaps, crowd/prop risks, and scope size before Phase 3/4.
+- Must not introduce legacy storyboard IDs as the new production split unit; legacy legacy storyboard IDs may be read only as migration input.
 - Existing `03_storyboard_v{N}.md` files are legacy input only; the next saved breakdown version must migrate to `03_shotlist_breakdown_v{N}.md`.
 
 ### `shotlist.primary`
@@ -132,26 +133,28 @@ Inputs:
 - Optional latest asset guide and style guide
 - Optional uploaded references, local generated references, sketch references, or keyframes
 - Global locks and any requested Higgsfield/Seedance settings
-- User-selected scope when generating a subset
+- User-selected screenplay scene, scene range, or derived scene label when generating a subset
 
 Outputs:
 
-- `deliverables/30_shotlist/scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html`
-- `deliverables/30_shotlist/scenes/<scope>_v{N}/manifest.md`
+- `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/Shotlist_<scene-scope>_ZH_v{N}.html`
+- `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/manifest.md`
 - Common asset references to `deliverables/20_assets/refs/` or `deliverables/20_assets/generated_ref_v{N}/`
-- Scene-specific assets under `deliverables/30_shotlist/scenes/<scope>_v{N}/assets/`
-- Preview manifest and images under `deliverables/30_shotlist/scenes/<scope>_v{N}/previews/`
-- Optional generated clip manifests under `deliverables/30_shotlist/scenes/<scope>_v{N}/generated/` when test clips are saved
+- Scene-specific assets under `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/assets/`
+- Preview manifest and images under `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/previews/`
+- Optional generated clip manifests under `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/generated/` when test clips are saved
 
 Compatibility requirements:
 
-- Must preserve shot row order, shot IDs, scene order, prompt envelope IDs, prompt grouping, and 15-second envelope strategy.
+- Must run the four-phase `shotlist-builder` loop: read script, request assets, confirm scope/spatial blocking, generate HTML shotlist.
+- Must preserve screenplay scene order, shot row order, prompt envelope grouping, and 15-second envelope strategy.
 - Must keep the HTML shotlist as the prompt source of truth for production handoff.
 - Must embed preview thumbnails in the HTML with relative `<img src>` paths, not only list file paths.
 - Must mark previews and generated tests as `text_only_draft`, `text_dna_draft`, `image_reference_bound`, or `prompt_only`.
 - Must not claim rough e-conte previews are production keyframes.
 - Must run internal hard gates before HTML assembly: reference facts, planted camera, first-frame composition, physical action path, unique micro-beats, shot-specific failure locks, adjacent-beat boundaries, reference status, and batch pressure checks.
-- Must split long tasks into scene packages or tight dramatic clusters; anything larger than 10 prompt envelopes cannot be merged into an index until batch QA has passed.
+- Must split by screenplay scene first; within an overloaded scene, split by action phase, camera setup, or reference-set change.
+- Must not use legacy storyboard IDs as the new package split unit.
 - Must render shotlists, prompt labels, manifest notes, and user-facing handoffs in Simplified Chinese unless the user explicitly requests another language.
 
 ### `qa.primary`
@@ -171,8 +174,8 @@ Outputs:
 Compatibility requirements:
 
 - Must not replace `shotlist.primary` internal hard gates; QA is an independent review layer.
-- Must run before Phase 4, after each 4-8 envelope production batch, before merging any batch above 10 envelopes, after HTML/previews are complete, and after real video generation tests.
-- Must cite concrete `SB###` and `P###` IDs when applicable.
+- Must run before Phase 4, after dense scene prompt drafting, after HTML/previews are complete, and after real video generation tests.
+- Must cite concrete scene numbers, shot rows, and `P###` prompt-envelope IDs when applicable.
 - Must separate structural checks, spatial continuity, prompt executability, reference status, platform production risk, and creative taste recommendations.
 - Must lead with blockers and list downstream impact after upstream edits.
 - Must render chat QA and persistent QA reports in Simplified Chinese unless the user explicitly requests another language.

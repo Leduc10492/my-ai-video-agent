@@ -96,13 +96,13 @@ For shotlist breakdown:
 For Seedance/Higgsfield HTML:
 
 ```markdown
-| `shotlist.primary` | `new-shotlist-skill` | `storyboard-director` | `deliverables/30_shotlist/scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html` |
+| `shotlist.primary` | `new-shotlist-skill` | `storyboard-director` | `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/Shotlist_<scene-scope>_ZH_v{N}.html` |
 ```
 
 The replacement skill must still satisfy the slot interface:
 
 - accepts latest script, guides, locks, and optional scope
-- preserves `SB###` and `P###` IDs
+- preserves screenplay scene labels, shot rows, and `P###` IDs
 - preserves shot row order and source scene mapping
 - writes or supports the canonical output path
 - records reference mode and known limitations

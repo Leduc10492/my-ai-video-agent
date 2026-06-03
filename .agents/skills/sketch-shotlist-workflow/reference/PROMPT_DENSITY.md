@@ -61,30 +61,6 @@ Five distinct camera setups, five different focal lengths, five different emotio
 
 Err toward **more prompts, shorter envelopes** rather than packing too much into 15 seconds. Seedance handles tight prompts better than overloaded ones, and the user can always run them in sequence.
 
-## Batch-size quality rule
-
-Prompt count affects reasoning quality. A large scope can be useful for planning, but production-grade Seedance prompts need smaller review batches.
-
-- **1-4 prompt envelopes:** safe for full production drafting in one pass.
-- **5-8 prompt envelopes:** acceptable if all prompts share a scene or tight action cluster; run the Prompt Quality Gate after drafting.
-- **9-10 prompt envelopes:** upper limit for one quality pass; include a self-audit summary before HTML.
-- **More than 10 prompt envelopes:** split before production drafting. Do not generate final HTML from an unreviewed 10+ envelope batch.
-
-Split by:
-1. Scene boundary first.
-2. Then action phase: setup, confrontation, decision, release, aftermath.
-3. Then camera family: establishing/wide, dialogue/two-shot, inserts, reaction close-ups, transition/wide.
-4. Then reference set changes.
-
-Example for a 52-envelope climax range:
-- `SB071-SB072`: rescue setup and traffic disruption
-- `SB073`: checkpoint confrontation and authority bend
-- `SB074-SB075`: evacuation movement and crowd response
-- `SB076-SB077`: impact/realization phase
-- `SB078-SB080`: adult recognition and emotional payoff
-
-Each batch must pass the Prompt Quality Gate before the next batch is drafted or merged.
-
 ## Tagging
 
 Each prompt gets a short bracketed tag for the HTML header — describes what the prompt shows at a glance. Examples:

@@ -27,8 +27,8 @@ If no previous file exists, write `v1` directly to `deliverables/<stage>/` and c
 
 Scene shotlist HTML uses a package directory as the versioned unit:
 
-- current: `deliverables/30_shotlist/scenes/SB001-SB004_v2/Shotlist_SB001-SB004_ZH_v2.html`
-- archived: `archives/30_shotlist/scenes/SB001-SB004_v1/Shotlist_SB001-SB004_ZH_v1.html`
+- current: `deliverables/30_shotlist/scenes/scene-021_v2/Shotlist_scene-021_ZH_v2.html`
+- archived: `archives/30_shotlist/scenes/scene-021_v1/Shotlist_scene-021_ZH_v1.html`
 
 Keep previews, scene-specific assets, generated tests, and scene QA inside the same package version.
 

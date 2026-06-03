@@ -91,8 +91,8 @@ archives/
 ├── 30_shotlist/
 │   ├── 03_shotlist_breakdown_v1.md
 │   └── scenes/
-│       └── SB001-SB008_v1/
-│           └── Shotlist_SB001-SB008_ZH_v1.html
+│       └── scene-021_v1/
+│           └── Shotlist_scene-021_ZH_v1.html
 
 deliverables/
 ├── 10_story/
@@ -100,8 +100,8 @@ deliverables/
 └── 30_shotlist/
     ├── 03_shotlist_breakdown_v2.md
     └── scenes/
-        └── SB001-SB008_v2/
-            └── Shotlist_SB001-SB008_ZH_v2.html
+        └── scene-021_v2/
+            └── Shotlist_scene-021_ZH_v2.html
 ```
 
 ## Active File Paths
@@ -113,7 +113,7 @@ deliverables/
 | Asset Guide | `deliverables/20_assets/02_asset_guide_v{N}.md` | `02_asset_guide_v2.md` |
 | Style Guide | `deliverables/20_assets/02_style_guide_v{N}.md` | `02_style_guide_v1.md` |
 | Shotlist Breakdown | `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md` | `03_shotlist_breakdown_v1.md` |
-| Shotlist HTML | `deliverables/30_shotlist/scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html` | `Shotlist_SB001-SB008_ZH_v1.html` |
+| Shotlist HTML | `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/Shotlist_<scene-scope>_ZH_v{N}.html` | `Shotlist_scene-021_ZH_v1.html` |
 
 ## Legacy Migration
 

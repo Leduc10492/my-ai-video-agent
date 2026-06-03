@@ -21,7 +21,8 @@ Use [AGENTS.md](AGENTS.md) as the active project rule entrypoint.
 concept or script
   -> Screenwriter-mode script and optional McKee-style audit
   -> asset guide and style guide
-  -> shotlist breakdown and spatial-blocking prep
+  -> shotlist-builder Phase 1/2 scene breakdown and asset request
+  -> Phase 3 scope confirmation and spatial blocking
   -> Seedance/Higgsfield shotlist HTML with 15-second prompt envelopes
   -> rough e-conte previews and optional generated video tests
   -> QA and regression checks
@@ -48,8 +49,8 @@ Use `.agents/skill_registry.md` as the assembly layer for swappable implementati
 | `script.primary` | `screenwriter-workflow` | Script-stage writing, audit, quality gates, timing, revision, and export controller |
 | `story.mckee_router` | `mckee-coordinator` | Structure, audit, rewrite, scene, pacing, variation, and source plugins |
 | `guides.primary` | `guide-workflow` | Asset and style guides |
-| `shotlist.breakdown` | `shotlist-breakdown-workflow` | Shot-block map, prompt-envelope ranges, asset requirements, and spatial-blocking prep |
-| `shotlist.primary` | `sketch-shotlist-workflow` | Seedance/Higgsfield production HTML with 15-second prompt envelopes and e-conte previews |
+| `shotlist.breakdown` | `shotlist-breakdown-workflow` | Scene inventory, action beats, asset request, reference status, and spatial-blocking queue |
+| `shotlist.primary` | `sketch-shotlist-workflow` | Four-phase shotlist-builder loop and scene-first Seedance/Higgsfield HTML with 15-second prompts |
 | `qa.primary` | `qa-workflow` | Stage, batch, regression, final, and workflow QA |
 
 To replace an implementation, add or choose a real skill under `.agents/skills/`, update the registry slot, and keep the canonical output path stable.
@@ -78,8 +79,8 @@ deliverables/
 └── 30_shotlist/
     ├── 03_shotlist_breakdown_v{N}.md
     └── scenes/
-        └── <scope>_v{N}/
-            ├── Shotlist_<scope>_ZH_v{N}.html
+        └── <scene-scope>_v{N}/
+            ├── Shotlist_<scene-scope>_ZH_v{N}.html
             ├── manifest.md
             ├── assets/
             ├── previews/
@@ -89,15 +90,15 @@ deliverables/
 
 Historical versions live under matching `archives/<stage>/` directories. Do not create `deliverables/*/archive/`.
 
-Legacy `03_storyboard_v{N}.md` and local companion prompt files may remain on disk as historical inputs, but the active workflow writes `03_shotlist_breakdown_v{N}.md` and scene-scoped shotlist HTML packages under `30_shotlist/scenes/`.
+Legacy `03_storyboard_v{N}.md` and local companion prompt files may remain on disk as historical inputs, but the active workflow writes `03_shotlist_breakdown_v{N}.md` and scene-native shotlist HTML packages under `30_shotlist/scenes/`.
 
 ## Generated Assets
 
 - `deliverables/20_assets/refs/`: common local reference images declared by the latest asset guide.
 - `deliverables/20_assets/generated_ref_v{N}/`: common local generated references; production-approved only when the manifest says `image_reference_bound`.
-- `deliverables/30_shotlist/scenes/<scope>_v{N}/assets/`: scene-specific assets only; common assets should be referenced from `20_assets`.
-- `deliverables/30_shotlist/scenes/<scope>_v{N}/previews/`: rough e-conte previews embedded in the scene shotlist HTML.
-- `deliverables/30_shotlist/scenes/<scope>_v{N}/generated/`: generated video clips or platform exports for that scene package, if saved locally.
+- `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/assets/`: scene-specific assets only; common assets should be referenced from `20_assets`.
+- `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/previews/`: rough e-conte previews embedded in the scene shotlist HTML.
+- `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/generated/`: generated video clips or platform exports for that scene package, if saved locally.
 
 Each generated directory should include a `README.md` or manifest with source artifact, asset count, `reference_mode`, and known limitations.
 
@@ -121,7 +122,7 @@ Every production deliverable starts with artifact metadata:
 ---
 ```
 
-Before downstream work, check latest versions, upstream IDs, locks, guide/reference requirements, shot-block counts, prompt-envelope IDs, spatial continuity, embedded preview paths, generated asset manifests, and production feasibility.
+Before downstream work, check latest versions, upstream IDs, locks, guide/reference requirements, scene order, shot-row counts, prompt-envelope IDs, spatial continuity, embedded preview paths, generated asset manifests, and production feasibility.
 
 `sketch-shotlist-workflow` owns generation hard gates. `qa-workflow` provides independent review, regression checks, and persistent reports.
 

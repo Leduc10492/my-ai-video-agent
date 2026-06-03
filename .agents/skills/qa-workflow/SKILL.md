@@ -13,7 +13,7 @@ This is the current default implementation for the `qa.primary` slot in `.agents
 
 Default to Simplified Chinese for all user-facing QA output unless the user explicitly requests another language.
 
-This includes chat findings, persistent QA reports, table headers, issue descriptions, evidence, suggested fixes, downstream impact, and status summaries. Keep technical tokens such as paths, artifact IDs, reference modes, `SB###`, `P###`, and `P0/P1/P2/P3` unchanged.
+This includes chat findings, persistent QA reports, table headers, issue descriptions, evidence, suggested fixes, downstream impact, and status summaries. Keep technical tokens such as paths, artifact IDs, reference modes, scene labels, shot-row IDs, `P###`, and `P0/P1/P2/P3` unchanged.
 
 ## Inputs
 
@@ -30,8 +30,8 @@ This includes chat findings, persistent QA reports, table headers, issue descrip
 Run QA:
 
 1. before entering Phase 4 shotlist HTML generation
-2. after each 4-8 prompt-envelope production batch
-3. before merging any scope above 10 prompt envelopes into a scene package index
+2. after dense scene prompt drafting
+3. before splitting or merging any overloaded scene scope
 4. after shotlist HTML and previews are complete
 5. after real video generation tests are saved
 6. after editing any upstream artifact
@@ -44,7 +44,7 @@ Run QA:
 | --- | --- | --- |
 | State check | User asks progress/current state | concise status in chat |
 | Stage QA | One stage just finished | issue list + optional report |
-| Batch QA | A 4-8 prompt-envelope batch is drafted | `SB###` / `P###` findings before merge |
+| Scene QA | A scene's prompt envelopes are drafted | scene / shot-row / `P###` findings before previews or generated tests |
 | Regression QA | Upstream changed | impacted downstream list |
 | Final QA | Before delivery/export | persistent report recommended |
 
@@ -64,11 +64,11 @@ Always check:
 For shotlist work, also check:
 
 - `03_shotlist_breakdown_v{N}.md` exists before large Phase 4 work, or legacy input is explicitly marked as migration source
-- `SB###` rows, prompt-envelope IDs, and source scene mapping are consistent
+- screenplay scene labels, shot rows, prompt-envelope IDs, and source scene mapping are consistent
 - prompt envelopes include reference facts, planted camera, first-frame composition, physical action path, unique micro-beats, shot-specific failure locks, adjacent-beat boundary, and reference status
 - preview manifest entries match HTML prompt envelopes
 - HTML preview paths are relative and files exist
-- shotlist HTML lives under `deliverables/30_shotlist/scenes/<scope>_v{N}/`
+- shotlist HTML lives under `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/`
 - common references come from `deliverables/20_assets/`, while scene package `assets/` contains only scene-specific additions or explicit overrides
 - generated video tests are labeled with source prompt envelope, reference mode, and known limitations
 
@@ -135,6 +135,6 @@ If the user only asks for a quick read, report in chat and do not create a file 
 
 - Lead with blockers.
 - Separate structure, spatial continuity, prompt executability, reference status, platform production risk, and taste recommendations.
-- Give concrete file paths and affected `SB###` / `P###` IDs.
+- Give concrete file paths and affected scene labels, shot rows, and `P###` IDs.
 - Do not rewrite creative content during QA unless the user asks for fixes.
 - Do not replace `sketch-shotlist-workflow` internal hard gates; QA verifies that those gates were applied and catches missed failures.

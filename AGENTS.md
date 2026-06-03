@@ -46,7 +46,7 @@ Current path patterns:
 - `deliverables/20_assets/02_asset_guide_v{N}.md`
 - `deliverables/20_assets/02_style_guide_v{N}.md`
 - `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`
-- `deliverables/30_shotlist/scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html`
+- `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/Shotlist_<scene-scope>_ZH_v{N}.html`
 
 Legacy planning files such as `deliverables/30_shotlist/03_storyboard_v{N}.md` may be read as historical input. The next saved planning artifact must use `03_shotlist_breakdown_v{N}.md`.
 
@@ -60,9 +60,9 @@ Asset and shotlist package directories are intentionally unversioned or package-
 
 - `deliverables/20_assets/refs/`: common local reference images declared by the latest asset guide
 - `deliverables/20_assets/generated_ref_v{N}/`: common local generated references, only production-approved when the manifest says `image_reference_bound`
-- `deliverables/30_shotlist/scenes/<scope>_v{N}/assets/`: scene-specific assets only; common assets should be referenced from `deliverables/20_assets/`
-- `deliverables/30_shotlist/scenes/<scope>_v{N}/previews/`: generated rough e-conte preview images embedded in the scene shotlist HTML
-- `deliverables/30_shotlist/scenes/<scope>_v{N}/generated/`: generated video clips or platform exports for that scene package, if saved locally
+- `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/assets/`: scene-specific assets only; common assets should be referenced from `deliverables/20_assets/`
+- `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/previews/`: generated rough e-conte preview images embedded in the scene shotlist HTML
+- `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/generated/`: generated video clips or platform exports for that scene package, if saved locally
 
 Every generated asset directory or scene package should include a `README.md` or manifest with source artifact, asset count, reference mode, common-asset links, scene-specific asset list, and known limitations.
 
@@ -126,8 +126,8 @@ Important slots:
 - `script.primary`: creates, revises, audits, times, and exports script artifacts for `deliverables/10_story/`; current default is `screenwriter-workflow`.
 - `story.mckee_router`: routes structure, audit, rewrite, scene repair, pacing, variation, and source tasks for script work; current default is `mckee-coordinator`.
 - `guides.primary`: creates asset and style guides plus common reference manifests for `deliverables/20_assets/`.
-- `shotlist.breakdown`: creates `03_shotlist_breakdown_v{N}.md`; current default is `shotlist-breakdown-workflow`.
-- `shotlist.primary`: creates Seedance/Higgsfield production HTML with 15-second prompt envelopes and embedded e-conte preview images; current default is `sketch-shotlist-workflow`.
+- `shotlist.breakdown`: creates `03_shotlist_breakdown_v{N}.md` with scene inventory, action beats, asset request, and spatial-blocking queue; current default is `shotlist-breakdown-workflow`.
+- `shotlist.primary`: runs the four-phase shotlist-builder loop and creates scene-first Seedance/Higgsfield production HTML with 15-second prompt envelopes and embedded e-conte preview images; current default is `sketch-shotlist-workflow`.
 - `qa.primary`: performs stage, batch, regression, final, and workflow QA.
 
 When replacing a skill, do not change canonical deliverable paths. Add or select a real skill under `.agents/skills/<skill>/SKILL.md`, update `.agents/skill_registry.md`, and verify the replacement satisfies the slot interface before using it for production work.
@@ -159,8 +159,8 @@ Use this sequence unless the user asks for a specific stage:
 
 1. Script: produce or update `01_script_v{N}.md`; optionally produce `01_audit_report_v{N}.md`.
 2. Guides: produce or update asset and style guides before visual production work using `guide-workflow` or the `guides.primary` slot replacement.
-3. Shotlist breakdown: produce or update `03_shotlist_breakdown_v{N}.md` with shot-block rows, prompt-envelope ranges, asset requirements, spatial-blocking gates, and QA notes.
-4. Shotlist HTML: produce or update `deliverables/30_shotlist/scenes/<scope>_v{N}/Shotlist_<scope>_ZH_v{N}.html` and optional rough e-conte previews through `shotlist.primary`.
+3. Shotlist breakdown: produce or update `03_shotlist_breakdown_v{N}.md` with scene inventory, action beats, asset requirements, spatial-blocking queue, and Phase 4 scope recommendations.
+4. Shotlist HTML: run the four-phase shotlist-builder loop through `shotlist.primary`, then produce or update `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/Shotlist_<scene-scope>_ZH_v{N}.html` and optional rough e-conte previews.
 5. QA: check locks, upstream version consistency, character DNA, reference status, spatial continuity, prompt-envelope quality, embedded preview paths, generated asset manifests, video test results, and downstream impact.
 
 The shotlist HTML is the prompt source of truth for Seedance/Higgsfield production. Do not create separate board-prompt, art-prompt, or standalone video-prompt artifacts for the same active scope.
@@ -197,9 +197,9 @@ Before changing downstream artifacts, verify:
 - character descriptions match the latest asset guide when one exists
 - character reference image paths in the latest asset guide or generated-reference manifest exist on disk
 - style work has a style guide, or the absence is called out explicitly
-- shot-block counts, duration, source scene mapping, and prompt-envelope ranges agree
+- screenplay scene order, shot row counts, duration, source scene mapping, and prompt-envelope grouping agree
 - prompt envelopes include reference facts, planted camera, first-frame composition, physical action path, unique micro-beats, shot-specific failure locks, adjacent-beat boundaries, and reference status labels
-- long tasks are split into batches and cannot be merged until each batch passes generation hard gates and QA
+- production work is split by screenplay scene first; overloaded scenes are split by action phase, camera setup, or reference-set change
 - shotlist prompt envelopes agree with preview manifest entries and embedded image paths
 - generated asset folders include manifests with source artifact, count, reference mode, and limitations
 - any replacement skill selected in `.agents/skill_registry.md` exists and satisfies the relevant slot interface
@@ -211,7 +211,7 @@ If an upstream artifact changes, list downstream artifacts that may need inspect
 - Quick state checks can be reported in chat only.
 - Stage QA, batch QA, final QA, workflow audits, and regression checks that affect future work should be saved under `deliverables/00_admin/qa_reports/`.
 - QA findings should separate structural checks, spatial continuity, prompt executability, reference status, platform production risk, and creative taste recommendations.
-- Shotlist QA should cite concrete `SB###` and `P###` IDs when applicable.
+- Shotlist QA should cite concrete scene numbers, shot rows, and `P###` prompt-envelope IDs when applicable.
 
 ## P0 Structural Guardrails
 
@@ -233,4 +233,4 @@ These rules protect the project from drifting while it is Markdown-first and man
 
 Be concrete and file-backed. Report current state, blocker, and next action. Keep creative judgment separated from structural QA: structure, continuity, prompt executability, reference status, and production feasibility are checks; taste is a recommendation.
 
-For story/script work, McKee packets, audits, QA findings, iteration gates, shotlists, and user-facing handoffs, default to Simplified Chinese unless the user explicitly requests another language. Keep file paths, artifact IDs, version suffixes, fixed decision tokens, `SB###` / `P###` IDs, and standard screenplay labels unchanged when useful.
+For story/script work, McKee packets, audits, QA findings, iteration gates, shotlists, and user-facing handoffs, default to Simplified Chinese unless the user explicitly requests another language. Keep file paths, artifact IDs, version suffixes, fixed decision tokens, screenplay scene labels, shot-row IDs, `P###` IDs, and standard screenplay labels unchanged when useful.
