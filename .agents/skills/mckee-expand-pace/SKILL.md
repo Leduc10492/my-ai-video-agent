@@ -1,6 +1,6 @@
 ---
 name: mckee-expand-pace
-description: Control narrative rhythm and density using McKee principles. Add beats, adjust pacing, manage exposition and information flow. Use when user requests tension building, rhythm adjustment, beat expansion, or exposition fixes.
+description: Internal McKee rhythm and density plugin for pacing packets. Add beats, adjust pacing, and manage exposition when screenwriter-workflow or mckee-coordinator requests McKee pacing support, or when the user explicitly asks for McKee rhythm analysis. Returns pacing notes, not final script artifact ownership.
 ---
 
 # McKee Expand & Pace
@@ -139,12 +139,11 @@ Provide:
 - [确认新增节拍如何维持因果链]
 ```
 
-## Output Directory
+## Output Boundary
 
-Work within standard deliverables structure:
-- Read: `deliverables/10_story/01_script_v*.md`
-- Output: Modified script to `deliverables/10_story/01_script_v{N+1}.md`
-- Archive old version using `version-management`
+Return pacing and density notes to `screenwriter-workflow`.
+Do not save modified scripts directly.
+Do not archive previous versions or update changelog directly.
 
 Expansion notes should include:
 - Rhythm goals

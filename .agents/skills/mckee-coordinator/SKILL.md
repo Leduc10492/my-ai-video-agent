@@ -1,13 +1,13 @@
 ---
 name: mckee-coordinator
-description: McKee story principles coordinator. Routes story requests to specialized sub-skills (create, audit, rewrite, scene doctor, expand & pace, variations, source quotes). Use when user mentions McKee principles, story work, or narrative tasks without specifying which tool to use.
+description: Internal McKee story principles router for structure packets, audits, rewrite plans, scene repair, pacing, variations, and source quotes. Use when the user explicitly asks for McKee analysis/source material or when screenwriter-workflow requests McKee structure support. Do not use as the default screenplay creation entrance.
 ---
 
 # McKee Coordinator
 
 ## Overview
 
-This skill coordinates all McKee-based story work by routing requests to specialized sub-skills. Each sub-skill handles a specific workflow with minimal token overhead.
+This skill coordinates McKee-based story support by routing requests to specialized sub-skills. It is not the screenplay-stage entrance. General script creation starts in `screenwriter-workflow`, which may call this coordinator after Story Bone intake.
 
 ## Output Language
 
@@ -17,7 +17,7 @@ This applies to structure packets, audits, rewrite plans, scene diagnoses, pacin
 
 ## Available Sub-Skills
 
-1. **mckee-create** - Create original stories from scratch (NEW ✨)
+1. **mckee-create** - Create McKee structure packets for new or weak premises
 2. **mckee-audit** - Diagnose story/act/scene issues and rank fixes
 3. **mckee-rewrite-plan** - Build staged structural and scene-level changes
 4. **mckee-scene-doctor** - Repair a single scene with desire, conflict, and turn
@@ -27,8 +27,8 @@ This applies to structure packets, audits, rewrite plans, scene diagnoses, pacin
 
 ## Routing Logic
 
-**If user request mentions:**
-- **"write", "create", "generate story", "make a script"** → Use `mckee-create`
+**If request or caller needs:**
+- Explicit McKee creation support, or `screenwriter-workflow` asks for story-spine support → Use `mckee-create`
 - "audit", "diagnose", "what's wrong", "review" → Use `mckee-audit`
 - "rewrite", "plan", "fix structure", "revision strategy" → Use `mckee-rewrite-plan`
 - "scene", "this scene", "fix this moment" → Use `mckee-scene-doctor`
@@ -36,8 +36,8 @@ This applies to structure packets, audits, rewrite plans, scene diagnoses, pacin
 - "variations", "alternatives", "different approach", "what if" → Use `mckee-variations`
 - "original text", "McKee says", "quote", "book reference" → Use `mckee-source`
 
-**Important**: If user wants to CREATE a new story from scratch → Use `mckee-create`
-**If unclear, ask the user to clarify.**
+**Important**: If the user generally wants to write or create a screenplay, use `screenwriter-workflow` first. `mckee-create` returns structure support only; it does not own final script artifacts.
+**If unclear, return to `screenwriter-workflow` or ask one narrow clarification question.**
 
 ## Core Principles (Priority Order)
 
@@ -61,19 +61,19 @@ If user does not specify an act model:
 - **Feature/longform**: 3-act with 8-sequence substructure
 - **Episodic**: 4-6 sequence beats per episode, plus season arc
 
-## Output Directory Management
+## Output Boundary
 
-All sub-skills follow the standard deliverables structure:
-- Current versions: `deliverables/10_story/`
-- Archived versions: `archives/10_story/`
-- File naming: `01_script_v{N}.md`, `01_audit_report_v{N}.md`
+McKee sub-skills return packets: structure, audit, rewrite, scene, pacing, variation, or source notes. They do not save final `01_script_v{N}.md` or `01_audit_report_v{N}.md` artifacts directly unless wrapped by `script.primary`.
 
-See `artifact-formatter` and `version-management` skills for details.
+Use `screenwriter-workflow` for artifact ownership, versioning, changelog, archiving, and DOCX export.
 
 ## Usage Examples
 
 ```
-User: "Write me a 3-minute story about two people in the snow"
+Caller: `screenwriter-workflow` has a confirmed Story Bone but needs a McKee structure packet
+→ Trigger mckee-create
+
+User: "Use McKee to build the structure for this premise"
 → Trigger mckee-create
 
 User: "Can you review my script and tell me what's broken?"

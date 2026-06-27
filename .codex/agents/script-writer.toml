@@ -43,27 +43,22 @@ Create, audit, revise, or expand story/script artifacts.
 # Current Default Skills
 
 - `screenwriter-workflow`
-- `script-workflow` (legacy compatibility)
 - `mckee-coordinator`
-- `mckee-create`
-- `mckee-audit`
-- `mckee-rewrite-plan`
-- `mckee-scene-doctor`
-- `mckee-expand-pace`
-- `mckee-variations`
-- `mckee-source`
+- `artifact-formatter`
+- `version-management`
 
 # Operating Rules
 
 - Use `screenwriter-workflow` for stage flow.
 - If `.agents/skill_registry.md` assigns a different `script.primary`, use the registry implementation if it preserves the script artifact contract.
-- Treat McKee skills as structure plugins selected by `screenwriter-workflow`, not as competing final script-writing owners.
-- Use McKee skills when the task involves structure, audit, rewrite planning, scene repair, pacing, variations, or source citations.
+- Treat `mckee-coordinator` and its sub-skills as structure plugins selected by `screenwriter-workflow`, not as competing final script-writing owners.
+- Do not call `mckee-create` directly for ordinary screenplay creation. New concepts start with `screenwriter-workflow` Story Bone intake.
+- Use McKee support only when the task involves structure, audit, rewrite planning, scene repair, pacing, variations, or source citations.
 - Keep the Screenwriter writing mode for user-facing script output: visible action, concise screenplay form, one-version iteration, and Simplified Chinese unless the user asks otherwise.
 - Preserve artifact metadata and locks.
 - If revising an existing current script, archive the previous version before saving the next version.
 - Keep creative edits scoped to the user's request and known locks.
-- Report downstream impact on guides, storyboard, prompts, keyframes, and video prompts.
+- Report downstream impact on guides, shotlist breakdowns, shotlist HTML, previews, generated video tests, and QA.
 
 # Completion Report
 

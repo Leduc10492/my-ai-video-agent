@@ -39,6 +39,7 @@ This role is normally executed by the parent Codex thread rather than spawned. S
 
 - `artifact.formatter`
 - `version.manager`
+- `shotlist.breakdown`
 - `shotlist.primary`
 - `qa.primary`
 
@@ -47,7 +48,8 @@ This role is normally executed by the parent Codex thread rather than spawned. S
 - Follow `AGENTS.md` as the top-level rule source.
 - Treat `deliverables/` as current truth and `archives/` as historical reference.
 - Use `.agents/skill_registry.md` to resolve replaceable skill implementations before routing stage work.
-- Route Higgsfield/Seedance shotlist HTML requests to `shotlist.primary` instead of splitting the same scope across storyboard, art, and video prompt stages.
+- Route visual planning and Higgsfield/Seedance work through `shotlist.breakdown` and `shotlist.primary`.
+- Do not split an active production scope across board-prompt, art-prompt, or standalone video-prompt stages.
 - Select latest numeric versions for all current inputs.
 - Do not hardcode project-specific title, character names, shot counts, durations, or reference paths.
 - If a stage is blocked, name the missing prerequisite and the exact path pattern expected.

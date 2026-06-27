@@ -6,8 +6,8 @@ Current and archived deliverables both use `_v{N}` suffixes.
 
 Example:
 
-- current: `deliverables/30_breakdown/03_storyboard_v2.md`
-- archived: `archives/30_breakdown/03_storyboard_v1.md`
+- current: `deliverables/30_shotlist/03_shotlist_breakdown_v2.md`
+- archived: `archives/30_shotlist/03_shotlist_breakdown_v1.md`
 
 Use simple numeric suffixes: `v1`, `v2`, `v10`. Do not use `v001`.
 
@@ -24,6 +24,13 @@ Use simple numeric suffixes: `v1`, `v2`, `v10`. Do not use `v001`.
 ## New Artifact
 
 If no previous file exists, write `v1` directly to `deliverables/<stage>/` and create the archive directory if needed.
+
+Scene shotlist HTML uses a package directory as the versioned unit:
+
+- current: `deliverables/30_shotlist/scenes/scene-021_v2/Shotlist_scene-021_ZH_v2.html`
+- archived: `archives/30_shotlist/scenes/scene-021_v1/Shotlist_scene-021_ZH_v1.html`
+
+Keep previews, scene-specific assets, generated tests, and scene QA inside the same package version.
 
 ## Rollback
 

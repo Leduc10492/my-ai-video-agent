@@ -14,10 +14,10 @@ Locks are production constraints that should survive downstream transformations.
 - Script: story structure, point of view, core props, budget.
 - Asset guide: character DNA, costume, props, era.
 - Style guide: color temperature, lighting, performance tone.
-- Storyboard: shot count, duration, narrative beats, visual continuity.
-- Board prompts: line-art style, character DNA, grid layout.
-- Art prompts: platform, aspect ratio, visual consistency.
-- Video prompts: motion logic, platform constraints, input type.
+- Shotlist breakdown: scene order, action beats, asset needs, spatial-blocking queue.
+- Shotlist HTML: prompt-envelope grouping, camera blocking, reference status, failure locks.
+- E-conte previews: prompt-envelope ID, rough staging readability, non-keyframe status.
+- Generated tests: source `P###`, platform settings, reference mode, known limitations.
 
 ## Regression Rule
 

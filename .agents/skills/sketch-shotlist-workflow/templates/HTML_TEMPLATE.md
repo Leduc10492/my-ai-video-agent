@@ -137,7 +137,7 @@ Show the actual image thumbnail in the HTML. Do not show only a file path.
 </div>
 ```
 
-Use relative paths such as `shotlist_previews_SB071_SB080_v1/P377.png` by default. Use base64 only when the user asks for a single portable HTML.
+Use scene-package relative paths such as `previews/P377.png` by default. Use base64 only when the user asks for a single portable HTML.
 
 ## CSS + JS
 

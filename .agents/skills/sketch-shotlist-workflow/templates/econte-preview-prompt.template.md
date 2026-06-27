@@ -3,10 +3,10 @@
 Use one prompt per Seedance prompt envelope.
 
 ```text
-Create a vertical Japanese manga e-conte storyboard strip for production review.
+Create a vertical Japanese manga e-conte strip for production review.
 
 Format:
-- portrait 9:16 storyboard sheet
+- portrait 9:16 e-conte sheet
 - {PANEL_COUNT} stacked panels in top-to-bottom order
 - black-and-white rough pencil/ink line art on white paper
 - simple readable figures, clear blocking, clear eyelines

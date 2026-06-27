@@ -1,6 +1,6 @@
 ---
 name: mckee-variations
-description: Generate story variations using McKee principles. Create alternative conflict engines, climaxes, or story paths while maintaining causality and obligatory scenes. Use when user requests alternatives, asks "what if", explores different approaches, or wants creative options.
+description: Internal McKee variation plugin for alternative story-engine packets. Create alternative conflict engines, climaxes, or story paths when screenwriter-workflow or mckee-coordinator requests McKee variation support, or when the user explicitly asks for McKee alternatives. Returns variation notes, not final script artifact ownership.
 ---
 
 # McKee Story Variations
@@ -156,13 +156,11 @@ See `../mckee-shared/core/story-spine.md` for structural definitions.
    - Original: 24-hour crisis in one city
    - Variation: Same crisis over years across continents
 
-## Output Directory
+## Output Boundary
 
-Work within standard deliverables structure:
-- Read: `deliverables/10_story/01_script_v*.md`
-- Output variations in agent's response (for user to choose)
-- If user selects a variation, save to: `deliverables/10_story/01_script_v{N+1}.md`
-- Archive old version using `version-management`
+Return variation notes to `screenwriter-workflow`.
+Do not save selected variations as scripts directly.
+Do not archive previous versions or update changelog directly.
 
 Variation notes should include:
 - Anchors held constant

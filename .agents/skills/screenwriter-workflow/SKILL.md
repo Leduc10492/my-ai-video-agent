@@ -160,7 +160,7 @@ For a complete or near-complete draft:
 1. Preserve the user's material as source truth.
 2. Diagnose structure before polishing dialogue.
 3. When revising, keep edits scoped to the requested goal.
-4. If the revision changes story facts, list downstream guide/storyboard/prompt artifacts that may need inspection.
+4. If the revision changes story facts, list downstream guide, shotlist breakdown, shotlist HTML, preview, and QA artifacts that may need inspection.
 
 ## Iteration Quality Gate
 
@@ -200,7 +200,7 @@ When writing a persistent audit:
 
 Keep `.docx` exports as optional derived files when the user asks for them. The Markdown file in `deliverables/10_story/` remains the source of truth for this repo.
 
-For standard screenplay DOCX export, use `scripts/export_screenplay_docx.js` on the current Markdown script after the iteration quality gate passes.
+For standard screenplay DOCX export, use `.agents/skills/screenwriter-workflow/scripts/export_screenplay_docx.js` on the current Markdown script after the iteration quality gate passes.
 
 ## Handoff
 
@@ -213,4 +213,4 @@ After script work, report:
 
 Report the handoff in Simplified Chinese by default.
 
-Next normal stage is `guide-director` / `guides.primary`, not storyboard directly, unless the user explicitly skips guides.
+Next normal stage is `guide-director` / `guides.primary`, then `shotlist.breakdown`, unless the user explicitly skips guides.

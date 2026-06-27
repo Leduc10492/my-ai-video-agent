@@ -120,11 +120,10 @@ McKee distinguishes crisis from climax in the "Crisis, Climax, and Resolution" c
 In essence: Crisis is the choice, climax is the consequence. The crisis asks the hard question; the climax answers it.
 ```
 
-## Output Directory
+## Output Boundary
 
 Output quotes and analysis directly in agent's response (no file creation needed)
-- Deliverables: `source_deliverables/` (quotes and analysis)
-- Decision log: Not typically needed for source lookup
+Do not create deliverables, archives, or source quote files unless `screenwriter-workflow` explicitly wraps the result into a report.
 
 ## References
 

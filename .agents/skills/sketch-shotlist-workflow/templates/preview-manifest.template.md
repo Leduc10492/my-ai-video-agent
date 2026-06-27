@@ -1,7 +1,7 @@
 # Shotlist Preview Manifest
 
 - source_html: `{SHOTLIST_HTML_PATH}`
-- source_script_or_storyboard: `{SOURCE_ARTIFACT_PATH}`
+- source_script_or_breakdown: `{SOURCE_ARTIFACT_PATH}`
 - scope: `{SCOPE}`
 - version: `v{N}`
 - prompt_envelope_count: `{PROMPT_ENVELOPE_COUNT}`

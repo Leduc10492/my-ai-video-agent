@@ -1,6 +1,6 @@
 # Skill Assembly Registry
 
-This registry defines replaceable workflow slots. A slot is a capability interface; the listed skill is the current implementation. Downstream file paths stay stable even when a slot implementation changes.
+This registry defines the active workflow slots for the shotlist-first AI video pipeline. A slot is a capability interface; the listed skill is the current implementation. Downstream file paths stay stable unless the user explicitly approves a migration.
 
 ## Replacement Rule
 
@@ -20,20 +20,16 @@ Do not change canonical deliverable paths just to fit a new skill. If a replacem
 | Slot | Default skill | Owner role | Stable output |
 | --- | --- | --- | --- |
 | `script.primary` | `screenwriter-workflow` | `script-writer` | `deliverables/10_story/01_script_v{N}.md` |
-| `story.mckee_router` | `mckee-coordinator` | `script-writer` | script, audit, rewrite notes as requested |
-| `guides.primary` | `guide-workflow` | `guide-director` | `deliverables/20_guides/02_asset_guide_v{N}.md`, `02_style_guide_v{N}.md` |
-| `storyboard.analysis` | `storyboard-analysis` | `storyboard-director` | analysis feeding `03_storyboard_v{N}.md` |
-| `storyboard.table` | `storyboard-workflow` | `storyboard-director` | `deliverables/30_breakdown/03_storyboard_v{N}.md` |
-| `storyboard.prompt_adapter` | `storyboard-nanobanana` | `storyboard-director` | `deliverables/40_boards/04_storyboard_prompts_v{N}.md` |
-| `shotlist.primary` | `sketch-shotlist-workflow` | `storyboard-director` / `animation-director` | `deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html` plus e-conte previews |
-| `art.prompt_builder` | `art-prompt-workflow` | `artist-director` | `deliverables/50_art/05_art_prompts_v{N}.md` |
-| `art.platform_adapter` | `art-platform-rules` | `artist-director` | platform-specific prompt blocks inside `05_art_prompts_v{N}.md` |
-| `video.prompt_builder` | `video-prompt-workflow` | `animation-director` | `deliverables/60_motion/06_video_prompts_v{N}.md` |
-| `video.motion_adapter` | `video-motion-design` | `animation-director` | motion fields inside `06_video_prompts_v{N}.md` |
+| `story.mckee_router` | `mckee-coordinator` | `script-writer` | structure, audit, rewrite, scene, pacing, variation, and source packets |
+| `guides.primary` | `guide-workflow` | `guide-director` | `deliverables/20_assets/02_asset_guide_v{N}.md`, `02_style_guide_v{N}.md` |
+| `shotlist.breakdown` | `shotlist-breakdown-workflow` | `storyboard-director` | `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md` with scene inventory, action beats, asset request, and blocking queue |
+| `shotlist.primary` | `sketch-shotlist-workflow` | `storyboard-director` | `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/Shotlist_<scene-scope>_ZH_v{N}.html` plus scene package manifests/previews |
 | `artifact.formatter` | `artifact-formatter` | all roles | artifact metadata and path contract |
 | `version.manager` | `version-management` | all writing roles | archived old version plus current new version |
 | `qa.primary` | `qa-workflow` | `qa-check` | chat QA or `deliverables/00_admin/qa_reports/` |
 | `qa.checklists` | `qa-checklists` | all roles | stage-specific checks |
+
+Retired slots are not active workflow contracts: storyboard prompt adapters, art prompt builders, art platform adapters, standalone video prompt builders, and standalone motion adapters. Existing legacy files may remain as historical or local comparison material, but new production work should use the shotlist-first path.
 
 ## Slot Interfaces
 
@@ -61,7 +57,7 @@ Compatibility requirements:
 - Must keep user-facing script work in the Screenwriter mode: visible action, concise screenplay format, one-version iteration, and Chinese output unless requested otherwise.
 - Must render audits, iteration gates, rewrite notes, timing tables, and handoff summaries in Simplified Chinese unless the user explicitly requests another language.
 - Must use an iteration quality gate before creating a new script version or exporting DOCX.
-- Must report downstream impact on guides, storyboard, prompts, keyframes, and video prompts after story changes.
+- Must report downstream impact on guides, shotlist breakdowns, shotlist HTML, previews, and QA.
 
 ### `story.mckee_router`
 
@@ -79,6 +75,7 @@ Outputs:
 Compatibility requirements:
 
 - Must not override `script.primary` as the default writing entrance.
+- Must return packets by default, not write final script artifacts directly.
 - Must load only the specific McKee sub-skill or reference needed.
 - Must render user-facing structure packets, audits, rewrite plans, scene diagnoses, pacing notes, and variations in Simplified Chinese unless the user explicitly requests another language.
 - Must keep `mckee-source` for explicit source/quote requests only.
@@ -87,7 +84,7 @@ Compatibility requirements:
 
 Inputs:
 
-- Latest script and optional audit/storyboard
+- Latest script and optional audit or shotlist breakdown
 - Global locks
 - Existing guide versions
 - User-provided reference images or style requirements
@@ -103,99 +100,62 @@ Compatibility requirements:
 - Must not invent missing reference paths.
 - Must separate asset facts from style rules.
 - Must mark missing references and downstream production blockers.
+- Must state whether downstream shotlist output is allowed only as `text_only_draft`, `text_dna_draft`, `prompt_only`, or `image_reference_bound`.
 
-### `storyboard.prompt_adapter`
+### `shotlist.breakdown`
 
 Inputs:
 
-- Latest storyboard
-- Latest asset guide
-- Optional style guide
+- Latest script and optional audit
+- Latest asset and style guides when present
 - Global locks
-- User-selected platform or adapter default
+- Optional user-selected scene or shot range
 
 Outputs:
 
-- `04_storyboard_prompts_v{N}.md` with artifact metadata
-- Shot coverage summary and batch ranges
-- Prompt blocks that preserve shot IDs, character DNA, layout rules, and draft/reference mode expectations
-- Generated storyboard sheet manifest if image sheets are produced
+- `03_shotlist_breakdown_v{N}.md` with artifact metadata
+- Scene inventory, action beat map, asset request, blocking queue, reference status, and Phase 4 scope recommendations
+- Changelog entry and archives when revising
 
 Compatibility requirements:
 
-- Must preserve canonical shot IDs and shot count.
-- Must not turn rough storyboard sheets into final art prompts.
-- Must state whether outputs are `text_dna_draft`, `text_only_draft`, or `image_reference_bound` when generation occurs.
-- Must follow the image reference contract from `AGENTS.md` for character-critical sheets.
+- Must preserve screenplay scene order, scene numbers or derived scene labels, duration budgets, and source scene mapping.
+- Must use the `shotlist-builder` Phase 1/2 method: read the script, identify scenes/actions/assets, then request missing assets before prompting.
+- Must mark missing asset references, spatial blocking gaps, crowd/prop risks, and scope size before Phase 3/4.
+- Must not introduce legacy storyboard IDs as the new production split unit; legacy storyboard IDs may be read only as archived migration input.
+- Existing `03_storyboard_v{N}.md` files are legacy input only and should be read from `archives/`; the next saved breakdown version must migrate to `03_shotlist_breakdown_v{N}.md`.
 
 ### `shotlist.primary`
 
 Inputs:
 
-- Latest script or storyboard
+- Latest script or `03_shotlist_breakdown_v{N}.md`
 - Optional latest asset guide and style guide
-- Optional storyboard sheets, keyframes, uploaded references, or user-provided scope
+- Optional uploaded references, local generated references, sketch references, or keyframes
 - Global locks and any requested Higgsfield/Seedance settings
+- User-selected screenplay scene, scene range, or derived scene label when generating a subset
 
 Outputs:
 
-- `deliverables/60_motion/Shotlist_<scope>_ZH_v{N}.html`
-- `deliverables/60_motion/shotlist_previews_<scope>_v{N}/manifest.md`
-- Preview images under `deliverables/60_motion/shotlist_previews_<scope>_v{N}/`
-- Optional `06_video_prompts_v{N}.md` only when a Markdown prompt artifact is also requested
+- `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/Shotlist_<scene-scope>_ZH_v{N}.html`
+- `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/manifest.md`
+- Common asset references to `deliverables/20_assets/refs/` or `deliverables/20_assets/generated_ref_v{N}/`
+- Scene-specific assets under `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/assets/`
+- Preview manifest and images under `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/previews/`
+- Optional generated clip manifests under `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/generated/` when test clips are saved
 
 Compatibility requirements:
 
-- Must preserve the shot row order, shot IDs, scene order, prompt envelope IDs, and prompt envelope grouping.
-- Must keep 15-second Seedance prompt envelopes intact when adding preview images.
+- Must run the four-phase `shotlist-builder` loop: read script, request assets, confirm scope/spatial blocking, generate HTML shotlist.
+- Must preserve screenplay scene order, shot row order, prompt envelope grouping, and 15-second envelope strategy.
+- Must keep the HTML shotlist as the prompt source of truth for production handoff.
 - Must embed preview thumbnails in the HTML with relative `<img src>` paths, not only list file paths.
-- Must mark previews as `text_only_draft`, `text_dna_draft`, `image_reference_bound`, or `prompt_only`.
+- Must mark previews and generated tests as `text_only_draft`, `text_dna_draft`, `image_reference_bound`, or `prompt_only`.
 - Must not claim rough e-conte previews are production keyframes.
-- Must keep generated preview folders manifest-backed and treat them as generated assets.
+- Must run internal hard gates before HTML assembly: reference facts, planted camera, first-frame composition, physical action path, unique micro-beats, shot-specific failure locks, adjacent-beat boundaries, reference status, and batch pressure checks.
+- Must split by screenplay scene first; within an overloaded scene, split by action phase, camera setup, or reference-set change.
+- Must not use legacy storyboard IDs as the new package split unit.
 - Must render shotlists, prompt labels, manifest notes, and user-facing handoffs in Simplified Chinese unless the user explicitly requests another language.
-
-### `art.prompt_builder`
-
-Inputs:
-
-- Latest storyboard
-- Latest asset guide and style guide
-- Optional storyboard prompts
-- Required local reference image paths for named characters
-
-Outputs:
-
-- `05_art_prompts_v{N}.md` with per-shot or per-range prompt blocks
-- Reference image roles, platform syntax, negative constraints, and output target folders
-- Generated keyframe manifest if images are produced
-
-Compatibility requirements:
-
-- Must not call text-only outputs production keyframes when required references exist.
-- Must keep platform syntax isolated by prompt block.
-- Must preserve source shot IDs and continuity anchors.
-
-### `video.prompt_builder`
-
-Inputs:
-
-- Latest storyboard
-- Latest asset and style guides
-- Optional art prompts
-- Optional draft keyframes and production keyframes
-- User-selected platform and input mode
-
-Outputs:
-
-- `06_video_prompts_v{N}.md` with artifact metadata
-- Per-shot source, duration, frame, subject motion, camera motion, motion intensity, identity preservation, and avoid list
-- Generated clip manifest if clips are produced
-
-Compatibility requirements:
-
-- Must reference exact source keyframe paths for image-to-video prompts.
-- Must not ask the video model to redesign identity, costume, props, layout, or lighting from source keyframes.
-- Must preserve storyboard duration and shot ID coverage or state any intentional omissions.
 
 ### `qa.primary`
 
@@ -204,7 +164,7 @@ Inputs:
 - Latest affected artifacts
 - Upstream artifact IDs
 - Locks
-- Generated asset manifests
+- Shotlist breakdowns, shotlist HTML, preview manifests, generated asset manifests, and generated video test manifests
 
 Outputs:
 
@@ -213,6 +173,9 @@ Outputs:
 
 Compatibility requirements:
 
-- Must separate structure, continuity, production feasibility, and taste recommendations.
+- Must not replace `shotlist.primary` internal hard gates; QA is an independent review layer.
+- Must run before Phase 4, after dense scene prompt drafting, after HTML/previews are complete, and after real video generation tests.
+- Must cite concrete scene numbers, shot rows, and `P###` prompt-envelope IDs when applicable.
+- Must separate structural checks, spatial continuity, prompt executability, reference status, platform production risk, and creative taste recommendations.
 - Must lead with blockers and list downstream impact after upstream edits.
 - Must render chat QA and persistent QA reports in Simplified Chinese unless the user explicitly requests another language.
