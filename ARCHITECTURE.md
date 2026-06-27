@@ -144,8 +144,8 @@ The workflow does not require a separate validation runtime. Codex should valida
 
 If repeatable automation is needed later, add a portable helper in a runtime already used by the repo.
 
-## Current State
+## Starter State
 
-As of 2026-06-23, the reusable role/skill rules live in Codex-standard project directories and active visual-production residue from the retired board/art/motion path has been moved out of `deliverables/`. The workflow now has Screenwriter-first script routing, iteration quality gates, explicit guide-stage ownership, the four-phase shotlist-builder loop as the active visual production path, Seedance/Higgsfield HTML as prompt source of truth, internal prompt hard gates, and QA checklists for scene-level prompt executability.
+As of 2026-06-27, `main` is a reusable workflow starter. The role and skill rules live in Codex-standard project directories, and `deliverables/` contains only neutral admin templates until a copied project instance creates real production artifacts.
 
-Current active visual state is intentionally clean: no `02_asset_guide_v{N}.md`, no `02_style_guide_v{N}.md`, no `03_shotlist_breakdown_v{N}.md`, and no scene package are present until the next production stage is explicitly created.
+No story-specific script, audit, asset guide, style guide, shotlist breakdown, scene package, reference image, generated preview, or video test should live in the reusable `main` baseline.

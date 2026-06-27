@@ -1,11 +1,14 @@
 # QA Reports
 
-This directory stores persistent QA reports for project state, stage checks, and regression checks.
+This directory starts empty in the reusable workflow package.
 
-Use filenames like:
+Save persistent reports here only when a project instance creates stage QA, batch QA, final QA, workflow audits, or regression checks that should survive beyond chat.
+
+Suggested filenames:
 
 - `qa_report_script_v1.md`
-- `qa_report_storyboard_v1.md`
-- `qa_report_regression_20260502.md`
+- `qa_report_shotlist_breakdown_v1.md`
+- `qa_report_scene-001_v1.md`
+- `qa_report_regression_YYYYMMDD.md`
 
-Quick conversational checks do not need a report file. Create a report when the check affects project handoff, downstream regeneration, or delivery decisions.
+Quick conversational checks do not need a report file.

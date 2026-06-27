@@ -1,27 +1,22 @@
 # Codex Skill Audit
 
-Audit date: 2026-06-23
+Audit date: 2026-06-27
 Scope: `AGENTS.md`, `.codex/agents/`, `.agents/skill_registry.md`, `.agents/skills/`, `deliverables/`, `archives/`
-Current result: structurally usable, shotlist-first, aligned to Codex-standard project directories, and cleaned of active retired visual-production artifacts.
+Current result: structurally usable, shotlist-first, aligned to Codex-standard project directories, and reset as a reusable workflow starter.
 
 ## Current State
 
-The repository is workflow-first and currently contains an active story-stage Screenwriter workflow test:
+The repository is workflow-first and `main` is intentionally project-neutral:
 
-- Generated production deliverables and archives are local artifacts and ignored by Git by default.
-- Local story-stage locks currently point to `deliverables/10_story/01_script_v10.md`, `01_audit_report_v10.md`, and the derived DOCX export when those files are present.
-- Retired visual-production residue has been moved out of active `deliverables/`: legacy `03_storyboard_v4`, the old `SB071-SB080` aggregate package, and the `text_dna_draft` generated reference batch now live under `archives/`.
-- Active `deliverables/20_assets/` and `deliverables/30_shotlist/` are clean stage roots waiting for the next current `02_asset_guide_v{N}.md`, `02_style_guide_v{N}.md`, and `03_shotlist_breakdown_v{N}.md`.
+- Generated production deliverables and archives belong in copied project instances, generated worktrees, or project forks.
+- `deliverables/00_admin/` contains neutral starter admin files only.
+- `deliverables/00_admin/locks.md` starts with no active project locks.
+- `deliverables/00_admin/changelog.md` starts as a project-instance changelog template.
+- `deliverables/00_admin/qa_reports/` starts with only `README.md`; persistent reports are created by real projects when needed.
 - `AGENTS.md` is the generic Codex rule entrypoint.
 - `.codex/agents/<id>.toml` defines project-scoped Codex custom agents.
 - `.agents/skill_registry.md` defines active workflow slots and compatibility requirements.
 - `.agents/skills/<skill>/SKILL.md` defines repo-scoped Codex skills.
-
-Latest workflow audit report:
-
-- `deliverables/00_admin/qa_reports/qa_report_screenwriter_workflow_routing_20260530.md`
-- `deliverables/00_admin/qa_reports/qa_report_hoshi_no_koe_source_acquisition_20260530.md`
-- `deliverables/00_admin/qa_reports/qa_report_workflow_cleanup_20260623.md`
 
 ## Inventory
 
@@ -32,8 +27,8 @@ Latest workflow audit report:
 | `.agents/skills/*/SKILL.md` | Active skills present after retiring old prompt/art/video workflow skills |
 | Explicit `references/*.md` links | No missing active references expected |
 | Obvious ghost skill references | Should be checked after each workflow migration |
-| Current production deliverables | Local story stage active: `01_script_v10.md`, `01_audit_report_v10.md`, derived DOCX when present; visual stage roots clean and ready for new guide/breakdown artifacts |
-| Generated test assets | Local-only and ignored by Git |
+| Current production deliverables | None in the reusable `main` baseline |
+| Generated test assets | Not present in `main`; keep them in copied project instances, generated worktrees, or project forks |
 
 ## Codex Conversion Status
 
@@ -69,8 +64,8 @@ Retired active skills: old board prompt, art prompt, art platform adapter, stand
 | --- | --- | --- |
 | P1 | Long shotlist scopes can still drift if generated as one pass. | Follow screenplay scene boundaries first; split overloaded scenes by action phase, camera setup, or reference-set change and require QA before previews/generated tests. |
 | P1 | Draft references can be mistaken for production continuity locks. | Keep `text_dna_draft`, `text_only_draft`, `prompt_only`, and `image_reference_bound` visible in HTML, manifests, and QA. |
-| P1 | Active visual stage is empty after cleanup. | Create `02_asset_guide_v1.md`, `02_style_guide_v1.md`, and `03_shotlist_breakdown_v1.md` before any new Phase 4 HTML. |
-| P3 | Historical changelog and QA reports preserve older intermediate path terminology. | Leave historical records intact; keep active docs on the shotlist-first contract. |
+| P1 | A copied project can start generating too late without locks. | Fill `deliverables/00_admin/locks.md` before production work once a concrete story or platform target exists. |
+| P2 | Empty starter state can be mistaken for missing workflow capability. | Treat empty deliverable stages as expected in `main`; use `.agents/skill_registry.md` and `AGENTS.md` for the workflow contract. |
 
 ## Recommended Next Cleanup
 

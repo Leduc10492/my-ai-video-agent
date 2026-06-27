@@ -1,45 +1,46 @@
-# 项目管理目录
+# Deliverables Admin
 
-这是项目产出文件的管理目录，包含项目级别的配置和日志。
+This directory is the reusable starter state for a new file-based AI video workflow project.
 
-## 📁 本目录文件
+It should stay project-neutral on `main`. Do not store story-specific scripts, reference images, generated previews, video tests, or historical project QA reports here.
 
-| 文件 | 用途 |
-|------|------|
-| `changelog.md` | 项目变更日志 |
-| `locks.md` | 全局约束条件 |
-| `qa_reports/` | 持久化 QA 报告目录 |
+## Files
 
-## 📁 Deliverables结构
+| Path | Purpose |
+| --- | --- |
+| `locks.md` | Project-specific constraints for the current active production run. Starts empty. |
+| `changelog.md` | Version/history log for newly created deliverables. Starts with template guidance only. |
+| `qa_reports/README.md` | Explains where persistent QA reports should be saved when a project creates them. |
 
-```
+## Canonical Production Paths
+
+```text
 deliverables/
-├── 00_admin/          # 管理目录（本目录）
-├── 10_story/          # 剧本和审核报告
-├── 20_guides/         # 资产和风格指南
-├── 30_breakdown/      # 分镜表
-├── 40_boards/         # 分镜提示词和图像
-├── 50_art/            # 美术提示词和参考
-└── 60_motion/         # 视频提示词和关键帧
-
-archives/              # 历史版本归档
+├── 00_admin/
+│   ├── README.md
+│   ├── locks.md
+│   ├── changelog.md
+│   └── qa_reports/
+├── 10_story/
+│   ├── 01_script_v{N}.md
+│   └── 01_audit_report_v{N}.md
+├── 20_assets/
+│   ├── 02_asset_guide_v{N}.md
+│   ├── 02_style_guide_v{N}.md
+│   ├── refs/
+│   └── generated_ref_v{N}/
+└── 30_shotlist/
+    ├── 03_shotlist_breakdown_v{N}.md
+    └── scenes/
+        └── <scene-scope>_v{N}/
+            ├── Shotlist_<scene-scope>_ZH_v{N}.html
+            ├── manifest.md
+            ├── assets/
+            ├── previews/
+            ├── generated/
+            └── qa/
 ```
 
-## 📋 标准文件路径
+## Starter Rule
 
-| 阶段 | 文件路径 |
-|------|----------|
-| 剧本 | `10_story/01_script_v{N}.md` |
-| 审核 | `10_story/01_audit_report_v{N}.md` |
-| 资产 | `20_guides/02_asset_guide_v{N}.md` |
-| 风格 | `20_guides/02_style_guide_v{N}.md` |
-| 分镜 | `30_breakdown/03_storyboard_v{N}.md` |
-| 分镜提示词 | `40_boards/04_storyboard_prompts_v{N}.md` |
-| 美术提示词 | `50_art/05_art_prompts_v{N}.md` |
-| 视频提示词 | `60_motion/06_video_prompts_v{N}.md` |
-
-## 🔄 版本管理
-
-- 当前版本保存在 `deliverables/`，文件名也带版本后缀
-- 旧版本归档到 `archives/` 对应子目录
-- 归档命名: `<文件名>_v<版本号>.md`
+`main` is a clean workflow package. Concrete project output belongs in a project fork, a generated worktree, or a copied project instance.

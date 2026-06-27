@@ -24,6 +24,7 @@ The workflow is project-agnostic. Do not hardcode a story title, character name,
 - Only spawn parallel Codex agents when the user explicitly asks for parallel agents or delegation.
 - When a legacy file says "call a skill", read the matching active `.agents/skills/<skill>/SKILL.md` if the skill still exists; otherwise map to the active shotlist-first skill listed below.
 - `deliverables/` is the source of truth for current project state. `archives/` is historical reference unless the user asks to restore or inspect archived material.
+- On the reusable `main` baseline, `deliverables/` should remain project-neutral: starter admin files only, no story-specific locks, scripts, references, generated assets, QA reports, or archived production history. Copied project instances, generated worktrees, or forks may fill in concrete project state.
 
 ## State Scan
 

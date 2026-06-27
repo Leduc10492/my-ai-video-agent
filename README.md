@@ -126,9 +126,9 @@ Before downstream work, check latest versions, upstream IDs, locks, guide/refere
 
 `sketch-shotlist-workflow` owns generation hard gates. `qa-workflow` provides independent review, regression checks, and persistent reports.
 
-## Current State
+## Starter State
 
-- Current local story-stage locks point to `deliverables/10_story/01_script_v10.md`, `01_audit_report_v10.md`, and the derived DOCX export when those local generated files are present.
-- Active visual-production directories have been reset to the current shotlist-first contract: retired `03_storyboard_v{N}`, legacy aggregate HTML, text-DNA reference batches, and generated test clips now live under `archives/`.
-- There is no current `02_asset_guide_v{N}.md`, `02_style_guide_v{N}.md`, or `03_shotlist_breakdown_v{N}.md` in `deliverables/`; create those before any new Phase 4 shotlist HTML.
-- Latest workflow hardening pass: Screenwriter-first script routing, McKee structure-packet plugins, guide stage coverage, shotlist breakdown migration, Seedance/Higgsfield HTML as prompt source of truth, batch quality gates, and QA checklists for prompt executability.
+- `main` is a reusable workflow package, not a concrete production project.
+- `deliverables/00_admin/` contains only neutral starter admin files: `README.md`, `locks.md`, `changelog.md`, and `qa_reports/README.md`.
+- No story-specific script, audit, asset guide, style guide, shotlist breakdown, scene package, reference image, generated preview, or video test is active in `main`.
+- When this package is copied for a real project, create the first project deliverables under the canonical stage paths and fill `deliverables/00_admin/locks.md` with that project's constraints.
