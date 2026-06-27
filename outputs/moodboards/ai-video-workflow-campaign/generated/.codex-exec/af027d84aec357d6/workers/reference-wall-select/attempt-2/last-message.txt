@@ -1,0 +1,3 @@
+Native image generation ran, but no local PNG handle/path was exposed for saving. I wrote the required failed worker result JSON here:
+
+`generated/.codex-exec/af027d84aec357d6/workers/reference-wall-select/attempt-2/result.json`

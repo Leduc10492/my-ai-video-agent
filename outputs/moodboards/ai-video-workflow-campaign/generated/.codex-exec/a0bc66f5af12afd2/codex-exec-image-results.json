@@ -1,0 +1,44 @@
+{
+  "status": "partial",
+  "total": 5,
+  "complete": 4,
+  "failed": 1,
+  "pending": 0,
+  "results": [
+    {
+      "id": "prompt-envelope-worktable-retry",
+      "status": "complete",
+      "image_path": "/Users/miniled/Developer/my-ai-video-agent/outputs/moodboards/ai-video-workflow-campaign/generated/.codex-exec/a0bc66f5af12afd2/563c1605d4fe9c2c7290ea777cb31b2b.png",
+      "error": null,
+      "caveats": ""
+    },
+    {
+      "id": "model-to-motion-moment-retry",
+      "status": "complete",
+      "image_path": "/Users/miniled/Developer/my-ai-video-agent/outputs/moodboards/ai-video-workflow-campaign/generated/.codex-exec/a0bc66f5af12afd2/14c03f9e3f4bd488667bac1269159f1b.png",
+      "error": null,
+      "caveats": ""
+    },
+    {
+      "id": "scene-package-archive-alt",
+      "status": "complete",
+      "image_path": "/Users/miniled/Developer/my-ai-video-agent/outputs/moodboards/ai-video-workflow-campaign/generated/.codex-exec/a0bc66f5af12afd2/da551479067aa83e3b14f6db6b862a67.png",
+      "error": null,
+      "caveats": ""
+    },
+    {
+      "id": "rough-econte-lightbox-retry",
+      "status": "complete",
+      "image_path": "/Users/miniled/Developer/my-ai-video-agent/outputs/moodboards/ai-video-workflow-campaign/generated/.codex-exec/a0bc66f5af12afd2/c4e7fab9f2b1bf95c4a57c89215a3771.png",
+      "error": null,
+      "caveats": ""
+    },
+    {
+      "id": "production-room-first-output-retry",
+      "status": "failed",
+      "image_path": null,
+      "error": "Native image generation returned an image in-chat, but no filesystem handle was available to save it to the requested PNG path.",
+      "caveats": ""
+    }
+  ]
+}

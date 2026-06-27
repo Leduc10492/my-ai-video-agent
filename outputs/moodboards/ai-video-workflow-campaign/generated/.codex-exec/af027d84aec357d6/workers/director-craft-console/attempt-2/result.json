@@ -1,0 +1,7 @@
+{
+  "id": "director-craft-console",
+  "status": "failed",
+  "image_path": null,
+  "error": "Native image generation returned an image but no filesystem handle was available to save image.png.",
+  "caveats": ""
+}

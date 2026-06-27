@@ -1,0 +1,32 @@
+{
+  "status": "ready_with_caveats",
+  "requested": 12,
+  "generated": 11,
+  "missing": 4,
+  "missingItems": [
+    {
+      "id": "prompt-envelope-worktable",
+      "title": "Prompt Envelope Worktable",
+      "prompt": "Single visual reference image of a warm worktable with blank kraft paper envelopes, small unlabeled photographic stills, camera lens, pencil marks, and a laptop edge casting soft light, an AI video workflow treated like a heritage production archive, no readable words, no logos, cinematic shallow depth of field. Single coherent frame, one composed scene or object detail, not a collage, not a grid, not a contact sheet, not a scrapbook, not a mood board layout."
+    },
+    {
+      "id": "model-to-motion-moment",
+      "title": "Model To Motion Moment",
+      "prompt": "Single composed scene of a creator's hand hovering between a printed blank film frame and a softly glowing screen with abstract motion streaks, old editing-room atmosphere mixed with modern AI video production, tactile paper and glass, no readable text, no logos, not a collage."
+    },
+    {
+      "id": "rough-econte-lightbox",
+      "title": "Rough E-Conte Lightbox",
+      "prompt": "Single visual reference image of a lightbox with blank frame cards and soft hand shadows, adjacent subtle screen glow implying AI video preview generation, heritage animation craft meets modern workflow, no readable text, no logos, clean cinematic composition. Single coherent frame, one composed scene or object detail, not a collage, not a grid, not a contact sheet, not a scrapbook, not a mood board layout."
+    },
+    {
+      "id": "production-room-first-output",
+      "title": "First Output In Room",
+      "prompt": "Single cinematic wide photograph of a small production room where an abstract generated video frame is projected onto a wall above a craft workbench with notebooks and camera tools, a product moment for an AI video workflow, inventive energy with heritage craft, no readable text, no logos. Single coherent frame, one composed scene or object detail, not a collage, not a grid, not a contact sheet, not a scrapbook, not a mood board layout."
+    }
+  ],
+  "note": "Final review stream excludes one duplicate generated image and includes only files with materialized MCP previews.",
+  "removedDuplicateItems": [
+    "scene-package-archive"
+  ]
+}

@@ -1,0 +1,1 @@
+Native image generation ran, but the tool did not expose a savable PNG path I could copy to the requested `image.png` location. I wrote the required `result.json` with `status: "failed"` and a concise error.

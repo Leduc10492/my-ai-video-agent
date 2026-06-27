@@ -1,0 +1,5 @@
+Native image generation ran, but this session did not expose a generated-image file handle or save-path parameter, so I could not save `image.png` without violating your no-placeholder rule.
+
+I wrote the required failed worker result JSON to:
+
+`generated/.codex-exec/a05d7a3a2e7dc3bd/workers/generation-manifest-table/attempt-1/result.json`

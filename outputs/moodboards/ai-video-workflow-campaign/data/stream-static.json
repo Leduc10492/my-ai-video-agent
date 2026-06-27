@@ -1,0 +1,1403 @@
+{
+  "meta": {
+    "title": "AI Video Workflow Campaign Mood Board",
+    "summary": "Eleven generated visual references for a campaign around an AI video production workflow, shaped by inventive energy, product moments, and heritage craft.",
+    "generatedAt": "2026-06-04",
+    "briefAssumption": "No external campaign brief was supplied. The board treats the current workspace product identity as the campaign subject: a project-agnostic AI video production workflow package for turning scripts into Seedance/Higgsfield shotlist assets.",
+    "requestedItemCount": 12,
+    "generatedItemCount": 11,
+    "missingItemCount": 4,
+    "removedDuplicateItems": [
+      "scene-package-archive"
+    ]
+  },
+  "signals": {
+    "theme": "AI video creation workflow package",
+    "goal": "Make the workflow feel inventive, tactile, and production-ready without looking like generic software marketing.",
+    "audience": "Creative operators, directors, producers, and AI-video builders evaluating a structured production workflow.",
+    "brand_inputs": [
+      "Workspace identity from AGENTS.md: file-based AI video creation workflow package",
+      "Selected cue: Inventive energy",
+      "Selected cue: Product moments",
+      "Selected cue: Heritage craft"
+    ],
+    "palette_direction": "warm paper, graphite, black ink, brushed metal, amber light, restrained signal colors",
+    "emotional_register": "inventive, hands-on, cinematic, credible, craft-led",
+    "must_include": [
+      "product moments",
+      "workflow artifacts",
+      "hands-on production cues",
+      "single visual reference images"
+    ],
+    "visual_principles": [
+      "treat the workflow as a craft table, not a glossy SaaS dashboard",
+      "show modern AI video production through tangible scenes and tools",
+      "balance analog filmmaking heritage with precise digital systems",
+      "make every tile one composed photograph or material detail"
+    ],
+    "avoid": [
+      "readable UI text",
+      "logos",
+      "collages",
+      "grids",
+      "contact sheets",
+      "mini mood boards",
+      "generic blue-purple tech gradients",
+      "stock office scenes"
+    ],
+    "next_outputs": [
+      "campaign landing visuals",
+      "social launch cards",
+      "product story frames",
+      "deck hero imagery"
+    ],
+    "context_signals": [
+      "campaign brief was not supplied",
+      "current workspace path: /Users/miniled/Developer/my-ai-video-agent"
+    ]
+  },
+  "items": [
+    {
+      "id": "bench-shotlist-to-screen",
+      "title": "Shotlist Bench",
+      "caption": "A tactile product moment: structured shot planning moving from paper to a luminous preview surface.",
+      "source": "Generated from qualified moodboard intake and workspace identity.",
+      "tone": "inventive energy, heritage craft",
+      "motif": "script pages, shot cards, preview monitor, production desk",
+      "palette": [
+        "warm paper",
+        "graphite black",
+        "brushed steel",
+        "amber light",
+        "soft white"
+      ],
+      "prompt": "Single editorial photograph of a cinematic AI video production desk where a director's hands arrange blank shot cards beside a glowing monitor showing abstract film frames, warm paper texture, graphite pencils, brushed metal tools, amber desk light, heritage film craft meeting modern production software, no readable text, no logos. Single coherent frame, one composed scene or object detail, not a collage, not a grid, not a contact sheet, not a scrapbook, not a mood board layout.",
+      "remixSuggestions": {
+        "style": [
+          {
+            "label": "Minimal Bench",
+            "description": "Quieter hierarchy, more negative space, and stricter restraint around Shotlist Bench",
+            "promptHint": "Strip Shotlist Bench down to a minimal premium frame; keep A tactile product moment: structured shot planning moving from paper to a luminous preview surface legible but change..."
+          },
+          {
+            "label": "Motion Bench",
+            "description": "More kinetic gesture, blur, or environmental energy around Shotlist Bench",
+            "promptHint": "Introduce controlled motion to Shotlist Bench while preserving the campaign cue: A tactile product moment: structured shot planning moving from paper to a luminous preview surface"
+          },
+          {
+            "label": "Material Bench",
+            "description": "A closer tactile read of surface, temperature, and finish around Shotlist Bench",
+            "promptHint": "Rebuild Shotlist Bench as a tactile material study inspired by A tactile product moment: structured shot planning moving from paper to a luminous preview surface, with a..."
+          }
+        ],
+        "palette": [
+          {
+            "label": "Cool Bench",
+            "description": "Crisper whites, cooler shadows, and restrained technical contrast",
+            "promptHint": "Use cooler minimal accents around Shotlist Bench; keep A tactile product moment: structured shot planning moving from paper to a luminous preview surface intact"
+          },
+          {
+            "label": "Monochrome Bench",
+            "description": "A narrower near-monochrome treatment that lets one cue around Shotlist Bench stand out",
+            "promptHint": "Reduce the palette around Shotlist Bench to tonal restraint plus one preserved cue from A tactile product moment: structured shot planning moving from paper to a luminous..."
+          },
+          {
+            "label": "Warm Bench",
+            "description": "Warmer neutrals and tactile highlights around Shotlist Bench",
+            "promptHint": "Shift the palette warmer while preserving the subject and composition of Shotlist Bench"
+          }
+        ],
+        "scene": [
+          {
+            "label": "Bench Exterior",
+            "description": "Move Shotlist Bench into an outdoor or threshold environment with a fresh spatial read",
+            "promptHint": "Relocate Shotlist Bench into an exterior or entryway scene while preserving the core cue: A tactile product moment: structured shot planning moving from paper to a luminous..."
+          },
+          {
+            "label": "Bench Studio",
+            "description": "A cleaner controlled studio setting that keeps Shotlist Bench dominant",
+            "promptHint": "Move Shotlist Bench into a cleaner studio-hero setting while preserving A tactile product moment: structured shot planning moving from paper to a luminous preview surface"
+          },
+          {
+            "label": "Bench Detail",
+            "description": "A tighter scene focused on material, craft, or product detail",
+            "promptHint": "Create a close-detail scene for Shotlist Bench, keeping the most important source cue visible"
+          }
+        ],
+        "props": [
+          {
+            "label": "Unexpected Bench Prop",
+            "description": "One surprising but believable object that opens a new story around Shotlist Bench",
+            "promptHint": "Add one unexpected supporting prop that extends A tactile product moment: structured shot planning moving from paper to a luminous preview surface without stealing focus from..."
+          },
+          {
+            "label": "Minimal Support",
+            "description": "Reduce surrounding objects so Shotlist Bench carries more weight",
+            "promptHint": "Remove nonessential props and keep Shotlist Bench as the dominant read"
+          },
+          {
+            "label": "Premium Finish",
+            "description": "Sharper materials, cleaner surfaces, and more elevated detail",
+            "promptHint": "Add premium material cues around Shotlist Bench; preserve the source image's composition"
+          }
+        ],
+        "character": [
+          {
+            "label": "Expert Hands",
+            "description": "More credible craft, authority, and purposeful interaction with Shotlist Bench",
+            "promptHint": "If a person appears, make them an expert operator interacting naturally with Shotlist Bench"
+          },
+          {
+            "label": "No Human",
+            "description": "Let the object, place, or composition carry the frame",
+            "promptHint": "Remove visible people and let Shotlist Bench carry the image"
+          },
+          {
+            "label": "Collector Persona",
+            "description": "A more intentional, taste-driven persona interacting with Shotlist Bench",
+            "promptHint": "Introduce a collector or tastemaker presence around Shotlist Bench while changing wardrobe, gesture, or posture"
+          }
+        ],
+        "format": [
+          {
+            "label": "Wide Bench",
+            "description": "Broader horizontal composition for landing-page or banner use",
+            "promptHint": "Adapt Shotlist Bench to a wide hero composition with room for layout"
+          },
+          {
+            "label": "Square Bench",
+            "description": "A balanced square crop for gallery or feed review",
+            "promptHint": "Recompose Shotlist Bench as a square frame with a changed focal balance and the core cue intact"
+          },
+          {
+            "label": "Portrait Bench",
+            "description": "Tighter vertical crop for social or story placement",
+            "promptHint": "Adapt Shotlist Bench to a portrait social crop while preserving the key visual read"
+          }
+        ]
+      },
+      "imageUrl": "/generated/mcp-thumbs/bench-shotlist-to-screen.jpg",
+      "sourceImageUrl": "/generated/0d290c41de6171db42c2585cd160450b.png"
+    },
+    {
+      "id": "director-craft-console",
+      "title": "Director Craft Console",
+      "caption": "A practical command surface for image-to-video production, shown as a craft station.",
+      "source": "Generated from qualified moodboard intake and workspace identity.",
+      "tone": "confident, hands-on, inventive",
+      "motif": "control surface, lens, notebooks, muted hardware",
+      "palette": [
+        "matte black",
+        "walnut brown",
+        "warm grey",
+        "white paper",
+        "tiny amber indicators"
+      ],
+      "prompt": "Single editorial photograph of a compact director's work console with analog knobs, a camera lens, blank notebooks, and a modern screen showing non-readable abstract video thumbnails, inventive product moment for an AI video workflow, heritage craft mood, no logos, no readable text, no grid. Single coherent frame, one composed scene or object detail, not a collage, not a grid, not a contact sheet, not a scrapbook, not a mood board layout.",
+      "remixSuggestions": {
+        "style": [
+          {
+            "label": "Editorial Console",
+            "description": "Cleaner light and hierarchy around Director Craft Console",
+            "promptHint": "Apply a polished editorial treatment to Director Craft Console; preserve A practical command surface for image-to-video production, shown as a craft station while changing the..."
+          },
+          {
+            "label": "Minimal Console",
+            "description": "Quieter hierarchy, more negative space, and stricter restraint around Director Craft Console",
+            "promptHint": "Strip Director Craft Console down to a minimal premium frame; keep A practical command surface for image-to-video production, shown as a craft station legible but change the..."
+          },
+          {
+            "label": "Motion Console",
+            "description": "More kinetic gesture, blur, or environmental energy around Director Craft Console",
+            "promptHint": "Introduce controlled motion to Director Craft Console while preserving the campaign cue: A practical command surface for image-to-video production, shown as a craft station"
+          }
+        ],
+        "palette": [
+          {
+            "label": "Accent Console",
+            "description": "A stronger accent color against quieter supporting surfaces",
+            "promptHint": "Add a controlled accent palette to Director Craft Console without changing the main subject"
+          },
+          {
+            "label": "Unexpected Console",
+            "description": "A more surprising secondary color relationship around Director Craft Console",
+            "promptHint": "Keep the subject recognizable, but introduce one unexpected supporting color that extends A practical command surface for image-to-video production, shown as a craft station"
+          },
+          {
+            "label": "Cool Console",
+            "description": "Crisper whites, cooler shadows, and restrained technical contrast",
+            "promptHint": "Use cooler minimal accents around Director Craft Console; keep A practical command surface for image-to-video production, shown as a craft station intact"
+          }
+        ],
+        "scene": [
+          {
+            "label": "Console In Use",
+            "description": "A more believable real-world context for Director Craft Console",
+            "promptHint": "Place Director Craft Console into a realistic usage context; preserve the source image's core cue: A practical command surface for image-to-video production, shown as a craft..."
+          },
+          {
+            "label": "Console Exterior",
+            "description": "Move Director Craft Console into an outdoor or threshold environment with a fresh spatial read",
+            "promptHint": "Relocate Director Craft Console into an exterior or entryway scene while preserving the core cue: A practical command surface for image-to-video production, shown as a craft..."
+          },
+          {
+            "label": "Console Studio",
+            "description": "A cleaner controlled studio setting that keeps Director Craft Console dominant",
+            "promptHint": "Move Director Craft Console into a cleaner studio-hero setting while preserving A practical command surface for image-to-video production, shown as a craft station"
+          }
+        ],
+        "props": [
+          {
+            "label": "Console Cues",
+            "description": "Add restrained supporting objects that clarify the context of Director Craft Console",
+            "promptHint": "Add a few contextual props that reinforce A practical command surface for image-to-video production, shown as a craft station without distracting from Director Craft Console"
+          },
+          {
+            "label": "Unexpected Console Prop",
+            "description": "One surprising but believable object that opens a new story around Director Craft Console",
+            "promptHint": "Add one unexpected supporting prop that extends A practical command surface for image-to-video production, shown as a craft station without stealing focus from Director Craft..."
+          },
+          {
+            "label": "Minimal Support",
+            "description": "Reduce surrounding objects so Director Craft Console carries more weight",
+            "promptHint": "Remove nonessential props and keep Director Craft Console as the dominant read"
+          }
+        ],
+        "character": [
+          {
+            "label": "Collector Persona",
+            "description": "A more intentional, taste-driven persona interacting with Director Craft Console",
+            "promptHint": "Introduce a collector or tastemaker presence around Director Craft Console while changing wardrobe, gesture, or posture"
+          },
+          {
+            "label": "Everyday Use",
+            "description": "More approachable human presence while preserving the mood",
+            "promptHint": "Show Director Craft Console in an everyday user context without losing A practical command surface for image-to-video production, shown as a craft station"
+          },
+          {
+            "label": "Passing Figure",
+            "description": "A partial human presence that adds scale and motion without taking over Director Craft Console",
+            "promptHint": "Add a cropped passing figure or gesture around Director Craft Console; keep identity nonspecific and preserve A practical command surface for image-to-video production, shown..."
+          }
+        ],
+        "format": [
+          {
+            "label": "Square Console",
+            "description": "A balanced square crop for gallery or feed review",
+            "promptHint": "Recompose Director Craft Console as a square frame with a changed focal balance and the core cue intact"
+          },
+          {
+            "label": "Portrait Console",
+            "description": "Tighter vertical crop for social or story placement",
+            "promptHint": "Adapt Director Craft Console to a portrait social crop while preserving the key visual read"
+          },
+          {
+            "label": "Console Crop",
+            "description": "Closer inspection of the material, surface, or focal subject",
+            "promptHint": "Create a closer detail crop of Director Craft Console; keep A practical command surface for image-to-video production, shown as a craft station legible"
+          }
+        ]
+      },
+      "imageUrl": "/generated/mcp-thumbs/director-craft-console.jpg",
+      "sourceImageUrl": "/generated/ccf9735f1307cf595a02a2e1097618c2.png"
+    },
+    {
+      "id": "preview-frame-inspection",
+      "title": "Preview Frame Inspection",
+      "caption": "A product moment focused on reviewing generated preview frames with craft judgment.",
+      "source": "Generated from qualified moodboard intake and workspace identity.",
+      "tone": "attentive, inventive, production-ready",
+      "motif": "loupe, monitor glow, frame inspection, hands",
+      "palette": [
+        "soft white",
+        "charcoal",
+        "amber",
+        "cool grey",
+        "brass"
+      ],
+      "prompt": "Single close editorial photograph of hands inspecting a luminous generated video preview frame with a vintage film loupe and pencil nearby, abstract image on screen with no readable interface, tactile heritage filmmaking tools meeting AI video review, no logos, no text. Single coherent frame, one composed scene or object detail, not a collage, not a grid, not a contact sheet, not a scrapbook, not a mood board layout.",
+      "remixSuggestions": {
+        "style": [
+          {
+            "label": "Minimal Inspection",
+            "description": "Quieter hierarchy, more negative space, and stricter restraint around Preview Frame Inspection",
+            "promptHint": "Strip Preview Frame Inspection down to a minimal premium frame; keep A product moment focused on reviewing generated preview frames with craft judgment legible but change the..."
+          },
+          {
+            "label": "Motion Inspection",
+            "description": "More kinetic gesture, blur, or environmental energy around Preview Frame Inspection",
+            "promptHint": "Introduce controlled motion to Preview Frame Inspection while preserving the campaign cue: A product moment focused on reviewing generated preview frames with craft judgment"
+          },
+          {
+            "label": "Material Inspection",
+            "description": "A closer tactile read of surface, temperature, and finish around Preview Frame Inspection",
+            "promptHint": "Rebuild Preview Frame Inspection as a tactile material study inspired by A product moment focused on reviewing generated preview frames with craft judgment, with a visibly..."
+          }
+        ],
+        "palette": [
+          {
+            "label": "Unexpected Inspection",
+            "description": "A more surprising secondary color relationship around Preview Frame Inspection",
+            "promptHint": "Keep the subject recognizable, but introduce one unexpected supporting color that extends A product moment focused on reviewing generated preview frames with craft judgment"
+          },
+          {
+            "label": "Cool Inspection",
+            "description": "Crisper whites, cooler shadows, and restrained technical contrast",
+            "promptHint": "Use cooler minimal accents around Preview Frame Inspection; keep A product moment focused on reviewing generated preview frames with craft judgment intact"
+          },
+          {
+            "label": "Monochrome Inspection",
+            "description": "A narrower near-monochrome treatment that lets one cue around Preview Frame Inspection stand out",
+            "promptHint": "Reduce the palette around Preview Frame Inspection to tonal restraint plus one preserved cue from A product moment focused on reviewing generated preview frames with craft judgment"
+          }
+        ],
+        "scene": [
+          {
+            "label": "Inspection Backstage",
+            "description": "A behind-the-scenes environment that adds process and atmosphere around Preview Frame Inspection",
+            "promptHint": "Reframe Preview Frame Inspection as a backstage or preparation moment; keep A product moment focused on reviewing generated preview frames with craft judgment recognizable"
+          },
+          {
+            "label": "Inspection In Use",
+            "description": "A more believable real-world context for Preview Frame Inspection",
+            "promptHint": "Place Preview Frame Inspection into a realistic usage context; preserve the source image's core cue: A product moment focused on reviewing generated preview frames with craft..."
+          },
+          {
+            "label": "Inspection Exterior",
+            "description": "Move Preview Frame Inspection into an outdoor or threshold environment with a fresh spatial read",
+            "promptHint": "Relocate Preview Frame Inspection into an exterior or entryway scene while preserving the core cue: A product moment focused on reviewing generated preview frames with craft..."
+          }
+        ],
+        "props": [
+          {
+            "label": "Process Cues",
+            "description": "Tools, traces, or handling details that make Preview Frame Inspection feel actively used",
+            "promptHint": "Add restrained process cues around Preview Frame Inspection; preserve the strongest visual idea from A product moment focused on reviewing generated preview frames with craft..."
+          },
+          {
+            "label": "Inspection Cues",
+            "description": "Add restrained supporting objects that clarify the context of Preview Frame Inspection",
+            "promptHint": "Add a few contextual props that reinforce A product moment focused on reviewing generated preview frames with craft judgment without distracting from Preview Frame Inspection"
+          },
+          {
+            "label": "Unexpected Inspection Prop",
+            "description": "One surprising but believable object that opens a new story around Preview Frame Inspection",
+            "promptHint": "Add one unexpected supporting prop that extends A product moment focused on reviewing generated preview frames with craft judgment without stealing focus from Preview Frame..."
+          }
+        ],
+        "character": [
+          {
+            "label": "Expert Hands",
+            "description": "More credible craft, authority, and purposeful interaction with Preview Frame Inspection",
+            "promptHint": "If a person appears, make them an expert operator interacting naturally with Preview Frame Inspection"
+          },
+          {
+            "label": "No Human",
+            "description": "Let the object, place, or composition carry the frame",
+            "promptHint": "Remove visible people and let Preview Frame Inspection carry the image"
+          },
+          {
+            "label": "Collector Persona",
+            "description": "A more intentional, taste-driven persona interacting with Preview Frame Inspection",
+            "promptHint": "Introduce a collector or tastemaker presence around Preview Frame Inspection while changing wardrobe, gesture, or posture"
+          }
+        ],
+        "format": [
+          {
+            "label": "Square Inspection",
+            "description": "A balanced square crop for gallery or feed review",
+            "promptHint": "Recompose Preview Frame Inspection as a square frame with a changed focal balance and the core cue intact"
+          },
+          {
+            "label": "Portrait Inspection",
+            "description": "Tighter vertical crop for social or story placement",
+            "promptHint": "Adapt Preview Frame Inspection to a portrait social crop while preserving the key visual read"
+          },
+          {
+            "label": "Inspection Crop",
+            "description": "Closer inspection of the material, surface, or focal subject",
+            "promptHint": "Create a closer detail crop of Preview Frame Inspection; keep A product moment focused on reviewing generated preview frames with craft judgment legible"
+          }
+        ]
+      },
+      "imageUrl": "/generated/mcp-thumbs/preview-frame-inspection.jpg",
+      "sourceImageUrl": "/generated/5ded543ed411a96897e9f8df3115532e.png"
+    },
+    {
+      "id": "script-to-shot-cards",
+      "title": "Script To Shot Cards",
+      "caption": "The workflow product seen as a bridge from screenplay structure to shot execution.",
+      "source": "Generated from qualified moodboard intake and workspace identity.",
+      "tone": "purposeful, craft-led, energetic",
+      "motif": "blank screenplay pages, shot cards, timeline strip, hand placement",
+      "palette": [
+        "white paper",
+        "graphite",
+        "red pencil",
+        "warm wood",
+        "soft black"
+      ],
+      "prompt": "Single overhead editorial photograph of blank screenplay pages, unmarked shot cards, a simple film timeline strip, and a creator's hands aligning production beats, AI video workflow as tactile craft process, no readable text, no logos, no collage, warm studio light. Single coherent frame, one composed scene or object detail, not a collage, not a grid, not a contact sheet, not a scrapbook, not a mood board layout.",
+      "remixSuggestions": {
+        "style": [
+          {
+            "label": "Dramatic Cards",
+            "description": "Richer blacks, sharper highlights, and more cinematic emphasis",
+            "promptHint": "Apply high-contrast cinematic treatment to Script To Shot Cards; keep The workflow product seen as a bridge from screenplay structure to shot execution recognizable but alter..."
+          },
+          {
+            "label": "Candid Cards",
+            "description": "More natural texture and believable lived-in detail for Script To Shot Cards",
+            "promptHint": "Shift Script To Shot Cards toward documentary realism while preserving The workflow product seen as a bridge from screenplay structure to shot execution; make lighting and..."
+          },
+          {
+            "label": "Editorial Cards",
+            "description": "Cleaner light and hierarchy around Script To Shot Cards",
+            "promptHint": "Apply a polished editorial treatment to Script To Shot Cards; preserve The workflow product seen as a bridge from screenplay structure to shot execution while changing the..."
+          }
+        ],
+        "palette": [
+          {
+            "label": "Accent Cards",
+            "description": "A stronger accent color against quieter supporting surfaces",
+            "promptHint": "Add a controlled accent palette to Script To Shot Cards without changing the main subject"
+          },
+          {
+            "label": "Unexpected Cards",
+            "description": "A more surprising secondary color relationship around Script To Shot Cards",
+            "promptHint": "Keep the subject recognizable, but introduce one unexpected supporting color that extends The workflow product seen as a bridge from screenplay structure to shot execution"
+          },
+          {
+            "label": "Cool Cards",
+            "description": "Crisper whites, cooler shadows, and restrained technical contrast",
+            "promptHint": "Use cooler minimal accents around Script To Shot Cards; keep The workflow product seen as a bridge from screenplay structure to shot execution intact"
+          }
+        ],
+        "scene": [
+          {
+            "label": "Cards Exterior",
+            "description": "Move Script To Shot Cards into an outdoor or threshold environment with a fresh spatial read",
+            "promptHint": "Relocate Script To Shot Cards into an exterior or entryway scene while preserving the core cue: The workflow product seen as a bridge from screenplay structure to shot execution"
+          },
+          {
+            "label": "Cards Studio",
+            "description": "A cleaner controlled studio setting that keeps Script To Shot Cards dominant",
+            "promptHint": "Move Script To Shot Cards into a cleaner studio-hero setting while preserving The workflow product seen as a bridge from screenplay structure to shot execution"
+          },
+          {
+            "label": "Cards Detail",
+            "description": "A tighter scene focused on material, craft, or product detail",
+            "promptHint": "Create a close-detail scene for Script To Shot Cards, keeping the most important source cue visible"
+          }
+        ],
+        "props": [
+          {
+            "label": "Unexpected Cards Prop",
+            "description": "One surprising but believable object that opens a new story around Script To Shot Cards",
+            "promptHint": "Add one unexpected supporting prop that extends The workflow product seen as a bridge from screenplay structure to shot execution without stealing focus from Script To Shot Cards"
+          },
+          {
+            "label": "Minimal Support",
+            "description": "Reduce surrounding objects so Script To Shot Cards carries more weight",
+            "promptHint": "Remove nonessential props and keep Script To Shot Cards as the dominant read"
+          },
+          {
+            "label": "Premium Finish",
+            "description": "Sharper materials, cleaner surfaces, and more elevated detail",
+            "promptHint": "Add premium material cues around Script To Shot Cards; preserve the source image's composition"
+          }
+        ],
+        "character": [
+          {
+            "label": "No Human",
+            "description": "Let the object, place, or composition carry the frame",
+            "promptHint": "Remove visible people and let Script To Shot Cards carry the image"
+          },
+          {
+            "label": "Collector Persona",
+            "description": "A more intentional, taste-driven persona interacting with Script To Shot Cards",
+            "promptHint": "Introduce a collector or tastemaker presence around Script To Shot Cards while changing wardrobe, gesture, or posture"
+          },
+          {
+            "label": "Everyday Use",
+            "description": "More approachable human presence while preserving the mood",
+            "promptHint": "Show Script To Shot Cards in an everyday user context without losing The workflow product seen as a bridge from screenplay structure to shot execution"
+          }
+        ],
+        "format": [
+          {
+            "label": "Split-Depth Cards",
+            "description": "Foreground detail and background atmosphere in one composed frame",
+            "promptHint": "Create a single-frame split-depth composition for Script To Shot Cards; do not make a collage or panel layout"
+          },
+          {
+            "label": "Wide Cards",
+            "description": "Broader horizontal composition for landing-page or banner use",
+            "promptHint": "Adapt Script To Shot Cards to a wide hero composition with room for layout"
+          },
+          {
+            "label": "Square Cards",
+            "description": "A balanced square crop for gallery or feed review",
+            "promptHint": "Recompose Script To Shot Cards as a square frame with a changed focal balance and the core cue intact"
+          }
+        ]
+      },
+      "imageUrl": "/generated/mcp-thumbs/script-to-shot-cards.jpg",
+      "sourceImageUrl": "/generated/d2fb74a96022fe73db62bfd0b2bc02be.png"
+    },
+    {
+      "id": "reference-wall-select",
+      "title": "Reference Wall Select",
+      "caption": "A focused selection moment, not a board inside the tile: one creator choosing the next production reference.",
+      "source": "Generated from qualified moodboard intake and workspace identity.",
+      "tone": "curious, inventive, editorial",
+      "motif": "single wall, image reference, hand selecting, warm light",
+      "palette": [
+        "warm neutral",
+        "charcoal",
+        "cream",
+        "muted cyan",
+        "brass"
+      ],
+      "prompt": "Single cinematic scene of a creator selecting one unmarked visual reference from a sparse studio wall, only a few blurred abstract images in the background, product moment for AI video direction, heritage craft studio atmosphere, no readable text, no logos, not a mood board layout. Single coherent frame, one composed scene or object detail, not a collage, not a grid, not a contact sheet, not a scrapbook, not a mood board layout.",
+      "remixSuggestions": {
+        "style": [
+          {
+            "label": "Candid Select",
+            "description": "More natural texture and believable lived-in detail for Reference Wall Select",
+            "promptHint": "Shift Reference Wall Select toward documentary realism while preserving A focused selection moment, not a board inside the tile: one creator choosing the next production..."
+          },
+          {
+            "label": "Editorial Select",
+            "description": "Cleaner light and hierarchy around Reference Wall Select",
+            "promptHint": "Apply a polished editorial treatment to Reference Wall Select; preserve A focused selection moment, not a board inside the tile: one creator choosing the next production..."
+          },
+          {
+            "label": "Minimal Select",
+            "description": "Quieter hierarchy, more negative space, and stricter restraint around Reference Wall Select",
+            "promptHint": "Strip Reference Wall Select down to a minimal premium frame; keep A focused selection moment, not a board inside the tile: one creator choosing the next production reference..."
+          }
+        ],
+        "palette": [
+          {
+            "label": "Cool Select",
+            "description": "Crisper whites, cooler shadows, and restrained technical contrast",
+            "promptHint": "Use cooler minimal accents around Reference Wall Select; keep A focused selection moment, not a board inside the tile: one creator choosing the next production reference intact"
+          },
+          {
+            "label": "Monochrome Select",
+            "description": "A narrower near-monochrome treatment that lets one cue around Reference Wall Select stand out",
+            "promptHint": "Reduce the palette around Reference Wall Select to tonal restraint plus one preserved cue from A focused selection moment, not a board inside the tile: one creator choosing the..."
+          },
+          {
+            "label": "Warm Select",
+            "description": "Warmer neutrals and tactile highlights around Reference Wall Select",
+            "promptHint": "Shift the palette warmer while preserving the subject and composition of Reference Wall Select"
+          }
+        ],
+        "scene": [
+          {
+            "label": "Select Studio",
+            "description": "A cleaner controlled studio setting that keeps Reference Wall Select dominant",
+            "promptHint": "Move Reference Wall Select into a cleaner studio-hero setting while preserving A focused selection moment, not a board inside the tile: one creator choosing the next production..."
+          },
+          {
+            "label": "Select Detail",
+            "description": "A tighter scene focused on material, craft, or product detail",
+            "promptHint": "Create a close-detail scene for Reference Wall Select, keeping the most important source cue visible"
+          },
+          {
+            "label": "Select Backstage",
+            "description": "A behind-the-scenes environment that adds process and atmosphere around Reference Wall Select",
+            "promptHint": "Reframe Reference Wall Select as a backstage or preparation moment; keep A focused selection moment, not a board inside the tile: one creator choosing the next production..."
+          }
+        ],
+        "props": [
+          {
+            "label": "Minimal Support",
+            "description": "Reduce surrounding objects so Reference Wall Select carries more weight",
+            "promptHint": "Remove nonessential props and keep Reference Wall Select as the dominant read"
+          },
+          {
+            "label": "Premium Finish",
+            "description": "Sharper materials, cleaner surfaces, and more elevated detail",
+            "promptHint": "Add premium material cues around Reference Wall Select; preserve the source image's composition"
+          },
+          {
+            "label": "Process Cues",
+            "description": "Tools, traces, or handling details that make Reference Wall Select feel actively used",
+            "promptHint": "Add restrained process cues around Reference Wall Select; preserve the strongest visual idea from A focused selection moment, not a board inside the tile: one creator choosing..."
+          }
+        ],
+        "character": [
+          {
+            "label": "Passing Figure",
+            "description": "A partial human presence that adds scale and motion without taking over Reference Wall Select",
+            "promptHint": "Add a cropped passing figure or gesture around Reference Wall Select; keep identity nonspecific and preserve A focused selection moment, not a board inside the tile: one..."
+          },
+          {
+            "label": "Expert Hands",
+            "description": "More credible craft, authority, and purposeful interaction with Reference Wall Select",
+            "promptHint": "If a person appears, make them an expert operator interacting naturally with Reference Wall Select"
+          },
+          {
+            "label": "No Human",
+            "description": "Let the object, place, or composition carry the frame",
+            "promptHint": "Remove visible people and let Reference Wall Select carry the image"
+          }
+        ],
+        "format": [
+          {
+            "label": "Select Crop",
+            "description": "Closer inspection of the material, surface, or focal subject",
+            "promptHint": "Create a closer detail crop of Reference Wall Select; keep A focused selection moment, not a board inside the tile: one creator choosing the next production reference legible"
+          },
+          {
+            "label": "Split-Depth Select",
+            "description": "Foreground detail and background atmosphere in one composed frame",
+            "promptHint": "Create a single-frame split-depth composition for Reference Wall Select; do not make a collage or panel layout"
+          },
+          {
+            "label": "Wide Select",
+            "description": "Broader horizontal composition for landing-page or banner use",
+            "promptHint": "Adapt Reference Wall Select to a wide hero composition with room for layout"
+          }
+        ]
+      },
+      "imageUrl": "/generated/mcp-thumbs/reference-wall-select.jpg",
+      "sourceImageUrl": "/generated/9cca612ddb0304ff836a53c3c31fcd00.png"
+    },
+    {
+      "id": "generation-manifest-table",
+      "title": "Generation Manifest Table",
+      "caption": "A production manifest treated like a trusted craft ledger.",
+      "source": "Generated from qualified moodboard intake and workspace identity.",
+      "tone": "credible, precise, heritage",
+      "motif": "ledger, film canister, laptop glow, organized tools",
+      "palette": [
+        "ink",
+        "cream",
+        "steel",
+        "walnut",
+        "amber"
+      ],
+      "prompt": "Single still-life photograph of an unmarked production ledger, film canister, laptop glow, and neatly arranged AI video production tools on a walnut table, product moment of a generation manifest without readable text, heritage craft with inventive modern energy, no logos. Single coherent frame, one composed scene or object detail, not a collage, not a grid, not a contact sheet, not a scrapbook, not a mood board layout.",
+      "remixSuggestions": {
+        "style": [
+          {
+            "label": "Candid Table",
+            "description": "More natural texture and believable lived-in detail for Generation Manifest Table",
+            "promptHint": "Shift Generation Manifest Table toward documentary realism while preserving A production manifest treated like a trusted craft ledger; make lighting and staging feel newly observed"
+          },
+          {
+            "label": "Editorial Table",
+            "description": "Cleaner light and hierarchy around Generation Manifest Table",
+            "promptHint": "Apply a polished editorial treatment to Generation Manifest Table; preserve A production manifest treated like a trusted craft ledger while changing the composition enough to..."
+          },
+          {
+            "label": "Minimal Table",
+            "description": "Quieter hierarchy, more negative space, and stricter restraint around Generation Manifest Table",
+            "promptHint": "Strip Generation Manifest Table down to a minimal premium frame; keep A production manifest treated like a trusted craft ledger legible but change the surrounding space"
+          }
+        ],
+        "palette": [
+          {
+            "label": "Accent Table",
+            "description": "A stronger accent color against quieter supporting surfaces",
+            "promptHint": "Add a controlled accent palette to Generation Manifest Table without changing the main subject"
+          },
+          {
+            "label": "Unexpected Table",
+            "description": "A more surprising secondary color relationship around Generation Manifest Table",
+            "promptHint": "Keep the subject recognizable, but introduce one unexpected supporting color that extends A production manifest treated like a trusted craft ledger"
+          },
+          {
+            "label": "Cool Table",
+            "description": "Crisper whites, cooler shadows, and restrained technical contrast",
+            "promptHint": "Use cooler minimal accents around Generation Manifest Table; keep A production manifest treated like a trusted craft ledger intact"
+          }
+        ],
+        "scene": [
+          {
+            "label": "Table Detail",
+            "description": "A tighter scene focused on material, craft, or product detail",
+            "promptHint": "Create a close-detail scene for Generation Manifest Table, keeping the most important source cue visible"
+          },
+          {
+            "label": "Table Backstage",
+            "description": "A behind-the-scenes environment that adds process and atmosphere around Generation Manifest Table",
+            "promptHint": "Reframe Generation Manifest Table as a backstage or preparation moment; keep A production manifest treated like a trusted craft ledger recognizable"
+          },
+          {
+            "label": "Table In Use",
+            "description": "A more believable real-world context for Generation Manifest Table",
+            "promptHint": "Place Generation Manifest Table into a realistic usage context; preserve the source image's core cue: A production manifest treated like a trusted craft ledger"
+          }
+        ],
+        "props": [
+          {
+            "label": "Premium Finish",
+            "description": "Sharper materials, cleaner surfaces, and more elevated detail",
+            "promptHint": "Add premium material cues around Generation Manifest Table; preserve the source image's composition"
+          },
+          {
+            "label": "Process Cues",
+            "description": "Tools, traces, or handling details that make Generation Manifest Table feel actively used",
+            "promptHint": "Add restrained process cues around Generation Manifest Table; preserve the strongest visual idea from A production manifest treated like a trusted craft ledger"
+          },
+          {
+            "label": "Table Cues",
+            "description": "Add restrained supporting objects that clarify the context of Generation Manifest Table",
+            "promptHint": "Add a few contextual props that reinforce A production manifest treated like a trusted craft ledger without distracting from Generation Manifest Table"
+          }
+        ],
+        "character": [
+          {
+            "label": "Passing Figure",
+            "description": "A partial human presence that adds scale and motion without taking over Generation Manifest Table",
+            "promptHint": "Add a cropped passing figure or gesture around Generation Manifest Table; keep identity nonspecific and preserve A production manifest treated like a trusted craft ledger"
+          },
+          {
+            "label": "Expert Hands",
+            "description": "More credible craft, authority, and purposeful interaction with Generation Manifest Table",
+            "promptHint": "If a person appears, make them an expert operator interacting naturally with Generation Manifest Table"
+          },
+          {
+            "label": "No Human",
+            "description": "Let the object, place, or composition carry the frame",
+            "promptHint": "Remove visible people and let Generation Manifest Table carry the image"
+          }
+        ],
+        "format": [
+          {
+            "label": "Wide Table",
+            "description": "Broader horizontal composition for landing-page or banner use",
+            "promptHint": "Adapt Generation Manifest Table to a wide hero composition with room for layout"
+          },
+          {
+            "label": "Square Table",
+            "description": "A balanced square crop for gallery or feed review",
+            "promptHint": "Recompose Generation Manifest Table as a square frame with a changed focal balance and the core cue intact"
+          },
+          {
+            "label": "Portrait Table",
+            "description": "Tighter vertical crop for social or story placement",
+            "promptHint": "Adapt Generation Manifest Table to a portrait social crop while preserving the key visual read"
+          }
+        ]
+      },
+      "imageUrl": "/generated/mcp-thumbs/generation-manifest-table.jpg",
+      "sourceImageUrl": "/generated/2b71200d29b0a0b9a14b76d04a75852a.png"
+    },
+    {
+      "id": "cinematic-prompt-station",
+      "title": "Cinematic Prompt Station",
+      "caption": "The prompt station as a serious creative instrument.",
+      "source": "Generated from qualified moodboard intake and workspace identity.",
+      "tone": "inventive, cinematic, exacting",
+      "motif": "keyboard, camera body, paper references, soft screen",
+      "palette": [
+        "matte black",
+        "warm cream",
+        "signal red",
+        "soft grey",
+        "amber"
+      ],
+      "prompt": "Single editorial photograph of a cinematic prompt station with keyboard, camera body, blank paper references, and soft screen light showing abstract non-readable interface shapes, product-in-use moment for AI video creation, heritage film craft atmosphere, no logos, no readable text. Single coherent frame, one composed scene or object detail, not a collage, not a grid, not a contact sheet, not a scrapbook, not a mood board layout.",
+      "remixSuggestions": {
+        "style": [
+          {
+            "label": "Material Station",
+            "description": "A closer tactile read of surface, temperature, and finish around Cinematic Prompt Station",
+            "promptHint": "Rebuild Cinematic Prompt Station as a tactile material study inspired by The prompt station as a serious creative instrument, with a visibly different crop and focal plane"
+          },
+          {
+            "label": "Dramatic Station",
+            "description": "Richer blacks, sharper highlights, and more cinematic emphasis",
+            "promptHint": "Apply high-contrast cinematic treatment to Cinematic Prompt Station; keep The prompt station as a serious creative instrument recognizable but alter camera angle or staging"
+          },
+          {
+            "label": "Candid Station",
+            "description": "More natural texture and believable lived-in detail for Cinematic Prompt Station",
+            "promptHint": "Shift Cinematic Prompt Station toward documentary realism while preserving The prompt station as a serious creative instrument; make lighting and staging feel newly observed"
+          }
+        ],
+        "palette": [
+          {
+            "label": "Accent Station",
+            "description": "A stronger accent color against quieter supporting surfaces",
+            "promptHint": "Add a controlled accent palette to Cinematic Prompt Station without changing the main subject"
+          },
+          {
+            "label": "Unexpected Station",
+            "description": "A more surprising secondary color relationship around Cinematic Prompt Station",
+            "promptHint": "Keep the subject recognizable, but introduce one unexpected supporting color that extends The prompt station as a serious creative instrument"
+          },
+          {
+            "label": "Cool Station",
+            "description": "Crisper whites, cooler shadows, and restrained technical contrast",
+            "promptHint": "Use cooler minimal accents around Cinematic Prompt Station; keep The prompt station as a serious creative instrument intact"
+          }
+        ],
+        "scene": [
+          {
+            "label": "Station Backstage",
+            "description": "A behind-the-scenes environment that adds process and atmosphere around Cinematic Prompt Station",
+            "promptHint": "Reframe Cinematic Prompt Station as a backstage or preparation moment; keep The prompt station as a serious creative instrument recognizable"
+          },
+          {
+            "label": "Station In Use",
+            "description": "A more believable real-world context for Cinematic Prompt Station",
+            "promptHint": "Place Cinematic Prompt Station into a realistic usage context; preserve the source image's core cue: The prompt station as a serious creative instrument"
+          },
+          {
+            "label": "Station Exterior",
+            "description": "Move Cinematic Prompt Station into an outdoor or threshold environment with a fresh spatial read",
+            "promptHint": "Relocate Cinematic Prompt Station into an exterior or entryway scene while preserving the core cue: The prompt station as a serious creative instrument"
+          }
+        ],
+        "props": [
+          {
+            "label": "Process Cues",
+            "description": "Tools, traces, or handling details that make Cinematic Prompt Station feel actively used",
+            "promptHint": "Add restrained process cues around Cinematic Prompt Station; preserve the strongest visual idea from The prompt station as a serious creative instrument"
+          },
+          {
+            "label": "Station Cues",
+            "description": "Add restrained supporting objects that clarify the context of Cinematic Prompt Station",
+            "promptHint": "Add a few contextual props that reinforce The prompt station as a serious creative instrument without distracting from Cinematic Prompt Station"
+          },
+          {
+            "label": "Unexpected Station Prop",
+            "description": "One surprising but believable object that opens a new story around Cinematic Prompt Station",
+            "promptHint": "Add one unexpected supporting prop that extends The prompt station as a serious creative instrument without stealing focus from Cinematic Prompt Station"
+          }
+        ],
+        "character": [
+          {
+            "label": "Everyday Use",
+            "description": "More approachable human presence while preserving the mood",
+            "promptHint": "Show Cinematic Prompt Station in an everyday user context without losing The prompt station as a serious creative instrument"
+          },
+          {
+            "label": "Passing Figure",
+            "description": "A partial human presence that adds scale and motion without taking over Cinematic Prompt Station",
+            "promptHint": "Add a cropped passing figure or gesture around Cinematic Prompt Station; keep identity nonspecific and preserve The prompt station as a serious creative instrument"
+          },
+          {
+            "label": "Expert Hands",
+            "description": "More credible craft, authority, and purposeful interaction with Cinematic Prompt Station",
+            "promptHint": "If a person appears, make them an expert operator interacting naturally with Cinematic Prompt Station"
+          }
+        ],
+        "format": [
+          {
+            "label": "Station Crop",
+            "description": "Closer inspection of the material, surface, or focal subject",
+            "promptHint": "Create a closer detail crop of Cinematic Prompt Station; keep The prompt station as a serious creative instrument legible"
+          },
+          {
+            "label": "Split-Depth Station",
+            "description": "Foreground detail and background atmosphere in one composed frame",
+            "promptHint": "Create a single-frame split-depth composition for Cinematic Prompt Station; do not make a collage or panel layout"
+          },
+          {
+            "label": "Wide Station",
+            "description": "Broader horizontal composition for landing-page or banner use",
+            "promptHint": "Adapt Cinematic Prompt Station to a wide hero composition with room for layout"
+          }
+        ]
+      },
+      "imageUrl": "/generated/mcp-thumbs/cinematic-prompt-station.jpg",
+      "sourceImageUrl": "/generated/30cc5859d3830977e37490e8db4ff9d9.png"
+    },
+    {
+      "id": "prompt-envelope-worktable-retry",
+      "title": "Prompt Envelope Worktable Retry",
+      "caption": "A product ritual around prompt envelopes as physical production artifacts.",
+      "source": "Generated from qualified moodboard intake and workspace identity.",
+      "tone": "craft-led, focused, inventive",
+      "motif": "paper envelopes, image references, camera notes, careful hands",
+      "palette": [
+        "cream paper",
+        "charcoal",
+        "sepia",
+        "steel grey",
+        "muted red accent"
+      ],
+      "prompt": "Single visual reference image of a warm worktable with blank kraft paper envelopes, small unlabeled photographic stills, camera lens, pencil marks, and a laptop edge casting soft light, an AI video workflow treated like a heritage production archive, no readable words, no logos, cinematic shallow depth of field. Single coherent frame, one composed scene or object detail, not a collage, not a grid, not a contact sheet, not a scrapbook, not a mood board layout. Fresh alternate generation, visibly different composition from the existing board, still one single visual reference photograph, no repeated archive drawer composition.",
+      "remixSuggestions": {
+        "style": [
+          {
+            "label": "Candid Worktable",
+            "description": "More natural texture and believable lived-in detail for Prompt Envelope Worktable",
+            "promptHint": "Shift Prompt Envelope Worktable toward documentary realism while preserving A product ritual around prompt envelopes as physical production artifacts; make lighting and staging..."
+          },
+          {
+            "label": "Editorial Worktable",
+            "description": "Cleaner light and hierarchy around Prompt Envelope Worktable",
+            "promptHint": "Apply a polished editorial treatment to Prompt Envelope Worktable; preserve A product ritual around prompt envelopes as physical production artifacts while changing the..."
+          },
+          {
+            "label": "Minimal Worktable",
+            "description": "Quieter hierarchy, more negative space, and stricter restraint around Prompt Envelope Worktable",
+            "promptHint": "Strip Prompt Envelope Worktable down to a minimal premium frame; keep A product ritual around prompt envelopes as physical production artifacts legible but change the..."
+          }
+        ],
+        "palette": [
+          {
+            "label": "Unexpected Worktable",
+            "description": "A more surprising secondary color relationship around Prompt Envelope Worktable",
+            "promptHint": "Keep the subject recognizable, but introduce one unexpected supporting color that extends A product ritual around prompt envelopes as physical production artifacts"
+          },
+          {
+            "label": "Cool Worktable",
+            "description": "Crisper whites, cooler shadows, and restrained technical contrast",
+            "promptHint": "Use cooler minimal accents around Prompt Envelope Worktable; keep A product ritual around prompt envelopes as physical production artifacts intact"
+          },
+          {
+            "label": "Monochrome Worktable",
+            "description": "A narrower near-monochrome treatment that lets one cue around Prompt Envelope Worktable stand out",
+            "promptHint": "Reduce the palette around Prompt Envelope Worktable to tonal restraint plus one preserved cue from A product ritual around prompt envelopes as physical production artifacts"
+          }
+        ],
+        "scene": [
+          {
+            "label": "Worktable Exterior",
+            "description": "Move Prompt Envelope Worktable into an outdoor or threshold environment with a fresh spatial read",
+            "promptHint": "Relocate Prompt Envelope Worktable into an exterior or entryway scene while preserving the core cue: A product ritual around prompt envelopes as physical production artifacts"
+          },
+          {
+            "label": "Worktable Studio",
+            "description": "A cleaner controlled studio setting that keeps Prompt Envelope Worktable dominant",
+            "promptHint": "Move Prompt Envelope Worktable into a cleaner studio-hero setting while preserving A product ritual around prompt envelopes as physical production artifacts"
+          },
+          {
+            "label": "Worktable Detail",
+            "description": "A tighter scene focused on material, craft, or product detail",
+            "promptHint": "Create a close-detail scene for Prompt Envelope Worktable, keeping the most important source cue visible"
+          }
+        ],
+        "props": [
+          {
+            "label": "Unexpected Worktable Prop",
+            "description": "One surprising but believable object that opens a new story around Prompt Envelope Worktable",
+            "promptHint": "Add one unexpected supporting prop that extends A product ritual around prompt envelopes as physical production artifacts without stealing focus from Prompt Envelope Worktable"
+          },
+          {
+            "label": "Minimal Support",
+            "description": "Reduce surrounding objects so Prompt Envelope Worktable carries more weight",
+            "promptHint": "Remove nonessential props and keep Prompt Envelope Worktable as the dominant read"
+          },
+          {
+            "label": "Premium Finish",
+            "description": "Sharper materials, cleaner surfaces, and more elevated detail",
+            "promptHint": "Add premium material cues around Prompt Envelope Worktable; preserve the source image's composition"
+          }
+        ],
+        "character": [
+          {
+            "label": "Everyday Use",
+            "description": "More approachable human presence while preserving the mood",
+            "promptHint": "Show Prompt Envelope Worktable in an everyday user context without losing A product ritual around prompt envelopes as physical production artifacts"
+          },
+          {
+            "label": "Passing Figure",
+            "description": "A partial human presence that adds scale and motion without taking over Prompt Envelope Worktable",
+            "promptHint": "Add a cropped passing figure or gesture around Prompt Envelope Worktable; keep identity nonspecific and preserve A product ritual around prompt envelopes as physical production..."
+          },
+          {
+            "label": "Expert Hands",
+            "description": "More credible craft, authority, and purposeful interaction with Prompt Envelope Worktable",
+            "promptHint": "If a person appears, make them an expert operator interacting naturally with Prompt Envelope Worktable"
+          }
+        ],
+        "format": [
+          {
+            "label": "Portrait Worktable",
+            "description": "Tighter vertical crop for social or story placement",
+            "promptHint": "Adapt Prompt Envelope Worktable to a portrait social crop while preserving the key visual read"
+          },
+          {
+            "label": "Worktable Crop",
+            "description": "Closer inspection of the material, surface, or focal subject",
+            "promptHint": "Create a closer detail crop of Prompt Envelope Worktable; keep A product ritual around prompt envelopes as physical production artifacts legible"
+          },
+          {
+            "label": "Split-Depth Worktable",
+            "description": "Foreground detail and background atmosphere in one composed frame",
+            "promptHint": "Create a single-frame split-depth composition for Prompt Envelope Worktable; do not make a collage or panel layout"
+          }
+        ]
+      },
+      "imageUrl": "/generated/mcp-thumbs/prompt-envelope-worktable-retry.jpg",
+      "sourceImageUrl": "/generated/563c1605d4fe9c2c7290ea777cb31b2b.png"
+    },
+    {
+      "id": "model-to-motion-moment-retry",
+      "title": "Model To Motion Moment Retry",
+      "caption": "The transformation moment where a still visual reference becomes moving-image intent.",
+      "source": "Generated from qualified moodboard intake and workspace identity.",
+      "tone": "inventive, cinematic, precise",
+      "motif": "still frame, motion blur, hand gesture, monitor glow",
+      "palette": [
+        "deep black",
+        "warm amber",
+        "paper white",
+        "cool glass",
+        "muted brass"
+      ],
+      "prompt": "Single composed scene of a creator's hand hovering between a printed blank film frame and a softly glowing screen with abstract motion streaks, old editing-room atmosphere mixed with modern AI video production, tactile paper and glass, no readable text, no logos, not a collage. Fresh alternate generation, visibly different composition from the existing board, still one single visual reference photograph, no repeated archive drawer composition.",
+      "remixSuggestions": {
+        "style": [
+          {
+            "label": "Material Model",
+            "description": "A closer tactile read of surface, temperature, and finish around Model To Motion Moment",
+            "promptHint": "Rebuild Model To Motion Moment as a tactile material study inspired by The transformation moment where a still visual reference becomes moving-image intent, with a visibly..."
+          },
+          {
+            "label": "Dramatic Model",
+            "description": "Richer blacks, sharper highlights, and more cinematic emphasis",
+            "promptHint": "Apply high-contrast cinematic treatment to Model To Motion Moment; keep The transformation moment where a still visual reference becomes moving-image intent recognizable but..."
+          },
+          {
+            "label": "Candid Model",
+            "description": "More natural texture and believable lived-in detail for Model To Motion Moment",
+            "promptHint": "Shift Model To Motion Moment toward documentary realism while preserving The transformation moment where a still visual reference becomes moving-image intent; make lighting and..."
+          }
+        ],
+        "palette": [
+          {
+            "label": "Cool Model",
+            "description": "Crisper whites, cooler shadows, and restrained technical contrast",
+            "promptHint": "Use cooler minimal accents around Model To Motion Moment; keep The transformation moment where a still visual reference becomes moving-image intent intact"
+          },
+          {
+            "label": "Monochrome Model",
+            "description": "A narrower near-monochrome treatment that lets one cue around Model To Motion Moment stand out",
+            "promptHint": "Reduce the palette around Model To Motion Moment to tonal restraint plus one preserved cue from The transformation moment where a still visual reference becomes moving-image intent"
+          },
+          {
+            "label": "Warm Model",
+            "description": "Warmer neutrals and tactile highlights around Model To Motion Moment",
+            "promptHint": "Shift the palette warmer while preserving the subject and composition of Model To Motion Moment"
+          }
+        ],
+        "scene": [
+          {
+            "label": "Model Exterior",
+            "description": "Move Model To Motion Moment into an outdoor or threshold environment with a fresh spatial read",
+            "promptHint": "Relocate Model To Motion Moment into an exterior or entryway scene while preserving the core cue: The transformation moment where a still visual reference becomes moving-image..."
+          },
+          {
+            "label": "Model Studio",
+            "description": "A cleaner controlled studio setting that keeps Model To Motion Moment dominant",
+            "promptHint": "Move Model To Motion Moment into a cleaner studio-hero setting while preserving The transformation moment where a still visual reference becomes moving-image intent"
+          },
+          {
+            "label": "Model Detail",
+            "description": "A tighter scene focused on material, craft, or product detail",
+            "promptHint": "Create a close-detail scene for Model To Motion Moment, keeping the most important source cue visible"
+          }
+        ],
+        "props": [
+          {
+            "label": "Unexpected Model Prop",
+            "description": "One surprising but believable object that opens a new story around Model To Motion Moment",
+            "promptHint": "Add one unexpected supporting prop that extends The transformation moment where a still visual reference becomes moving-image intent without stealing focus from Model To Motion..."
+          },
+          {
+            "label": "Minimal Support",
+            "description": "Reduce surrounding objects so Model To Motion Moment carries more weight",
+            "promptHint": "Remove nonessential props and keep Model To Motion Moment as the dominant read"
+          },
+          {
+            "label": "Premium Finish",
+            "description": "Sharper materials, cleaner surfaces, and more elevated detail",
+            "promptHint": "Add premium material cues around Model To Motion Moment; preserve the source image's composition"
+          }
+        ],
+        "character": [
+          {
+            "label": "Expert Hands",
+            "description": "More credible craft, authority, and purposeful interaction with Model To Motion Moment",
+            "promptHint": "If a person appears, make them an expert operator interacting naturally with Model To Motion Moment"
+          },
+          {
+            "label": "No Human",
+            "description": "Let the object, place, or composition carry the frame",
+            "promptHint": "Remove visible people and let Model To Motion Moment carry the image"
+          },
+          {
+            "label": "Collector Persona",
+            "description": "A more intentional, taste-driven persona interacting with Model To Motion Moment",
+            "promptHint": "Introduce a collector or tastemaker presence around Model To Motion Moment while changing wardrobe, gesture, or posture"
+          }
+        ],
+        "format": [
+          {
+            "label": "Wide Model",
+            "description": "Broader horizontal composition for landing-page or banner use",
+            "promptHint": "Adapt Model To Motion Moment to a wide hero composition with room for layout"
+          },
+          {
+            "label": "Square Model",
+            "description": "A balanced square crop for gallery or feed review",
+            "promptHint": "Recompose Model To Motion Moment as a square frame with a changed focal balance and the core cue intact"
+          },
+          {
+            "label": "Portrait Model",
+            "description": "Tighter vertical crop for social or story placement",
+            "promptHint": "Adapt Model To Motion Moment to a portrait social crop while preserving the key visual read"
+          }
+        ]
+      },
+      "imageUrl": "/generated/mcp-thumbs/model-to-motion-moment-retry.jpg",
+      "sourceImageUrl": "/generated/14c03f9e3f4bd488667bac1269159f1b.png"
+    },
+    {
+      "id": "scene-package-archive-alt",
+      "title": "Scene Package Archive Alt",
+      "caption": "Scene-first production packages visualized as carefully handled archive material.",
+      "source": "Generated from qualified moodboard intake and workspace identity.",
+      "tone": "heritage, organized, quietly energetic",
+      "motif": "archive drawers, scene folders, film stills, production tags",
+      "palette": [
+        "aged manila",
+        "ink black",
+        "muted olive",
+        "steel",
+        "warm highlight"
+      ],
+      "prompt": "Single photographic composition of organized unmarked scene folders in an archive drawer with blank film stills and small colored production tabs, a modern AI video workflow represented as heritage craft organization, no readable labels, no logos, cinematic side light. Single coherent frame, one composed scene or object detail, not a collage, not a grid, not a contact sheet, not a scrapbook, not a mood board layout. Fresh alternate generation, visibly different composition from the existing board, still one single visual reference photograph, no repeated archive drawer composition.",
+      "remixSuggestions": {
+        "style": [
+          {
+            "label": "Dramatic Archive",
+            "description": "Richer blacks, sharper highlights, and more cinematic emphasis",
+            "promptHint": "Apply high-contrast cinematic treatment to Scene Package Archive; keep Scene-first production packages visualized as carefully handled archive material recognizable but alter..."
+          },
+          {
+            "label": "Candid Archive",
+            "description": "More natural texture and believable lived-in detail for Scene Package Archive",
+            "promptHint": "Shift Scene Package Archive toward documentary realism while preserving Scene-first production packages visualized as carefully handled archive material; make lighting and..."
+          },
+          {
+            "label": "Editorial Archive",
+            "description": "Cleaner light and hierarchy around Scene Package Archive",
+            "promptHint": "Apply a polished editorial treatment to Scene Package Archive; preserve Scene-first production packages visualized as carefully handled archive material while changing the..."
+          }
+        ],
+        "palette": [
+          {
+            "label": "Unexpected Archive",
+            "description": "A more surprising secondary color relationship around Scene Package Archive",
+            "promptHint": "Keep the subject recognizable, but introduce one unexpected supporting color that extends Scene-first production packages visualized as carefully handled archive material"
+          },
+          {
+            "label": "Cool Archive",
+            "description": "Crisper whites, cooler shadows, and restrained technical contrast",
+            "promptHint": "Use cooler minimal accents around Scene Package Archive; keep Scene-first production packages visualized as carefully handled archive material intact"
+          },
+          {
+            "label": "Monochrome Archive",
+            "description": "A narrower near-monochrome treatment that lets one cue around Scene Package Archive stand out",
+            "promptHint": "Reduce the palette around Scene Package Archive to tonal restraint plus one preserved cue from Scene-first production packages visualized as carefully handled archive material"
+          }
+        ],
+        "scene": [
+          {
+            "label": "Archive Studio",
+            "description": "A cleaner controlled studio setting that keeps Scene Package Archive dominant",
+            "promptHint": "Move Scene Package Archive into a cleaner studio-hero setting while preserving Scene-first production packages visualized as carefully handled archive material"
+          },
+          {
+            "label": "Archive Detail",
+            "description": "A tighter scene focused on material, craft, or product detail",
+            "promptHint": "Create a close-detail scene for Scene Package Archive, keeping the most important source cue visible"
+          },
+          {
+            "label": "Archive Backstage",
+            "description": "A behind-the-scenes environment that adds process and atmosphere around Scene Package Archive",
+            "promptHint": "Reframe Scene Package Archive as a backstage or preparation moment; keep Scene-first production packages visualized as carefully handled archive material recognizable"
+          }
+        ],
+        "props": [
+          {
+            "label": "Minimal Support",
+            "description": "Reduce surrounding objects so Scene Package Archive carries more weight",
+            "promptHint": "Remove nonessential props and keep Scene Package Archive as the dominant read"
+          },
+          {
+            "label": "Premium Finish",
+            "description": "Sharper materials, cleaner surfaces, and more elevated detail",
+            "promptHint": "Add premium material cues around Scene Package Archive; preserve the source image's composition"
+          },
+          {
+            "label": "Process Cues",
+            "description": "Tools, traces, or handling details that make Scene Package Archive feel actively used",
+            "promptHint": "Add restrained process cues around Scene Package Archive; preserve the strongest visual idea from Scene-first production packages visualized as carefully handled archive material"
+          }
+        ],
+        "character": [
+          {
+            "label": "Collector Persona",
+            "description": "A more intentional, taste-driven persona interacting with Scene Package Archive",
+            "promptHint": "Introduce a collector or tastemaker presence around Scene Package Archive while changing wardrobe, gesture, or posture"
+          },
+          {
+            "label": "Everyday Use",
+            "description": "More approachable human presence while preserving the mood",
+            "promptHint": "Show Scene Package Archive in an everyday user context without losing Scene-first production packages visualized as carefully handled archive material"
+          },
+          {
+            "label": "Passing Figure",
+            "description": "A partial human presence that adds scale and motion without taking over Scene Package Archive",
+            "promptHint": "Add a cropped passing figure or gesture around Scene Package Archive; keep identity nonspecific and preserve Scene-first production packages visualized as carefully handled..."
+          }
+        ],
+        "format": [
+          {
+            "label": "Wide Archive",
+            "description": "Broader horizontal composition for landing-page or banner use",
+            "promptHint": "Adapt Scene Package Archive to a wide hero composition with room for layout"
+          },
+          {
+            "label": "Square Archive",
+            "description": "A balanced square crop for gallery or feed review",
+            "promptHint": "Recompose Scene Package Archive as a square frame with a changed focal balance and the core cue intact"
+          },
+          {
+            "label": "Portrait Archive",
+            "description": "Tighter vertical crop for social or story placement",
+            "promptHint": "Adapt Scene Package Archive to a portrait social crop while preserving the key visual read"
+          }
+        ]
+      },
+      "imageUrl": "/generated/mcp-thumbs/scene-package-archive-alt.jpg",
+      "sourceImageUrl": "/generated/da551479067aa83e3b14f6db6b862a67.png"
+    },
+    {
+      "id": "rough-econte-lightbox-retry",
+      "title": "Rough E-Conte Lightbox Retry",
+      "caption": "A bridge between old animation review tools and AI-generated preview flow.",
+      "source": "Generated from qualified moodboard intake and workspace identity.",
+      "tone": "inventive, tactile, cinematic",
+      "motif": "lightbox, blank frame cards, hand shadows, preview glow",
+      "palette": [
+        "translucent white",
+        "sepia",
+        "charcoal",
+        "warm amber",
+        "cool silver"
+      ],
+      "prompt": "Single visual reference image of a lightbox with blank frame cards and soft hand shadows, adjacent subtle screen glow implying AI video preview generation, heritage animation craft meets modern workflow, no readable text, no logos, clean cinematic composition. Single coherent frame, one composed scene or object detail, not a collage, not a grid, not a contact sheet, not a scrapbook, not a mood board layout. Fresh alternate generation, visibly different composition from the existing board, still one single visual reference photograph, no repeated archive drawer composition.",
+      "remixSuggestions": {
+        "style": [
+          {
+            "label": "Dramatic Lightbox",
+            "description": "Richer blacks, sharper highlights, and more cinematic emphasis",
+            "promptHint": "Apply high-contrast cinematic treatment to Rough E-Conte Lightbox; keep A bridge between old animation review tools and AI-generated preview flow recognizable but alter camera..."
+          },
+          {
+            "label": "Candid Lightbox",
+            "description": "More natural texture and believable lived-in detail for Rough E-Conte Lightbox",
+            "promptHint": "Shift Rough E-Conte Lightbox toward documentary realism while preserving A bridge between old animation review tools and AI-generated preview flow; make lighting and staging..."
+          },
+          {
+            "label": "Editorial Lightbox",
+            "description": "Cleaner light and hierarchy around Rough E-Conte Lightbox",
+            "promptHint": "Apply a polished editorial treatment to Rough E-Conte Lightbox; preserve A bridge between old animation review tools and AI-generated preview flow while changing the..."
+          }
+        ],
+        "palette": [
+          {
+            "label": "Unexpected Lightbox",
+            "description": "A more surprising secondary color relationship around Rough E-Conte Lightbox",
+            "promptHint": "Keep the subject recognizable, but introduce one unexpected supporting color that extends A bridge between old animation review tools and AI-generated preview flow"
+          },
+          {
+            "label": "Cool Lightbox",
+            "description": "Crisper whites, cooler shadows, and restrained technical contrast",
+            "promptHint": "Use cooler minimal accents around Rough E-Conte Lightbox; keep A bridge between old animation review tools and AI-generated preview flow intact"
+          },
+          {
+            "label": "Monochrome Lightbox",
+            "description": "A narrower near-monochrome treatment that lets one cue around Rough E-Conte Lightbox stand out",
+            "promptHint": "Reduce the palette around Rough E-Conte Lightbox to tonal restraint plus one preserved cue from A bridge between old animation review tools and AI-generated preview flow"
+          }
+        ],
+        "scene": [
+          {
+            "label": "Lightbox Backstage",
+            "description": "A behind-the-scenes environment that adds process and atmosphere around Rough E-Conte Lightbox",
+            "promptHint": "Reframe Rough E-Conte Lightbox as a backstage or preparation moment; keep A bridge between old animation review tools and AI-generated preview flow recognizable"
+          },
+          {
+            "label": "Lightbox In Use",
+            "description": "A more believable real-world context for Rough E-Conte Lightbox",
+            "promptHint": "Place Rough E-Conte Lightbox into a realistic usage context; preserve the source image's core cue: A bridge between old animation review tools and AI-generated preview flow"
+          },
+          {
+            "label": "Lightbox Exterior",
+            "description": "Move Rough E-Conte Lightbox into an outdoor or threshold environment with a fresh spatial read",
+            "promptHint": "Relocate Rough E-Conte Lightbox into an exterior or entryway scene while preserving the core cue: A bridge between old animation review tools and AI-generated preview flow"
+          }
+        ],
+        "props": [
+          {
+            "label": "Process Cues",
+            "description": "Tools, traces, or handling details that make Rough E-Conte Lightbox feel actively used",
+            "promptHint": "Add restrained process cues around Rough E-Conte Lightbox; preserve the strongest visual idea from A bridge between old animation review tools and AI-generated preview flow"
+          },
+          {
+            "label": "Lightbox Cues",
+            "description": "Add restrained supporting objects that clarify the context of Rough E-Conte Lightbox",
+            "promptHint": "Add a few contextual props that reinforce A bridge between old animation review tools and AI-generated preview flow without distracting from Rough E-Conte Lightbox"
+          },
+          {
+            "label": "Unexpected Lightbox Prop",
+            "description": "One surprising but believable object that opens a new story around Rough E-Conte Lightbox",
+            "promptHint": "Add one unexpected supporting prop that extends A bridge between old animation review tools and AI-generated preview flow without stealing focus from Rough E-Conte Lightbox"
+          }
+        ],
+        "character": [
+          {
+            "label": "Expert Hands",
+            "description": "More credible craft, authority, and purposeful interaction with Rough E-Conte Lightbox",
+            "promptHint": "If a person appears, make them an expert operator interacting naturally with Rough E-Conte Lightbox"
+          },
+          {
+            "label": "No Human",
+            "description": "Let the object, place, or composition carry the frame",
+            "promptHint": "Remove visible people and let Rough E-Conte Lightbox carry the image"
+          },
+          {
+            "label": "Collector Persona",
+            "description": "A more intentional, taste-driven persona interacting with Rough E-Conte Lightbox",
+            "promptHint": "Introduce a collector or tastemaker presence around Rough E-Conte Lightbox while changing wardrobe, gesture, or posture"
+          }
+        ],
+        "format": [
+          {
+            "label": "Square Lightbox",
+            "description": "A balanced square crop for gallery or feed review",
+            "promptHint": "Recompose Rough E-Conte Lightbox as a square frame with a changed focal balance and the core cue intact"
+          },
+          {
+            "label": "Portrait Lightbox",
+            "description": "Tighter vertical crop for social or story placement",
+            "promptHint": "Adapt Rough E-Conte Lightbox to a portrait social crop while preserving the key visual read"
+          },
+          {
+            "label": "Lightbox Crop",
+            "description": "Closer inspection of the material, surface, or focal subject",
+            "promptHint": "Create a closer detail crop of Rough E-Conte Lightbox; keep A bridge between old animation review tools and AI-generated preview flow legible"
+          }
+        ]
+      },
+      "imageUrl": "/generated/mcp-thumbs/rough-econte-lightbox-retry.jpg",
+      "sourceImageUrl": "/generated/c4e7fab9f2b1bf95c4a57c89215a3771.png"
+    }
+  ]
+}

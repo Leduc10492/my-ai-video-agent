@@ -1,0 +1,8 @@
+{
+  "id": "production-room-first-output-retry",
+  "status": "failed",
+  "attempt": 2,
+  "pid": 8139,
+  "startedAt": "2026-06-03T16:34:30.981569+00:00",
+  "lastHeartbeatAt": "2026-06-03T16:35:42.111616+00:00"
+}

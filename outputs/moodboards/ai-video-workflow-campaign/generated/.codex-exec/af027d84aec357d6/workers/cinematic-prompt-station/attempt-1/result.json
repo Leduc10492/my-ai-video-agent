@@ -1,0 +1,7 @@
+{
+  "id": "cinematic-prompt-station",
+  "status": "failed",
+  "image_path": null,
+  "error": "Native image generation returned an image inline, but no file handle or saved PNG path was available to write image.png.",
+  "caveats": ""
+}

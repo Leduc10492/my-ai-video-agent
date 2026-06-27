@@ -1,0 +1,1 @@
+Done. Native image generation ran, but the tool did not expose a writable PNG file path in this environment, so I wrote the required `failed` result JSON at the requested path.

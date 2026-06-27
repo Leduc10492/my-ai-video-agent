@@ -1,0 +1,93 @@
+{
+  "status": "partial",
+  "total": 12,
+  "complete": 4,
+  "failed": 8,
+  "pending": 0,
+  "results": [
+    {
+      "id": "bench-shotlist-to-screen",
+      "status": "complete",
+      "image_path": "/Users/miniled/Developer/my-ai-video-agent/outputs/moodboards/ai-video-workflow-campaign/generated/.codex-exec/af027d84aec357d6/0d290c41de6171db42c2585cd160450b.png",
+      "error": null,
+      "caveats": ""
+    },
+    {
+      "id": "prompt-envelope-worktable",
+      "status": "failed",
+      "image_path": null,
+      "error": "Native image generation completed but did not expose a savable PNG file path in this session.",
+      "caveats": ""
+    },
+    {
+      "id": "model-to-motion-moment",
+      "status": "failed",
+      "image_path": null,
+      "error": "Native image generation returned an image in-chat, but this environment did not expose a writable PNG file handle or local image path to save it.",
+      "caveats": ""
+    },
+    {
+      "id": "director-craft-console",
+      "status": "failed",
+      "image_path": null,
+      "error": "Native image generation returned an image but no filesystem handle was available to save image.png.",
+      "caveats": ""
+    },
+    {
+      "id": "scene-package-archive",
+      "status": "complete",
+      "image_path": "/Users/miniled/Developer/my-ai-video-agent/outputs/moodboards/ai-video-workflow-campaign/generated/.codex-exec/af027d84aec357d6/ee17deaa0041006e5174977294e1b7d7.png",
+      "error": null,
+      "caveats": ""
+    },
+    {
+      "id": "preview-frame-inspection",
+      "status": "complete",
+      "image_path": "/Users/miniled/Developer/my-ai-video-agent/outputs/moodboards/ai-video-workflow-campaign/generated/.codex-exec/af027d84aec357d6/5ded543ed411a96897e9f8df3115532e.png",
+      "error": null,
+      "caveats": ""
+    },
+    {
+      "id": "script-to-shot-cards",
+      "status": "complete",
+      "image_path": "/Users/miniled/Developer/my-ai-video-agent/outputs/moodboards/ai-video-workflow-campaign/generated/.codex-exec/af027d84aec357d6/d2fb74a96022fe73db62bfd0b2bc02be.png",
+      "error": null,
+      "caveats": ""
+    },
+    {
+      "id": "reference-wall-select",
+      "status": "failed",
+      "image_path": null,
+      "error": "Native image generation returned no local file handle or savable artifact path in this environment.",
+      "caveats": ""
+    },
+    {
+      "id": "generation-manifest-table",
+      "status": "failed",
+      "image_path": null,
+      "error": "Native image generation completed, but this session did not expose a savable PNG file path or bytes to write to the requested destination.",
+      "caveats": ""
+    },
+    {
+      "id": "cinematic-prompt-station",
+      "status": "failed",
+      "image_path": null,
+      "error": "Native image generation returned an image in-chat, but no accessible file handle/path was available to save it to the requested PNG path.",
+      "caveats": ""
+    },
+    {
+      "id": "rough-econte-lightbox",
+      "status": "failed",
+      "image_path": null,
+      "error": "Native image generation returned an image in the chat but did not expose a local PNG file handle that could be saved to the requested path.",
+      "caveats": ""
+    },
+    {
+      "id": "production-room-first-output",
+      "status": "failed",
+      "image_path": null,
+      "error": "Native image generation returned an image in-chat, but this tool session did not provide a file handle or filesystem path to save the PNG.",
+      "caveats": ""
+    }
+  ]
+}

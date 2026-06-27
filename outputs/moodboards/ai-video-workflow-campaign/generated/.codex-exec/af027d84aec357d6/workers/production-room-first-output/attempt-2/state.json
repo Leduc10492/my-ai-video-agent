@@ -1,0 +1,8 @@
+{
+  "id": "production-room-first-output",
+  "status": "failed",
+  "attempt": 2,
+  "pid": 53204,
+  "startedAt": "2026-06-03T16:24:28.270527+00:00",
+  "lastHeartbeatAt": "2026-06-03T16:25:51.673042+00:00"
+}

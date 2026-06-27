@@ -1,0 +1,5 @@
+Native image generation ran, but the tool did not expose a local PNG file handle/path I could copy to the requested destination.
+
+I wrote the required failure result JSON at:
+
+`generated/.codex-exec/af027d84aec357d6/workers/rough-econte-lightbox/attempt-2/result.json`

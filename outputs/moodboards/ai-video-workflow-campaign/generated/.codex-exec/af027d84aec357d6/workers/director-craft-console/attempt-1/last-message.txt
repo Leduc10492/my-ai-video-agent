@@ -1,0 +1,5 @@
+Failed to save the generated PNG because the native image generation tool did not expose a usable filesystem path or image bytes in this session.
+
+Wrote the required failure JSON to:
+
+`generated/.codex-exec/af027d84aec357d6/workers/director-craft-console/attempt-1/result.json`

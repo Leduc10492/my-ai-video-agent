@@ -1,0 +1,3 @@
+Used `image_gen.imagegen` exactly once. The generated bitmap could not be saved because the native tool did not expose a filesystem path or save handle, so I wrote the required failed worker result JSON at:
+
+[ result.json](/Users/miniled/Developer/my-ai-video-agent/outputs/moodboards/ai-video-workflow-campaign/generated/.codex-exec/af027d84aec357d6/workers/model-to-motion-moment/attempt-1/result.json)

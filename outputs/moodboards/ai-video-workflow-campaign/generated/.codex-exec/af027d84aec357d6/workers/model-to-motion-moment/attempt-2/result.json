@@ -1,0 +1,7 @@
+{
+  "id": "model-to-motion-moment",
+  "status": "failed",
+  "image_path": null,
+  "error": "Native image generation returned an image in-chat, but this environment did not expose a writable PNG file handle or local image path to save it.",
+  "caveats": ""
+}

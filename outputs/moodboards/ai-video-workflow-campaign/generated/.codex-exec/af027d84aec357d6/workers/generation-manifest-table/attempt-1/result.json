@@ -1,0 +1,7 @@
+{
+  "id": "generation-manifest-table",
+  "status": "failed",
+  "image_path": null,
+  "error": "Native image generation returned an image in-chat, but this environment does not expose a writable PNG file handle or path to save it.",
+  "caveats": ""
+}
