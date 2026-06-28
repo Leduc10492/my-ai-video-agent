@@ -1,4 +1,0 @@
-Generated the image with `image_gen.imagegen`, but the native tool did not provide a filesystem-accessible PNG path I could copy to the requested location.
-
-Wrote the required failed worker JSON at:
-`generated/.codex-exec/a05d7a3a2e7dc3bd/workers/prompt-envelope-worktable/attempt-1/result.json`

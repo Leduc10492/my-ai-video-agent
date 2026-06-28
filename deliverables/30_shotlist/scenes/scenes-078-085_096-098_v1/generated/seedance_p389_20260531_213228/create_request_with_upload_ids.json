@@ -1,0 +1,29 @@
+{
+  "model": "seedance_2_0",
+  "settings": {
+    "aspect_ratio": "21:9",
+    "duration": 15,
+    "mode": "std",
+    "genre": "drama",
+    "resolution": "720p"
+  },
+  "upload_ids": [
+    {
+      "role": "nagi_bridge scene reference",
+      "id": "9c4fe32a-2946-47e9-91f2-01f3e51a5b69"
+    },
+    {
+      "role": "daichi character reference",
+      "id": "280f88a6-6b19-475a-8e90-2cb7337acba3"
+    },
+    {
+      "role": "elders cart reference",
+      "id": "26f2d9a6-b973-465a-aeab-091b441046e3"
+    },
+    {
+      "role": "police officer reference",
+      "id": "f6b3cd3e-4364-4094-a538-4e878c1d1aaf"
+    }
+  ],
+  "cost_estimate_credits": 67.5
+}

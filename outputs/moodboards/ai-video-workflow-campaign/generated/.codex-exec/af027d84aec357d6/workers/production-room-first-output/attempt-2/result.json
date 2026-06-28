@@ -1,7 +1,0 @@
-{
-  "id": "production-room-first-output",
-  "status": "failed",
-  "image_path": null,
-  "error": "Native image generation returned an image in-chat, but this tool session did not provide a file handle or filesystem path to save the PNG.",
-  "caveats": ""
-}

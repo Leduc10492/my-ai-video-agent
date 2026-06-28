@@ -1,5 +1,0 @@
-Generated exactly one image with `image_gen.imagegen`, but the tool did not expose a filesystem path or binary handle I could copy to the requested `image.png`.
-
-Wrote the required failed worker result JSON to:
-
-`generated/.codex-exec/a0bc66f5af12afd2/workers/production-room-first-output-retry/attempt-1/result.json`

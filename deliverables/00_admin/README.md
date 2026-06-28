@@ -1,41 +1,21 @@
-# 项目管理目录
+# Test Deliverables Admin
 
-这是项目产出文件的管理目录，包含项目级别的配置和日志。
+This folder keeps the latest useful `Your Name.` comparison workflow test chain for the `test` branch only.
 
-## 📁 本目录文件
+## Current Active Test Chain
 
-| 文件 | 用途 |
-|------|------|
-| `changelog.md` | 项目变更日志 |
-| `locks.md` | 全局约束条件 |
-| `qa_reports/` | 持久化 QA 报告目录 |
+| Stage | Current file or folder |
+| --- | --- |
+| Full script | `deliverables/10_story/01_script_v10.md` |
+| Script audit | `deliverables/10_story/01_audit_report_v10.md` |
+| Script export | `deliverables/10_story/01_script_v10_standard_screenplay.docx` |
+| Reference batch | `deliverables/20_assets/generated_ref_v1/` |
+| Shotlist breakdown | `deliverables/30_shotlist/03_shotlist_breakdown_v1.md` |
+| Shotlist HTML | `deliverables/30_shotlist/scenes/scenes-078-085_096-098_v1/Shotlist_scenes-078-085_096-098_ZH_v1.html` |
+| Seedance test | `deliverables/30_shotlist/scenes/scenes-078-085_096-098_v1/generated/seedance_p389_20260531_213228/` |
 
-## 📁 Deliverables结构
+## Notes
 
-```
-deliverables/
-├── 00_admin/          # 管理目录（本目录）
-├── 10_story/          # 剧本和审核报告
-├── 20_assets/         # 通用资产、参考图和风格指南
-└── 30_shotlist/       # shotlist breakdown、scene HTML、预览和生成测试
-
-archives/              # 历史版本归档
-```
-
-## 📋 标准文件路径
-
-| 阶段 | 文件路径 |
-|------|----------|
-| 剧本 | `10_story/01_script_v{N}.md` |
-| 审核 | `10_story/01_audit_report_v{N}.md` |
-| 资产 | `20_assets/02_asset_guide_v{N}.md` |
-| 风格 | `20_assets/02_style_guide_v{N}.md` |
-| Shotlist Breakdown | `30_shotlist/03_shotlist_breakdown_v{N}.md` |
-| Shotlist HTML | `30_shotlist/scenes/<scene-scope>_v{N}/Shotlist_<scene-scope>_ZH_v{N}.html` |
-| Shotlist 预览 | `30_shotlist/scenes/<scene-scope>_v{N}/previews/manifest.md` |
-
-## 🔄 版本管理
-
-- 当前版本保存在 `deliverables/`，文件名也带版本后缀
-- 旧版本归档到 `archives/` 对应子目录
-- 归档命名: `<文件名>_v<版本号>.md`
+- The current shotlist package uses scene-native naming from the v10 script.
+- Older script drafts, old QA reports, legacy aggregate shotlist folders, and unrelated moodboard outputs were removed from this test branch.
+- The reference batch is still `text_dna_draft`; it is enough for workflow testing, not a final image-reference lock.

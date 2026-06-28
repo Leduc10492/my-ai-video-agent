@@ -1,1 +1,0 @@
-Native image generation ran, but this session did not expose a savable PNG file handle/path I could copy to the requested location. I wrote the required `result.json` with `status: "failed"` and a concise error.

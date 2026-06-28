@@ -1,6 +1,0 @@
-Failed per the requested fallback path.
-
-Wrote:
-`/Users/miniled/Developer/my-ai-video-agent/outputs/moodboards/ai-video-workflow-campaign/generated/.codex-exec/af027d84aec357d6/workers/director-craft-console/attempt-2/result.json`
-
-Reason: native `image_gen.imagegen` produced an image in-chat, but did not expose a filesystem handle I could copy to `image.png`.

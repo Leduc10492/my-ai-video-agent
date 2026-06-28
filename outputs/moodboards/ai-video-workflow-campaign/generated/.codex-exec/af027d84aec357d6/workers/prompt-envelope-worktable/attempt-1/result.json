@@ -1,7 +1,0 @@
-{
-  "id": "prompt-envelope-worktable",
-  "status": "failed",
-  "image_path": null,
-  "error": "Native image generation produced an image in the chat, but this interface did not expose a filesystem path or binary handle to save it to the requested PNG path.",
-  "caveats": ""
-}

@@ -1,1 +1,0 @@
-Failed JSON written because the native image generation tool did not expose a file handle or PNG bytes I could copy to the requested `image.png` path.

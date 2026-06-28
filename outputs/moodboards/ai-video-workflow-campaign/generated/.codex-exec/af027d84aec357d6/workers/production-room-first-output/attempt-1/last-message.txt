@@ -1,3 +1,0 @@
-Native image generation ran, but the tool response did not expose a local PNG path or binary handle I could save. I wrote the required failed worker result JSON at:
-
-`generated/.codex-exec/af027d84aec357d6/workers/production-room-first-output/attempt-1/result.json`

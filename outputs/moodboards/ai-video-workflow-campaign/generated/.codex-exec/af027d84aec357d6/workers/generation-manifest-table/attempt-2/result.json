@@ -1,7 +1,0 @@
-{
-  "id": "generation-manifest-table",
-  "status": "failed",
-  "image_path": null,
-  "error": "Native image generation completed, but this session did not expose a savable PNG file path or bytes to write to the requested destination.",
-  "caveats": ""
-}

@@ -1,7 +1,0 @@
-{
-  "id": "prompt-envelope-worktable",
-  "status": "failed",
-  "image_path": null,
-  "error": "Native image generation returned an image in-chat but this session exposes no file handle or save path to write the PNG to the requested location.",
-  "caveats": ""
-}

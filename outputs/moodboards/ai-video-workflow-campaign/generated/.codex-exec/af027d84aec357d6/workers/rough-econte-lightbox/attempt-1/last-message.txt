@@ -1,5 +1,0 @@
-Native image generation ran, but the tool did not expose a filesystem path or binary handle I could copy to `image.png`.
-
-I wrote the fallback failed result JSON to:
-
-`generated/.codex-exec/af027d84aec357d6/workers/rough-econte-lightbox/attempt-1/result.json`

@@ -1,5 +1,0 @@
-Generated exactly one image with `image_gen.imagegen`, but the native tool did not expose a filesystem path or writable handle for the PNG, so I could not save `image.png`.
-
-Wrote the required failed worker result JSON here:
-
-`generated/.codex-exec/a05d7a3a2e7dc3bd/workers/model-to-motion-moment/attempt-2/result.json`

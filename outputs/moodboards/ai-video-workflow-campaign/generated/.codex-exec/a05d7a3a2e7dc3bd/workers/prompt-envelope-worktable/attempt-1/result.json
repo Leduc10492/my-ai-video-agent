@@ -1,7 +1,0 @@
-{
-  "id": "prompt-envelope-worktable",
-  "status": "failed",
-  "image_path": null,
-  "error": "Native image generation returned no filesystem-accessible PNG path to copy into the requested output location.",
-  "caveats": ""
-}

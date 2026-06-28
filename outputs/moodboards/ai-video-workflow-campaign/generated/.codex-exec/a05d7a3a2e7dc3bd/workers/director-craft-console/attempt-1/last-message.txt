@@ -1,1 +1,0 @@
-Complete. Saved the PNG and `result.json` at the requested paths.

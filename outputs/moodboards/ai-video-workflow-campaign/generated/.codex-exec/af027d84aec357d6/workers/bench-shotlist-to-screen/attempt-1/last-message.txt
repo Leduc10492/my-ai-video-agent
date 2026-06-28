@@ -1,4 +1,0 @@
-Failed to save the generated PNG because the native `image_gen.imagegen` call did not expose a filesystem output path in this environment.
-
-Wrote the required failure JSON to:
-`generated/.codex-exec/af027d84aec357d6/workers/bench-shotlist-to-screen/attempt-1/result.json`

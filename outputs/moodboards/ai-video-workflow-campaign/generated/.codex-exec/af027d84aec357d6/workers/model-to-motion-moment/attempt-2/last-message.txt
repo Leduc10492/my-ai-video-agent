@@ -1,5 +1,0 @@
-Generated exactly one image with `image_gen.imagegen`, but the native tool did not expose a local PNG path or writable file handle for me to copy into the requested location.
-
-I wrote the required failure JSON to:
-
-`generated/.codex-exec/af027d84aec357d6/workers/model-to-motion-moment/attempt-2/result.json`

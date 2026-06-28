@@ -1,5 +1,0 @@
-Native image generation ran, but the tool did not expose a filesystem path or binary handle I could copy to the requested `image.png` location.
-
-I wrote the required failed worker result JSON at:
-
-`generated/.codex-exec/af027d84aec357d6/workers/prompt-envelope-worktable/attempt-1/result.json`

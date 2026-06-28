@@ -1,7 +1,0 @@
-{
-  "id": "production-room-first-output",
-  "status": "failed",
-  "image_path": null,
-  "error": "Native image generation produced an image, but this interface did not expose a file handle or bytes to save the PNG at the requested path.",
-  "caveats": ""
-}

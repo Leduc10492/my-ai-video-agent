@@ -1,1 +1,0 @@
-Native image generation ran, but the session did not expose a filesystem path or file handle for the generated PNG, so I wrote the required failed `result.json` at the requested location.

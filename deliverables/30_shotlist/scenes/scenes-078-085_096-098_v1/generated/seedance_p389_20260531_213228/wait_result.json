@@ -1,0 +1,60 @@
+{
+  "id": "966bc3bd-345b-480b-8a0a-70f0bf9c506c",
+  "status": "completed",
+  "display_name": "Seedance 2.0",
+  "job_set_type": "seedance_2_0",
+  "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_35SYyjgKtm7acYkQJ747p6AiTXk/hf_20260531_133710_966bc3bd-345b-480b-8a0a-70f0bf9c506c.mp4",
+  "created_at": 1780234630.456213,
+  "params": {
+    "width": 1344,
+    "height": 576,
+    "prompt": "参考声明：以下四张图片分别作为场景、Daichi、载老人农用车、检查点警员的参考。\n@Image 1 (nagi_bridge.png) — Nagi 夜雨桥与检查点：湿路、车流、红色路障/警灯，text_dna_draft 场景板。\n@Image 2 (daichi.png) — Daichi：农场/发电机工作衣、手套、实干型朋友，text_dna_draft 参考。\n@Image 3 (elders_cart.png) — 载老人农用车：夜雨桥面、车斗老人、毯子行李，text_dna_draft 参考。\n@Image 4 (police_officer.png) — 检查点警员：深色雨具、红色交通棒/flare，text_dna_draft 参考。\n\n⚠️参考图状态：以上图像均为 text_dna_draft 参考；本 prompt 用它们锁定方向，但不声称最终 image-reference-bound production lock。\n⚠️空间布局：Police Officer站在农用车前方东侧红色路障旁，距Daichi约4米；Daichi站车南侧指向车斗老人；警员视线从Daichi移到东南天空，再回路障。\n⚠️对白规则：一句台词=一个镜头；若出现台词，严格只在说话者近景内出现口型；禁止字幕。\n⚠️本视频严格只有1个镜头——禁止添加额外镜头。\n\n单镜头（one-shot，无剪辑）。\n机位：50mm手持中景，手持呼吸感中景，摄影机跟随焦点人物的呼吸节奏；紧张段落有轻微不规则漂移，禁稳定器、禁zoom变焦。\n动作：Daichi的怒气在呼吸里，不做英雄姿势。\n微表演细节：①视线先找目标；②下颌/喉咙有压住情绪的细微动作；③肩膀和重心完成一次明确转移；④动作后留半拍让情绪落地。\n\n风格：8K IMAX。超写实——禁3D渲染，禁游戏引擎，禁游戏CG过场质感。摄影：Emmanuel Lubezki × Roger Deakins。灯光：⚠️严格仅使用场景内实际存在的光源（practicals）。禁止一切电影补光——禁正面光、禁侧面补光、禁顶光、禁底光、禁反光板、禁柔光箱、禁LED灯带、禁霓虹、禁任何画面外光源。摄影机始终在人物的阴影侧（shadow side）拍摄。全程大气薄雾haze——禁止可见光束（god rays）。色彩：60:30:10——主色/辅色/点缀色。镜头：物理电影镜头。180°快门运动模糊。皮肤：毛孔级写实——汗毛、不对称痣、毛细血管潮红、毛孔阴影匹配现场光源。表演：好莱坞级——反应前微停顿、精准视线、湿润活眼带眼神光、可见呼吸和胸腔起伏。物理：重力惯性真实——质量有真实重量、正确接触阴影。禁漂浮道具。构图：三分法+黄金比例。每人从第一帧开始运动。连续性：角色、道具、环境每个镜头完全一致。禁身份漂移。技术：60fps流畅运动。8K细节。禁抖动（除手持呼吸感）。音频：仅环境SFX。禁音乐。禁字幕。\n夜外景，仅flare/交通棒、警灯、车灯、路灯、远处天光；禁电影补光。\n色彩：60:30:10——雨夜冷蓝/深灰黑/红色应急点缀。\n环境活动：后方车辆不能空，flare与警灯反射在雨地上；老人保持在车斗中。\n⚠️失败规避：禁身份漂移，禁把一个角色服装混到另一个角色身上，禁空背景，禁漂浮道具，禁可读文字/字幕/水印，禁霓虹和HDR过饱和，禁魔法发光红绳，禁新增拥抱/亲吻/完整姓名揭示。\n15秒。21:9。",
+    "genre": "drama",
+    "medias": [
+      {
+        "data": {
+          "id": "9c4fe32a-2946-47e9-91f2-01f3e51a5b69",
+          "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_35SYyjgKtm7acYkQJ747p6AiTXk/9c4fe32a-2946-47e9-91f2-01f3e51a5b69.png",
+          "type": "media_input"
+        },
+        "role": "start_image"
+      },
+      {
+        "data": {
+          "id": "280f88a6-6b19-475a-8e90-2cb7337acba3",
+          "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_35SYyjgKtm7acYkQJ747p6AiTXk/280f88a6-6b19-475a-8e90-2cb7337acba3.png",
+          "type": "media_input"
+        },
+        "role": "start_image"
+      },
+      {
+        "data": {
+          "id": "26f2d9a6-b973-465a-aeab-091b441046e3",
+          "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_35SYyjgKtm7acYkQJ747p6AiTXk/26f2d9a6-b973-465a-aeab-091b441046e3.png",
+          "type": "media_input"
+        },
+        "role": "start_image"
+      },
+      {
+        "data": {
+          "id": "f6b3cd3e-4364-4094-a538-4e878c1d1aaf",
+          "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_35SYyjgKtm7acYkQJ747p6AiTXk/f6b3cd3e-4364-4094-a538-4e878c1d1aaf.png",
+          "type": "media_input"
+        },
+        "role": "start_image"
+      }
+    ],
+    "duration": 15,
+    "resolution": "720p",
+    "aspect_ratio": "21:9",
+    "generate_audio": true,
+    "multi_shots": false,
+    "multi_shot_mode": "custom",
+    "multi_prompt": [],
+    "speedramp": "auto",
+    "reference_elements": [],
+    "prompt_language": "en",
+    "mode": "std",
+    "model": "seedance_2_0"
+  }
+}

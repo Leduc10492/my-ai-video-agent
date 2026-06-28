@@ -1,7 +1,0 @@
-{
-  "id": "rough-econte-lightbox",
-  "status": "failed",
-  "image_path": null,
-  "error": "Native image generation produced an image but did not expose a filesystem path or binary handle to save image.png.",
-  "caveats": ""
-}

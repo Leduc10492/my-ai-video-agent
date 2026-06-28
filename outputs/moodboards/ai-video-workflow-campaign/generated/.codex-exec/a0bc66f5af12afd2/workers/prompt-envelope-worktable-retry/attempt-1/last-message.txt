@@ -1,7 +1,0 @@
-Complete.
-
-Wrote:
-`generated/.codex-exec/a0bc66f5af12afd2/workers/prompt-envelope-worktable-retry/attempt-1/image.png`
-
-And:
-`generated/.codex-exec/a0bc66f5af12afd2/workers/prompt-envelope-worktable-retry/attempt-1/result.json`

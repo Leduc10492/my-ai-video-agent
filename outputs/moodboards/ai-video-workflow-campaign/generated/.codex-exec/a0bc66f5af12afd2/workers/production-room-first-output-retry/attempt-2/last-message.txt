@@ -1,5 +1,0 @@
-Native `image_gen.imagegen` was called exactly once, but it did not provide a filesystem handle I could copy to the requested PNG path.
-
-Wrote the required failed worker JSON to:
-
-`generated/.codex-exec/a0bc66f5af12afd2/workers/production-room-first-output-retry/attempt-2/result.json`

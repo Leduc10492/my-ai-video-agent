@@ -1,7 +1,0 @@
-{
-  "id": "rough-econte-lightbox-retry",
-  "status": "failed",
-  "image_path": null,
-  "error": "Native image generation returned an image in-session, but no savable PNG file handle/path was available to write to the requested location.",
-  "caveats": ""
-}

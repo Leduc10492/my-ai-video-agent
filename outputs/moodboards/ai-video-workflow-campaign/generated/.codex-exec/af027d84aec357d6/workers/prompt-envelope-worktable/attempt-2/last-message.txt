@@ -1,5 +1,0 @@
-Wrote the required failed worker result JSON at:
-
-`generated/.codex-exec/af027d84aec357d6/workers/prompt-envelope-worktable/attempt-2/result.json`
-
-The native image tool generated the image, but it did not expose a savable PNG file path I could copy to the requested location, so I did not create a placeholder image.

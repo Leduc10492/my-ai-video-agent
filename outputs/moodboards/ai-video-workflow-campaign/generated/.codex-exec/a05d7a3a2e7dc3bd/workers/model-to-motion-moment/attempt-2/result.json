@@ -1,7 +1,0 @@
-{
-  "id": "model-to-motion-moment",
-  "status": "failed",
-  "image_path": null,
-  "error": "Native image_gen returned an image but did not provide a writable filesystem handle or saved PNG path.",
-  "caveats": ""
-}
