@@ -5,11 +5,20 @@ description: Quality checklists for the shotlist-first workflow. Use when perfor
 
 # Quality Checklists
 
+## Slot Compatibility
+
+- slot: `qa.checklists`
+- contract_version: `1`
+- canonical_outputs:
+  - `stage-specific checklist results`
+- qa_handoff: `qa.primary`
+- state_contract: `reference-state-v2`
+
 Use these checklists for stage QA, batch QA, regression QA, and final delivery review.
 
 ## Output Language
 
-When reporting checklist results to the user or saving a QA report, translate checklist item names and explanations into Simplified Chinese by default. Keep technical tokens such as paths, artifact IDs, reference modes, scene labels, shot-row IDs, `P###`, `P0/P1/P2/P3`, and `no action / inspect / regenerate / blocked` unchanged when they are part of the workflow contract.
+When reporting checklist results to the user or saving a QA report, translate checklist item names and explanations into Simplified Chinese by default. Keep technical tokens such as paths, artifact IDs, reference-state values, scene labels, shot-row IDs, `P###`, `P0/P1/P2/P3`, and `no action / inspect / regenerate / blocked` unchanged when they are part of the workflow contract.
 
 ## Artifact Structure
 
@@ -61,7 +70,7 @@ When reporting checklist results to the user or saving a QA report, translate ch
 - [ ] Scene inventory preserves screenplay order and scene labels.
 - [ ] Action beat map lists source scene, action/dialogue source, emotional turn, visual focus, asset need, and blocking need.
 - [ ] Section durations add up to the target runtime or explain variance.
-- [ ] Future or drafted `P###` prompt envelopes are unique, monotonic, and tied to source scene/shot rows when present.
+- [ ] Shot rows use `<scene-label>-R<NN>`; future or drafted `P###` prompt envelopes are unique, reserved, and tied to source rows.
 - [ ] Character positions, eyelines, axis direction, entrances/exits, and spatial continuity are coherent.
 - [ ] Key props, screens, vehicles, crowd movement, and practical light sources are marked in the relevant rows.
 - [ ] Missing guides, missing references, draft reference status, and spatial-blocking gaps are visible before Phase 4.
@@ -70,7 +79,7 @@ When reporting checklist results to the user or saving a QA report, translate ch
 ## Shotlist Prompt Envelope QA
 
 - [ ] Every envelope cites its source scene/shot row and `P###` ID.
-- [ ] Reference handles include concrete visual facts, or explicitly label `text_dna_draft`, `text_only_draft`, `prompt_only`, or `image_reference_bound`.
+- [ ] Reference handles include concrete visual facts and the manifest records all four `reference-state-v2` fields.
 - [ ] Camera is physically planted: position, facing direction, foreground/midground/background, and first-frame composition are stated.
 - [ ] Action path is decomposed into physical steps with object contact, eyeline, body movement, and end state.
 - [ ] Micro-beats are specific to the exact character, shot, and emotional turn; generic repeated beats fail.
@@ -89,15 +98,15 @@ When reporting checklist results to the user or saving a QA report, translate ch
 - [ ] Preview manifest entry count matches prompt envelope count, unless entries are marked `prompt_only`.
 - [ ] Every embedded `<img src>` is relative and points to an existing file.
 - [ ] Preview images are rough e-conte planning aids and do not claim final keyframe status.
-- [ ] Manifest records source artifact, scope, asset count, reference mode, and known limitations.
-- [ ] HTML and manifest use the same reference status labels.
+- [ ] Manifest records source artifact, scope, asset count, all four reference-state fields, and known limitations.
+- [ ] HTML metadata and manifest use the same reference-state values.
 
 ## Generated Assets And Video Tests
 
 - [ ] Generated folders include a README or manifest.
-- [ ] Manifest states source artifact, source prompt envelope, count, reference mode, and known limitations.
-- [ ] `image_reference_bound` is used only when required references were actually loaded or attached.
-- [ ] `text_dna_draft`, `text_only_draft`, and `prompt_only` outputs are not called production-approved.
+- [ ] Manifest states source artifact, source prompt envelope, count, all four reference-state fields, and known limitations.
+- [ ] `reference_binding: images_attached` is used only when required references were actually loaded or attached.
+- [ ] `production_approved` requires `images_attached`, `reference_approval: locked`, and an independent QA pass.
 - [ ] Generated video tests list source `P###`, platform/settings, duration, aspect ratio, and file path.
 - [ ] Video tests are checked for identity drift, empty backgrounds, wrong camera side, missing props, adjacent-beat leakage, and unapproved story beats.
 

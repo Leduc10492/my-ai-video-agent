@@ -5,6 +5,15 @@ description: Internal McKee story principles router for structure packets, audit
 
 # McKee Coordinator
 
+## Slot Compatibility
+
+- slot: `story.mckee_router`
+- contract_version: `1`
+- canonical_outputs:
+  - `structure, audit, rewrite, scene, pacing, variation, and source packets`
+- qa_handoff: `script.primary`
+- state_contract: `n/a`
+
 ## Overview
 
 This skill coordinates McKee-based story support by routing requests to specialized sub-skills. It is not the screenplay-stage entrance. General script creation starts in `screenwriter-workflow`, which may call this coordinator after Story Bone intake.

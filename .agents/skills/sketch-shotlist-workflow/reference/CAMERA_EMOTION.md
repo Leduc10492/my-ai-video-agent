@@ -15,14 +15,14 @@
 
 ## 2. Emotional arcs within a single shot
 
-If emotion **changes** across one continuous take (e.g., Roko goes from rage → controlled), the camera changes synchronously. Write it explicitly in phases:
+If emotion changes across one continuous take, the camera changes synchronously. Write it explicitly in phases:
 
 ```
-⚠️镜头开始（步骤①②阶段，Roko怒气）：摄影机⚠️明显手持、不安、紧张——画面有明显的呼吸式漂移、上下微抖、左右轻摆。
+⚠️镜头开始（步骤①②，Character A处于紧张阶段）：摄影机明显手持、不安——画面有小幅呼吸式漂移与不规则轻摆。
 
-⚠️随Roko情绪逐步缓和（步骤③④⑤）：摄影机的不安⚠️逐渐减弱——呼吸式漂移幅度变小，左右晃动减少，画面开始稳定。
+⚠️随Character A逐步缓和（步骤③④⑤）：摄影机的不安逐渐减弱——呼吸式漂移幅度变小，左右晃动减少，画面开始稳定。
 
-⚠️镜头结尾（步骤⑥⑦，Roko稳定）：摄影机⚠️变得平稳、流畅、克制——只剩下极细微的、规律的呼吸式微动。
+⚠️镜头结尾（步骤⑥⑦，Character A恢复控制）：摄影机变得平稳、流畅、克制——只剩下极细微、规律的呼吸式微动。
 ```
 
 Tie each camera phase to a numbered acting beat (① ② ③ ...) so the model knows when in the take to transition.

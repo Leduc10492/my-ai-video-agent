@@ -2,17 +2,6 @@
 
 const fs = require("fs");
 const path = require("path");
-const docx = require("docx");
-
-const {
-  AlignmentType,
-  Document,
-  Header,
-  Packer,
-  PageNumber,
-  Paragraph,
-  TextRun,
-} = docx;
 
 const FONT = "Courier New";
 const SIZE = 24;
@@ -24,6 +13,24 @@ function usage() {
 
 const [inputPath, outputPath] = process.argv.slice(2);
 if (!inputPath || !outputPath) usage();
+
+let docx;
+try {
+  docx = require("docx");
+} catch (error) {
+  console.error("Missing dependency: run `pnpm install` in the repository root before exporting DOCX.");
+  process.exit(1);
+}
+
+const {
+  AlignmentType,
+  Document,
+  Header,
+  Packer,
+  PageNumber,
+  Paragraph,
+  TextRun,
+} = docx;
 
 const markdown = fs.readFileSync(inputPath, "utf8");
 const match = markdown.match(/## Screenplay\s*\n\s*```text\s*\n([\s\S]*?)\n```/);

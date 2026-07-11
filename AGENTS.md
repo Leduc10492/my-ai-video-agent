@@ -60,16 +60,16 @@ Admin files are intentionally unversioned:
 Asset and shotlist package directories are intentionally unversioned or package-versioned by folder:
 
 - `deliverables/20_assets/refs/`: common local reference images declared by the latest asset guide
-- `deliverables/20_assets/generated_ref_v{N}/`: common local generated references, only production-approved when the manifest says `image_reference_bound`
+- `deliverables/20_assets/generated_ref_v{N}/`: common local generated references; generation origin, binding, approval, and output status are recorded separately
 - `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/assets/`: scene-specific assets only; common assets should be referenced from `deliverables/20_assets/`
 - `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/previews/`: generated rough e-conte preview images embedded in the scene shotlist HTML
 - `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/generated/`: generated video clips or platform exports for that scene package, if saved locally
 
-Every generated asset directory or scene package should include a `README.md` or manifest with source artifact, asset count, reference mode, common-asset links, scene-specific asset list, and known limitations.
+Every generated asset directory or scene package should include a `README.md` or manifest with source artifact, asset count, reference-state fields, common-asset links, scene-specific asset list, and known limitations.
 
 ## Artifact Format
 
-Every created or updated production deliverable should begin with artifact metadata:
+Every created or updated Markdown production deliverable should begin with artifact metadata:
 
 ```markdown
 # Artifact: <Type>
@@ -89,7 +89,9 @@ Every created or updated production deliverable should begin with artifact metad
 
 Keep the same artifact ID across versions of the same deliverable. New deliverables get new IDs.
 
-All current production deliverables should include this metadata. If a legacy file lacks metadata, repair it before editing content.
+All current Markdown production deliverables should include this metadata. If a legacy file lacks metadata, repair it before editing content.
+
+Scene-package HTML stores the same identity in `<meta name="artifact-id">`, `<meta name="artifact-version">`, and `<meta name="source-artifact-ids">`. The sibling `manifest.md` is the canonical package metadata record and must use the Markdown artifact header above.
 
 ## Versioning Rules
 
@@ -101,6 +103,8 @@ When saving a new version:
 4. Update the artifact metadata `version`.
 5. Preserve or update `upstream` and `locks`.
 6. Append a short entry to `deliverables/00_admin/changelog.md`.
+
+For scene-package revisions, archive the entire previous `<scene-scope>_v{N}/` directory under `archives/30_shotlist/scenes/`, then create the next package directory. Do not version only the HTML while leaving manifests, previews, or generated-test mappings behind.
 
 Do not create `deliverables/*/archive/` directories.
 
@@ -178,11 +182,24 @@ Before producing any prompt or generation test that contains a named character o
 2. Resolve every relevant local reference image path from that asset guide or generated-reference manifest.
 3. Confirm the referenced image files exist on disk.
 4. State each reference image role in the prompt or handle, for example `<Character> identity reference`, `<Character> costume reference`, or `<Object> prop reference`.
-5. Use text DNA only as a supplement to visual references, not as a replacement.
+5. Use text DNA only as a supplement to visual references, not as a replacement for locked production continuity.
 
-If the active platform cannot consume required image references, mark outputs as `text_only_draft`, `text_dna_draft`, or `prompt_only` and do not treat them as continuity-approved production assets.
+### Reference State Contract
 
-Use `image_reference_bound` only when the required local reference images were actually attached or loaded during generation.
+Do not overload one label with asset origin, model binding, approval, and output readiness. Every asset batch, scene package, preview manifest, and generated-test manifest records these fields:
+
+- `asset_origin`: `user_provided`, `generated_from_text`, `generated_from_references`, or `mixed`
+- `reference_binding`: `none`, `text_only`, or `images_attached`
+- `reference_approval`: `draft`, `reviewed`, or `locked`
+- `output_status`: `prompt_only`, `smoke_test`, `review_ready`, or `production_approved`
+
+Legacy labels are read-only compatibility hints:
+
+- `text_only_draft` or `text_dna_draft`: normally `reference_binding: text_only`, `reference_approval: draft`
+- `image_reference_bound`: `reference_binding: images_attached`; it makes no approval claim
+- `prompt_only`: maps to `output_status: prompt_only`
+
+An output may be `production_approved` only when required references were actually attached, approval is `locked`, and independent QA passed. A generated-from-text image may still be attached to a model; in that case use `asset_origin: generated_from_text`, `reference_binding: images_attached`, and `reference_approval: draft`.
 
 ## Quality Gates
 
@@ -199,10 +216,12 @@ Before changing downstream artifacts, verify:
 - character reference image paths in the latest asset guide or generated-reference manifest exist on disk
 - style work has a style guide, or the absence is called out explicitly
 - screenplay scene order, shot row counts, duration, source scene mapping, and prompt-envelope grouping agree
+- shot rows use `<scene-label>-R<NN>`, prompt envelopes use reserved `P###` IDs, and the two identifiers are never conflated
 - prompt envelopes include reference facts, planted camera, first-frame composition, physical action path, unique micro-beats, shot-specific failure locks, adjacent-beat boundaries, and reference status labels
 - production work is split by screenplay scene first; overloaded scenes are split by action phase, camera setup, or reference-set change
 - shotlist prompt envelopes agree with preview manifest entries and embedded image paths
 - generated asset folders include manifests with source artifact, count, reference mode, and limitations
+- generated asset folders include manifests with all four reference-state fields and known limitations
 - any replacement skill selected in `.agents/skill_registry.md` exists and satisfies the relevant slot interface
 
 If an upstream artifact changes, list downstream artifacts that may need inspection, revision, or regeneration.

@@ -118,11 +118,11 @@ Generated folders must include a manifest or README with:
 
 - source artifact
 - asset count
-- reference mode: `source`, `text_dna_draft`, `text_only_draft`, `prompt_only`, or `image_reference_bound`
+- reference state: `asset_origin`, `reference_binding`, `reference_approval`, and `output_status`
 - shot range or file naming pattern
 - known limitations
 
-Production character references must be generated or supplied with relevant local references loaded or attached. Text DNA alone is not sufficient for `image_reference_bound`.
+Production character references must be generated or supplied with relevant local references loaded or attached. `reference_binding: images_attached` proves binding only; production approval additionally requires `reference_approval: locked` and independent QA.
 
 Higgsfield/Seedance e-conte previews are review aids. They must be manifest-backed and embedded into the shotlist HTML with relative image paths, but they are not production keyframes unless a later task explicitly promotes them and records that status.
 
@@ -136,13 +136,13 @@ QA runs at five levels:
 - Regression QA: evaluate downstream impact after upstream edits
 - Final/workflow QA: save a report under `deliverables/00_admin/qa_reports/`
 
-The important checks are version suffixes, artifact metadata, upstream IDs, locks, latest-version selection, reference images, generated asset manifests, scene order, shot-row count, prompt-envelope ID consistency, spatial continuity, prompt executability, embedded preview paths, and platform production risk.
+The important checks are version suffixes, artifact metadata, upstream IDs, locks, latest-version selection, reference-state fields, generated asset manifests, scene order, distinct shot-row/prompt IDs, spatial continuity, prompt executability, embedded preview paths, and platform production risk.
 
 ## Tooling
 
-The workflow does not require a separate validation runtime. Codex should validate project state with direct local checks: latest-version scans, metadata inspection, registry/default-skill existence checks, scene-package manifest checks, relative preview path checks, and `git diff --check`.
+The workflow uses Markdown as the source of truth and a small Node validator for deterministic checks. Run `.agents/skills/qa-workflow/scripts/validate-workflow.js` for registry/default-skill existence, relative reference links, Slot Compatibility declarations, artifact metadata, scene-package manifests, prompt/row IDs, prompt gates, and preview paths; retain direct creative and spatial review for checks that cannot be reduced safely to code.
 
-If repeatable automation is needed later, add a portable helper in a runtime already used by the repo.
+The helper uses only Node built-ins. `package.json` additionally declares `docx` for screenplay export.
 
 ## Starter State
 

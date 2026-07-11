@@ -28,7 +28,7 @@ Skip it for:
 
 ## 3. How to render
 
-Use `visualize:show_widget` with module `diagram`. Default viewBox: 900×720 (desktop). Use the dark theme tokens. Show character circles in the production palette (Roko = red, Gandelfina = gold, etc. — pick consistent colors and stick to them across scenes).
+Use an available diagram or canvas tool, or create a simple SVG/Markdown coordinate plan when no visual tool is available. Use a stable legend and consistent character colors across the selected scope. The schema must remain readable without depending on a specific tool name.
 
 After rendering, ask in Chinese: **"这个站位和道具位置对吗？需要改哪里？"** Iterate until approved before writing any prompt.
 
@@ -46,11 +46,11 @@ Every prompt for that scene includes a `⚠️空间布局` block that mirrors t
 
 Example:
 ```
-⚠️空间布局（MAIN VIEW=从天桥入口看向巨型屏幕）：
-位置A：@image4站在中央通道最前方靠近屏幕，面朝三人。
-位置B：@image1和@image2在通道中间并肩站立，距@image4约3米，面朝@image4方向。
-位置C：@image3站在@image1和@image2正后方1.5米处——不在他们旁边，严格在他们背后，被他们的身体部分遮挡——也面朝@image4方向。
-⚠️@image1左肩与@image2右肩间距约40厘米。@image3的头顶高度严格低于@image1和@image2的肩部连线（站位较远造成的视觉缩小）。
+⚠️空间布局（MAIN VIEW=从入口看向背景墙）：
+位置A：@image1站在入口内侧偏左，面朝空间中央。
+位置B：@image2站在中央轴线，距@image1约3米，面朝@image1。
+位置C：@image3位于@image2后方1.5米，部分被@image2遮挡。
+⚠️@image1与@image2不得交换左右位置；@image3必须保持后景遮挡关系。
 ```
 
 Always include in the prompt:

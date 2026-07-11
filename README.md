@@ -95,12 +95,12 @@ Legacy `03_storyboard_v{N}.md` and local companion prompt files belong under `ar
 ## Generated Assets
 
 - `deliverables/20_assets/refs/`: common local reference images declared by the latest asset guide.
-- `deliverables/20_assets/generated_ref_v{N}/`: common local generated references; production-approved only when the manifest says `image_reference_bound`.
+- `deliverables/20_assets/generated_ref_v{N}/`: common local generated references; asset origin, model binding, approval, and output readiness are recorded separately.
 - `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/assets/`: scene-specific assets only; common assets should be referenced from `20_assets`.
 - `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/previews/`: rough e-conte previews embedded in the scene shotlist HTML.
 - `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/generated/`: generated video clips or platform exports for that scene package, if saved locally.
 
-Each generated directory should include a `README.md` or manifest with source artifact, asset count, `reference_mode`, and known limitations.
+Each generated directory should include a `README.md` or manifest with source artifact, asset count, `asset_origin`, `reference_binding`, `reference_approval`, `output_status`, and known limitations.
 
 ## Quality Rules
 
@@ -122,9 +122,22 @@ Every production deliverable starts with artifact metadata:
 ---
 ```
 
-Before downstream work, check latest versions, upstream IDs, locks, guide/reference requirements, scene order, shot-row counts, prompt-envelope IDs, spatial continuity, embedded preview paths, generated asset manifests, and production feasibility.
+Before downstream work, check latest versions, upstream IDs, locks, guide/reference requirements, scene order, distinct shot-row and prompt-envelope IDs, spatial continuity, embedded preview paths, generated asset manifests, and production feasibility.
 
 `sketch-shotlist-workflow` owns generation hard gates. `qa-workflow` provides independent review, regression checks, and persistent reports.
+
+## Validation Helpers
+
+The workflow remains Markdown-first, but fragile structural checks are repeatable:
+
+```bash
+pnpm install
+pnpm validate
+pnpm test
+node .agents/skills/qa-workflow/scripts/validate-workflow.js --repo . --slot shotlist.primary --candidate .agents/skills/<candidate>
+```
+
+`pnpm test` rebuilds and validates the sibling `test` worktree regression fixture when that worktree is present. Run this forward test after candidate validation; Slot declarations and path checks do not prove source fidelity, creative quality, or spatial quality.
 
 ## Starter State
 

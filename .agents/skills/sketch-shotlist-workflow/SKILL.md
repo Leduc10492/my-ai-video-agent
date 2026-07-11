@@ -5,9 +5,19 @@ description: Project-local Seedance/Higgsfield shotlist-builder workflow. Use as
 
 # Sketch Shotlist Workflow
 
-This is the active production path for Seedance/Higgsfield work in this repository. It imports the `shotlist-builder` method into the project file contract: screenplay scenes first, asset request, reference upload/mapping, spatial blocking, then scene-scoped HTML shotlists with Chinese Seedance prompts.
+This is the active production path for Seedance/Higgsfield work in this repository. It imports the `shotlist-builder` method into the project file contract: screenplay scenes first, asset request, reference upload/mapping, spatial blocking, then scene-scoped HTML shotlists with Chinese readable modules and Chinese Seedance prompts.
 
 The HTML shotlist is the prompt source of truth. Do not split the same scope into separate board-prompt, art-prompt, or standalone video-prompt artifacts.
+
+## Slot Compatibility
+
+- slot: `shotlist.primary`
+- contract_version: `1`
+- canonical_outputs:
+  - `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/Shotlist_<scene-scope>_ZH_v{N}.html`
+  - `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/manifest.md`
+- qa_handoff: `qa.primary`
+- state_contract: `reference-state-v2`
 
 ## Inputs
 
@@ -19,7 +29,22 @@ Use the latest numeric version unless the user names a file or scene range:
 - Optional: uploaded reference images, common local references under `deliverables/20_assets/`, scene-specific references under the scene package, rough sketch references, keyframes, generated video test results, or style override material
 - Optional: user-selected scene, scene range, duration target, language, and image generation tool
 
-If only a script is available, run Phase 1 and Phase 2 first. Do not skip directly to prompt generation unless the user explicitly asks for a rough draft and accepts the reference/status limitations.
+If only a script is available, run Phase 1 and Phase 2 first. Continue only after the scene scope and one execution mode are explicit:
+
+- `production`: required images are attached, `reference_approval: locked`, spatial blocking is approved, and final QA is required.
+- `draft`: supplied or generated references may be unapproved, but their files, visual facts, scope, and spatial blocking still must be explicit. Use `output_status: smoke_test` or `review_ready`.
+- `prompt_only`: no image/video generation is attempted. Text-only handles and preview prompts are allowed after the user accepts the limitation; use `reference_binding: text_only` and `output_status: prompt_only`.
+
+If the user explicitly asks to run a regression fixture and the fixture already contains an unambiguous scope, asset map, and blocking plan, that request counts as approval for `draft` testing only. Record `blocking_approval: approved_for_test`; never promote it to production approval.
+
+When a `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md` artifact exists, consume its four-phase structure before writing the HTML:
+
+- `Phase 1 - 剧本拆解`: scene inventory, `动作 / 对白 Beat Map`, emotional/camera tendency, director split notes
+- `Phase 2 - 资产请求`: characters, locations, props, style references
+- `Phase 3 - 范围与空间调度`: scope lock, image-to-asset mapping, spatial blocking queue, top-down schema needs
+- `Phase 4 - HTML 分镜生成计划`: `Shot Row Plan`, `Prompt Envelope Plan`, `Prompt Density Notes`, `Scene Package Recommendation`
+
+`Prompt Envelope Plan` is binding input for Phase 4 generation. If the latest breakdown uses an older shape and lacks `Prompt Envelope Plan`, repair or regenerate the breakdown first so each prompt has source rows, beat boundaries, dialogue boundaries, 15-second grouping reason, and next-beat reservation.
 
 ## Outputs
 
@@ -33,13 +58,15 @@ Save current production files as scene-native packages under `deliverables/30_sh
 - `generated/`, only when real video tests are saved
 - optional `spatial_blocking.md` or approved top-down schema references when Phase 3 required them
 
+The package `manifest.md` begins with Artifact metadata. The HTML includes `artifact-id`, `artifact-version`, and `source-artifact-ids` `<meta>` fields that match the manifest.
+
 Use scene-native scope names:
 
 - single screenplay scene: `scene-021_v1`
 - small scene range: `scenes-021-023_v1`
 - derived label when the script lacks numbering: `scene-001_v1`
 
-Do not use legacy storyboard IDs as the new package split unit. Legacy legacy storyboard IDs identifiers may appear only inside old migrated artifacts or as compatibility notes.
+Use screenplay scene labels as the package split unit. Older migrated artifacts may keep their historical identifiers only as compatibility notes inside those archived files.
 
 Default asset lookup order:
 
@@ -48,20 +75,40 @@ Default asset lookup order:
 
 Do not duplicate common assets into a scene package unless the user asks for a portable export bundle. Scene `assets/` is for assets that exist only for that scene or override a common asset with an explicit manifest note.
 
-Generated preview images are review assets, not production keyframes. Mark their reference status in the manifest:
+Generated preview images are review assets, not production keyframes. Package, preview, and generated-test manifests use four independent fields:
 
-- `text_only_draft`
-- `text_dna_draft`
-- `image_reference_bound`
-- `prompt_only`
+- `asset_origin`: `user_provided`, `generated_from_text`, `generated_from_references`, or `mixed`
+- `reference_binding`: `none`, `text_only`, or `images_attached`
+- `reference_approval`: `draft`, `reviewed`, or `locked`
+- `output_status`: `prompt_only`, `smoke_test`, `review_ready`, or `production_approved`
+
+Read `text_only_draft`, `text_dna_draft`, `image_reference_bound`, and `prompt_only` only as legacy compatibility labels. Never use `image_reference_bound` as proof that an image is approved.
 
 Generated video tests, if saved, belong under the scene package `generated/` directory with a manifest or README. They do not change the HTML source of truth.
+
+## Output Language Contract
+
+The final HTML is for Chinese users by default. Use Simplified Chinese for every visible reader-facing module:
+
+- HTML UI labels, toolbar text, filter labels, scene headers, summaries, and stats
+- `Action` / action cells
+- `Scene Text` / script excerpt cells
+- `Asset List` and reader-facing manifest notes
+- prompt tags, prompt labels, QA notes, and preview metadata
+- Seedance prompt blocks
+
+Keep stable machine-facing fields in English/numeric form for automation and filtering:
+
+- plan codes such as `WS`, `MS`, `CU`, `ECU`, `MACRO`, `PAN`, `OS`, `VO`
+- `data-plan`, CSS class names, file paths, artifact IDs, prompt IDs, and HTML/JS function names
+
+Preserve exact source dialogue in its original spoken language inside the Chinese prompt. Use the source line verbatim as `<exact source dialogue>`, then write the surrounding direction in Chinese: speaker, addressee, lip-sync framing, pre-line micro-beat, line delivery, and post-line reaction.
 
 ## The Four-Phase Shotlist-Builder Loop
 
 This workflow is stateful across turns. Do not collapse all phases into one response unless the user explicitly supplies every prerequisite and asks for a draft.
 
-### Phase 1 - Read The Script
+### Phase 1 - 剧本拆解
 
 Read the entire current script or selected script source. If multiple files are provided and one is clearly a style reference, previous shotlist HTML, or director note, treat it as a style override.
 
@@ -76,26 +123,26 @@ Identify:
 
 If the script lacks scene numbers, create derived labels from screenplay order, such as `scene-001`, and mark them as derived.
 
-### Phase 2 - Asset Request
+### Phase 2 - 资产请求
 
 Output a clean Simplified Chinese asset request organized by:
 
-- Characters
-- Locations
-- Props
-- Style References
+- 人物
+- 地点
+- 道具
+- 风格参考
 
-Use brief one-line descriptions, and end by asking the user to generate/upload the assets with clear filenames and tell Codex which scenes to build.
+Use brief one-line descriptions, then state the missing assets, requested scope, and available execution modes.
 
-Stop after Phase 2 unless the user has already supplied usable references and an explicit scene scope. Do not continue to Phase 3 in the same production pass when assets are missing.
+Stop after Phase 2 only when scope or execution mode remains unresolved, filenames are ambiguous, or production mode lacks required references. Continue in `draft` or `prompt_only` mode when the user explicitly accepted that mode and the scope is unambiguous.
 
 Project adaptation:
 
 - Store common reusable assets under `deliverables/20_assets/`.
 - Store scene-only assets under the relevant scene package `assets/`.
-- If a required image is missing, mark downstream output as draft-only (`text_only_draft`, `text_dna_draft`, or `prompt_only`) unless the user pauses to provide references.
+- If a required image is missing, production mode is blocked. Draft or prompt-only output may continue with `reference_binding: text_only`, `reference_approval: draft`, and a visible limitation.
 
-### Phase 3 - Scope And Spatial Blocking
+### Phase 3 - 范围与空间调度
 
 When the user uploads or points to images, before generating any prompt:
 
@@ -103,26 +150,29 @@ When the user uploads or points to images, before generating any prompt:
 2. Map filenames to assets; flag missing, extra, or ambiguous files. Never auto-assign ambiguous images silently.
 3. Confirm style override if one was supplied; otherwise confirm default style.
 4. Build a visual-fact table from every usable reference image before writing handles: face/hair/body, wardrobe, material/texture, prop geometry, location layout, light sources, foreground/background layers, and likely confusion risks.
-5. For any scene with 2+ characters in frame, a key prop on a specific surface, or complex camera geometry, produce a top-down spatial schema and get user approval before writing prompts.
+5. For any scene with 2+ characters in frame, a key prop on a specific surface, or complex camera geometry, produce a top-down spatial schema and get user approval before writing production prompts. A regression fixture may use `approved_for_test` only when its existing map is complete and unambiguous.
 6. After the top-down schema is approved, lock prompt-level camera blocking for each 15-second prompt: camera planted where, looking which direction, first-frame composition, foreground/midground/background, frame-edge slivers, and the one action that must read.
 
 Do not start writing prompts until scope, image-to-asset mapping, visual facts, required top-down spatial blocking, and per-prompt camera blocking are locked.
 
-### Phase 4 - Generate The HTML Shotlist
+### Phase 4 - 生成 HTML 分镜
 
 For each scene in scope:
 
-1. Break action into shot rows at script-beat granularity: one row per discrete action, camera setup, focal-length change, or visual-focus change.
-2. Group consecutive shot rows into 15-second prompts using `reference/PROMPT_DENSITY.md`.
-3. Write each Chinese Seedance 2.0 prompt following `reference/PROMPT_PATTERNS.md`, including the universal style block, camera-emotion sync, and performance micro-beats.
-4. For multi-shot prompts, structure each internal cut as a `【镜头N】` block with its own `机位 / 背景 / 动作 / 微表演细节` sub-blocks.
-5. Run the Prompt Quality Gate below on every prompt envelope. If a prompt fails, rewrite it before HTML assembly.
-6. Assemble into `templates/HTML_TEMPLATE.md`.
-7. Save into the scene package path under `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/`.
+1. Consume the breakdown `Shot Row Plan` as the starting shot-row map.
+2. Consume the breakdown `Prompt Envelope Plan` as the prompt grouping contract: source rows, beat boundary, dialogue boundary, character/asset set, 15-second grouping reason, and next-beat reservation.
+3. Consume the breakdown `Prompt ID Reservation`. Shot rows use `<scene-label>-R<NN>`; only prompt envelopes use reserved `P###` IDs. Never reuse a retired prompt ID as a row ID.
+4. Revise grouping when `reference/PROMPT_DENSITY.md` clearly requires it; record the reason in `Prompt Density Notes` or the scene package manifest. Do not treat every shot-row boundary as a separate 15-second prompt. If adjacent short beats share location, character set, spatial axis, and one immediate emotional cause-effect turn, merge them into one 15-second multi-shot envelope with internal `【镜头N】` blocks.
+5. Write each Chinese Seedance 2.0 prompt following `reference/PROMPT_PATTERNS.md`, including handle declarations, universal warnings, camera/frame lock, spatial blocking, per-shot blocks, style block, background activity, shot-specific failure-mode lock, and closing footer.
+6. For multi-shot prompts, structure each internal cut as a `【镜头N】` block with its own `机位 / 背景 / 动作 / 微表演细节` sub-blocks.
+7. Preserve original dialogue inside the Chinese prompt. Bind every line to the speaker, addressee, lip-sync shot, pre-line micro-beat, line delivery, and post-line reaction.
+8. Run the Prompt Quality Gate below on every prompt envelope. If a prompt fails, rewrite it before HTML assembly.
+9. Assemble from `assets/shotlist-house-template.html` using the placeholder contract in `templates/HTML_TEMPLATE.md`.
+10. Save the complete scene package under `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/`.
 
 ## Prompt Density
 
-There is no fixed shot-row-to-prompt ratio. Decide per scene.
+There is no fixed shot-row-to-prompt ratio. Use `reference/PROMPT_DENSITY.md` as the grouping standard and decide per scene.
 
 Group shot rows into one prompt only when all are true:
 
@@ -132,6 +182,8 @@ Group shot rows into one prompt only when all are true:
 4. can be staged in 15 seconds or less
 5. the combined Chinese prompt stays practical for generation
 
+Use one multi-shot prompt for a short cause-effect chain that would feel slow as separate 15-second prompts. For example, a warning gesture, the listener's realization, and the resulting release action may share one envelope when cast, location, axis, and immediate causal turn remain stable.
+
 Split into separate prompts when any are true:
 
 1. hard cut between locations
@@ -140,21 +192,23 @@ Split into separate prompts when any are true:
 4. performance arc deserves its own 15-second envelope
 5. insert/cutaway to a prop, screen, hand, eye, or written note
 
-When in doubt, use more prompts with shorter envelopes. Seedance handles tight prompts better than overloaded prompts.
+When uncertain, test both risks: split if one envelope overloads blocking or performance; merge if separate 15-second envelopes would stretch one immediate causal turn. Record the decision in `Prompt Density Notes`.
 
 ## Prompt Quality Gate
 
 Every prompt envelope must pass all checks before HTML or preview generation:
 
-1. **Reference facts:** every handle contains concrete visual facts from the source image or explicitly labels `text_dna_draft`.
+1. **Reference facts:** every handle contains concrete visual facts and respects the package's `reference_binding` and `reference_approval` values.
 2. **Camera planted:** every prompt states where the camera is physically placed, what direction it faces, and foreground/midground/background.
 3. **Frame composition:** every prompt describes first-frame composition with left/right/top/bottom or foreground/midground/background relationships.
 4. **Action path:** every action is decomposed into physical steps with body movement, object contact, eyeline, and end state.
 5. **Micro-beats are unique:** emotional beats are tailored to this exact character, action, and scene turn.
 6. **Failure-mode lock:** every prompt names likely model errors specific to this shot.
 7. **Adjacent-beat boundary:** sequential prompt envelopes state which earlier/later beat must not leak into this prompt.
-8. **Reference status gate:** draft references keep the HTML, preview manifest, and generated tests labeled as draft/smoke-test.
+8. **Reference state gate:** all four reference-state fields agree across HTML metadata, package manifest, preview manifest, and generated tests.
 9. **Batch pressure check:** when a scene or selected scope produces more than 8 prompts, run a scene-by-scene self-audit before finalizing.
+10. **Dialogue preservation:** exact source dialogue remains in its original language inside quotes, with speaker, addressee, lip-sync framing, and before/after micro-beats.
+11. **HTML language check:** UI labels, scene headers, action cells, scene-text cells, asset lists, prompt tags, and prompt blocks are Simplified Chinese, while stable machine fields remain unchanged.
 
 ## E-conte Preview Layer
 
@@ -205,13 +259,18 @@ Before reporting completion:
 
 - Count scenes, shot rows, and prompt envelopes in the HTML.
 - Count preview manifest entries.
+- Confirm the HTML consumed the latest breakdown `Prompt Envelope Plan`, or record the explicit grouping revision reason.
 - Confirm every prompt envelope passed the Prompt Quality Gate.
 - Confirm any scene above 8 prompts has a self-audit note.
+- Confirm exact source dialogue is preserved inside prompt blocks without substituting a translated line.
+- Confirm HTML UI, scene headers, action cells, scene-text cells, asset lists, prompt tags, and prompt blocks are Simplified Chinese.
 - Confirm prompt envelope count equals preview entries, unless manifest marks `prompt_only`.
 - Confirm every `<img src>` file exists on disk.
 - Confirm no preview path is absolute when the HTML is meant to be portable inside its scene package.
 - Confirm generated previews do not claim to be final art or production keyframes.
-- Confirm generated assets have a manifest with source artifact, count, reference mode, and limitations.
+- Confirm generated assets have a manifest with source artifact, count, all four reference-state fields, and limitations.
+- Confirm shot rows and prompt envelopes use distinct identifiers and all `P###` values fall inside the reserved range.
+- Run `node .agents/skills/qa-workflow/scripts/validate-workflow.js --repo . --project <project-root> --package <scene-package-path>` and resolve every error before handoff.
 - Request or run `qa.primary` after HTML/previews are complete and after any real video generation test.
 
-If an image generation tool is unavailable, still create the HTML prompt structure and preview prompt manifest, then mark the preview status as `prompt_only` and report the limitation.
+If an image generation tool is unavailable, still create the HTML prompt structure and preview prompt manifest, then use `reference_binding: text_only`, `reference_approval: draft`, and `output_status: prompt_only` and report the limitation.

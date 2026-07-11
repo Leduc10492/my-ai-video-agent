@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="artifact-id" content="{{ARTIFACT_ID}}">
+  <meta name="artifact-version" content="{{ARTIFACT_VERSION}}">
+  <meta name="source-artifact-ids" content="{{SOURCE_ARTIFACT_IDS}}">
+  <title>{{PROJECT_TITLE}} - {{SCOPE}} 分镜表</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b0b0d;--panel:#161619;--panel2:#101013;--line:#34343a;--text:#f0efed;--muted:#aaa6a0;--soft:#7d7973;--accent:#ed4b43;--green:#39c97b;--gold:#ddb65d}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font:13px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    button,input,select{font:inherit}
+    .container{width:min(1700px,calc(100vw - 32px));margin:0 auto;padding:24px 0 56px}
+    .top{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:22px;margin-bottom:14px}
+    h1{font-size:25px;line-height:1.25;margin:0 0 7px;letter-spacing:0}
+    h1 span{color:var(--accent)}
+    .sub{color:var(--muted)}
+    .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:16px}
+    .stat{border:1px solid var(--line);background:var(--panel2);border-radius:6px;padding:10px;min-height:66px}
+    .stat .v{font-size:19px;font-weight:750;overflow-wrap:anywhere}
+    .stat .l{font-size:11px;color:var(--soft)}
+    .toolbar,.toc,.asset-summary{border:1px solid var(--line);background:var(--panel);border-radius:8px;margin-bottom:12px;padding:10px}
+    .toolbar{display:grid;grid-template-columns:minmax(180px,1fr) 180px auto auto;gap:8px}
+    .toolbar input,.toolbar select,.toolbar button{height:36px;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:6px;padding:0 10px;min-width:0}
+    .toolbar button{cursor:pointer}
+    .toolbar button:hover,.toolbar button:focus-visible{border-color:var(--accent)}
+    .toc{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+    .toc-label{color:var(--soft);margin-right:4px}
+    .toc a{color:var(--text);text-decoration:none;border:1px solid var(--line);background:var(--panel2);border-radius:5px;padding:4px 8px}
+    .asset-summary{color:var(--muted);overflow-x:auto}
+    .asset-summary h2{color:var(--gold);font-size:16px;margin:0 0 8px}
+    .scene{border:1px solid var(--line);background:var(--panel);border-radius:8px;margin:16px 0;overflow:hidden}
+    .scene-head{padding:14px 16px;border-bottom:1px solid var(--line);background:#1b1719}
+    .scene-num{font-size:11px;font-weight:750;color:var(--accent)}
+    .scene-title{font-size:18px;margin:3px 0 6px;letter-spacing:0}
+    .scene-meta{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted)}
+    .table-wrap{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;table-layout:fixed;min-width:1300px}
+    th,td{border-bottom:1px solid var(--line);padding:9px;vertical-align:top;overflow-wrap:anywhere}
+    th{position:sticky;top:0;background:var(--panel2);color:var(--muted);font-size:11px;text-align:left;z-index:1}
+    th:nth-child(1){width:120px}th:nth-child(2){width:76px}th:nth-child(3){width:145px}th:nth-child(4){width:19%}th:nth-child(5){width:22%}th:nth-child(6){width:39%}th:nth-child(7){width:150px}
+    .c-num{font:11px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace;color:#d5d1cb}
+    .badge{display:inline-flex;align-items:center;justify-content:center;min-width:46px;min-height:24px;border-radius:5px;padding:2px 6px;color:#0b0b0d;font-size:11px;font-weight:800}
+    .p-ws{background:#a7f3d0}.p-ms{background:#93c5fd}.p-cu{background:#fda4af}.p-ecu{background:#f9a8d4}.p-macro{background:#fde68a}.p-pan{background:#c4b5fd}.p-os,.p-vo,.p-dis{background:#d6d3d1}
+    .script-inner{white-space:pre-wrap;color:#d7d3ce}
+    .prompt-card{border-top:1px solid #44444a;padding-top:8px}
+    .prompt-head{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;color:var(--green);margin-bottom:7px}
+    .prompt-head span{color:var(--soft);font-size:10px}
+    .copy{border:1px solid var(--line);background:#27272a;color:var(--text);border-radius:5px;min-width:52px;height:28px;cursor:pointer}
+    pre.prompt-block{margin:0;white-space:pre-wrap;word-break:break-word;background:#0d0d10;border:1px solid var(--line);border-radius:6px;color:#ece9e5;padding:11px;font:12px/1.62 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;max-height:680px;overflow:auto}
+    .preview-card{display:block;color:var(--text);text-decoration:none}
+    .preview-card img{display:block;width:100%;max-height:300px;object-fit:contain;border:1px solid var(--line);background:#0d0d10;border-radius:5px}
+    .preview-card span,.preview-state{display:block;margin-top:6px;color:var(--soft);font-size:10px}
+    .empty-state{display:none;border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:18px;text-align:center;color:var(--muted)}
+    @media(max-width:760px){.container{width:min(100% - 16px,1700px);padding-top:8px}.top{padding:15px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.toolbar{grid-template-columns:1fr 1fr}.toolbar input{grid-column:1/-1}.scene-title{font-size:16px}}
+    @media print{.toolbar,.toc,.copy{display:none!important}body{background:#fff;color:#000}.container{width:100%;padding:0}.top,.asset-summary,.scene{background:#fff;color:#000;border-color:#bbb}pre.prompt-block{max-height:none;background:#fff;color:#000}.table-wrap{overflow:visible}table{min-width:0;font-size:9px}}
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header class="top">
+      <h1>{{PROJECT_TITLE}} - <span>{{SCOPE}} 分镜表</span></h1>
+      <div class="sub">{{REFERENCE_SUMMARY}}</div>
+      <div class="stats">
+        <div class="stat"><div class="v">{{N_SCENES}}</div><div class="l">场景</div></div>
+        <div class="stat"><div class="v">{{N_ROWS}}</div><div class="l">镜头行</div></div>
+        <div class="stat"><div class="v">{{N_PROMPTS}}</div><div class="l">提示词包</div></div>
+        <div class="stat"><div class="v">{{ARTIFACT_VERSION}}</div><div class="l">版本</div></div>
+      </div>
+    </header>
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="搜索场景、动作、对白或提示词">
+      <select id="planFilter"><option value="">全部镜头类型</option>{{PLAN_OPTIONS}}</select>
+      <button id="printButton" type="button">打印 / PDF</button>
+      <button id="resetButton" type="button">重置</button>
+    </div>
+    <nav class="toc" aria-label="场景目录"><span class="toc-label">场景</span>{{TOC_LINKS}}</nav>
+    <section class="asset-summary"><h2>资产与状态</h2>{{ASSET_SUMMARY}}</section>
+    <div id="sceneList">{{SCENE_BLOCKS}}</div>
+    <div class="empty-state" id="emptyState">没有找到结果，请重置筛选或更换关键词。</div>
+  </main>
+  <script>
+    const search=document.getElementById("search");
+    const plan=document.getElementById("planFilter");
+    const scenes=[...document.querySelectorAll(".scene")];
+    function applyFilters(){
+      const q=(search.value||"").trim().toLowerCase();
+      const p=plan.value;
+      let visible=0;
+      scenes.forEach(scene=>{
+        let rowsVisible=0;
+        scene.querySelectorAll("tbody tr").forEach(row=>{
+          const ok=(!q||row.innerText.toLowerCase().includes(q))&&(!p||row.dataset.plan===p);
+          row.style.display=ok?"":"none";
+          if(ok)rowsVisible++;
+        });
+        scene.style.display=rowsVisible?"":"none";
+        if(rowsVisible)visible++;
+      });
+      document.getElementById("emptyState").style.display=visible?"none":"block";
+    }
+    document.addEventListener("click",async event=>{
+      const button=event.target.closest("[data-copy-target]");
+      if(!button)return;
+      const source=document.getElementById(button.dataset.copyTarget);
+      if(!source)return;
+      await navigator.clipboard.writeText(source.textContent);
+      const old=button.textContent;button.textContent="已复制";setTimeout(()=>button.textContent=old,900);
+    });
+    search.addEventListener("input",applyFilters);
+    plan.addEventListener("change",applyFilters);
+    document.getElementById("printButton").addEventListener("click",()=>window.print());
+    document.getElementById("resetButton").addEventListener("click",()=>{search.value="";plan.value="";applyFilters()});
+  </script>
+</body>
+</html>

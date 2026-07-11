@@ -5,6 +5,15 @@ description: Format deliverable files with standard Artifact metadata (id, versi
 
 # Artifact Formatter
 
+## Slot Compatibility
+
+- slot: `artifact.formatter`
+- contract_version: `1`
+- canonical_outputs:
+  - `artifact metadata and canonical paths`
+- qa_handoff: `qa.primary`
+- state_contract: `reference-state-v2`
+
 Ensure all active deliverable files have consistent metadata and follow the shotlist-first path contract.
 
 ## When to Use
@@ -16,7 +25,7 @@ Ensure all active deliverable files have consistent metadata and follow the shot
 
 ## Artifact Metadata Template
 
-All production deliverables must include this frontmatter:
+All Markdown production deliverables must include this header:
 
 ```markdown
 # Artifact: <Type>
@@ -32,6 +41,14 @@ All production deliverables must include this frontmatter:
     - ...
 
 ---
+```
+
+Scene-package HTML uses equivalent `<meta>` fields and relies on its sibling `manifest.md` as the canonical Artifact metadata record:
+
+```html
+<meta name="artifact-id" content="A-yyyymmdd-nnn">
+<meta name="artifact-version" content="v2">
+<meta name="source-artifact-ids" content="A-yyyymmdd-nnn,A-yyyymmdd-nnn">
 ```
 
 ## Field Specifications
@@ -109,6 +126,21 @@ deliverables/30_shotlist/scenes/<scene-scope>_v{N}/previews/manifest.md
 deliverables/30_shotlist/scenes/<scene-scope>_v{N}/generated/<run_id>/README.md
 ```
 
+Scene package revisions archive and replace the entire package directory, not only the HTML file.
+
+## Reference State Fields
+
+Generated assets, scene packages, previews, and generated tests record:
+
+```markdown
+- asset_origin: user_provided | generated_from_text | generated_from_references | mixed
+- reference_binding: none | text_only | images_attached
+- reference_approval: draft | reviewed | locked
+- output_status: prompt_only | smoke_test | review_ready | production_approved
+```
+
+`image_reference_bound` is legacy shorthand for `reference_binding: images_attached`; it does not imply `reference_approval: locked`.
+
 ## Dependency Graph
 
 ```text
@@ -128,8 +160,9 @@ deliverables/30_shotlist/scenes/<scene-scope>_v{N}/generated/<run_id>/README.md
 - [ ] Version format is correct.
 - [ ] Upstream IDs exist and are valid.
 - [ ] Locks are inherited or consciously updated.
-- [ ] Reference mode is explicit for generated assets.
+- [ ] All four reference-state fields are explicit for generated assets.
 - [ ] Scene labels, shot rows, and `P###` IDs are preserved where applicable.
+- [ ] Shot-row IDs use `<scene-label>-R<NN>` and are not reused as prompt IDs.
 
 ## Common Errors
 

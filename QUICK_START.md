@@ -61,7 +61,7 @@ Every generated folder should have a `README.md` or manifest with:
 
 - source artifact
 - asset count
-- reference mode
+- asset origin, reference binding, reference approval, and output status
 - shot range or file pattern
 - known limitations
 
@@ -69,13 +69,25 @@ Every generated folder should have a `README.md` or manifest with:
 
 For production character continuity, local reference images declared in the latest asset guide or generated-reference manifest must be loaded or attached before generation. Text DNA alone only supports draft outputs.
 
-Use these manifest values consistently:
+Use these independent manifest fields consistently:
 
-- `source`: input references
-- `text_dna_draft`: output using text DNA only
-- `text_only_draft`: draft generated without image references
-- `prompt_only`: prompt or preview prompt exists but image/video output was not generated
-- `image_reference_bound`: production candidate generated with required image references attached
+- `asset_origin`: `user_provided`, `generated_from_text`, `generated_from_references`, or `mixed`
+- `reference_binding`: `none`, `text_only`, or `images_attached`
+- `reference_approval`: `draft`, `reviewed`, or `locked`
+- `output_status`: `prompt_only`, `smoke_test`, `review_ready`, or `production_approved`
+
+Legacy labels such as `text_dna_draft` and `image_reference_bound` are compatibility notes only.
+
+## Validate Or Replace A Skill
+
+```bash
+pnpm install
+pnpm validate
+pnpm test
+node .agents/skills/qa-workflow/scripts/validate-workflow.js --repo . --slot shotlist.primary --candidate .agents/skills/<candidate>
+```
+
+When the sibling `test` worktree is present, `pnpm test` rebuilds its retained fixture and checks both package structure and source-dialogue fidelity. After the candidate passes, update `.agents/skill_registry.md`, run this forward test, and validate any project-specific scene package before production use.
 
 ## Version Rule
 

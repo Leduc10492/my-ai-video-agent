@@ -5,6 +5,15 @@ description: Run quality assurance for the shotlist-first file-based AI video wo
 
 # QA Workflow
 
+## Slot Compatibility
+
+- slot: `qa.primary`
+- contract_version: `1`
+- canonical_outputs:
+  - `deliverables/00_admin/qa_reports/qa_report_<stage>_v{N}.md`
+- qa_handoff: `none`
+- state_contract: `reference-state-v2`
+
 Use this skill when the user asks to check quality, continue safely, modify an upstream artifact, validate project state before generating downstream outputs, or review Seedance/Higgsfield shotlist batches.
 
 This is the current default implementation for the `qa.primary` slot in `.agents/skill_registry.md`.
@@ -13,7 +22,7 @@ This is the current default implementation for the `qa.primary` slot in `.agents
 
 Default to Simplified Chinese for all user-facing QA output unless the user explicitly requests another language.
 
-This includes chat findings, persistent QA reports, table headers, issue descriptions, evidence, suggested fixes, downstream impact, and status summaries. Keep technical tokens such as paths, artifact IDs, reference modes, scene labels, shot-row IDs, `P###`, and `P0/P1/P2/P3` unchanged.
+This includes chat findings, persistent QA reports, table headers, issue descriptions, evidence, suggested fixes, downstream impact, and status summaries. Keep technical tokens such as paths, artifact IDs, reference-state values, scene labels, shot-row IDs, `P###`, and `P0/P1/P2/P3` unchanged.
 
 ## Inputs
 
@@ -66,11 +75,12 @@ For shotlist work, also check:
 - `03_shotlist_breakdown_v{N}.md` exists before large Phase 4 work, or legacy input is explicitly marked as migration source
 - screenplay scene labels, shot rows, prompt-envelope IDs, and source scene mapping are consistent
 - prompt envelopes include reference facts, planted camera, first-frame composition, physical action path, unique micro-beats, shot-specific failure locks, adjacent-beat boundary, and reference status
+- shot rows use `<scene-label>-R<NN>`, prompt envelopes use reserved `P###` IDs, and mappings are explicit
 - preview manifest entries match HTML prompt envelopes
 - HTML preview paths are relative and files exist
 - shotlist HTML lives under `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/`
 - common references come from `deliverables/20_assets/`, while scene package `assets/` contains only scene-specific additions or explicit overrides
-- generated video tests are labeled with source prompt envelope, reference mode, and known limitations
+- generated video tests are labeled with source prompt envelope, all four reference-state fields, and known limitations
 
 For generated image/video work, validate manifests and paths directly: source `P###`, reference mode, scene package location, relative preview paths, file existence, and known limitations.
 
@@ -95,9 +105,20 @@ For anything beyond a quick chat check, save a report under:
 Use this report shape:
 
 ```markdown
+# Artifact: QA Report
+- id: A-<yyyymmdd>-<nnn>
+- version: v<number>
+- upstream: [<artifact ids>]
+- locks:
+  - must_keep: []
+  - must_avoid: []
+  - budget_notes: []
+
+---
+
 # QA 报告: <阶段>
 - 日期: YYYY-MM-DD
-- 范围: <检查的文件或 SB/P range>
+- 范围: <检查的文件、scene/row/P range>
 - 结果: pass / pass-with-warnings / blocked
 
 ## 问题清单
@@ -123,6 +144,15 @@ Use this report shape:
 ```
 
 If the user only asks for a quick read, report in chat and do not create a file unless useful.
+
+For deterministic structural checks, run:
+
+```bash
+node .agents/skills/qa-workflow/scripts/validate-workflow.js --repo .
+node .agents/skills/qa-workflow/scripts/validate-workflow.js --repo . --project <project-root> --package <scene-package-path>
+```
+
+Treat validator success as structural evidence only. Creative prompt quality, spatial logic, and source fidelity still require scene-level review.
 
 ## Priority Scale
 

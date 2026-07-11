@@ -18,9 +18,9 @@ Every Chinese Seedance 2.0 prompt follows the same structural order. Hit every s
 Every prompt opens by declaring its handles. Handles renumber per-prompt (not per-scene, per-prompt — sometimes scenes contain prompts with different asset subsets). Format:
 
 ```
-@image1 (Roko) — 混血亚裔白，深色中长湿发贴额碎刘海，发梢滴水，淡小胡，鼻梁红创可贴微潮，左颊痣，黑紧身T恤肩部和上背湿透颜色加深贴身，军绿腰带，黑工装裤大腿和裤脚湿痕，黑靴湿润，红手套微潮，腰间战术包，右腰挂红色小泰迪熊挂件，左前臂纹身，面部薄水雾。
-@image2 (Apartment) — 三视图参考：上图=客厅全景向走廊方向...
-@image3 (PolaroidPhoto) — 一张拍立得横版照片11cm×8.5cm——自拍合照...
+@image1 (CharacterA) — [身高、体型、发型、脸部识别点、完整服装、随身道具、当前干湿/污损状态、最可能混淆的细节]。
+@image2 (LocationA) — [主视角、入口、背景层、实际光源、关键表面、空间轴线、最可能误判的布局]。
+@image3 (PropA) — [尺寸、形状、材质、颜色、可读文字、当前状态、正确放置位置]。
 ```
 
 Rules:
@@ -28,7 +28,7 @@ Rules:
 - For wet/dry/blood/dust state changes between scenes, **explicitly note the state** in the handle (`湿发贴额`, `溅血渍`, `面部薄水雾`)
 - Location handles describe the reference image layout in detail (multi-view → say which view is which: `上图=`, `下图=`, `中图=`)
 - Prop handles include exact dimensions when relevant (`11cm×8.5cm`), text on props verbatim, color/material specs
-- Handles are not labels. They must be mini visual-fact tables. If the source image is `text_dna_draft`, say so and describe only draft-level facts that can still guide blocking, not continuity-approved identity.
+- Handles are not labels. They must be mini visual-fact tables. When `reference_approval: draft`, describe only facts that can guide blocking and explicitly avoid claiming continuity-approved identity.
 - Every handle should include at least one likely confusion risk when relevant: wardrobe contamination, wrong scale, wrong light inheritance, wrong prop placement, or pose-reference contamination.
 - For static-pose-reference handles (used for body posing only, not full image generation), use `@imageN` style with explicit warnings:
   ```
@@ -56,6 +56,8 @@ Required:
 - **Frame composition:** foreground/midground/background or left/right/top/bottom relationships (`画面最右侧只露出冰箱门一条窄边；画面主体是公寓内部`)
 - **Shot action boundary:** what this prompt does and what adjacent prompts must not leak into it
 - **Frame-edge or occlusion lock** when relevant (`frame right sliver`, `left foreground shoulder`, `top edge of prop visible`)
+
+For multi-shot prompts, distinguish the outer prompt boundary from internal shot boundaries. The outer boundary says what the 15-second envelope covers and what stays outside it; each `【镜头N】` block then carries its own internal beat and timing. Do not split short adjacent cause-effect beats into separate prompt envelopes just because they have internal boundaries.
 
 Template:
 ```
@@ -96,17 +98,17 @@ Each shot block always has:
 
 For a single-shot prompt (one continuous take, no internal cuts), skip the `【镜头N】` headers and write the same structure as a single block. Prepend with `单镜头（one-shot，无剪辑）。`
 
-Never let `动作：` be a summary. It must be a physical path. Bad: `动作：Daichi的怒气在呼吸里。` Good: `0-2秒... 2-5秒右手抬起指向车斗老人... 8-11秒手掌从老人方向划向上坡方向... 11-15秒警员只迟疑不放行。`
+Never let `动作：` be a summary. It must be a physical path. Bad: `动作：Character A 很愤怒。` Good: `0-2秒右脚向前半步；2-5秒右手抬到胸口高度并指向目标；5-9秒视线沿手臂方向移动；9-15秒手臂落回身侧并停在明确终态。`
 
 ## Section 4 — Spatial blocking
 
 For any prompt with 2+ characters in frame, declare the spatial relationship explicitly using the approved top-down schema (see [SPATIAL_BLOCKING.md](SPATIAL_BLOCKING.md)):
 
 ```
-⚠️空间布局（MAIN VIEW=从天桥入口看向巨型屏幕）：
-位置A：@image4站在中央通道最前方靠近屏幕，面朝三人。
-位置B：@image1和@image2在通道中间并肩站立，距@image4约3米，面朝@image4方向。
-@image3站在@image1和@image2正后方1.5米处——不在他们旁边，严格在他们背后，被他们的身体部分遮挡——也面朝@image4方向。
+⚠️空间布局（MAIN VIEW=从入口看向背景墙）：
+位置A：@image1站在入口内侧偏左，面朝空间中央。
+位置B：@image2站在中央轴线，距@image1约3米，面朝@image1。
+位置C：@image3位于@image2后方1.5米，部分被@image2遮挡。
 ```
 
 Use precise distances in meters. Use cardinal directions or "north/south/east/west" relative to the main view axis. Note who occludes whom, who faces which direction, and any heights/eyelines the model might get wrong.
@@ -149,6 +151,28 @@ Every dialogue line gets a pre-line beat, mid-line emphasis cues, and a post-lin
 ⚠️对白规则：一句台词=一个镜头——每个角色的台词严格只出现在该角色的特写镜头内。
 ```
 
+### Source dialogue preservation
+
+Keep source dialogue in its original spoken language inside quotes. Write the prompt direction in Chinese around that exact line.
+
+For every dialogue line, bind all of these:
+- **Speaker:** who says the line
+- **Addressee:** who the line is directed at
+- **Lip-sync frame:** the shot where the mouth movement is visible
+- **Pre-line micro-beat:** breath, eyeline, jaw, throat, shoulder, or weight shift before speech
+- **Line delivery:** the exact quoted source line, represented here as `"<exact source dialogue>"`
+- **Post-line micro-beat:** the physical reaction after the last word
+- **Envelope boundary:** what this prompt covers and what later dialogue/reveal stays in the next prompt
+
+Template:
+```
+⚠️对白保留：@image1严格朝向@image2说出原文台词："<exact source dialogue>"。中文只描述表演和镜头，不翻译这句对白。
+台词前：@image1先停顿半秒，喉结轻吞咽，视线从@image2胸口抬到眼睛。
+台词中：口型清晰绑定原文每个词，声音方向只朝向@image2。
+台词后：下颌轻收，眼睛保持不眨，等待回答。
+⚠️动作边界：本prompt只拍提问，不提前出现姓名揭示或后续回答。
+```
+
 ### Interruption (one character cuts another off)
 If character A interrupts character B mid-word:
 ```
@@ -171,10 +195,10 @@ If a character in bokeh speaks — sound is allowed, but the silhouette must mat
 For any scene with extras or environmental movement, callout what's happening in the background. Forbid empty backgrounds:
 
 ```
-环境活动（匹配@image6）：⚠️背景必须充满大量活动的工作人员——禁止空旷背景。多名白衬衫分析员在工作站旁快速打字、站起交接文件、弯腰核对屏幕数据、两人并排讨论。多名白大褂科研人员透过显微镜观察古代文物。银色铰接机械臂全程持续运动。多人在通道和工作台之间来回走动。
+环境活动（匹配地点参考）：⚠️人口密集场景禁止空旷背景。背景人物按场景功能执行不同动作：行走、交接物品、停下观察、避让主体；动作错开0.3-0.5秒，禁止整齐同步。
 ```
 
-For empty/quiet scenes (apartments, exteriors at night), still callout the *absence* — what isn't moving, what kind of silence:
+For empty or quiet scenes, still call out the absence: what is not moving and what kind of silence remains.
 
 ```
 完全寂静——禁背景音乐、禁画外人声。仅环境SFX：远处城市低频嗡鸣、暖气管道轻响、湿靴踩在拼花地板上的回响。
@@ -197,7 +221,7 @@ Anticipate what Seedance will get wrong. Add ⚠️-marked rules to prevent it. 
 
 What to mark with `⚠️`:
 - Any distance ("距G约2米")
-- Position of any object ("放在BL桌边正中央")
+- Position of any object (`放在后景桌面左侧边缘，距墙约20厘米`)
 - Forbiddens ("禁止", "不允许")
 - Key blocking (where each character stands)
 - Eyeline lock ("目光始终锁定在 X 上")
@@ -272,4 +296,4 @@ Don't be precious about prompt length. Prompts in production range from ~150 Chi
 
 ## Tone
 
-You are a cinematographer who has worked with Lubezki and Deakins. You think in shadows, lenses, and controlled physical reality. You direct actors with the precision of a stage director and write camera direction with the muscularity of someone who has actually held a steadicam. Don't write generic AI-video prose ("a beautiful shot of..."). Write blocking notes ("Roko 2m from the fridge, back to camera, weight on left foot, right hand still holding the polaroid at thigh height").
+Write as an experienced cinematographer and stage director: think in shadows, lenses, blocking, physical contact, and controlled performance. Do not write generic AI-video prose such as `a beautiful shot of...`. Write measurable blocking notes, for example: `Character A stands 2m from the table, back to camera, weight on left foot, right hand holding the prop at thigh height`.

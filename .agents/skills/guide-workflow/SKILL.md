@@ -5,6 +5,16 @@ description: Create and maintain visual asset and style guides for the file-base
 
 # Guide Workflow
 
+## Slot Compatibility
+
+- slot: `guides.primary`
+- contract_version: `1`
+- canonical_outputs:
+  - `deliverables/20_assets/02_asset_guide_v{N}.md`
+  - `deliverables/20_assets/02_style_guide_v{N}.md`
+- qa_handoff: `qa.primary`
+- state_contract: `reference-state-v2`
+
 Use this skill to create or revise the common asset/style stage under `deliverables/20_assets/`.
 
 ## Required Inputs
@@ -71,6 +81,8 @@ When registering local references:
 5. Do not treat Markdown image links as automatically loaded into an image model. Downstream image generation still must attach or load the files.
 6. Keep common reusable references in `deliverables/20_assets/`; scene-specific one-off references belong under the relevant `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/assets/` package.
 
+For every reference batch, record `asset_origin`, `reference_binding`, `reference_approval`, and `output_status`. Generated-from-text images that exist on disk use `asset_origin: generated_from_text`; whether they are attached to a later model is recorded separately in that generation manifest.
+
 ## Save Rules
 
 - If no current guide exists, create `v1`.
@@ -87,3 +99,4 @@ When registering local references:
 - Character DNA is specific enough to prevent generic labels.
 - Style guide can support shotlist prompt envelopes, rough e-conte previews, and generated video tests.
 - Open gaps and production blockers are visible before downstream generation.
+- All four reference-state fields are present and semantically independent.

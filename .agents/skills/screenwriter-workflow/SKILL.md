@@ -5,6 +5,16 @@ description: Script-stage controller for this file-based AI video workflow. Use 
 
 # Screenwriter Workflow
 
+## Slot Compatibility
+
+- slot: `script.primary`
+- contract_version: `1`
+- canonical_outputs:
+  - `deliverables/10_story/01_script_v{N}.md`
+  - `deliverables/10_story/01_audit_report_v{N}.md`
+- qa_handoff: `qa.primary`
+- state_contract: `n/a`
+
 This is the script-stage controller for `script-writer`.
 
 It turns the global Screenwriter craft mode into a repo-compatible workflow:

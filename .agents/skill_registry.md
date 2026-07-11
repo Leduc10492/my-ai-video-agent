@@ -11,9 +11,34 @@ To replace a skill implementation:
 3. Confirm it satisfies the slot interface below: inputs, outputs, artifact metadata, versioning, QA handoff, and storage contract.
 4. Update this registry's default skill for the slot.
 5. Update affected agent read scopes only if the replacement needs additional files or a different write scope.
-6. Run skill and artifact validation before using the replacement for production deliverables.
+6. Add the `Slot Compatibility` declaration described below to the candidate `SKILL.md`.
+7. Run the candidate validator before changing the slot, then run the project/package validator after a forward test:
+
+   ```bash
+   node .agents/skills/qa-workflow/scripts/validate-workflow.js --repo . --slot <slot> --candidate .agents/skills/<skill-id>
+   node .agents/skills/qa-workflow/scripts/validate-workflow.js --repo . --project <project-root> --package <scene-package-path>
+   ```
+
+8. Use a real project fixture for the forward test. A replacement is not production-ready merely because its frontmatter and paths validate.
 
 Do not change canonical deliverable paths just to fit a new skill. If a replacement requires a different storage layout, treat that as a project migration and update `AGENTS.md`, `README.md`, `ARCHITECTURE.md`, `CODEX_SKILL_AUDIT.md`, and `deliverables/00_admin/changelog.md` in the same pass.
+
+### Slot Compatibility Declaration
+
+Every default or candidate slot implementation must include this machine-checkable Markdown block in `SKILL.md`:
+
+```markdown
+## Slot Compatibility
+
+- slot: `<slot-id>`
+- contract_version: `1`
+- canonical_outputs:
+  - `<canonical path or packet type>`
+- qa_handoff: `<slot-id or none>`
+- state_contract: `reference-state-v2` or `n/a`
+```
+
+The declaration is an assertion, not proof. The validator checks its syntax and canonical paths; the forward test proves behavior. Replacing a default skill is a two-step change: validate the candidate first, then update the Current Slot Map only after the fixture passes.
 
 ## Current Slot Map
 
@@ -101,6 +126,7 @@ Compatibility requirements:
 - Must separate asset facts from style rules.
 - Must mark missing references and downstream production blockers.
 - Must state whether downstream shotlist output is allowed only as `text_only_draft`, `text_dna_draft`, `prompt_only`, or `image_reference_bound`.
+- Must record reference state with the `reference-state-v2` fields: `asset_origin`, `reference_binding`, `reference_approval`, and `output_status`. Legacy labels may be preserved only as compatibility notes.
 
 ### `shotlist.breakdown`
 
@@ -114,7 +140,7 @@ Inputs:
 Outputs:
 
 - `03_shotlist_breakdown_v{N}.md` with artifact metadata
-- Scene inventory, action beat map, asset request, blocking queue, reference status, and Phase 4 scope recommendations
+- Scene inventory, action beat map, asset request, blocking queue, reference state, shot-row plan, prompt-ID reservation, prompt-envelope plan, and Phase 4 package recommendation
 - Changelog entry and archives when revising
 
 Compatibility requirements:
@@ -122,6 +148,8 @@ Compatibility requirements:
 - Must preserve screenplay scene order, scene numbers or derived scene labels, duration budgets, and source scene mapping.
 - Must use the `shotlist-builder` Phase 1/2 method: read the script, identify scenes/actions/assets, then request missing assets before prompting.
 - Must mark missing asset references, spatial blocking gaps, crowd/prop risks, and scope size before Phase 3/4.
+- Must use distinct identifiers: shot rows use `<scene-label>-R<NN>`, while prompt envelopes use globally reserved `P###` IDs.
+- Must reserve prompt IDs by scanning active and archived scene packages before Phase 4; parallel or replacement workflows must not invent overlapping ranges.
 - Must not introduce legacy storyboard IDs as the new production split unit; legacy storyboard IDs may be read only as archived migration input.
 - Existing `03_storyboard_v{N}.md` files are legacy input only and should be read from `archives/`; the next saved breakdown version must migrate to `03_shotlist_breakdown_v{N}.md`.
 
@@ -150,11 +178,13 @@ Compatibility requirements:
 - Must preserve screenplay scene order, shot row order, prompt envelope grouping, and 15-second envelope strategy.
 - Must keep the HTML shotlist as the prompt source of truth for production handoff.
 - Must embed preview thumbnails in the HTML with relative `<img src>` paths, not only list file paths.
-- Must mark previews and generated tests as `text_only_draft`, `text_dna_draft`, `image_reference_bound`, or `prompt_only`.
+- Must record `asset_origin`, `reference_binding`, `reference_approval`, and `output_status` in package, preview, and generated-test manifests.
+- Must treat `image_reference_bound` as legacy shorthand for `reference_binding: images_attached`; it never implies approval by itself.
 - Must not claim rough e-conte previews are production keyframes.
 - Must run internal hard gates before HTML assembly: reference facts, planted camera, first-frame composition, physical action path, unique micro-beats, shot-specific failure locks, adjacent-beat boundaries, reference status, and batch pressure checks.
 - Must split by screenplay scene first; within an overloaded scene, split by action phase, camera setup, or reference-set change.
 - Must not use legacy storyboard IDs as the new package split unit.
+- Must keep shot-row IDs distinct from prompt-envelope IDs and preserve both mappings in HTML and the package manifest.
 - Must render shotlists, prompt labels, manifest notes, and user-facing handoffs in Simplified Chinese unless the user explicitly requests another language.
 
 ### `qa.primary`

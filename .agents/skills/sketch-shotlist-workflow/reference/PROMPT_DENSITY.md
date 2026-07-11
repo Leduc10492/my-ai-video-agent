@@ -1,73 +1,89 @@
 # Prompt Density
 
-How to group shot rows into 15-second prompts.
+Group shot rows into practical 15-second prompt envelopes without stretching short causal beats or overloading one generation.
 
-## The rule, derived from the source shotlist
+## Starting Contract
 
-Across the canonical shotlist (scenes 13–29 + 61–66), the average is **~1 prompt per 4–5 shot rows**, but this varies wildly by scene:
-- Scene 21: 7 rows / 5 prompts (1:1.4) — dense, prompt-per-beat
-- Scene 23: 3 rows / 1 prompt (3:1) — collapsed into one continuous emotional unit
-- Scene 28: 42 rows / ~9 prompts (4.7:1) — typical action coverage
+Start from the breakdown `Prompt Envelope Plan`. Each planned envelope must already declare:
 
-**There is no fixed ratio. Decide per scene.**
+- reserved `P###` ID
+- source `<scene-label>-R<NN>` rows
+- outer start/end beat
+- dialogue boundary
+- character and asset set
+- internal shot plan when needed
+- reason the group fits 15 seconds
+- next beat reserved for the following envelope
 
-## Decision heuristic
+If Phase 4 changes the plan, record the reason in `Prompt Density Notes` and the scene-package manifest.
 
-Group shot rows into one prompt when ALL of these are true:
-1. They share the same **character set** in frame
-2. They share the same **location/subset of location**
-3. They form a **continuous emotional/temporal unit** (no time skip, no major mood pivot)
-4. They can be staged in **≤15 seconds of screen time**
-5. The combined Chinese prompt won't exceed practical generation limits (~2500 chars)
+## Merge Test
 
-Split into separate prompts when ANY of these fire:
-1. **Hard cut between locations** (apartment → flashback)
-2. **Major character entrance/exit** changes the handle list
-3. **Aspect/lens change** that needs its own setup (wide establish → tight insert)
-4. **Performance arc** that needs its own 15-second envelope (a reaction shot that builds across 7 emotional beats deserves its own prompt — don't bundle it with action)
-5. **Insert / cutaway** to a prop or screen (these get their own ECU prompt)
+Merge adjacent rows into one envelope only when all are true:
 
-## Within a prompt — multi-shot internal cuts
+1. Same character set is visible or immediately continuous.
+2. Same location or camera-readable sub-location is used.
+3. Spatial axis and blocking remain coherent.
+4. Beats form one immediate emotional or causal turn.
+5. Total staged action fits 15 seconds.
+6. The prompt remains executable after handles, blocking, dialogue, style, and failure locks are included.
 
-A single 15-second prompt CAN contain internal `【镜头1】 / 【镜头2】 / 【镜头3】` cuts when the cuts share location and characters. This is the "multi-shot prompt" pattern. See [PROMPT_PATTERNS.md](PROMPT_PATTERNS.md) §3 for the syntax.
+Prefer one multi-shot envelope when separate 15-second clips would make a short cause-effect chain feel slow. Preserve row detail with internal `【镜头1】`, `【镜头2】`, and `【镜头3】` blocks rather than erasing the cuts.
 
-Use multi-shot when:
-- 2–3 fast cuts inside one continuous emotional moment (e.g., wide establish → tight reaction → low-angle finish, all in 15s)
-- A montage that's tonally one unit (the polaroid scan in scene 21 — slide across photos, land on NOV 14, hand reaches in — one prompt, three internal beats)
+Generic example:
 
-Use one-shot when:
-- A single continuous performance moment with one camera move (the dolly across the bridge in scene 18)
-- Anything where the emotional weight needs to land without cuts
+- `【镜头1】` 4-5s: Character A makes a precise warning gesture.
+- `【镜头2】` 4-5s: Character B follows the gesture and realizes the threat.
+- `【镜头3】` 4-5s: Character B performs the immediate release or refusal action.
 
-## Examples from the source
+These rows belong together only when they share cast, location, axis, and one uninterrupted causal turn.
 
-**Scene 23, 3 rows → 1 prompt (collapsed)**
-- Row 11.1: Roko in apartment, dark atmosphere
-- Row 11.2: Tear falls
-- Row 11.3: Closes eyes, breaks into sobs
+## Split Test
 
-All three are one continuous emotional collapse on the kitchen floor. One prompt with `【镜头1】【镜头2】` internal beats, both same location, same character, ~15s envelope. **Don't fragment grief.**
+Split when any condition applies:
 
-**Scene 21, 7 rows → 5 prompts (split)**
-- Prompt 1: door open + boots crossing threshold (rows 9.1 partial)
-- Prompt 2: hallway walk to living room (own envelope — needs its own breath)
-- Prompt 3: living room scan + window + turn toward fridge (one-er, 50mm)
-- Prompt 4: fridge ECU — polaroid slide + hand reaches in
-- Prompt 5: photo close-up + Roko's face + turn
+1. Hard cut between locations or time periods.
+2. Character entrance/exit changes the handle set materially.
+3. Camera setup or reference set cannot remain coherent inside one envelope.
+4. A performance arc needs most of the 15 seconds to land.
+5. A prop/screen insert needs independent focus control.
+6. The model is likely to leak the next story action early.
+7. A question, answer, reveal, or decision needs a protected dialogue boundary.
+8. Combined prompt length or instruction density makes execution unreliable.
 
-Five distinct camera setups, five different focal lengths, five different emotional micro-beats. They earn their own prompts.
+## Boundary Audit
 
-## When in doubt
+Before drafting each prompt, answer:
 
-Err toward **more prompts, shorter envelopes** rather than packing too much into 15 seconds. Seedance handles tight prompts better than overloaded ones, and the user can always run them in sequence.
+- What exact action starts this envelope?
+- What exact action ends it?
+- Which previous beat is already complete?
+- Which next beat is forbidden here?
+- Which exact dialogue belongs here?
+- Why does this grouping fit 15 seconds?
+- What is the main overload or leakage risk?
+
+## Internal Cuts
+
+A single envelope usually contains 1-3 internal shots. It may contain 4-5 fast internal shots only when every duration is explicit, the total remains 15 seconds, cast/location/axis stay stable, and the scene-level batch audit confirms the prompt is still executable. Every internal shot states its own duration, lens, camera position, background, action path, and performance detail. Internal shot boundaries do not automatically require separate prompt envelopes.
+
+Use a one-shot envelope when one continuous performance or camera move carries the emotional turn. Use a multi-shot envelope when a few fast cuts express one uninterrupted unit.
+
+## Decision Rule
+
+Do not optimize for the fewest or most prompts. Choose the grouping with the lower production risk:
+
+- split when one prompt would overload blocking, performance, dialogue, or references
+- merge when separate clips would stretch one short causal turn or create redundant setup
+
+When tests disagree with the plan, preserve the source rows, revise the envelope grouping, allocate new prompt IDs if identity changed, and record the reason.
 
 ## Tagging
 
-Each prompt gets a short bracketed tag for the HTML header — describes what the prompt shows at a glance. Examples:
-- `[MS-CU · door open + boots]`
-- `[ECU · fridge photo slide + take photo]`
-- `[CU · Roko face + turn]`
-- `[Wide → MCU · spatial establish + reaction]`
-- `[Multi-shot · 3 reactions + dialogue]`
+Use short Chinese-readable tags while retaining stable plan codes, for example:
 
-Use the team's existing shot-plan abbreviations (see [PLAN_TYPES.md](PLAN_TYPES.md)).
+- `[MS-CU · 开门 + 反应]`
+- `[ECU · 道具插入]`
+- `[多镜头 · 警告 + 领会 + 放行]`
+
+Use the plan codes in [PLAN_TYPES.md](PLAN_TYPES.md).

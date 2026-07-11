@@ -58,7 +58,7 @@ Short, frequently-referenced passages for common questions.
 
 ### Citation Format
 When quoting McKee:
-- Keep quotes brief (< 100 words unless necessary)
+- Keep any quotation to a brief excerpt of no more than 25 words from the book
 - Provide chapter context
 - Paraphrase when possible
 - Use excerpts file first before full text
@@ -70,7 +70,7 @@ When quoting McKee:
 4. Quote or paraphrase with attribution
 
 ### Avoid
-- Do not reproduce long passages (copyright)
+- Do not reproduce long passages or answer location-based requests for non-user-provided text
 - Do not use as substitute for analysis
 - Do not default to this when other skills suffice
 

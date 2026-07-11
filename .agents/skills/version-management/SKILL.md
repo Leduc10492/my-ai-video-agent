@@ -5,6 +5,15 @@ description: Archive old versions and update version numbers for active delivera
 
 # Version Management
 
+## Slot Compatibility
+
+- slot: `version.manager`
+- contract_version: `1`
+- canonical_outputs:
+  - `archives/<stage>/ plus the next deliverables/<stage>/ version`
+- qa_handoff: `qa.primary`
+- state_contract: `n/a`
+
 Archive old versions and update version numbers for active deliverable files.
 
 ## When to Use
@@ -38,6 +47,13 @@ Archive with version suffix:
 
 ```text
 deliverables/10_story/01_script_v2.md -> archives/10_story/01_script_v2.md
+```
+
+For a scene package, archive the entire directory:
+
+```text
+deliverables/30_shotlist/scenes/scene-021_v1/
+  -> archives/30_shotlist/scenes/scene-021_v1/
 ```
 
 ### Step 3: Save New Version
@@ -114,6 +130,8 @@ deliverables/
 | Style Guide | `deliverables/20_assets/02_style_guide_v{N}.md` | `02_style_guide_v1.md` |
 | Shotlist Breakdown | `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md` | `03_shotlist_breakdown_v1.md` |
 | Shotlist HTML | `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/Shotlist_<scene-scope>_ZH_v{N}.html` | `Shotlist_scene-021_ZH_v1.html` |
+
+The scene package folder, HTML, manifest, previews, and generated mappings share the same package version. Never increment only the HTML suffix.
 
 ## Legacy Migration
 

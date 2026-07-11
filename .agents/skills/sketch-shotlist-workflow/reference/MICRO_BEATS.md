@@ -168,7 +168,7 @@ If the focal character is in focus and others are blurred — **they are not sta
 - Where their head and gaze are pointed
 - Micro-movements of shoulders and head
 - Reaction to key moments (even in bokeh)
-- Clear timing offset (e.g., "Roko turns his head first; 0.4 sec later, Rein; another 0.4 sec, Jax")
+- Clear timing offset, for example: `Character A先转头；0.4秒后Character B跟随；再过0.4秒Character C才反应`
 
 Three characters never sync perfectly — always stagger by 0.3–0.5 sec.
 
