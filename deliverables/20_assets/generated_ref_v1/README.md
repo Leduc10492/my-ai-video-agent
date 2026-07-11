@@ -1,22 +1,26 @@
 # Generated Reference Batch: v1
 
-- source_artifact: `deliverables/30_shotlist/03_shotlist_breakdown_v1.md`
+- source_artifact: `archives/30_shotlist/03_shotlist_breakdown_v1.md` (local historical archive)
 - upstream_artifacts:
   - `A-20260628-001` shotlist breakdown v1
   - `A-20260530-004` script v10
 - scope: `scenes-078-085_096-098_v1`
+- reused_by: `scenes-078-085_096-098_v2`
 - asset_count_planned: 22
 - asset_count_generated: 22
-- reference_mode: `text_dna_draft`
+- asset_origin: `generated_from_text`
+- reference_binding: `images_attached`
+- reference_approval: `draft`
+- output_status: `prompt_only`
 - image_generation_mode: built-in `image_gen`
-- continuity_status: draft only; not image-reference-bound
 - generated_at: 2026-05-31
-- source_generated_images_dir: `/Users/miniled/.codex/generated_images/019e7a3e-95a6-7c01-a5b5-91b124580399/`
+- generation_provenance: original external generation session is not retained in this fixture
 
 ## Purpose
 
 This folder holds the first missing-reference batch for the v10 scene-native
-`scenes-078-085_096-098_v1` blocking scope. These images are generated from
+`scenes-078-085_096-098_v1` blocking scope and are reused by the v2 regression
+package. These images are generated from
 screenplay and shotlist text DNA only because no locked asset guide or local
 character reference images exist for this project line yet.
 

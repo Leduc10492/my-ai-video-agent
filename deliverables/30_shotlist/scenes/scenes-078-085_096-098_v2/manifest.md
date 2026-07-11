@@ -1,0 +1,44 @@
+# Artifact: Scene Package Manifest
+- id: A-20260711-001
+- version: v2
+- upstream: [A-20260530-004, A-20260530-005, A-20260628-001]
+- locks:
+  - must_keep:
+    - Preserve scene order, row mapping, exact source dialogue, and P429-P451 reservation.
+  - must_avoid:
+    - Do not call this regression package production-approved.
+  - budget_notes:
+    - 23 prompt envelopes at 15 seconds each; 21:9.
+
+---
+
+- package_version: v2
+- workflow_slot: shotlist.primary
+- workflow_skill: sketch-shotlist-workflow
+- contract_version: 1
+- source_script: deliverables/10_story/01_script_v10.md
+- source_audit: deliverables/10_story/01_audit_report_v10.md
+- source_breakdown: deliverables/30_shotlist/03_shotlist_breakdown_v2.md
+- shotlist_html: Shotlist_scenes-078-085_096-098_ZH_v2.html
+- spatial_blocking: spatial_blocking.md
+- blocking_approval: approved_for_test
+- screenplay_scenes: 11
+- scene_sections: 12
+- shot_rows: 52
+- prompt_envelopes: 23
+- prompt_ids: P429-P451
+- asset_origin: generated_from_text
+- reference_binding: images_attached
+- reference_approval: draft
+- output_status: prompt_only
+- legacy_reference_mode: text_dna_draft
+- common_assets:
+  - `deliverables/20_assets/generated_ref_v1/`
+- scene_specific_assets: none
+- previews_manifest: previews/manifest.md
+- generated_tests: none for v2; archived v1 retains the P389 smoke test
+- qa_report: deliverables/00_admin/qa_reports/qa_report_shotlist_workflow_v2.md
+- known_limitations:
+  - Existing references were generated from text and are not locked by an asset guide.
+  - Blocking approval is for regression testing only.
+  - No new preview images or video clips were generated.

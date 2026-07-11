@@ -2,11 +2,9 @@
 - id: A-20260530-004
 - version: v10
 - upstream:
-  - public official synopsis pages for `Your Name.`
-  - user-provided comparison PDF: `deliverables/10_story/Your-Name-Screenplay.pdf`
-  - `archives/10_story/01_script_v9_your-name_20260530.md`
-  - `deliverables/00_admin/qa_reports/qa_report_your_name_v6_comparison_reflection_20260530.md`
-  - `deliverables/00_admin/qa_reports/qa_report_your_name_v9_final_comparison_20260530.md`
+  - external reference: public official synopsis pages for `Your Name.`
+  - external reference: user-provided comparison PDF, not retained in this regression fixture
+  - historical v9 draft and comparison QA reports, not retained in this regression fixture
 - locks:
   - must_keep:
     - Use Screenwriter mode only; do not modify `.agents/skills/` or project workflow rules for this task.
@@ -26,11 +24,11 @@
 
 ---
 
-# 《无名之绳》v5
+# 《无名之绳》v10
 
 ## Scope
 
-This is the fifth Screenwriter workflow draft for the `Your Name.` comparison task. It expands v9's compressed feature scaffold into a denser screenplay with more single-function scenes in the exchange middle, search, rescue, and adult near-miss chain.
+This is artifact version v10 and the fifth full Screenwriter workflow draft for the `Your Name.` comparison task. It expands v9's compressed feature scaffold into a denser screenplay with more single-function scenes in the exchange middle, search, rescue, and adult near-miss chain.
 
 The uploaded PDF is used only as a structural-density comparison reference. This draft uses original names, place names, dialogue, and scene expression.
 
