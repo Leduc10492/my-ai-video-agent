@@ -1,0 +1,52 @@
+# Artifact: Scene Package Manifest
+- id: A-20260714-102
+- version: v2
+- upstream: [A-20260530-004, A-20260714-101, A-20260714-103]
+- locks:
+  - must_keep:
+    - Preserve scene081 source order, exact dialogue, five Shot Rows, and two causal Prompt Envelopes.
+  - must_avoid:
+    - Do not pad either Prompt Envelope to 15 seconds.
+    - Do not add full vehicle departure, tail-light closure, following traffic, or the next scene.
+    - Do not label draft references or prompt-only output as production approved.
+  - budget_notes:
+    - P455: 7 seconds.
+    - P456: 5 seconds.
+    - Total intended scene time: 12 seconds.
+
+---
+
+- workflow_slot: `shotlist.primary`
+- workflow_skill: `sketch-shotlist-workflow`
+- source_script: `deliverables/10_story/01_script_v10.md`
+- source_breakdown: `deliverables/30_shotlist/03_shotlist_breakdown_v2.md`
+- shotlist_html: `Shotlist_scene-081_ZH_v2.html`
+- spatial_blocking: `spatial_blocking.md`
+- spatial_blocking_diagram: `spatial_blocking.svg`
+- baseline_compared: `archives/30_shotlist/scene-081-baseline-20260713/`
+- screenplay_scenes: 1
+- scene_sections: 1
+- shot_rows: 5
+- prompt_envelopes: 2
+- prompt_ids: `P455-P456`
+- prompt_durations: `P455=7s, P456=5s`
+- intended_scene_time: `12s`
+- asset_origin: `generated_from_text`
+- reference_binding: `images_attached`
+- reference_approval: `draft`
+- output_status: `prompt_only`
+- spatial_status: `baseline_reused_pending_user_review`
+- preview_generation: `not_requested`
+- video_generation: `not_requested`
+- qa_status: `structural_review_complete_user_quality_pending`
+- common_assets:
+  - `deliverables/20_assets/generated_ref_v1/nagi_bridge.png`
+  - `deliverables/20_assets/generated_ref_v1/daichi.png`
+  - `deliverables/20_assets/generated_ref_v1/elders_cart.png`
+  - `deliverables/20_assets/generated_ref_v1/police_officer.png`
+- scene_specific_assets: none
+- known_limitations:
+  - Reference images were generated from text and are not locked production identity.
+  - No e-conte preview image or video was generated because the current goal stops at HTML.
+  - Automated browser rendering was unavailable because the local `file://` page was blocked by the browser security policy; the HTML remains for direct user opening.
+  - Final creative approval remains with the user after comparing this HTML with the selected baseline.

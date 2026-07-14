@@ -3,11 +3,10 @@
 - version: v10
 - upstream:
   - external reference: public official synopsis pages for `Your Name.`
-  - external reference: user-provided comparison PDF, not retained in this regression fixture
-  - historical v9 draft and comparison QA reports, not retained in this regression fixture
+  - external reference: user-provided comparison PDF, not retained in this project workspace
+  - historical v9 draft and comparison QA reports, not retained in this project workspace
 - locks:
   - must_keep:
-    - Use Screenwriter mode only; do not modify `.agents/skills/` or project workflow rules for this task.
     - Draft from public high-level synopsis and craft principles first, then compare against the user-provided PDF after drafting.
     - Target feature-film scale comparable to `Your Name.`: about 100-110 minutes.
     - Preserve the core functional challenge: two distant teenagers connect through dream/body exchange, lose access, discover a disaster/time gap, and attempt a rescue across memory loss.
@@ -15,7 +14,6 @@
   - must_avoid:
     - Do not quote, translate, or closely paraphrase the uploaded PDF dialogue.
     - Do not copy protected scene wording, song cues, or exact shot descriptions.
-    - Do not modify reusable skills or registry rules for this comparison task.
     - Do not claim the uploaded PDF is official; it identifies itself as fan-made and without permission.
   - budget_notes:
     - Target runtime: 107 minutes.

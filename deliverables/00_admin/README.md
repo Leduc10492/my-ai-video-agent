@@ -1,21 +1,16 @@
-# Test Deliverables Admin
+# Project State
 
-This folder keeps the latest useful `Your Name.` comparison workflow test chain for the `test` branch only.
+这个工作树保留一套真实影片生产输入，用于运行和审阅主控 Agent + Skills 工作流。
 
-## Current Active Test Chain
+## Current Inputs
 
-| Stage | Current file or folder |
-| --- | --- |
-| Full script | `deliverables/10_story/01_script_v10.md` |
-| Script audit | `deliverables/10_story/01_audit_report_v10.md` |
-| Script export | `deliverables/10_story/01_script_v10_standard_screenplay.docx` |
-| Reference batch | `deliverables/20_assets/generated_ref_v1/` |
-| Shotlist breakdown | `deliverables/30_shotlist/03_shotlist_breakdown_v1.md` |
-| Shotlist HTML | `deliverables/30_shotlist/scenes/scenes-078-085_096-098_v1/Shotlist_scenes-078-085_096-098_ZH_v1.html` |
-| Seedance test | `deliverables/30_shotlist/scenes/scenes-078-085_096-098_v1/generated/seedance_p389_20260531_213228/` |
+- 剧本：`deliverables/10_story/01_script_v10.md`
+- 剧本审计：`deliverables/10_story/01_audit_report_v10.md`
+- 剧本 DOCX：`deliverables/10_story/01_script_v10_standard_screenplay.docx`
+- 共享参考图：`deliverables/20_assets/generated_ref_v1/`
+- 当前验证场景：`scene-081`
+- 分镜质量基线：`archives/30_shotlist/scene-081-baseline-20260713/`
 
-## Notes
+质量基线保留 5 条完整 Shot Row，并按“命令+反压”“判断+松手+放行”组成 2 个多镜头 Envelope。它的镜头与 Prompt 表现力作为比较标准，但两条 Prompt 固定填满 15 秒的时长不作为新输出标准。
 
-- The current shotlist package uses scene-native naming from the v10 script.
-- Older script drafts, old QA reports, legacy aggregate shotlist folders, and unrelated moodboard outputs were removed from this test branch.
-- The reference batch is still `text_dna_draft`; it is enough for workflow testing, not a final image-reference lock.
+`archives/` 只用于比较旧分镜和历史生成结果，不是当前生产合同。

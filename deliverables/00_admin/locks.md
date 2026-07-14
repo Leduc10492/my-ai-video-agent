@@ -1,26 +1,21 @@
-# Test Locks
+# Production Locks
 
 ## Must Keep
 
-- Continue from the latest full `Your Name.` comparison script: `deliverables/10_story/01_script_v10.md`.
-- Preserve the original-title-safe test line title: `《无名之绳》`.
-- Use the v10 scene-native package `scenes-078-085_096-098_v1` as the current visual test scope.
-- Preserve prompt IDs `P377-P428` so the retained P389 motion test stays traceable.
-- Treat `deliverables/20_assets/generated_ref_v1/` as `text_dna_draft` references, not production-locked visual identity.
-- Treat the P389 Seedance result as a motion/blocking test, not a continuity-approved final video.
+- 使用 `deliverables/10_story/01_script_v10.md` 作为当前剧本来源。
+- 保留测试片名 `《无名之绳》`。
+- 使用 `scene-081` 验证最小端到端工作流。
+- 保留 scene081 的原始动作顺序与两句原文台词。
+- 新输出不得少于质量基线的 5 条导演 Shot Row 信息量；Envelope 分组应优先保留两段紧密因果链，除非真实生成约束要求拆分。
+- `deliverables/20_assets/generated_ref_v1/` 是草案参考，不得宣称已锁定生产身份。
 
 ## Must Avoid
 
-- Do not revive older script drafts, older QA reports, or the retired board/art/motion prompt chain unless explicitly requested.
-- Do not use legacy storyboard-style IDs as production package names or current split units.
-- Do not claim the comparison PDF or original IP material is official source text for reuse.
+- 不得预设 Beat 数量、Shot Row 数量或 Prompt Envelope 数量。
+- 不得把 15 秒当作必须填满的场景或 Prompt 时长。
+- 不得用 fixture、builder 或预写 QA 结果代替 Skill 的真实判断。
+- 未经用户明确授权，不生成图片或视频。
 
-## Budget Notes
+## Scope
 
-- Script target runtime: about 107 minutes.
-- Current retained shotlist scope: `scenes-078-085_096-098_v1`.
-- Current retained generated-video test: `P389`, 15 seconds, 21:9, 720p.
-
----
-
-Last updated: 2026-06-28
+当前范围止于：剧本 → 分镜拆解 → Shot Row → Prompt Envelope → 中文 HTML。

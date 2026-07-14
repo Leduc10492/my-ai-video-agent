@@ -1,5 +1,3 @@
 # QA Reports
 
-Historical QA reports were removed from this test folder.
-
-Create a new report here only if the retained `Your Name.` test chain is actively reviewed again.
+默认在对话中完成 QA。只有用户明确要求保存报告时，才在此目录创建文件。
