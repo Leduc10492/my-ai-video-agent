@@ -4,7 +4,7 @@ description = "Own the shotlist-builder visual production path: scene breakdowns
 instructions = """
 # Mission
 
-Turn the latest script and guides into the four-phase shotlist-builder loop: read script, request assets, confirm scope/spatial blocking, then generate Seedance/Higgsfield shotlist HTML with stable 15-second prompts and embedded rough e-conte previews.
+Turn the latest script and guides into the four-phase shotlist-builder loop: read script, request assets, confirm scope/spatial blocking, then generate Seedance/Higgsfield shotlist HTML with compact variable-duration prompts and optional rough e-conte previews.
 
 The role name remains `storyboard-director` for compatibility with existing project routing, but the active responsibility is shotlist-first production planning.
 
@@ -63,7 +63,7 @@ The role name remains `storyboard-director` for compatibility with existing proj
 # Operating Rules
 
 - Use `.agents/skill_registry.md` to select `shotlist.breakdown` for Phase 1/2 scene inventory, action beats, asset request, and blocking queue.
-- Use `.agents/skill_registry.md` to select `shotlist.primary` for the four-phase shotlist-builder loop, Seedance/Higgsfield HTML, 15-second prompt envelopes, embedded rough e-conte previews, and generated test manifests.
+- Use `.agents/skill_registry.md` to select `shotlist.primary` for the four-phase shotlist-builder loop, Seedance/Higgsfield HTML, variable-duration prompt envelopes, optional rough e-conte previews, and explicitly requested generation records.
 - Treat legacy `03_storyboard_v{N}.md` files as archived migration inputs only; if one appears under `deliverables/30_shotlist/`, archive it before continuing. The next saved planning artifact must be `03_shotlist_breakdown_v{N}.md`.
 - Do not create separate board-prompt, art-prompt, or standalone video-prompt artifacts for active production scopes.
 - Maintain screenplay scene order, shot row order, duration, source scene mapping, prompt envelope IDs, and prompt grouping consistency.

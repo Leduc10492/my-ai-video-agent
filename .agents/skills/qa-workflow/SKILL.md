@@ -1,6 +1,6 @@
 ---
 name: qa-workflow
-description: Run quality assurance for the shotlist-first file-based AI video workflow, including artifact metadata checks, shotlist breakdown QA, prompt-envelope batch QA, HTML/preview validation, generated video test review, and regression checks.
+description: Run human-readable quality assurance for the shotlist-first AI video workflow, including source coverage, directing, prompt-envelope, HTML, preview, and generated-output review.
 ---
 
 # QA Workflow
@@ -98,7 +98,9 @@ Use `qa-checklists` sections:
 
 ## Persistent QA Reports
 
-For anything beyond a quick chat check, save a report under:
+Save a report only when the user explicitly asks for a persistent QA artifact. Otherwise report findings in chat.
+
+When requested, save it under:
 
 `deliverables/00_admin/qa_reports/qa_report_<stage>_v{N}.md`
 
@@ -143,16 +145,7 @@ Use this report shape:
 | --- | --- | --- |
 ```
 
-If the user only asks for a quick read, report in chat and do not create a file unless useful.
-
-For deterministic structural checks, run:
-
-```bash
-node .agents/skills/qa-workflow/scripts/validate-workflow.js --repo .
-node .agents/skills/qa-workflow/scripts/validate-workflow.js --repo . --project <project-root> --package <scene-package-path>
-```
-
-Treat validator success as structural evidence only. Creative prompt quality, spatial logic, and source fidelity still require scene-level review.
+For structural checks, inspect the actual artifact headers, source IDs, Shot Row and Prompt mappings, HTML content, relative paths, and referenced files. Structural consistency is evidence only; creative prompt quality, spatial logic, and source fidelity require scene-level review.
 
 ## Priority Scale
 

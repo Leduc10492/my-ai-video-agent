@@ -15,12 +15,9 @@ Thumbs.db
 !.env.example
 
 node_modules/
-.venv/
-__pycache__/
-.pytest_cache/
 
 # Generated production artifacts stay local by default.
-archives/
+archives/*
 deliverables/10_story/
 deliverables/20_assets/refs/
 deliverables/20_assets/generated*/

@@ -1,6 +1,6 @@
 ---
 name: sketch-shotlist-workflow
-description: Project-local Seedance/Higgsfield shotlist-builder workflow. Use as the default shotlist.primary slot when turning a script, scene range, uploaded references, or shotlist breakdown into scene-first Chinese production HTML with 15-second prompts, top-down spatial blocking, prompt quality gates, and rough e-conte previews.
+description: Project-local Seedance/Higgsfield shotlist-builder workflow. Use as the default shotlist.primary slot when turning a script, scene range, uploaded references, or shotlist breakdown into scene-first Chinese production HTML with compact variable-duration prompts, top-down spatial blocking, prompt quality gates, and rough e-conte previews.
 ---
 
 # Sketch Shotlist Workflow
@@ -35,8 +35,6 @@ If only a script is available, run Phase 1 and Phase 2 first. Continue only afte
 - `draft`: supplied or generated references may be unapproved, but their files, visual facts, scope, and spatial blocking still must be explicit. Use `output_status: smoke_test` or `review_ready`.
 - `prompt_only`: no image/video generation is attempted. Text-only handles and preview prompts are allowed after the user accepts the limitation; use `reference_binding: text_only` and `output_status: prompt_only`.
 
-If the user explicitly asks to run a regression fixture and the fixture already contains an unambiguous scope, asset map, and blocking plan, that request counts as approval for `draft` testing only. Record `blocking_approval: approved_for_test`; never promote it to production approval.
-
 When a `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md` artifact exists, consume its four-phase structure before writing the HTML:
 
 - `Phase 1 - 剧本拆解`: scene inventory, `动作 / 对白 Beat Map`, emotional/camera tendency, director split notes
@@ -44,7 +42,7 @@ When a `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md` artifact exists,
 - `Phase 3 - 范围与空间调度`: scope lock, image-to-asset mapping, spatial blocking queue, top-down schema needs
 - `Phase 4 - HTML 分镜生成计划`: `Shot Row Plan`, `Prompt Envelope Plan`, `Prompt Density Notes`, `Scene Package Recommendation`
 
-`Prompt Envelope Plan` is binding input for Phase 4 generation. If the latest breakdown uses an older shape and lacks `Prompt Envelope Plan`, repair or regenerate the breakdown first so each prompt has source rows, beat boundaries, dialogue boundaries, 15-second grouping reason, and next-beat reservation.
+`Prompt Envelope Plan` is binding input for Phase 4 generation. If the latest breakdown uses an older shape and lacks `Prompt Envelope Plan`, repair or regenerate the breakdown first so each prompt has source rows, beat boundaries, dialogue boundaries, intended duration, grouping reason, and next-beat reservation.
 
 ## Outputs
 
@@ -150,8 +148,8 @@ When the user uploads or points to images, before generating any prompt:
 2. Map filenames to assets; flag missing, extra, or ambiguous files. Never auto-assign ambiguous images silently.
 3. Confirm style override if one was supplied; otherwise confirm default style.
 4. Build a visual-fact table from every usable reference image before writing handles: face/hair/body, wardrobe, material/texture, prop geometry, location layout, light sources, foreground/background layers, and likely confusion risks.
-5. For any scene with 2+ characters in frame, a key prop on a specific surface, or complex camera geometry, produce a top-down spatial schema and get user approval before writing production prompts. A regression fixture may use `approved_for_test` only when its existing map is complete and unambiguous.
-6. After the top-down schema is approved, lock prompt-level camera blocking for each 15-second prompt: camera planted where, looking which direction, first-frame composition, foreground/midground/background, frame-edge slivers, and the one action that must read.
+5. For any scene with 2+ characters in frame, a key prop on a specific surface, or complex camera geometry, produce a top-down spatial schema and get user approval before writing production prompts.
+6. After the top-down schema is approved, lock prompt-level camera blocking for each prompt: camera planted where, looking which direction, first-frame composition, foreground/midground/background, frame-edge slivers, and the one action that must read.
 
 Do not start writing prompts until scope, image-to-asset mapping, visual facts, required top-down spatial blocking, and per-prompt camera blocking are locked.
 
@@ -160,9 +158,9 @@ Do not start writing prompts until scope, image-to-asset mapping, visual facts, 
 For each scene in scope:
 
 1. Consume the breakdown `Shot Row Plan` as the starting shot-row map.
-2. Consume the breakdown `Prompt Envelope Plan` as the prompt grouping contract: source rows, beat boundary, dialogue boundary, character/asset set, 15-second grouping reason, and next-beat reservation.
+2. Consume the breakdown `Prompt Envelope Plan` as the prompt grouping contract: source rows, beat boundary, dialogue boundary, character/asset set, intended duration, grouping reason, and next-beat reservation.
 3. Consume the breakdown `Prompt ID Reservation`. Shot rows use `<scene-label>-R<NN>`; only prompt envelopes use reserved `P###` IDs. Never reuse a retired prompt ID as a row ID.
-4. Revise grouping when `reference/PROMPT_DENSITY.md` clearly requires it; record the reason in `Prompt Density Notes` or the scene package manifest. Do not treat every shot-row boundary as a separate 15-second prompt. If adjacent short beats share location, character set, spatial axis, and one immediate emotional cause-effect turn, merge them into one 15-second multi-shot envelope with internal `【镜头N】` blocks.
+4. Revise grouping when `reference/PROMPT_DENSITY.md` clearly requires it; record the reason in `Prompt Density Notes` or the scene package manifest. Do not treat every shot-row boundary as a separate prompt. If adjacent short beats share location, character set, spatial axis, and one immediate emotional cause-effect turn, merge them into one compact multi-shot envelope with internal `【镜头N】` blocks.
 5. Write each Chinese Seedance 2.0 prompt following `reference/PROMPT_PATTERNS.md`, including handle declarations, universal warnings, camera/frame lock, spatial blocking, per-shot blocks, style block, background activity, shot-specific failure-mode lock, and closing footer.
 6. For multi-shot prompts, structure each internal cut as a `【镜头N】` block with its own `机位 / 背景 / 动作 / 微表演细节` sub-blocks.
 7. Preserve original dialogue inside the Chinese prompt. Bind every line to the speaker, addressee, lip-sync shot, pre-line micro-beat, line delivery, and post-line reaction.
@@ -179,20 +177,20 @@ Group shot rows into one prompt only when all are true:
 1. same character set in frame
 2. same location or sub-location
 3. continuous emotional/temporal unit
-4. can be staged in 15 seconds or less
+4. can be staged within the selected generator cap without padding
 5. the combined Chinese prompt stays practical for generation
 
-Use one multi-shot prompt for a short cause-effect chain that would feel slow as separate 15-second prompts. For example, a warning gesture, the listener's realization, and the resulting release action may share one envelope when cast, location, axis, and immediate causal turn remain stable.
+Use one multi-shot prompt for a short cause-effect chain that would feel slow as separate prompts. For example, a warning gesture, the listener's realization, and the resulting release action may share one envelope when cast, location, axis, and immediate causal turn remain stable.
 
 Split into separate prompts when any are true:
 
 1. hard cut between locations
 2. major character entrance/exit changes the handle list
 3. aspect/lens/setup change needs its own prompt
-4. performance arc deserves its own 15-second envelope
+4. performance arc deserves its own independent envelope
 5. insert/cutaway to a prop, screen, hand, eye, or written note
 
-When uncertain, test both risks: split if one envelope overloads blocking or performance; merge if separate 15-second envelopes would stretch one immediate causal turn. Record the decision in `Prompt Density Notes`.
+When uncertain, test both risks: split if one envelope overloads blocking or performance; merge if separate envelopes would stretch one immediate causal turn. Record the decision in `Prompt Density Notes`.
 
 ## Prompt Quality Gate
 
@@ -247,7 +245,7 @@ Use base64 image embedding only if the user asks for a single portable HTML. Loc
 - shot row order
 - prompt envelope grouping
 - prompt handle tags
-- 15-second envelope strategy
+- envelope duration and grouping strategy
 - source script excerpt mapping
 - copy-button behavior for Seedance prompts
 
@@ -270,7 +268,7 @@ Before reporting completion:
 - Confirm generated previews do not claim to be final art or production keyframes.
 - Confirm generated assets have a manifest with source artifact, count, all four reference-state fields, and limitations.
 - Confirm shot rows and prompt envelopes use distinct identifiers and all `P###` values fall inside the reserved range.
-- Run `node .agents/skills/qa-workflow/scripts/validate-workflow.js --repo . --project <project-root> --package <scene-package-path>` and resolve every error before handoff.
+- Check the final HTML, manifest, source-row mapping, Prompt IDs, dialogue coverage, relative paths, and reference state directly before handoff.
 - Request or run `qa.primary` after HTML/previews are complete and after any real video generation test.
 
 If an image generation tool is unavailable, still create the HTML prompt structure and preview prompt manifest, then use `reference_binding: text_only`, `reference_approval: draft`, and `output_status: prompt_only` and report the limitation.

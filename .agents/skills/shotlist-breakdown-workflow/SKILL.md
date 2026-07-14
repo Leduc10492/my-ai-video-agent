@@ -74,7 +74,7 @@ Write Phase 1 with these Chinese subsections:
 
 `动作 / 对白 Beat Map` must make the source of every beat explicit: script action line, exact dialogue line, implied reaction, or continuity transition. For every beat, state the emotional change, visual focus, likely shot split, and prompt-envelope recommendation.
 
-`导演拆分备注` explains which beats become independent shots, which beats can share one shot/prompt envelope, and why the merge is safe within a 15-second envelope.
+`导演拆分备注` explains which beats become independent shots, which beats can share one prompt envelope, and why the merge preserves the immediate dramatic cause-effect chain.
 
 Use screenplay scene labels as the production unit:
 
@@ -162,7 +162,7 @@ Write Phase 4 with these Chinese subsections:
 
 ### Prompt Envelope Plan
 
-| Prompt | Scene | Source Rows | Internal Shot Plan | Beat Boundary | Dialogue Boundary | Character / Asset Set | 15s Grouping Reason | Next Beat Reserved |
+| Prompt | Scene | Source Rows | Internal Shot Plan | Beat Boundary | Dialogue Boundary | Character / Asset Set | Intended Duration / Grouping Reason | Next Beat Reserved |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 
 ### Prompt ID Reservation
@@ -175,13 +175,13 @@ Write Phase 4 with these Chinese subsections:
 ### Scene Package Recommendation
 ```
 
-`Prompt Envelope Plan` is a hard handoff contract. For every planned prompt, specify which shot rows it contains, the internal shot plan if multiple short beats share one envelope, the first and last action beat, any exact dialogue line that must be preserved, why the group fits one 15-second envelope, and which adjacent beat belongs to the next prompt.
+`Prompt Envelope Plan` is a hard handoff contract. For every planned prompt, specify which shot rows it contains, the internal shot plan if multiple short beats share one envelope, the first and last action beat, any exact dialogue line that must be preserved, the shortest believable intended duration, why the grouping is safe, and which adjacent beat belongs to the next prompt.
 
-Shot rows and prompt envelopes are different entities. Use `<scene-label>-R<NN>` for rows, such as `scene-021-R01`; use `P###` only for 15-second prompt envelopes. Before assigning new prompt IDs, scan `deliverables/30_shotlist/scenes/` and `archives/30_shotlist/scenes/`, find the highest existing `P###`, and reserve a non-overlapping contiguous range in `Prompt ID Reservation`. Preserve migrated IDs only when a retained generated test depends on them; record any legacy aliases in the scene-package manifest.
+Shot rows and prompt envelopes are different entities. Use `<scene-label>-R<NN>` for rows, such as `scene-021-R01`; use `P###` only for prompt envelopes. Before assigning new prompt IDs, scan `deliverables/30_shotlist/scenes/` and `archives/30_shotlist/scenes/`, find the highest existing `P###`, and reserve a non-overlapping contiguous range in `Prompt ID Reservation`. Preserve migrated IDs only when a retained generated output depends on them; record any legacy aliases in the scene-package manifest.
 
-Do not inflate every shot row into its own 15-second prompt. When short adjacent beats share the same location, character set, spatial axis, and immediate cause-effect turn, plan them as one multi-shot envelope with internal timing, for example `【镜头1】5-6s`, `【镜头2】4-5s`, `【镜头3】3-4s`.
+Do not inflate every shot row into its own prompt. When short adjacent beats share the same location, character set, spatial axis, and immediate cause-effect turn, plan them as one compact multi-shot envelope with internal timing derived from the action rather than a preset total.
 
-`Prompt Density Notes` follows `../sketch-shotlist-workflow/reference/PROMPT_DENSITY.md`: group rows only when they share character set, location/sub-location, emotional/temporal unit, 15-second feasibility, and practical prompt length. Split when location, character set, setup, performance arc, insert, or cutaway changes.
+`Prompt Density Notes` follows `../sketch-shotlist-workflow/reference/PROMPT_DENSITY.md`: group rows only when they share character set, location/sub-location, emotional/temporal unit, spatial axis, selected-generator feasibility, and practical prompt length. Split when location, character set, blocking, continuous action, or generation reliability changes materially; an insert or cutaway alone does not force a new envelope.
 
 `Scene Package Recommendation` should use scene-native names:
 
@@ -237,7 +237,7 @@ Use this structure exactly:
 - Missing references and draft-only references are visible before Phase 3.
 - Image-to-asset mapping status is explicit before prompt writing.
 - Blocking queue includes every multi-character scene, key-prop scene, and complex camera geometry scene.
-- `Prompt Envelope Plan` states source rows, internal shot plan when multiple short beats share one envelope, beat boundary, dialogue boundary, 15-second grouping reason, and next-beat reservation.
+- `Prompt Envelope Plan` states source rows, internal shot plan when multiple short beats share one envelope, beat boundary, dialogue boundary, intended duration, grouping reason, and next-beat reservation.
 - Shot-row IDs and `P###` prompt IDs are distinct, and `Prompt ID Reservation` proves the range does not collide with active or archived packages.
 - Phase 4 recommendation names exact scene scope and whether output is production or draft mode.
 

@@ -66,7 +66,7 @@ Never write `zoom`. Always write physical camera movement (`dolly`, `track`, `cr
 | Insert / wide / freeze | **0.3 – 2 sec** |
 | Emotional close-up with full arc (5–7 numbered beats) | **8 – 15 sec** |
 
-The full prompt envelope is 15 seconds. Divide internally for multi-shot prompts using these durations.
+Choose each shot duration from the table, sum the internal shots, and use that actual total for the prompt envelope. Keep it within the selected generator cap; do not pad to 15 seconds.
 
 ## 6. Common patterns — copy-paste templates
 

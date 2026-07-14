@@ -2,12 +2,9 @@
   "name": "my-ai-video-agent-workflow",
   "version": "1.0.0",
   "private": true,
-  "description": "Validation and export helpers for the Markdown-first AI video workflow.",
+  "description": "Minimal runtime dependency for screenplay DOCX export.",
   "scripts": {
-    "test": "node ../test/tools/build_shotlist_regression_v2.js --refresh && node .agents/skills/qa-workflow/scripts/validate-workflow.js --repo . --project ../test --package deliverables/30_shotlist/scenes/scenes-078-085_096-098_v2 && node ../test/tools/verify_shotlist_regression_v2.js",
-    "validate": "node .agents/skills/qa-workflow/scripts/validate-workflow.js --repo .",
-    "build:test": "node ../test/tools/build_shotlist_regression_v2.js --refresh",
-    "validate:test": "node .agents/skills/qa-workflow/scripts/validate-workflow.js --repo . --project ../test --package deliverables/30_shotlist/scenes/scenes-078-085_096-098_v2 && node ../test/tools/verify_shotlist_regression_v2.js"
+    "export:screenplay": "node .agents/skills/screenwriter-workflow/scripts/export_screenplay_docx.js"
   },
   "dependencies": {
     "docx": "^9.7.1"

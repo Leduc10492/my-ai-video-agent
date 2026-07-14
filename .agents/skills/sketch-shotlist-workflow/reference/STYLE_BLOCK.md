@@ -84,10 +84,10 @@ Layer these specific clauses into the lighting section above based on the scene:
 
 Every prompt ends with:
 ```
-15秒。21:9。
+<实际时长>秒。21:9。
 ```
 
-For multi-shot prompts (one prompt with internal `【镜头1】【镜头2】【镜头3】` cuts), still 15 seconds total — divide internally per shot duration rules in CAMERA_EMOTION.md.
+For multi-shot prompts, sum the internal shot durations and use that actual total. The generator cap is not a padding target.
 
 ## Aspect ratio override
 

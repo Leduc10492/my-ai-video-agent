@@ -1,147 +1,25 @@
-# AI Video Workflow Package
+# My AI Video Agent
 
-This repository is a Markdown-first workflow package for AI video creation. It is designed for Codex to move a project from story concept or script to production-ready Seedance/Higgsfield shotlist assets through versioned files, local role workflows, and QA gates.
-
-The current workflow is shotlist-first: standalone board-prompt, art-prompt, and video-prompt stages have been retired from the active path.
-
-## Codex Entry
-
-Use [AGENTS.md](AGENTS.md) as the active project rule entrypoint.
-
-- Codex executes roles locally in the current thread.
-- `.codex/agents/<id>.toml` files are project-scoped Codex custom agent configs.
-- `.agents/skills/<skill>/SKILL.md` files are repo-scoped Codex skills.
-- `.agents/skill_registry.md` maps stable workflow slots to current default skills so implementations can be replaced without changing deliverable paths.
-- Default execution is local; when the user explicitly asks for subagents, parallel agents, or delegation, Codex uses the matching custom agent config.
-- On macOS Finder, use `Cmd+Shift+.` to show hidden `.codex/` and `.agents/` directories.
-
-## Workflow
+一个以主控 Agent、Skills 和少量可选 Sub Agents 组成的 AI 影片前期生产工作流。
 
 ```text
-concept or script
-  -> Screenwriter-mode script and optional McKee-style audit
-  -> asset guide and style guide
-  -> shotlist-builder Phase 1/2 scene breakdown and asset request
-  -> Phase 3 scope confirmation and spatial blocking
-  -> Seedance/Higgsfield shotlist HTML with 15-second prompt envelopes
-  -> rough e-conte previews and optional generated video tests
-  -> QA and regression checks
+剧本 -> 分镜拆解 -> Shot Row -> Prompt Envelope -> 中文 HTML
 ```
 
-## Local Roles
+需要人物、地点或风格参考时，在分镜前补充 `deliverables/20_assets/`。图片和视频生成不属于默认最小闭环，必须由用户单独授权。
 
-| Role | Spec | Responsibility |
-| --- | --- | --- |
-| `project-director` | `.codex/agents/project-director.toml` | Scan state, route work, check preconditions, track downstream impact |
-| `script-writer` | `.codex/agents/script-writer.toml` | Create, audit, revise, time, or expand scripts using Screenwriter mode and McKee structure plugins |
-| `guide-director` | `.codex/agents/guide-director.toml` | Create asset and style guides, register reference images, and define visual continuity |
-| `storyboard-director` | `.codex/agents/storyboard-director.toml` | Own shotlist breakdowns, asset/blocking gates, Seedance/Higgsfield HTML, e-conte previews, and batch QA handoff |
-| `qa-check` | `.codex/agents/qa-check.toml` | Validate structure, locks, versions, spatial continuity, prompt executability, generated assets, and regressions |
+## 核心入口
 
-The role name `storyboard-director` is retained for compatibility, but its active responsibility is shotlist-first planning and production.
+- `AGENTS.md`：主控 Agent 的生产规则
+- `.agents/skill_registry.md`：Skill slot 映射
+- `.agents/skills/`：实际生产能力
+- `.codex/agents/`：用户明确委派时使用的 Sub Agent 边界
+- `deliverables/`：当前项目产物
 
-## Replaceable Skill Slots
+## 核心原则
 
-Use `.agents/skill_registry.md` as the assembly layer for swappable implementations. The current defaults include:
-
-| Slot | Current Default | Purpose |
-| --- | --- | --- |
-| `script.primary` | `screenwriter-workflow` | Script-stage writing, audit, quality gates, timing, revision, and export controller |
-| `story.mckee_router` | `mckee-coordinator` | Structure, audit, rewrite, scene, pacing, variation, and source plugins |
-| `guides.primary` | `guide-workflow` | Asset and style guides |
-| `shotlist.breakdown` | `shotlist-breakdown-workflow` | Scene inventory, action beats, asset request, reference status, and spatial-blocking queue |
-| `shotlist.primary` | `sketch-shotlist-workflow` | Four-phase shotlist-builder loop and scene-first Seedance/Higgsfield HTML with 15-second prompts |
-| `qa.primary` | `qa-workflow` | Stage, batch, regression, final, and workflow QA |
-
-To replace an implementation, add or choose a real skill under `.agents/skills/`, update the registry slot, and keep the canonical output path stable.
-
-See [AGENT_SKILL_PLACEMENT_GUIDE.md](AGENT_SKILL_PLACEMENT_GUIDE.md) for when to keep skills/subagents project-local versus promoting them to global scope.
-
-## File Contract
-
-Current production deliverables use versioned filenames:
-
-```text
-deliverables/
-├── 00_admin/
-│   ├── README.md
-│   ├── locks.md
-│   ├── changelog.md
-│   └── qa_reports/
-├── 10_story/
-│   ├── 01_script_v{N}.md
-│   └── 01_audit_report_v{N}.md
-├── 20_assets/
-│   ├── 02_asset_guide_v{N}.md
-│   ├── 02_style_guide_v{N}.md
-│   ├── refs/
-│   └── generated_ref_v{N}/
-└── 30_shotlist/
-    ├── 03_shotlist_breakdown_v{N}.md
-    └── scenes/
-        └── <scene-scope>_v{N}/
-            ├── Shotlist_<scene-scope>_ZH_v{N}.html
-            ├── manifest.md
-            ├── assets/
-            ├── previews/
-            ├── generated/
-            └── qa/
-```
-
-Historical versions live under matching `archives/<stage>/` directories. Do not create `deliverables/*/archive/`.
-
-Legacy `03_storyboard_v{N}.md` and local companion prompt files belong under `archives/` as historical inputs. The active workflow writes `03_shotlist_breakdown_v{N}.md` and scene-native shotlist HTML packages under `30_shotlist/scenes/`.
-
-## Generated Assets
-
-- `deliverables/20_assets/refs/`: common local reference images declared by the latest asset guide.
-- `deliverables/20_assets/generated_ref_v{N}/`: common local generated references; asset origin, model binding, approval, and output readiness are recorded separately.
-- `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/assets/`: scene-specific assets only; common assets should be referenced from `20_assets`.
-- `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/previews/`: rough e-conte previews embedded in the scene shotlist HTML.
-- `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/generated/`: generated video clips or platform exports for that scene package, if saved locally.
-
-Each generated directory should include a `README.md` or manifest with source artifact, asset count, `asset_origin`, `reference_binding`, `reference_approval`, `output_status`, and known limitations.
-
-## Quality Rules
-
-Every production deliverable starts with artifact metadata:
-
-```markdown
-# Artifact: <Type>
-- id: A-<yyyymmdd>-<nnn>
-- version: v<number>
-- upstream: [<artifact ids>]
-- locks:
-  - must_keep:
-    - ...
-  - must_avoid:
-    - ...
-  - budget_notes:
-    - ...
-
----
-```
-
-Before downstream work, check latest versions, upstream IDs, locks, guide/reference requirements, scene order, distinct shot-row and prompt-envelope IDs, spatial continuity, embedded preview paths, generated asset manifests, and production feasibility.
-
-`sketch-shotlist-workflow` owns generation hard gates. `qa-workflow` provides independent review, regression checks, and persistent reports.
-
-## Validation Helpers
-
-The workflow remains Markdown-first, but fragile structural checks are repeatable:
-
-```bash
-pnpm install
-pnpm validate
-pnpm test
-node .agents/skills/qa-workflow/scripts/validate-workflow.js --repo . --slot shotlist.primary --candidate .agents/skills/<candidate>
-```
-
-`pnpm test` rebuilds and validates the sibling `test` worktree regression fixture when that worktree is present. Run this forward test after candidate validation; Slot declarations and path checks do not prove source fidelity, creative quality, or spatial quality.
-
-## Starter State
-
-- `main` is a reusable workflow package, not a concrete production project.
-- `deliverables/00_admin/` contains only neutral starter admin files: `README.md`, `locks.md`, `changelog.md`, and `qa_reports/README.md`.
-- No story-specific script, audit, asset guide, style guide, shotlist breakdown, scene package, reference image, generated preview, or video test is active in `main`.
-- When this package is copied for a real project, create the first project deliverables under the canonical stage paths and fill `deliverables/00_admin/locks.md` with that project's constraints.
+- 分镜先服务观众体验，再考虑 AI 打包。
+- Shot Row 与 Prompt Envelope 分离。
+- 15 秒是生成上限，不是填充目标。
+- 不使用硬编码 fixture 代替 Skill 运行。
+- QA 检查真实产物，不用结构通过冒充创作质量。

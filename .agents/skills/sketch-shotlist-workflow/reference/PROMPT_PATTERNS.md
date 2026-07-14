@@ -11,7 +11,7 @@ Every Chinese Seedance 2.0 prompt follows the same structural order. Hit every s
 5. **Style block** (`风格：...`)
 6. **Background activity** (`环境活动：...`)
 7. **Shot-specific failure-mode lock**
-8. **Closing footer** (`15秒。21:9。`)
+8. **Closing footer** (`<实际时长>秒。21:9。`)
 
 ## Section 1 — Handle declarations
 
@@ -57,7 +57,7 @@ Required:
 - **Shot action boundary:** what this prompt does and what adjacent prompts must not leak into it
 - **Frame-edge or occlusion lock** when relevant (`frame right sliver`, `left foreground shoulder`, `top edge of prop visible`)
 
-For multi-shot prompts, distinguish the outer prompt boundary from internal shot boundaries. The outer boundary says what the 15-second envelope covers and what stays outside it; each `【镜头N】` block then carries its own internal beat and timing. Do not split short adjacent cause-effect beats into separate prompt envelopes just because they have internal boundaries.
+For multi-shot prompts, distinguish the outer prompt boundary from internal shot boundaries. The outer boundary says what the envelope covers and what stays outside it; each `【镜头N】` block then carries its own internal beat and timing. Do not split short adjacent cause-effect beats into separate prompt envelopes just because they have internal boundaries.
 
 Template:
 ```
@@ -98,7 +98,7 @@ Each shot block always has:
 
 For a single-shot prompt (one continuous take, no internal cuts), skip the `【镜头N】` headers and write the same structure as a single block. Prepend with `单镜头（one-shot，无剪辑）。`
 
-Never let `动作：` be a summary. It must be a physical path. Bad: `动作：Character A 很愤怒。` Good: `0-2秒右脚向前半步；2-5秒右手抬到胸口高度并指向目标；5-9秒视线沿手臂方向移动；9-15秒手臂落回身侧并停在明确终态。`
+Never let `动作：` be a summary. It must be a physical path. Bad: `动作：Character A 很愤怒。` Good: `0-2秒右脚向前半步；2-4秒右手抬到胸口并指向目标；4-6秒视线沿手臂移动；6-8秒手臂落回身侧并停在明确终态。`
 
 ## Section 4 — Spatial blocking
 
@@ -285,10 +285,10 @@ If a new rule contradicts an earlier one — **the new rule replaces the old**. 
 
 Always end with:
 ```
-15秒。21:9。
+<实际时长>秒。21:9。
 ```
 
-For multi-shot prompts (one prompt with internal `【镜头1】【镜头2】【镜头3】` cuts), still 15 seconds total — divide internally.
+For multi-shot prompts, sum the internal shot durations and use that actual total in the footer. Do not pad to the generator cap.
 
 ## Length
 

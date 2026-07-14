@@ -1,6 +1,6 @@
 # Prompt Density
 
-Group shot rows into practical 15-second prompt envelopes without stretching short causal beats or overloading one generation.
+Group shot rows into practical variable-duration prompt envelopes without stretching short causal beats or overloading one generation. The selected generator duration is a cap, not a target.
 
 ## Starting Contract
 
@@ -12,7 +12,7 @@ Start from the breakdown `Prompt Envelope Plan`. Each planned envelope must alre
 - dialogue boundary
 - character and asset set
 - internal shot plan when needed
-- reason the group fits 15 seconds
+- intended duration and why the grouping fits that duration
 - next beat reserved for the following envelope
 
 If Phase 4 changes the plan, record the reason in `Prompt Density Notes` and the scene-package manifest.
@@ -25,16 +25,16 @@ Merge adjacent rows into one envelope only when all are true:
 2. Same location or camera-readable sub-location is used.
 3. Spatial axis and blocking remain coherent.
 4. Beats form one immediate emotional or causal turn.
-5. Total staged action fits 15 seconds.
+5. Total staged action fits the selected generator cap without padding or invented holds.
 6. The prompt remains executable after handles, blocking, dialogue, style, and failure locks are included.
 
-Prefer one multi-shot envelope when separate 15-second clips would make a short cause-effect chain feel slow. Preserve row detail with internal `【镜头1】`, `【镜头2】`, and `【镜头3】` blocks rather than erasing the cuts.
+Prefer one multi-shot envelope when separate clips would make a short cause-effect chain feel slow. Preserve row detail with internal `【镜头1】`, `【镜头2】`, and `【镜头3】` blocks rather than erasing the cuts.
 
 Generic example:
 
-- `【镜头1】` 4-5s: Character A makes a precise warning gesture.
-- `【镜头2】` 4-5s: Character B follows the gesture and realizes the threat.
-- `【镜头3】` 4-5s: Character B performs the immediate release or refusal action.
+- `【镜头1】`: Character A makes a precise warning gesture.
+- `【镜头2】`: Character B follows the gesture and realizes the threat.
+- `【镜头3】`: Character B performs the immediate release or refusal action.
 
 These rows belong together only when they share cast, location, axis, and one uninterrupted causal turn.
 
@@ -45,7 +45,7 @@ Split when any condition applies:
 1. Hard cut between locations or time periods.
 2. Character entrance/exit changes the handle set materially.
 3. Camera setup or reference set cannot remain coherent inside one envelope.
-4. A performance arc needs most of the 15 seconds to land.
+4. A performance arc needs an independent generation to land reliably.
 5. A prop/screen insert needs independent focus control.
 6. The model is likely to leak the next story action early.
 7. A question, answer, reveal, or decision needs a protected dialogue boundary.
@@ -60,12 +60,12 @@ Before drafting each prompt, answer:
 - Which previous beat is already complete?
 - Which next beat is forbidden here?
 - Which exact dialogue belongs here?
-- Why does this grouping fit 15 seconds?
+- What is the shortest believable duration for this grouping, and why?
 - What is the main overload or leakage risk?
 
 ## Internal Cuts
 
-A single envelope usually contains 1-3 internal shots. It may contain 4-5 fast internal shots only when every duration is explicit, the total remains 15 seconds, cast/location/axis stay stable, and the scene-level batch audit confirms the prompt is still executable. Every internal shot states its own duration, lens, camera position, background, action path, and performance detail. Internal shot boundaries do not automatically require separate prompt envelopes.
+A single envelope usually contains 1-3 internal shots. It may contain 4-5 fast internal shots only when every duration is explicit, the total remains within the selected generator cap, cast/location/axis stay stable, and scene-level review confirms the prompt is still executable. Every internal shot states its own duration, lens, camera position, background, action path, and performance detail. Internal shot boundaries do not automatically require separate prompt envelopes.
 
 Use a one-shot envelope when one continuous performance or camera move carries the emotional turn. Use a multi-shot envelope when a few fast cuts express one uninterrupted unit.
 
