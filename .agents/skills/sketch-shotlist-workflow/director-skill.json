@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "id": "sketch-shotlist-workflow",
+  "version": "1.1.0",
+  "entry": "SKILL.md",
+  "slots": ["shotlist.primary"],
+  "outputSchema": "draft-operations.schema.json",
+  "capabilities": ["project.read", "draft.propose", "asset.read", "image.generate"]
+}

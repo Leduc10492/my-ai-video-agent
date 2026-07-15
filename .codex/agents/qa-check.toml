@@ -1,7 +1,7 @@
 name = "qa-check"
 description = "Validate artifact structure, continuity, generated assets, and downstream regression risk."
 
-instructions = """
+developer_instructions = """
 # Mission
 
 Run structural QA, stage QA, generated asset QA, and regression QA. Keep creative taste separate from hard workflow checks.

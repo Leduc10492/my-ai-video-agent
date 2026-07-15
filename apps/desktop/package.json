@@ -1,0 +1,101 @@
+{
+  "name": "@ai-director/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI Director local-first macOS desktop app",
+  "author": "AI Director Workbench contributors",
+  "main": "./out/main/index.js",
+  "scripts": {
+    "build:deps": "pnpm --filter @ai-director/domain build && pnpm --filter @ai-director/storage build && pnpm --filter @ai-director/skill-runtime build && pnpm --filter @ai-director/agent-runtime build && pnpm --filter @ai-director/import-export build",
+    "predev": "pnpm build:deps",
+    "dev": "electron-vite dev",
+    "prebuild": "pnpm build:deps",
+    "build": "electron-vite build",
+    "pretypecheck": "pnpm build:deps",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "package:mac": "pnpm build && node scripts/package-mac.cjs"
+  },
+  "devDependencies": {
+    "@ai-director/agent-runtime": "workspace:*",
+    "@ai-director/domain": "workspace:*",
+    "@ai-director/import-export": "workspace:*",
+    "@ai-director/skill-runtime": "workspace:*",
+    "@ai-director/storage": "workspace:*",
+    "@phosphor-icons/react": "^2.1.10",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zod": "^3.25.67",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "electron": "^43.1.1",
+    "electron-builder": "^26.0.12",
+    "electron-vite": "^3.1.0",
+    "vite": "^6.3.5"
+  },
+  "build": {
+    "appId": "studio.aidirector.workbench",
+    "productName": "AI 导演工作台",
+    "asar": true,
+    "afterPack": "scripts/after-pack.cjs",
+    "electronFuses": {
+      "runAsNode": false,
+      "enableCookieEncryption": true,
+      "enableNodeOptionsEnvironmentVariable": false,
+      "enableNodeCliInspectArguments": false,
+      "enableEmbeddedAsarIntegrityValidation": true,
+      "onlyLoadAppFromAsar": true
+    },
+    "directories": {
+      "output": "../../release"
+    },
+    "files": [
+      "out/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "resources/skill_registry.md",
+        "to": "core-workflow/skill_registry.md"
+      },
+      {
+        "from": "../../.agents/skills",
+        "to": "core-workflow/skills",
+        "filter": [
+          "screenwriter-workflow/**/*",
+          "guide-workflow/**/*",
+          "shotlist-breakdown-workflow/**/*",
+          "sketch-shotlist-workflow/**/*",
+          "qa-workflow/**/*",
+          "qa-checklists/**/*",
+          "artifact-formatter/**/*",
+          "version-management/**/*",
+          "!**/node_modules/**/*",
+          "!**/.DS_Store"
+        ]
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "identity": "-",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["arm64", "x64"]
+        },
+        {
+          "target": "zip",
+          "arch": ["arm64", "x64"]
+        }
+      ],
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false
+    },
+    "dmg": {
+      "title": "AI 导演工作台 ${version}",
+      "artifactName": "AI-Director-${version}-${arch}.${ext}"
+    }
+  }
+}

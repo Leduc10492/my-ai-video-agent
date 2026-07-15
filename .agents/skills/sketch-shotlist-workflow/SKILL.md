@@ -5,6 +5,17 @@ description: Project-local Seedance/Higgsfield shotlist-builder workflow. Use as
 
 # Sketch Shotlist Workflow
 
+## Desktop Candidate Runtime
+
+When the macOS app invokes this Skill in Candidate Runtime, these rules override all file-based input, save, versioning, archive, changelog, and handoff steps below:
+
+- Use only `context.json` and `RUN_RULES.md` supplied in the current run directory as project and runtime inputs. Do not scan or read the repository, `deliverables/`, `archives/`, `.agents/skill_registry.md`, or any other project path, and do not infer omitted state.
+- Treat the run as read-only. Do not create, edit, delete, move, rename, or archive files or directories; do not write SQLite or invoke shell/network side effects. Image generation also remains disabled unless the app starts a separately authorized image-generation action.
+- Stay inside the supplied `scopeIds`. Propose operations only for scoped entities, or scoped descendants and links explicitly exposed by `context.json` and permitted by `RUN_RULES.md`. Report any needed out-of-scope change in `summary` instead of proposing it.
+- Return exactly one JSON object conforming to `draft-operations.schema.json`, with `summary` and `operations` as its only top-level fields. Every item in `operations` is a `DraftOperation`; encode its `payload` as the JSON string required by the schema. Return no Markdown or commentary outside that JSON object.
+- For `patch`, `reorder`, or `archive` on an existing entity, copy its `currentRevisionId` from `context.json` exactly into `baseRevision`. Use `baseRevision: null` for `create`, `link`, or `unlink` unless `RUN_RULES.md` supplies a different mapping contract. Never invent a revision ID; omit the operation and explain the limitation in `summary` when the required current revision is absent.
+- The app validates and stores the candidate, obtains user approval, applies formal revisions and dependency invalidation, and owns version increments, archives, changelog updates, deliverable rendering, and all file writes. Do not perform or simulate those steps in Candidate Runtime.
+
 This is the active production path for Seedance/Higgsfield work in this repository. It imports the `shotlist-builder` method into the project file contract: screenplay scenes first, asset request, reference upload/mapping, spatial blocking, then scene-scoped HTML shotlists with Chinese readable modules and Chinese Seedance prompts.
 
 The HTML shotlist is the prompt source of truth. Do not split the same scope into separate board-prompt, art-prompt, or standalone video-prompt artifacts.

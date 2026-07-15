@@ -1,0 +1,24 @@
+{
+  "name": "@ai-director/storage",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "pnpm --filter @ai-director/domain build && tsc -p tsconfig.json --noEmit",
+    "test": "pnpm --filter @ai-director/domain build && vitest",
+    "test:run": "pnpm --filter @ai-director/domain build && vitest run"
+  },
+  "dependencies": {
+    "@ai-director/domain": "workspace:*",
+    "zod": "^3.25.67"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "id": "mckee-coordinator",
+  "version": "1.0.0",
+  "entry": "SKILL.md",
+  "slots": ["story.mckee_router"],
+  "outputSchema": "draft-operations.schema.json",
+  "capabilities": ["project.read", "draft.propose"]
+}

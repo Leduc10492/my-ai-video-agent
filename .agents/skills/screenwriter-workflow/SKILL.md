@@ -5,6 +5,17 @@ description: Script-stage controller for this file-based AI video workflow. Use 
 
 # Screenwriter Workflow
 
+## Desktop Candidate Runtime
+
+When the macOS app invokes this Skill in Candidate Runtime, these rules override all file-based input, save, versioning, archive, changelog, and handoff steps below:
+
+- Use only `context.json` and `RUN_RULES.md` supplied in the current run directory as project and runtime inputs. Do not scan or read the repository, `deliverables/`, `archives/`, `.agents/skill_registry.md`, or any other project path, and do not infer omitted state.
+- Treat the run as read-only. Do not create, edit, delete, move, rename, or archive files or directories; do not write SQLite or invoke shell/network side effects.
+- Stay inside the supplied `scopeIds`. Propose operations only for scoped entities, or scoped descendants and links explicitly exposed by `context.json` and permitted by `RUN_RULES.md`. Report any needed out-of-scope change in `summary` instead of proposing it.
+- Return exactly one JSON object conforming to `draft-operations.schema.json`, with `summary` and `operations` as its only top-level fields. Every item in `operations` is a `DraftOperation`; encode its `payload` as the JSON string required by the schema. Return no Markdown or commentary outside that JSON object.
+- For `patch`, `reorder`, or `archive` on an existing entity, copy its `currentRevisionId` from `context.json` exactly into `baseRevision`. Use `baseRevision: null` for `create`, `link`, or `unlink` unless `RUN_RULES.md` supplies a different mapping contract. Never invent a revision ID; omit the operation and explain the limitation in `summary` when the required current revision is absent.
+- The app validates and stores the candidate, obtains user approval, applies formal revisions and dependency invalidation, and owns version increments, archives, changelog updates, deliverable rendering, and all file writes. Do not perform or simulate those steps in Candidate Runtime.
+
 ## Slot Compatibility
 
 - slot: `script.primary`
@@ -22,6 +33,7 @@ It turns the global Screenwriter craft mode into a repo-compatible workflow:
 - `script-writer` owns file scope, versions, locks, changelog, and downstream impact.
 - `screenwriter-workflow` owns the writing mode: intake, one-version iteration, screenplay style, Chinese user-facing output, timing/cutdown, and final script shape.
 - `mckee-*` skills are structure plugins used only when the current task needs story-spine creation, audit, rewrite planning, scene diagnosis, pacing, variations, or source lookup.
+- These plugins are optional. If the active registry does not bind `story.mckee_router`, continue with the general screenplay principles in this Skill and report the optional dependency as unavailable; never invent or silently substitute source material.
 
 Do not make `mckee-create` the default script-writing entrance. For new script creation, use this workflow as the entrance and use McKee output as a structure packet.
 
@@ -33,7 +45,7 @@ Before substantial script work, read:
 2. Latest `deliverables/10_story/01_script_v{N}.md`, if present
 3. Latest `deliverables/10_story/01_audit_report_v{N}.md`, if relevant
 4. `.agents/skill_registry.md`
-5. The specific McKee skill only when needed
+5. The specific McKee skill only when needed and actually available in the active registry
 
 Find the highest numeric version suffix. Do not assume `v1`.
 
@@ -119,6 +131,8 @@ Task-level comparison material:
 ## McKee Plugin Use
 
 Use `story.mckee_router` (`mckee-coordinator`) as the internal router.
+
+If that slot is absent, skip this section and continue with the core Screenwriter flow. Do not search outside the registered Skill pack.
 
 The McKee plugins return structure packets, not final user-facing script ownership. A structure packet can include:
 

@@ -1,7 +1,7 @@
 name = "script-writer"
 description = "Create, audit, revise, and expand scripts using the repository artifact contract, Screenwriter mode, and McKee structure plugins."
 
-instructions = """
+developer_instructions = """
 # Mission
 
 Create, audit, revise, or expand story/script artifacts.

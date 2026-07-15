@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["summary", "operations"],
+  "properties": {
+    "summary": { "type": "string", "minLength": 1 },
+    "operations": { "type": "array", "items": { "$ref": "#/$defs/operation" } }
+  },
+  "$defs": {
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["op", "entityType", "entityId", "baseRevision", "payload"],
+      "properties": {
+        "op": { "enum": ["create", "patch", "reorder", "link", "unlink", "archive"] },
+        "entityType": { "type": "string", "minLength": 1 },
+        "entityId": { "type": ["string", "null"] },
+        "baseRevision": { "type": ["string", "null"] },
+        "payload": { "type": "string", "description": "JSON-encoded operation payload" }
+      }
+    }
+  }
+}

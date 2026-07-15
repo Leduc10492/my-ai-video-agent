@@ -5,6 +5,17 @@ description: Quality checklists for the shotlist-first workflow. Use when perfor
 
 # Quality Checklists
 
+## Desktop Candidate Runtime
+
+When the macOS app invokes this Skill in Candidate Runtime, these rules override all file-based input, save, versioning, archive, changelog, and handoff steps below:
+
+- Use only `context.json` and `RUN_RULES.md` supplied in the current run directory as project and runtime inputs. Do not scan or read the repository, `deliverables/`, `archives/`, `.agents/skill_registry.md`, or any other project path, and do not infer omitted state.
+- Treat the run as read-only. Do not create, edit, delete, move, rename, or archive files or directories; do not write SQLite or invoke shell/network side effects.
+- Stay inside the supplied `scopeIds`; inspect only scoped entities and scoped descendants explicitly exposed by `context.json` and permitted by `RUN_RULES.md`. Report any needed out-of-scope check in `summary`.
+- Return exactly one JSON object conforming to `draft-operations.schema.json`, with a human-readable `summary` and an empty `operations` array. This Skill has no `draft.propose` capability, so never emit a `DraftOperation` and return no Markdown or commentary outside that JSON object.
+- When a checklist finding refers to an existing entity, cite its `currentRevisionId` from `context.json` in `summary` when useful. Never invent a revision ID.
+- The app owns candidate storage, approval, formal revisions, dependency invalidation, version increments, archives, changelog updates, deliverable rendering, and all file writes. Do not perform or simulate those steps in Candidate Runtime.
+
 ## Slot Compatibility
 
 - slot: `qa.checklists`

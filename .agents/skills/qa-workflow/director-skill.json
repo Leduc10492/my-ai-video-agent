@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "qa-workflow",
+  "version": "1.1.0",
+  "entry": "SKILL.md",
+  "slots": ["qa.primary"],
+  "outputSchema": "draft-operations.schema.json",
+  "capabilities": ["project.read", "draft.propose", "asset.read"],
+  "dependencies": [
+    { "id": "qa-checklists", "versionRange": ">=1.0.0 <2.0.0" }
+  ]
+}

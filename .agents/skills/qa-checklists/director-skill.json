@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "id": "qa-checklists",
+  "version": "1.1.0",
+  "entry": "SKILL.md",
+  "slots": [],
+  "outputSchema": "draft-operations.schema.json",
+  "capabilities": ["project.read"]
+}

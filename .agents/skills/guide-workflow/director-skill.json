@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "id": "guide-workflow",
+  "version": "1.1.0",
+  "entry": "SKILL.md",
+  "slots": ["guides.primary"],
+  "outputSchema": "draft-operations.schema.json",
+  "capabilities": ["project.read", "draft.propose", "asset.read"]
+}

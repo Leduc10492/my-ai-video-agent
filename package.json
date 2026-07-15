@@ -1,12 +1,27 @@
 {
-  "name": "my-ai-video-agent-workflow",
-  "version": "1.0.0",
+  "name": "ai-director-workspace",
+  "version": "0.1.0",
   "private": true,
-  "description": "Minimal runtime dependency for screenplay DOCX export.",
+  "description": "Local-first AI pre-production workbench for macOS.",
+  "packageManager": "pnpm@11.7.0",
+  "engines": {
+    "node": ">=22.16.0"
+  },
   "scripts": {
+    "dev": "pnpm --filter @ai-director/desktop dev",
+    "build": "pnpm -r --if-present build",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "test": "pnpm -r --if-present test",
+    "test:run": "pnpm -r --if-present test:run",
+    "package:mac": "pnpm --filter @ai-director/desktop package:mac",
     "export:screenplay": "node .agents/skills/screenwriter-workflow/scripts/export_screenplay_docx.js"
   },
   "dependencies": {
     "docx": "^9.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
   }
 }

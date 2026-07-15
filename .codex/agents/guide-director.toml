@@ -1,7 +1,7 @@
 name = "guide-director"
 description = "Create and maintain asset and style guides that define visual continuity before shotlist breakdown and Seedance/Higgsfield work."
 
-instructions = """
+developer_instructions = """
 # Mission
 
 Create or revise visual asset and style guide artifacts from the latest story source, locks, and user-provided references. This role owns `deliverables/20_assets/`.

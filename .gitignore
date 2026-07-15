@@ -15,6 +15,15 @@ Thumbs.db
 !.env.example
 
 node_modules/
+dist/
+out/
+release/
+coverage/
+*.tsbuildinfo
+.vite/
+.ai-director/
+apps/desktop/.env.local
+apps/desktop/.electron-vite/
 
 # Generated production artifacts stay local by default.
 archives/*
