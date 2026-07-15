@@ -1,6 +1,6 @@
 import { execFile } from "node:child_process";
 import { randomUUID } from "node:crypto";
-import { existsSync } from "node:fs";
+import { existsSync, mkdirSync } from "node:fs";
 import { cp, mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { basename, dirname, isAbsolute, join, relative, resolve } from "node:path";
@@ -53,6 +53,15 @@ const projectRootSelections = new Map<string, { rootPath: string; webContentsId:
 protocol.registerSchemesAsPrivileged([
   { scheme: "aidirector-asset", privileges: { secure: true, standard: true, supportFetchAPI: true, bypassCSP: false } }
 ]);
+
+if (!app.isPackaged) {
+  const configuredPath = process.env.AI_DIRECTOR_DEV_USER_DATA_PATH?.trim();
+  const developmentUserDataPath = configuredPath
+    ? resolve(configuredPath)
+    : join(app.getPath("appData"), "@ai-director", "desktop-dev");
+  mkdirSync(developmentUserDataPath, { recursive: true });
+  app.setPath("userData", developmentUserDataPath);
+}
 
 function showOpenDialog(options: Electron.OpenDialogOptions): Promise<Electron.OpenDialogReturnValue> {
   return mainWindow ? dialog.showOpenDialog(mainWindow, options) : dialog.showOpenDialog(options);
