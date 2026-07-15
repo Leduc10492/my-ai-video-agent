@@ -28,10 +28,15 @@ pnpm dev
 pnpm typecheck
 pnpm test:run
 pnpm build
-pnpm package:mac
+pnpm verify
+pnpm package:mac:arm64
 ```
 
-`pnpm package:mac` 会先在系统临时目录完成加固与签名，再把 DMG/ZIP 复制到
+`pnpm verify` 会依次完成类型检查、自动测试和正式构建。第一次开发 App 请先阅读
+[DEVELOPMENT.md](DEVELOPMENT.md)，其中说明了源码、开发预览、安装版、项目数据与
+`release/` 的区别。
+
+`pnpm package:mac:arm64` 会先在系统临时目录完成加固与签名，再把 DMG 复制到
 `release/`，避免 `Documents` 目录的扩展属性破坏签名。本地默认使用 ad-hoc
 签名；公开分发时通过 `AI_DIRECTOR_SIGN_IDENTITY` 指定 Developer ID，并完成
 Apple 公证与商业合规材料。
@@ -47,10 +52,14 @@ Apple 公证与商业合规材料。
 - `.agents/skills`：现有核心 Skill Pack 源。
 
 技术与发行验证记录见 [docs/phase-0-validation.md](docs/phase-0-validation.md)。
+前端组件的 shadcn/ui 渐进迁移见
+[docs/shadcn-migration-plan.md](docs/shadcn-migration-plan.md)。
 
 ## 文件工作流兼容入口
 
 - `AGENTS.md`：主控 Agent 的生产规则
+- `apps/desktop/AGENTS.md`：桌面产品开发、安全和 UI 规则
+- `DEVELOPMENT.md`：面向初学者的开发、预览、测试和打包说明
 - `.agents/skill_registry.md`：Skill slot 映射
 - `.agents/skills/`：实际生产能力
 - `.codex/agents/`：用户明确委派时使用的 Sub Agent 边界

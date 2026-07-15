@@ -1,6 +1,17 @@
-# AI Video Agent
+# AI Video Agent + AI 导演工作台
 
-这个仓库是一个由主控 Agent 调用 Skills 完成影视前期生产的文件型工作流，不是软件应用，也不以 fixture、validator 或测试框架作为主流程。
+这个仓库同时包含两层能力：
+
+1. 由主控 Agent 调用 Skills 完成影视前期生产的文件型工作流；
+2. 将该工作流产品化的 Electron macOS 桌面应用。
+
+两层共用导演原则和 `.agents/skills`，但开发方式不同。处理剧本、资产、分镜、
+Prompt、HTML 和 QA 产物时，遵循本文的生产规则；修改 `apps/desktop/`、
+`packages/`、桌面构建或产品文档时，还必须遵循
+`apps/desktop/AGENTS.md` 与 `DEVELOPMENT.md`。
+
+不要用软件测试替代创作判断，也不要用文件型工作流规则阻止应用所需的数据库、
+界面和安全边界实现。
 
 ## 最小生产链路
 
@@ -22,6 +33,9 @@
 | 检查 | `qa.primary` | 默认在对话中报告；仅按用户要求保存报告 |
 
 所有实现只通过 `.agents/skill_registry.md` 解析。不要为 Beat、Shot、Prompt、Preview 或 Manifest 再创建新的平行工作流层，除非真实生产结果证明现有 Skill 无法承担该职责且用户明确批准重构。
+
+桌面应用可以把这些概念建模为数据库实体和界面状态，但必须保持同一语义，尤其是
+Shot Row 与 Prompt Envelope 的分离、原文追溯、Skill Slot 和用户确认后写入。
 
 ## 主控 Agent 规则
 
@@ -62,3 +76,16 @@ QA 默认是一次简洁的人工可读检查：
 - HTML 中的 ID、映射、Prompt 和相对路径是否一致
 
 结构检查不能证明创作质量。最终分镜质量以真实 HTML 和用户审阅为准。
+
+## 桌面产品开发入口
+
+- 开发源码：`apps/desktop/` 与 `packages/`
+- 开发预览：`pnpm dev`
+- 完整检查：`pnpm verify`
+- macOS 安装包：`pnpm package:mac:arm64`
+- 新手说明：`DEVELOPMENT.md`
+- 桌面工程规则：`apps/desktop/AGENTS.md`
+- shadcn 迁移计划：`docs/shadcn-migration-plan.md`
+
+`out/`、`release/` 和 `/Applications/AI 导演工作台.app` 都是生成结果，不是源码。
+开发版使用独立的 `desktop-dev` 数据目录；正式项目不得作为开发试验数据。

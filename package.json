@@ -13,7 +13,9 @@
     "typecheck": "pnpm -r --if-present typecheck",
     "test": "pnpm -r --if-present test",
     "test:run": "pnpm -r --if-present test:run",
+    "verify": "pnpm typecheck && pnpm test:run && pnpm build",
     "package:mac": "pnpm --filter @ai-director/desktop package:mac",
+    "package:mac:arm64": "pnpm --filter @ai-director/desktop package:mac dmg --arm64",
     "export:screenplay": "node .agents/skills/screenwriter-workflow/scripts/export_screenplay_docx.js"
   },
   "dependencies": {
