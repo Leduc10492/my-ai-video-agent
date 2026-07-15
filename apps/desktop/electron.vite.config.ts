@@ -36,6 +36,23 @@ export default defineConfig({
         "@shared": resolve(__dirname, "src/shared")
       }
     },
-    plugins: [react()]
+    plugins: [
+      react(),
+      {
+        name: "ai-director-development-csp",
+        apply: "serve",
+        transformIndexHtml(html) {
+          return html
+            .replace(
+              "script-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:*"
+            )
+            .replace(
+              "connect-src 'none'",
+              "connect-src 'self' ws://localhost:* http://localhost:*"
+            );
+        }
+      }
+    ]
   }
 });

@@ -513,7 +513,7 @@ function configureSessionSecurity(): void {
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     const development = !app.isPackaged;
     const policy = development
-      ? "default-src 'self' http://localhost:*; script-src 'self' 'unsafe-eval' http://localhost:*; style-src 'self' 'unsafe-inline' http://localhost:*; img-src 'self' data: blob: aidirector-asset:; connect-src 'self' ws://localhost:* http://localhost:*"
+      ? "default-src 'self' http://localhost:*; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:*; style-src 'self' 'unsafe-inline' http://localhost:*; img-src 'self' data: blob: aidirector-asset:; connect-src 'self' ws://localhost:* http://localhost:*"
       : "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: aidirector-asset:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'";
     callback({
       responseHeaders: {
