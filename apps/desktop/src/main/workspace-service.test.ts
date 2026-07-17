@@ -46,6 +46,54 @@ describe("script import confirmation boundary", () => {
     }
   });
 
+  it("normalizes numbered mixed interior/exterior headings while preserving source text", async () => {
+    const root = await mkdtemp(join(tmpdir(), "ai-director-workspace-"));
+    temporaryPaths.push(root);
+    const projectRoot = join(root, "project");
+    const coreSkillRoot = join(root, "core-skills");
+    await Promise.all([mkdir(projectRoot), mkdir(coreSkillRoot)]);
+    const workspace = new WorkspaceService({ userDataPath: join(root, "user-data"), coreSkillRoot });
+    try {
+      const project = await workspace.createProject({ name: "混合场景测试", rootToken: "test-token", template: "film" }, projectRoot);
+      const preview = await workspace.stagePastedScript(project.id, "numbered.txt", [
+        "1. INT. OFFICE - DAY",
+        "动作一。",
+        "2. INTERCUT - DAY / NIGHT",
+        "动作二。",
+        "3. INT./EXT. 便利店 - DAWN",
+        "动作三。"
+      ].join("\n"));
+
+      expect(preview.sceneProposals.map((proposal) => proposal.heading)).toEqual([
+        "INT. OFFICE - DAY",
+        "INTERCUT - DAY / NIGHT",
+        "INT./EXT. 便利店 - DAWN"
+      ]);
+      const applied = await workspace.applyScriptImport({
+        projectId: project.id,
+        importToken: preview.importToken,
+        acceptedSceneProposalIds: preview.sceneProposals.map((proposal) => proposal.id),
+        createRevision: true
+      });
+
+      expect(applied.scenes[1]).toMatchObject({
+        heading: "INTERCUT - DAY / NIGHT",
+        location: "INTERCUT",
+        timeOfDay: "DAY / NIGHT",
+        interiorExterior: "OTHER"
+      });
+      expect(applied.scenes[2]).toMatchObject({
+        heading: "INT./EXT. 便利店 - DAWN",
+        location: "便利店",
+        timeOfDay: "DAWN",
+        interiorExterior: "INT/EXT"
+      });
+      expect(applied.scriptBlocks.find((block) => block.text === "3. INT./EXT. 便利店 - DAWN")?.kind).toBe("scene_heading");
+    } finally {
+      workspace.close();
+    }
+  });
+
   it("keeps an ordinary imported Skill unclassified until a Slot is selected", async () => {
     const root = await mkdtemp(join(tmpdir(), "ai-director-workspace-"));
     temporaryPaths.push(root);

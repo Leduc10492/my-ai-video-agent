@@ -12,9 +12,21 @@ import type {
   ScriptSourceFormat
 } from "./types";
 
-const SCENE_HEADING = /^(?:\.?\s*)?(?:INT\.?|EXT\.?|INT\.?\s*\/\s*EXT\.?|EXT\.?\s*\/\s*INT\.?|内景|外景|内\/外景|内外景|场景\s*[:：])/i;
+const SCENE_HEADING = /^(?:\.?\s*)?(?:INT\.?\s*\/\s*EXT\.?|EXT\.?\s*\/\s*INT\.?|INT\.?(?=[\s·:：—-]|$)|EXT\.?(?=[\s·:：—-]|$)|内\/外景|外\/内景|内外景|内景|外景|INTERCUT\b|场景\s*[:：])/i;
+const SCENE_NUMBER_PREFIX = /^(?:(?:(?:SCENE|场景)\s*)?(?:第\s*)?\d+[A-Z]?(?:\s*[-.]\s*\d+[A-Z]?)*(?:\s*场)?\s*(?:[.)、:：-]\s*)?)/i;
 const TRANSITION = /^(?:CUT TO:|FADE (?:IN|OUT):|DISSOLVE TO:|MATCH CUT TO:|切至[:：]?|淡入[:：]?|淡出[:：]?)$/i;
 const PARENTHETICAL = /^(?:\(.+\)|（.+）)$/;
+
+export function normalizeSceneHeading(value: string): string {
+  const text = value.trim();
+  if (SCENE_HEADING.test(text)) return text;
+  const withoutSceneNumber = text.replace(SCENE_NUMBER_PREFIX, "").trim();
+  return SCENE_HEADING.test(withoutSceneNumber) ? withoutSceneNumber : text;
+}
+
+function looksLikeSceneHeading(value: string): boolean {
+  return SCENE_HEADING.test(normalizeSceneHeading(value));
+}
 
 function sha256(value: string | Buffer): string {
   return createHash("sha256").update(value).digest("hex");
@@ -30,7 +42,7 @@ function normalizeText(text: string): string {
 
 function looksLikeCharacterCue(value: string, next: string | undefined): boolean {
   const text = value.trim();
-  if (!next?.trim() || text.length < 1 || text.length > 24 || SCENE_HEADING.test(text)) return false;
+  if (!next?.trim() || text.length < 1 || text.length > 24 || looksLikeSceneHeading(text)) return false;
   if (/[。！？!?，,：:；;]/.test(text)) return false;
   if (/^[A-Z][A-Z0-9 ._'\-()]{1,23}$/.test(text)) return true;
   return /^[\p{Script=Han}A-Za-z·・ ]{1,12}(?:\s*[（(][^）)]{1,8}[）)])?$/u.test(text);
@@ -55,7 +67,7 @@ function classifyLines(text: string, format: ScriptSourceFormat): ImportedScript
     }
 
     let kind: ScriptBlockKind = "action";
-    if (SCENE_HEADING.test(value)) kind = "scene-heading";
+    if (looksLikeSceneHeading(value)) kind = "scene-heading";
     else if (TRANSITION.test(value) || (format === "fountain" && value.startsWith(">") && value.endsWith("<"))) {
       kind = "transition";
       value = value.replace(/^>|<$/g, "").trim();
@@ -124,10 +136,10 @@ function proposeScenes(blocks: ImportedScriptBlock[]): ImportedSceneProposal[] {
     if (block.kind === "scene-heading") {
       current = {
         id: `scene_proposal_${String(scenes.length + 1).padStart(3, "0")}`,
-        ordinal: scenes.length + 1,
-        heading: block.text,
+        ordinal: scenes.length,
+        heading: normalizeSceneHeading(block.text),
         blockIds: [block.id],
-        confidence: SCENE_HEADING.test(block.text) ? 0.96 : 0.72,
+        confidence: looksLikeSceneHeading(block.text) ? 0.96 : 0.72,
         warnings: []
       };
       scenes.push(current);
@@ -195,7 +207,7 @@ export async function importScriptBuffer(
   if (!sceneProposals.length && rawText.trim()) {
     warnings.push({
       code: "NO_SCENE_HEADINGS",
-      message: "未识别到明确的场景标题。原文已保留，请在预览中手动标记场景。",
+      message: "未识别到明确的场景标题。原文已保留，请将场景标题调整为 INT./EXT./内景/外景等格式后重新导入。",
       blocking: false
     });
   }

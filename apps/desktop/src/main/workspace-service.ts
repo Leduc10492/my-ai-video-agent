@@ -50,6 +50,24 @@ const BLOCK_KIND_MAP: Record<string, ScriptBlockKind> = {
   note: "note"
 };
 
+const SCENE_ENVIRONMENT_PREFIX = /^(?:INT\.?\s*\/\s*EXT\.?|EXT\.?\s*\/\s*INT\.?|INT\.?(?=[\s·:：—-]|$)|EXT\.?(?=[\s·:：—-]|$)|内\/外景|外\/内景|内外景|内景|外景)\s*(?:[·:：-]\s*)?/i;
+
+function inferInteriorExterior(heading: string): "INT" | "EXT" | "INT/EXT" | "OTHER" {
+  if (/^(?:INT\.?\s*\/\s*EXT\.?|EXT\.?\s*\/\s*INT\.?|内\/外景|外\/内景|内外景)/i.test(heading)) return "INT/EXT";
+  if (/^(?:INT\.?(?=[\s·:：—-]|$)|内景)/i.test(heading)) return "INT";
+  if (/^(?:EXT\.?(?=[\s·:：—-]|$)|外景)/i.test(heading)) return "EXT";
+  return "OTHER";
+}
+
+function parseSceneHeadingDetails(heading: string): { location: string; timeOfDay: string } {
+  const body = heading.replace(SCENE_ENVIRONMENT_PREFIX, "").trim();
+  const parts = body.split(/(?:\s+[—-]\s+|[·—])/u).map((part) => part.trim()).filter(Boolean);
+  return {
+    location: parts[0] ?? "",
+    timeOfDay: parts.length > 1 ? parts.at(-1) ?? "" : ""
+  };
+}
+
 function skillVersionKey(skillId: string, version: string): string {
   return `${skillId}@${version}`;
 }
@@ -200,15 +218,16 @@ export class WorkspaceService {
       }
       for (const [sceneIndex, proposal] of selectedScenes.entries()) {
         const sceneId = `scene_${randomUUID()}`;
+        const headingDetails = parseSceneHeadingDetails(proposal.heading);
         store.scenes.commit({
           id: sceneId,
           projectId: input.projectId,
           sequenceId: sequence.id,
           sceneNumber: String(existingSceneCount + sceneIndex + 1).padStart(3, "0"),
           heading: proposal.heading,
-          location: proposal.heading.replace(/^(?:INT\.?|EXT\.?|内景|外景|内\/外景)\s*/i, "").split(/[-—·]/)[0]?.trim() ?? "",
-          timeOfDay: proposal.heading.split(/[-—·]/).at(-1)?.trim() ?? "",
-          interiorExterior: /^(?:INT\.?|内景)/i.test(proposal.heading) ? "INT" : /^(?:EXT\.?|外景)/i.test(proposal.heading) ? "EXT" : "OTHER",
+          location: headingDetails.location,
+          timeOfDay: headingDetails.timeOfDay,
+          interiorExterior: inferInteriorExterior(proposal.heading),
           synopsis: "",
           dramaticValueBefore: "",
           dramaticValueAfter: "",

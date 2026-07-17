@@ -1,5 +1,17 @@
+import { Document, Packer, Paragraph } from "docx";
 import { describe, expect, it } from "vitest";
-import { exportProductionHtml, importPastedScript } from "../src";
+import { exportProductionHtml, importPastedScript, importScriptBuffer } from "../src";
+
+const numberedSceneHeadings = [
+  "1. INT. 东京小型影像公司 - DAY",
+  "2. EXT. 山手线站台 - NIGHT",
+  "3. INT. 便利店 - NIGHT",
+  "4. INTERCUT - DAY / NIGHT",
+  "5. INT. 投币洗衣房 - LATE NIGHT",
+  "6. INT. 投币洗衣房 - 02:00",
+  "7. EXT. 隅田川步道 - NIGHT",
+  "8. INT./EXT. 便利店 - DAWN"
+];
 
 describe("script import", () => {
   it("keeps source blocks and proposes scenes without committing structure", async () => {
@@ -7,6 +19,31 @@ describe("script import", () => {
     expect(result.sceneProposals).toHaveLength(2);
     expect(result.blocks.some((block) => block.kind === "dialogue")).toBe(true);
     expect(result.sourceHash).toHaveLength(64);
+  });
+
+  it("recognizes numbered, intercut, and mixed interior/exterior Markdown headings", async () => {
+    const source = ["# 《你还是你吗？》", ...numberedSceneHeadings.flatMap((heading) => [`## ${heading}`, "动作。"])].join("\n\n");
+    const result = await importScriptBuffer("05_screenplay.md", Buffer.from(source, "utf8"));
+
+    expect(result.sceneProposals).toHaveLength(8);
+    expect(result.sceneProposals.map((proposal) => proposal.ordinal)).toEqual([0, 1, 2, 3, 4, 5, 6, 7]);
+    expect(result.sceneProposals.map((proposal) => proposal.heading)).toEqual(numberedSceneHeadings.map((heading) => heading.replace(/^\d+\.\s*/, "")));
+    expect(result.blocks.filter((block) => block.kind === "scene-heading").map((block) => block.text)).toEqual(numberedSceneHeadings);
+    expect(result.warnings.some((warning) => warning.code === "NO_SCENE_HEADINGS")).toBe(false);
+  });
+
+  it("recognizes the same numbered scene structure after DOCX text extraction", async () => {
+    const document = new Document({
+      sections: [{
+        children: numberedSceneHeadings.flatMap((heading) => [new Paragraph(heading), new Paragraph("动作。")])
+      }]
+    });
+    const result = await importScriptBuffer("你还是你吗_screenplay.docx", await Packer.toBuffer(document));
+
+    expect(result.sceneProposals).toHaveLength(8);
+    expect(result.sceneProposals[3]?.heading).toBe("INTERCUT - DAY / NIGHT");
+    expect(result.sceneProposals[7]?.heading).toBe("INT./EXT. 便利店 - DAWN");
+    expect(result.warnings.some((warning) => warning.code === "NO_SCENE_HEADINGS")).toBe(false);
   });
 });
 
