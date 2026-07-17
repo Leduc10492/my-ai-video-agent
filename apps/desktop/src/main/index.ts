@@ -531,7 +531,7 @@ async function createWindow(): Promise<void> {
     minWidth: 1180,
     minHeight: 760,
     show: false,
-    backgroundColor: "#121716",
+    backgroundColor: "#111111",
     titleBarStyle: "hiddenInset",
     trafficLightPosition: { x: 18, y: 18 },
     webPreferences: {

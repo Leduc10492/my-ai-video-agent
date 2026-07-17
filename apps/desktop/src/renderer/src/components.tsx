@@ -1,6 +1,21 @@
 import type { ComponentType, ReactNode } from "react";
 import { X } from "@phosphor-icons/react";
 import type { IconProps } from "@phosphor-icons/react";
+import { Badge as ShadcnBadge } from "@renderer/components/ui/badge";
+import { Button as ShadcnButton } from "@renderer/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle
+} from "@renderer/components/ui/dialog";
+import { Progress } from "@renderer/components/ui/progress";
+import { Switch } from "@renderer/components/ui/switch";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger
+} from "@renderer/components/ui/tooltip";
 
 type PhosphorIcon = ComponentType<IconProps>;
 
@@ -17,14 +32,23 @@ export function Button({
   variant?: "primary" | "secondary" | "ghost" | "danger";
   size?: "sm" | "md";
 }) {
+  const shadcnVariant = {
+    primary: "default",
+    secondary: "outline",
+    ghost: "ghost",
+    danger: "destructive"
+  }[variant] as "default" | "outline" | "ghost" | "destructive";
+
   return (
-    <button
+    <ShadcnButton
+      variant={shadcnVariant}
+      size={size === "sm" ? "sm" : "lg"}
       className={`button button--${variant} button--${size} ${className}`}
       {...props}
     >
       {Icon ? <Icon size={size === "sm" ? 15 : 17} weight="bold" /> : null}
       <span>{children}</span>
-    </button>
+    </ShadcnButton>
   );
 }
 
@@ -40,14 +64,20 @@ export function IconButton({
   active?: boolean;
 }) {
   return (
-    <button
-      className={`icon-button ${active ? "is-active" : ""} ${className}`}
-      aria-label={label}
-      title={label}
-      {...props}
-    >
-      <Icon size={18} weight={active ? "fill" : "regular"} />
-    </button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <ShadcnButton
+          variant="ghost"
+          size="icon-lg"
+          className={`icon-button ${active ? "is-active" : ""} ${className}`}
+          aria-label={label}
+          {...props}
+        >
+          <Icon size={18} weight={active ? "fill" : "regular"} />
+        </ShadcnButton>
+      </TooltipTrigger>
+      <TooltipContent sideOffset={6}>{label}</TooltipContent>
+    </Tooltip>
   );
 }
 
@@ -60,7 +90,12 @@ export function Badge({
   tone?: "neutral" | "accent" | "success" | "warning" | "danger" | "info";
   className?: string;
 }) {
-  return <span className={`badge badge--${tone} ${className}`}>{children}</span>;
+  const variant = tone === "danger" ? "destructive" : tone === "neutral" ? "outline" : "secondary";
+  return (
+    <ShadcnBadge variant={variant} className={`badge badge--${tone} ${className}`}>
+      {children}
+    </ShadcnBadge>
+  );
 }
 
 export function Modal({
@@ -80,27 +115,27 @@ export function Modal({
   onClose: () => void;
   width?: "small" | "medium" | "large";
 }) {
-  if (!open) return null;
   return (
-    <div className="modal-layer" role="presentation" onMouseDown={onClose}>
-      <section
-        className={`modal modal--${width}`}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="modal-title"
-        onMouseDown={(event) => event.stopPropagation()}
+    <Dialog open={open} onOpenChange={(nextOpen) => { if (!nextOpen) onClose(); }}>
+      <DialogContent
+        className={`modal modal--${width} no-drag`}
+        showCloseButton={false}
       >
         <header className="modal__header">
           <div>
-            {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
-            <h2 id="modal-title">{title}</h2>
+            {eyebrow ? (
+              <DialogDescription className="eyebrow">{eyebrow}</DialogDescription>
+            ) : (
+              <DialogDescription className="sr-only">{title}对话框</DialogDescription>
+            )}
+            <DialogTitle>{title}</DialogTitle>
           </div>
           <IconButton icon={X} label="关闭" onClick={onClose} />
         </header>
         <div className="modal__body">{children}</div>
         {footer ? <footer className="modal__footer">{footer}</footer> : null}
-      </section>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -158,15 +193,12 @@ export function Toggle({
 }) {
   return (
     <label className="toggle-row">
-      <button
-        type="button"
-        role="switch"
-        aria-checked={checked}
+      <Switch
+        checked={checked}
+        onCheckedChange={onChange}
         className={`toggle ${checked ? "is-on" : ""}`}
-        onClick={() => onChange(!checked)}
-      >
-        <span />
-      </button>
+        aria-label={label}
+      />
       <span>{label}</span>
     </label>
   );
@@ -200,15 +232,5 @@ export function Segmented<T extends string>({
 }
 
 export function Meter({ value }: { value: number }) {
-  return (
-    <div
-      className="meter"
-      role="progressbar"
-      aria-valuemin={0}
-      aria-valuemax={100}
-      aria-valuenow={value}
-    >
-      <span style={{ width: `${Math.max(0, Math.min(100, value))}%` }} />
-    </div>
-  );
+  return <Progress className="meter" value={Math.max(0, Math.min(100, value))} />;
 }

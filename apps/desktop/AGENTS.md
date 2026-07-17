@@ -24,7 +24,8 @@
 ## 前端与 shadcn
 
 - shadcn/ui 是目标组件基础，不是新的视觉品牌。
-- 保留现有深绿、暖金、编辑台密度、中文排版和 Phosphor 图标语言。
+- 视觉基线使用简单的黑、白与中性灰；危险操作可保留低饱和红色作为安全语义色。
+- 保留现有编辑台密度、中文排版和 Phosphor 图标语言，不引入第二套图标。
 - 迁移必须逐个工作流进行，不能一次性重写 `App.tsx`、`views.tsx` 或全局 CSS。
 - 优先替换 Button、Dialog、Field、Select、Tabs、Switch、Tooltip、Scroll Area 等基础件；
   剧本编辑器、Shot Row、Envelope 编组和 Agent 审批仍是产品组件。

@@ -1,5 +1,6 @@
 import { resolve } from "node:path";
 import { defineConfig, externalizeDepsPlugin } from "electron-vite";
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 
 export default defineConfig({
@@ -38,6 +39,7 @@ export default defineConfig({
     },
     plugins: [
       react(),
+      tailwindcss(),
       {
         name: "ai-director-development-csp",
         apply: "serve",

@@ -3,7 +3,8 @@
 ## 目标
 
 把 shadcn/ui 引入为 Renderer 的基础组件、可访问交互和主题系统，同时保留当前产品的
-深绿、暖金、编辑台密度、中文排版和影视工作流结构。
+编辑台密度、中文排版和影视工作流结构。主题已按产品决定调整为简单的黑、白与
+中性灰，危险操作保留低饱和红色。
 
 这不是一次视觉重做，也不会把产品改成默认 SaaS Dashboard。剧本编辑器、Shot Row、
 Prompt Envelope、Agent 审批和 Skill 管理仍由产品组件负责。
@@ -14,7 +15,7 @@ Prompt Envelope、Agent 审批和 Skill 管理仍由产品组件负责。
 - `styles.css` 约 2,500 行。
 - 已有 Button、IconButton、Badge、Modal、Field、Toggle、Segmented、Meter 等自定义基础件。
 - Dashboard、Script、Assets、Breakdown、Storyboard、Tasks、QA、Skills 七个主要界面。
-- 使用 Phosphor Icons，已有深绿与暖金视觉语言。
+- 使用 Phosphor Icons，品牌视觉已锁定为黑白灰。
 - Renderer 受 Electron sandbox、CSP、Preload 和 IPC 安全边界约束。
 
 ## 已锁定的技术方向
@@ -23,7 +24,7 @@ Prompt Envelope、Agent 审批和 Skill 管理仍由产品组件负责。
 2. 使用 Tailwind CSS v4 与 `@tailwindcss/vite`，插件只挂到 Renderer 构建。
 3. 使用 shadcn CLI v4、TypeScript、CSS Variables、`rsc: false`。
 4. 默认采用 `radix-mira`：Radix 作为交互原语，Mira 适合高密度工作台。
-5. 品牌颜色使用 OKLCH 语义 Token，不在业务组件散落具体颜色值。
+5. 黑白灰主题使用语义 Token，不在业务组件散落具体颜色值。
 6. 继续使用 Phosphor 作为产品图标语言；CLI 生成的内部图标逐项归一，不并行维护两套视觉语言。
 7. 首轮组件保留在 `apps/desktop`。只有出现第二个前端消费者时才抽取 `packages/ui`。
 8. shadcn 代码进入仓库后由项目所有，不直接修改 `node_modules`。
@@ -74,23 +75,23 @@ apps/desktop/
 
 退出条件：新开发者能分清源码、开发预览、安装版、项目数据和 `release/`。
 
-### 1. shadcn 基础设施（0.5–1 天）
+### 1. shadcn 基础设施（已完成）
 
-- 新建独立功能分支和迁移前 Git 检查点。
-- 为现有 `apps/desktop` 配置 Tailwind v4、alias、`components.json` 和 `cn()`。
-- 用 CLI `--dry-run` 检查将写入的依赖与文件。
-- 建立 `tokens.css`，映射当前背景、前景、边框、强调色、状态色、圆角和阴影。
-- 先安装 Button、Badge、Separator、Tooltip、Skeleton。
+- 已在现有功能分支和 Git 检查点后开始迁移。
+- 已为 `apps/desktop` 配置 Tailwind v4、alias、`components.json` 和 `cn()`。
+- 已用 CLI `--dry-run` 检查写入范围，再安装组件源码。
+- 已建立独立 `styles/shadcn.css`，关闭 Tailwind Preflight，避免影响旧页面。
+- 已安装 Button、Badge、Dialog、Switch、Progress、Separator 和 Tooltip。
 
-退出条件：正式界面视觉不变；开发热刷新、生产 CSP、类型检查和正式构建通过。
+退出条件：布局与业务结构不变；黑白灰主题生效；生产 CSP、类型检查和正式构建通过。
 
-### 2. 基础组件兼容层（1–2 天）
+### 2. 基础组件兼容层（进行中）
 
-- 让现有 Button、IconButton、Badge、Meter 逐步转为 shadcn 封装。
+- Button、IconButton、Badge、Meter、Modal 和 Toggle 已通过兼容层接入 shadcn/Radix。
 - 保持旧 Props，先减少业务文件改动。
-- 为主要 Variant、尺寸、禁用、焦点和键盘状态增加组件测试。
+- 下一步为主要 Variant、尺寸、禁用、焦点和键盘状态增加组件测试。
 
-退出条件：Dashboard 和顶栏无视觉回退，旧调用点无需一次性重写。
+退出条件：Dashboard 和顶栏完成真实窗口回归，旧调用点无需一次性重写。
 
 ### 3. 对话框、表单与反馈（1.5–2.5 天）
 
@@ -137,7 +138,7 @@ apps/desktop/
 
 ## 主要风险
 
-- Tailwind Preflight 会影响现有 2,500 行 CSS：必须以视觉基线逐屏回归。
+- Tailwind Preflight 已禁用；新增 shadcn 组件仍需逐屏回归。
 - shadcn CLI 写入的是源码，升级可能覆盖本地改动：运行前提交，升级时使用 `--diff`。
 - Electron 的窗口拖拽区与 Radix Portal 容易发生点击冲突：Overlay 必须处于 `no-drag` 区域。
 - Dialog、Popover、Select 的 Portal 需要在 CSP 和打包后的 `file://` 环境验证。
@@ -148,7 +149,7 @@ apps/desktop/
 
 - Dashboard、新建项目、导入、剧本、资产、拆解、分镜、QA、任务和设置可用。
 - 键盘 Tab、Shift+Tab、Esc、Enter 与焦点恢复正确。
-- 深色主题、品牌色、中文字体和 macOS 窗口行为与基线一致。
+- 黑白灰主题、中文字体和 macOS 窗口行为与产品决定一致。
 - Renderer 仍无 Node 权限，IPC 与 CSP 没有因组件库放宽。
 - `pnpm verify` 通过，开发预览与正式构建均经过真实窗口检查。
 - Shot Row 与 Prompt Envelope 重新编组不改变镜头内容。
