@@ -2,6 +2,8 @@
 
 This directory is the reusable starter state for a new file-based AI video workflow project.
 
+A fresh GitHub clone already contains project-neutral starter directories for `10_story`, `20_assets`, and `30_shotlist`. Create the active project's files directly inside them; no parent `main/test` split is required.
+
 It should stay project-neutral on `main`. Do not store story-specific scripts, reference images, generated previews, video tests, or historical project QA reports here.
 
 ## Files
@@ -11,6 +13,7 @@ It should stay project-neutral on `main`. Do not store story-specific scripts, r
 | `locks.md` | Project-specific constraints for the current active production run. Starts empty. |
 | `changelog.md` | Version/history log for newly created deliverables. Starts with template guidance only. |
 | `qa_reports/README.md` | Explains where persistent QA reports should be saved when a project creates them. |
+| `qa_reports/workflow_audit_20260718.md` | Latest reusable workflow audit and clean-clone evidence. |
 
 ## Canonical Production Paths
 
@@ -30,17 +33,18 @@ deliverables/
 │   ├── refs/
 │   └── generated_ref_v{N}/
 └── 30_shotlist/
-    ├── 03_shotlist_breakdown_v{N}.md
-    └── scenes/
-        └── <scene-scope>_v{N}/
-            ├── Shotlist_<scene-scope>_ZH_v{N}.html
-            ├── manifest.md
-            ├── assets/
-            ├── previews/
-            ├── generated/
-            └── qa/
+    └── <scene-label>_v{N}/
+        ├── 03_shotlist_breakdown_<scene-label>_v{N}.md
+        ├── Shotlist_<scene-label>_ZH_v{N}.html
+        ├── manifest.md
+        ├── spatial_blocking.md
+        ├── assets/
+        ├── previews/
+        └── generated/
 ```
 
 ## Starter Rule
 
-`main` is a clean workflow package. Concrete project output belongs in a project fork, a generated worktree, or a copied project instance.
+The GitHub `main` branch is a clean workflow starter. After cloning it as a new project directory, concrete project output belongs directly in that clone's `deliverables/` tree.
+
+The production hierarchy is `Scene -> Shot Row -> Prompt Envelope`. Only Scene is a directory level; Shot Rows and Prompt Envelopes remain mappings inside the Scene files.

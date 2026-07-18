@@ -15,6 +15,8 @@ Start from the breakdown `Prompt Envelope Plan`. Each planned envelope must alre
 - intended duration and why the grouping fits that duration
 - next beat reserved for the following envelope
 
+Lock dialogue boundaries before the merge test. Extract source dialogue in order, map each spoken line to its own lip-sync Shot Row/internal shot, and keep source-marked `O.S.` / `V.O.` lines as explicit off-screen audio. Several lines may share an Envelope only when those individual shot boundaries remain intact.
+
 If Phase 4 changes the plan, record the reason in `Prompt Density Notes` and the scene-package manifest.
 
 ## Merge Test
@@ -27,6 +29,7 @@ Merge adjacent rows into one envelope only when all are true:
 4. Beats form one immediate emotional or causal turn.
 5. Total staged action fits the selected generator cap without padding or invented holds.
 6. The prompt remains executable after handles, blocking, dialogue, style, and failure locks are included.
+7. Every source dialogue line keeps its own internal shot and source order; merging does not combine independent lines into one lip-sync performance.
 
 Prefer one multi-shot envelope when separate clips would make a short cause-effect chain feel slow. Preserve row detail with internal `【镜头1】`, `【镜头2】`, and `【镜头3】` blocks rather than erasing the cuts.
 

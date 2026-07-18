@@ -6,8 +6,9 @@
 
 ```text
 剧本
+  -> 剧本审核通过
   -> 资产 / 风格资料（需要时）
-  -> 分镜拆解
+  -> 按 Scene 分镜拆解
   -> Shot Row + Prompt Envelope
   -> 中文生产 HTML
   -> QA
@@ -16,9 +17,10 @@
 | 阶段 | Skill slot | 主要产物 |
 | --- | --- | --- |
 | 剧本 | `script.primary` | `deliverables/10_story/01_script_v{N}.md` |
+| 剧本审核门 | `script.primary` 调用 `story.mckee_router` | `deliverables/10_story/01_audit_report_v{N}.md` |
 | 资产 / 风格 | `guides.primary` | `deliverables/20_assets/` |
-| 分镜拆解 | `shotlist.breakdown` | `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md` |
-| Prompt + HTML | `shotlist.primary` | `deliverables/30_shotlist/scenes/<scope>_v{N}/` |
+| Scene 分镜拆解 | `shotlist.breakdown` | `deliverables/30_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md` |
+| Prompt + HTML | `shotlist.primary` | 同一 `deliverables/30_shotlist/<scene-label>_v{N}/` |
 | 检查 | `qa.primary` | 默认在对话中报告；仅按用户要求保存报告 |
 
 所有实现只通过 `.agents/skill_registry.md` 解析。不要为 Beat、Shot、Prompt、Preview 或 Manifest 再创建新的平行工作流层，除非真实生产结果证明现有 Skill 无法承担该职责且用户明确批准重构。
@@ -30,6 +32,14 @@
 3. 一个阶段只有一个写入者。Sub Agent 不得同时修改同一产物。
 4. 不允许用硬编码脚本代替 Skill 的创作判断，不允许预写 `QA passed`。
 5. 图片或视频生成必须由用户单独授权；完成 HTML 不自动触发生成。
+
+## 长剧本与 Scene 生产规则
+
+- 进入资产与分镜阶段前，当前剧本必须有对应版本的审计报告，且没有未解决的 P0/P1；否则返回 `script.primary` 修订或复审。
+- 长剧本先只扫描 Scene 标题、编号和行范围，确认轻量 Scene 顺序；进入导演拆解时只加载选中 Scene 及前后边界，不把全剧本正文带入同一次 Shot Row / Prompt 上下文。
+- 默认一次只完成一个 Scene：先保存该 Scene 的 Breakdown，通过 QA 后，再在同一 Scene 文件夹内生成 Prompt 和 HTML，然后才进入下一个 Scene。
+- 稳定生产单元是 `Scene -> Shot Row -> Prompt Envelope`。文件夹只建到 Scene；Shot Row 与 Prompt Envelope 保存在 Breakdown、HTML 和 manifest 中，不再各建一层目录。
+- 推荐一次质量审查处理 4-8 个 Prompt Envelope。单个 Scene 超过 10 个 Envelope 时，必须按动作阶段、机位族或参考资产变化分批处理并逐批 QA；最终仍合并回同一个 Scene 文件夹，不发明新的批次文件夹体系。
 
 ## 导演与 Prompt 原则
 
@@ -45,11 +55,11 @@
 
 - `deliverables/10_story/`：剧本与剧本审计
 - `deliverables/20_assets/`：共享人物、场景、道具和风格资料
-- `deliverables/30_shotlist/`：分镜拆解、场景 HTML、预演和生成记录
+- `deliverables/30_shotlist/<scene-label>_v{N}/`：该 Scene 的 Breakdown、HTML、manifest、预演和生成记录
 - `deliverables/00_admin/`：锁定条件、变更记录和用户明确要求保存的 QA 报告
 - `archives/`：历史产物，只在比较或恢复时读取
 
-共享资产只放在 `20_assets`；场景目录只保存该场景独有的补充资产。
+共享资产只放在 `20_assets`；Scene 目录只保存该场景的生产文件和场景独有补充资产。不要在 `30_shotlist` 与 Scene 目录之间再增加 `scenes/` 中间层。
 
 ## QA
 

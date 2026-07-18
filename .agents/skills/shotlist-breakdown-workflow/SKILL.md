@@ -1,37 +1,41 @@
 ---
 name: shotlist-breakdown-workflow
-description: Prepare the project-local four-phase scene breakdown for the shotlist-builder loop. Use as the default shotlist.breakdown slot when creating 03_shotlist_breakdown_v{N}.md with Chinese Phase 1/2/3 analysis, asset requests, spatial-blocking needs, and Phase 4 HTML generation planning.
+description: Prepare one Scene at a time for the project-local shotlist-builder loop. Use as the default shotlist.breakdown slot when creating a Scene-scoped breakdown with Chinese Phase 1/2/3 analysis, asset requests, spatial-blocking needs, Shot Rows, Prompt Envelope planning, and batch gates.
 ---
 
 # Shotlist Breakdown Workflow
 
 Use this skill immediately after the script/audit stage when the user wants to move into Seedance/Higgsfield shotlist production.
 
-This skill adapts the `shotlist-builder` four-phase method into the repository planning contract. It locks the analysis, asset request, scope/blocking, and final HTML generation plan. It does not create standalone board prompts, art prompts, video prompts, or final Seedance prompts.
+This skill adapts the `shotlist-builder` four-phase method into one-Scene-at-a-time planning. It locks the selected Scene's source coverage, asset request, scope/blocking, Shot Rows, Prompt Envelopes, and production batches. It does not create standalone board prompts, art prompts, video prompts, or final Seedance prompts.
 
 ## Slot Compatibility
 
 - slot: `shotlist.breakdown`
 - contract_version: `1`
 - canonical_outputs:
-  - `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`
+  - `deliverables/30_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`
 - qa_handoff: `qa.primary`
 - state_contract: `reference-state-v2`
 
 ## Required Inputs
 
 - Latest script: `deliverables/10_story/01_script_v{N}.md`
-- Optional audit report: `deliverables/10_story/01_audit_report_v{N}.md`
+- Required same-version audit report: `deliverables/10_story/01_audit_report_v{N}.md`
 - Optional asset guide: `deliverables/20_assets/02_asset_guide_v{N}.md`
 - Optional style guide: `deliverables/20_assets/02_style_guide_v{N}.md`
 - Global locks: `deliverables/00_admin/locks.md`
-- Optional user-selected screenplay scene, scene range, or sequence
+- Required selected screenplay Scene label, such as `scene-021`
 
-If an existing `03_storyboard_v{N}.md` planning artifact is needed, read it from `archives/` as legacy input only. If one appears under `deliverables/30_shotlist/`, archive it before continuing. The next saved production planning artifact must be `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`.
+For a long script, first scan only Scene IDs/sluglines and their line ranges to establish a lightweight Scene queue. From the repository root, use `node .agents/skills/shotlist-breakdown-workflow/scripts/index-screenplay-scenes.mjs <script-path>` when the source is a local Markdown screenplay. Then load the selected Scene body plus the immediately preceding/following boundary headers. Do not place the full screenplay body in the same directing or prompt-generation context, and do not draft Shot Rows or Prompt Envelopes for the whole screenplay in one pass. If the script has no explicit Scene IDs, derive stable labels from screenplay order and report the lightweight Scene queue before starting the first Scene.
+
+Before Scene work, verify that the audit names the same script version and has no unresolved P0/P1. If the audit is missing, stale, or blocking, stop and return the exact script/audit paths to `script.primary` for revision or re-audit.
+
+If an existing `03_storyboard_v{N}.md` planning artifact is needed, read it from `archives/` as legacy input only. New production planning must use the selected Scene's canonical folder and filename.
 
 ## Outputs
 
-- `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`
+- `deliverables/30_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`
 - Changelog entry and archives when revising
 - Optional updates or downstream recommendations for `deliverables/20_assets/`
 - No board-prompt, art-prompt, standalone video-prompt, or final Seedance prompt file
@@ -42,14 +46,14 @@ The artifact must include metadata and locks. Preserve the artifact ID across ve
 
 ### Phase 1 - 剧本拆解
 
-Read the full current script and identify:
+Use the lightweight Scene queue to confirm order, then analyze only the selected Scene body. Identify for that Scene:
 
-- screenplay scene numbers and INT/EXT/time-of-day headers
-- characters appearing in each scene, including first appearances
+- screenplay Scene number and INT/EXT/time-of-day header
+- characters appearing in the selected Scene, including first appearances
 - locations and location sub-areas
 - significant props, vehicles, screens, written notes, weapons, photos, or other visual-focus objects
-- dialogue and action beats per scene
-- mood/emotional register per scene, because it drives camera-emotion sync later
+- dialogue and action beats in the selected Scene
+- mood/emotional register of the selected Scene, because it drives camera-emotion sync later
 - likely style override material, if the user supplied previous shotlists or director notes
 
 Write Phase 1 with these Chinese subsections:
@@ -72,17 +76,20 @@ Write Phase 1 with these Chinese subsections:
 ### 导演拆分备注
 ```
 
-`动作 / 对白 Beat Map` must make the source of every beat explicit: script action line, exact dialogue line, implied reaction, or continuity transition. For every beat, state the emotional change, visual focus, likely shot split, and prompt-envelope recommendation.
+`动作 / 对白 Beat Map` must make the source of every beat explicit: script action line, exact dialogue line, implied reaction, or continuity transition. Extract every source dialogue line in source order before drafting Shot Rows. Preserve the raw speaker cue and exact spoken line; infer the addressee only from the selected Scene's action, adjacent exchange, eyeline, and blocking. If that evidence is insufficient or contradictory, record the ambiguity in `导演拆分备注` and do not invent a named addressee. For every beat, state the emotional change, visual focus, likely shot split, and prompt-envelope recommendation.
+
+Each exact source dialogue line must map to one lip-sync Shot Row, except source-marked `O.S.` / `V.O.` lines, which map to one clearly identified off-screen-audio row. Two independent source dialogue lines may share one Prompt Envelope only when each keeps its own internal shot and Shot Row; never collapse them into one lip-sync shot.
 
 `导演拆分备注` explains which beats become independent shots, which beats can share one prompt envelope, and why the merge preserves the immediate dramatic cause-effect chain.
 
-Use screenplay scene labels as the production unit:
+Use one screenplay Scene label as the production unit:
 
 - `scene-021`
-- `scenes-021-023`
 - `scene-001` for derived labels when the script lacks numbering
 
-Do not invent scene numbers. If the source script has no scene numbering, create stable labels from screenplay order and record that they are derived.
+Do not invent scene numbers. If the source script has no scene numbering, create stable labels from screenplay order, record that they are derived, and preserve the selected Scene's exact header plus opening/closing source lines so later script edits cannot silently shift the mapping.
+
+Record the selected Scene's position in the lightweight queue and its immediate previous/next Scene labels. Do not copy the full screenplay or every Scene body into each Breakdown.
 
 ### Phase 2 - 资产请求
 
@@ -107,7 +114,7 @@ Create a clean Chinese asset request organized by the same categories used by `s
 Project adaptation:
 
 - Common reusable assets belong under `deliverables/20_assets/`.
-- Scene-specific one-off assets belong under `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/assets/`.
+- Scene-specific one-off assets belong under `deliverables/30_shotlist/<scene-label>_v{N}/assets/`.
 - Missing required assets must be marked as blockers for production mode or as draft constraints for `text_only_draft`, `text_dna_draft`, or `prompt_only`.
 
 Record the current state with `asset_origin`, `reference_binding`, `reference_approval`, and `output_status`. Keep old labels only in a `legacy_reference_mode` compatibility note.
@@ -118,8 +125,8 @@ If required assets are missing, stop the production handoff and tell the user wh
 
 Before `shotlist.primary` writes prompts, the breakdown should state:
 
-- approved scene scope or scene range, if already known
-- candidate scene packages, using screenplay scene names such as `scene-021_v1` or `scenes-021-023_v1`
+- approved single Scene label
+- target Scene package, such as `scene-021_v1`
 - required reference images per scene
 - image-to-asset mapping status, including ambiguous filenames that must be confirmed
 - visual-fact table requirements for every usable reference image: face/hair/body, wardrobe, material/texture, prop geometry, location layout, practical light sources, foreground/background layers, and confusion risks
@@ -172,24 +179,34 @@ Write Phase 4 with these Chinese subsections:
 
 ### Prompt Density Notes
 
+### Production Batch Plan
+
+| Batch | Prompt IDs | Source Rows | Action Phase | QA Gate |
+| --- | --- | --- | --- | --- |
+
 ### Scene Package Recommendation
 ```
 
-`Prompt Envelope Plan` is a hard handoff contract. For every planned prompt, specify which shot rows it contains, the internal shot plan if multiple short beats share one envelope, the first and last action beat, any exact dialogue line that must be preserved, the shortest believable intended duration, why the grouping is safe, and which adjacent beat belongs to the next prompt.
+`Prompt Envelope Plan` is a hard handoff contract. For every planned prompt, specify which shot rows it contains, the internal shot plan if multiple short beats share one envelope, the first and last action beat, any exact dialogue line that must be preserved, the shortest believable intended duration, why the grouping is safe, and which adjacent beat belongs to the next prompt. Complete dialogue extraction and dialogue-to-Row mapping before grouping Rows into Envelopes; Envelope grouping may not change the speaker, addressee, source order, or one-line/one-lip-sync-shot boundary.
 
-Shot rows and prompt envelopes are different entities. Use `<scene-label>-R<NN>` for rows, such as `scene-021-R01`; use `P###` only for prompt envelopes. Before assigning new prompt IDs, scan `deliverables/30_shotlist/scenes/` and `archives/30_shotlist/scenes/`, find the highest existing `P###`, and reserve a non-overlapping contiguous range in `Prompt ID Reservation`. Preserve migrated IDs only when a retained generated output depends on them; record any legacy aliases in the scene-package manifest.
+Shot rows and prompt envelopes are different entities. Use `<scene-label>-R<NN>` for rows, such as `scene-021-R01`; use `P###` only for prompt envelopes. Before assigning new prompt IDs, scan Scene folders directly under `deliverables/30_shotlist/` and `archives/30_shotlist/`, find the highest existing `P###`, and reserve a non-overlapping contiguous range in `Prompt ID Reservation`. Preserve migrated IDs only when a retained generated output depends on them; record any legacy aliases in the Scene manifest.
 
 Do not inflate every shot row into its own prompt. When short adjacent beats share the same location, character set, spatial axis, and immediate cause-effect turn, plan them as one compact multi-shot envelope with internal timing derived from the action rather than a preset total.
 
 `Prompt Density Notes` follows `../sketch-shotlist-workflow/reference/PROMPT_DENSITY.md`: group rows only when they share character set, location/sub-location, emotional/temporal unit, spatial axis, selected-generator feasibility, and practical prompt length. Split when location, character set, blocking, continuous action, or generation reliability changes materially; an insert or cutaway alone does not force a new envelope.
 
-`Scene Package Recommendation` should use scene-native names:
+`Production Batch Plan` is a hard quality gate:
+
+- Prefer 4-8 Prompt Envelopes in one quality pass.
+- A Scene with 10 or fewer Envelopes may remain one batch when it is coherent.
+- More than 10 Envelopes must be split by action phase, camera family, or reference-set change and reviewed batch by batch.
+- Batches are working divisions inside the same Scene Breakdown and final Scene package. Do not create new batch folder taxonomy.
+
+`Scene Package Recommendation` should use one Scene-native folder:
 
 - `scene-021_v1`
-- `scene-023_v1`
-- `scenes-021-023_v1` for a small approved range
 
-When a single scene is too dense, recommend splitting by action phase inside that scene: setup, confrontation, decision, release, aftermath, camera family, or reference-set change.
+When a single Scene is too dense, split the work by action phase inside that Scene: setup, confrontation, decision, release, aftermath, camera family, or reference-set change. Finish QA for the selected Scene before beginning the next Scene.
 
 ## Breakdown Artifact Shape
 
@@ -222,6 +239,7 @@ Use this structure exactly:
 ### Shot Row Plan
 ### Prompt Envelope Plan
 ### Prompt Density Notes
+### Production Batch Plan
 ### Prompt ID Reservation
 ### Scene Package Recommendation
 ```
@@ -230,14 +248,20 @@ Use this structure exactly:
 
 - Artifact metadata exists and version matches filename.
 - Latest numeric script/audit versions were used.
-- Scene inventory preserves screenplay order.
+- The audit covers the selected script version and has no unresolved P0/P1 production blocker.
+- The selected Scene's position, header, and previous/next labels match the lightweight screenplay queue.
+- The artifact covers exactly one selected Scene and records its source header plus opening/closing boundary evidence.
 - `动作 / 对白 Beat Map` shows action source, dialogue source, emotional turn, visual focus, shot split recommendation, and prompt-envelope recommendation.
+- Every exact source dialogue line appears once and in source order; its raw speaker cue and exact wording are unchanged.
+- Each spoken line has one lip-sync Shot Row, while source-marked `O.S.` / `V.O.` lines have one explicit off-screen-audio row; no Row silently absorbs two independent lines.
+- Speaker and addressee follow the selected Scene's action, adjacent exchange, eyeline, and blocking. Ambiguity is visible in `导演拆分备注` instead of being replaced with a guessed name.
 - `导演拆分备注` explains independent shots and safe merges.
 - Asset request is separated into `人物`, `地点`, `道具`, and `风格参考`.
 - Missing references and draft-only references are visible before Phase 3.
 - Image-to-asset mapping status is explicit before prompt writing.
 - Blocking queue includes every multi-character scene, key-prop scene, and complex camera geometry scene.
 - `Prompt Envelope Plan` states source rows, internal shot plan when multiple short beats share one envelope, beat boundary, dialogue boundary, intended duration, grouping reason, and next-beat reservation.
+- `Production Batch Plan` keeps quality passes near 4-8 Envelopes and splits any Scene above 10 Envelopes before production prompting.
 - Shot-row IDs and `P###` prompt IDs are distinct, and `Prompt ID Reservation` proves the range does not collide with active or archived packages.
 - Phase 4 recommendation names exact scene scope and whether output is production or draft mode.
 
@@ -246,9 +270,10 @@ Use this structure exactly:
 Report in Simplified Chinese by default:
 
 - file created/updated/archived
-- scene count and requested scope
+- selected Scene label and its position in the full script Scene queue
 - asset request summary
 - missing references or ambiguous filename blockers
 - Phase 3 spatial-blocking queue
 - Phase 4 `Prompt Envelope Plan` readiness
+- production batch count and per-batch Prompt IDs
 - recommended next user action before prompt generation

@@ -4,29 +4,29 @@ description = "Own the shotlist-builder visual production path: scene breakdowns
 instructions = """
 # Mission
 
-Turn the latest script and guides into the four-phase shotlist-builder loop: read script, request assets, confirm scope/spatial blocking, then generate Seedance/Higgsfield shotlist HTML with compact variable-duration prompts and optional rough e-conte previews.
+Turn the latest approved script into one Scene package at a time. First run the four-phase Scene Breakdown, then consume that Breakdown to generate Seedance/Higgsfield HTML with compact variable-duration prompts. Rough e-conte previews remain optional and require separate user authorization.
 
 The role name remains `storyboard-director` for compatibility with existing project routing, but the active responsibility is shotlist-first production planning.
 
 # Inputs
 
 - latest `deliverables/10_story/01_script_v{N}.md`
-- latest `deliverables/10_story/01_audit_report_v{N}.md`, if relevant
+- required same-version `deliverables/10_story/01_audit_report_v{N}.md`
 - latest `deliverables/20_assets/02_asset_guide_v{N}.md`, if available
 - latest `deliverables/20_assets/02_style_guide_v{N}.md`, if available
-- latest `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`, when generating HTML
+- latest `deliverables/30_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`, when generating HTML
 - legacy `archives/30_shotlist/03_storyboard_v{N}*.md`, only as migration input
-- optional screenplay scene or scene range
+- required single screenplay Scene label
 - global locks
 
 # Outputs
 
-- `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`
-- `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/Shotlist_<scene-scope>_ZH_v{N}.html`
-- scene package manifest under `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/manifest.md`
+- `deliverables/30_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`
+- `deliverables/30_shotlist/<scene-label>_v{N}/Shotlist_<scene-label>_ZH_v{N}.html`
+- Scene package manifest under `deliverables/30_shotlist/<scene-label>_v{N}/manifest.md`
 - common asset references to `deliverables/20_assets/`
-- scene-specific assets under `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/assets/`
-- preview manifest and images under `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/previews/`
+- Scene-specific assets under `deliverables/30_shotlist/<scene-label>_v{N}/assets/`
+- preview manifest and images under `deliverables/30_shotlist/<scene-label>_v{N}/previews/`, only when separately authorized
 
 # Read Scope
 
@@ -62,14 +62,16 @@ The role name remains `storyboard-director` for compatibility with existing proj
 
 # Operating Rules
 
-- Use `.agents/skill_registry.md` to select `shotlist.breakdown` for Phase 1/2 scene inventory, action beats, asset request, and blocking queue.
-- Use `.agents/skill_registry.md` to select `shotlist.primary` for the four-phase shotlist-builder loop, Seedance/Higgsfield HTML, variable-duration prompt envelopes, optional rough e-conte previews, and explicitly requested generation records.
-- Treat legacy `03_storyboard_v{N}.md` files as archived migration inputs only; if one appears under `deliverables/30_shotlist/`, archive it before continuing. The next saved planning artifact must be `03_shotlist_breakdown_v{N}.md`.
+- Use `.agents/skill_registry.md` to select `shotlist.breakdown` for one Scene's complete four-phase plan: source coverage, asset request, scope/blocking, Shot Rows, Prompt Envelopes, Prompt IDs, and Production Batch Plan.
+- Before Breakdown, verify that the audit covers the current script version and has no unresolved P0/P1. Otherwise return to `script.primary` and name the missing or blocking files.
+- Use `.agents/skill_registry.md` to select `shotlist.primary` only after that Scene Breakdown passes QA; it writes Prompt, HTML, and manifest into the same Scene folder.
+- Treat legacy `03_storyboard_v{N}.md` and multi-Scene Breakdown files as archived migration inputs only. New Breakdown files are named `03_shotlist_breakdown_<scene-label>_v{N}.md` inside that Scene folder.
 - Do not create separate board-prompt, art-prompt, or standalone video-prompt artifacts for active production scopes.
 - Maintain screenplay scene order, shot row order, duration, source scene mapping, prompt envelope IDs, and prompt grouping consistency.
-- Split production by screenplay scene first. If one scene is overloaded, split by action phase, camera setup, or reference-set change.
+- For a long script, scan only Scene IDs/sluglines and line ranges to build a lightweight queue; then load one selected Scene body plus boundary headers. Do not carry the full screenplay body into directing/prompt context. Finish Breakdown QA and Scene HTML QA before starting the next Scene.
+- Prefer 4-8 Prompt Envelopes per quality pass. If one Scene exceeds 10, split the work by action phase, camera setup, or reference-set change, QA each batch, and keep the final output in the same Scene folder.
 - Prompts for named characters must use asset-guide DNA and real reference-image status. Draft references must stay labeled as draft.
-- Request or run `qa.primary` before Phase 4, after dense scene prompt drafting, after HTML/previews, and after generated video tests.
+- Request or run `qa.primary` after the Scene Breakdown, after each required Prompt batch, after HTML, after any separately authorized previews, and after generated video tests.
 
 # Completion Report
 

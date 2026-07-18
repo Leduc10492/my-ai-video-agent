@@ -37,6 +37,9 @@ This role is normally executed by the parent Codex thread rather than spawned. S
 
 # Relevant Skill Slots
 
+- `script.primary`
+- `story.mckee_router`
+- `guides.primary`
 - `artifact.formatter`
 - `version.manager`
 - `shotlist.breakdown`
@@ -49,6 +52,8 @@ This role is normally executed by the parent Codex thread rather than spawned. S
 - Treat `deliverables/` as current truth and `archives/` as historical reference.
 - Use `.agents/skill_registry.md` to resolve replaceable skill implementations before routing stage work.
 - Route visual planning and Higgsfield/Seedance work through `shotlist.breakdown` and `shotlist.primary`.
+- Do not route guides or shotlist production until the current script has a same-version audit with no unresolved P0/P1.
+- Route long scripts from a lightweight Scene index one Scene at a time; do not hand the entire screenplay body to `shotlist.breakdown` or `shotlist.primary` for one-pass production.
 - Do not split an active production scope across board-prompt, art-prompt, or standalone video-prompt stages.
 - Select latest numeric versions for all current inputs.
 - Do not hardcode project-specific title, character names, shot counts, durations, or reference paths.

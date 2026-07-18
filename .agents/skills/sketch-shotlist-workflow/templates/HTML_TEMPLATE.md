@@ -92,5 +92,6 @@ For `output_status: prompt_only`, use a visible Chinese text state instead of a 
 - Visible UI, scene headers, action cells, scene text, asset modules, tags, notes, and prompts are Simplified Chinese by default.
 - Stable plan codes, paths, IDs, CSS classes, and JavaScript identifiers remain English/numeric.
 - Copy, search, filter, print, and reset controls work.
+- Search and plan filters operate on complete Prompt Envelope row groups. If any row in a `rowspan` group matches, keep the first row and its prompt/source/preview cells visible with the whole group.
 - HTML metadata matches `manifest.md`.
 - Every prompt is copied byte-for-byte from its `<pre>` content.

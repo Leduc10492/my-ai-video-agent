@@ -38,8 +38,8 @@ This includes chat findings, persistent QA reports, table headers, issue descrip
 
 Run QA:
 
-1. before entering Phase 4 shotlist HTML generation
-2. after dense scene prompt drafting
+1. after the selected Scene Breakdown is complete and before HTML generation
+2. after each dense or split-required Scene prompt batch
 3. before splitting or merging any overloaded scene scope
 4. after shotlist HTML and previews are complete
 5. after real video generation tests are saved
@@ -66,23 +66,47 @@ Always check:
 - artifact `version` matches the filename suffix
 - `upstream` IDs exist in current or archived artifacts
 - required upstream files exist
+- the current script and audit versions match, and unresolved P0/P1 findings block guides and shotlist production
 - `locks` are not contradicted
 - latest numeric version is used
 - default skills listed in `.agents/skill_registry.md` exist and preserve canonical output paths
 
 For shotlist work, also check:
 
-- `03_shotlist_breakdown_v{N}.md` exists before large Phase 4 work, or legacy input is explicitly marked as migration source
+- `03_shotlist_breakdown_<scene-label>_v{N}.md` exists in the selected Scene folder before HTML work, or legacy input is explicitly marked as migration source
 - screenplay scene labels, shot rows, prompt-envelope IDs, and source scene mapping are consistent
 - prompt envelopes include reference facts, planted camera, first-frame composition, physical action path, unique micro-beats, shot-specific failure locks, adjacent-beat boundary, and reference status
 - shot rows use `<scene-label>-R<NN>`, prompt envelopes use reserved `P###` IDs, and mappings are explicit
-- preview manifest entries match HTML prompt envelopes
-- HTML preview paths are relative and files exist
-- shotlist HTML lives under `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/`
+- preview manifest entries match HTML Prompt Envelopes when preview generation was authorized
+- generated HTML preview paths are relative and files exist; `prompt_only` may use a text state without a preview manifest
+- shotlist HTML and Breakdown live together under `deliverables/30_shotlist/<scene-label>_v{N}/`
 - common references come from `deliverables/20_assets/`, while scene package `assets/` contains only scene-specific additions or explicit overrides
 - generated video tests are labeled with source prompt envelope, all four reference-state fields, and known limitations
 
 For generated image/video work, validate manifests and paths directly: source `P###`, reference mode, scene package location, relative preview paths, file existence, and known limitations.
+
+## Independent Shotlist Validation
+
+For a local Scene package or multi-Scene replay, run:
+
+```bash
+node .agents/skills/qa-workflow/scripts/validate-shotlist-project.mjs \
+  --script <script-path> \
+  --shotlist-root <deliverables/30_shotlist> \
+  --require-complete
+```
+
+Use `--require-complete` for a full-screenplay replay so any missing Scene package blocks the run. Omit it when intentionally validating only the available Scene package or a partial production batch; the missing remainder is then reported as a warning.
+
+The validator derives expected Scenes and source dialogue from the raw screenplay, then inspects Scene folders, HTML, and manifests directly. Do not use a renderer's in-memory objects, builder decisions, copied expected counts, or the builder manifest as the source of truth. Manifest values are claims to compare against independently counted files and HTML content.
+
+Treat its result as structural evidence, not creative proof. Independently review speaker/addressee against current Scene action, adjacent exchange, eyeline, and blocking; review camera, performance, spatial continuity, and prompt executability as human directing judgments. Validate at least one deliberately corrupted temporary copy so a missing/duplicate dialogue line, reused lip-sync Row, duplicate/gapped `P###`, placeholder, or broken preview state is proven to fail.
+
+Keep three conclusions separate:
+
+- structural proof: source coverage, IDs, paths, states, and file consistency
+- browser proof: rendered HTML, copy/filter behavior, layout, and visible preview state
+- generation proof: saved image/video output from the named prompt and reference state
 
 ## Stage Checks
 
@@ -146,6 +170,8 @@ Use this report shape:
 ```
 
 For structural checks, inspect the actual artifact headers, source IDs, Shot Row and Prompt mappings, HTML content, relative paths, and referenced files. Structural consistency is evidence only; creative prompt quality, spatial logic, and source fidelity require scene-level review.
+
+For dialogue, compare raw screenplay lines against the HTML in source order. Each source line must occur once, keep its raw speaker cue and exact wording, and occupy one lip-sync Shot Row/internal shot unless the source marks it `O.S.` / `V.O.`. Multiple lines may share one Prompt Envelope, but may not reuse the same lip-sync Row. Do not accept a guessed addressee, generic stand-in, or unexplained self-direction as a clean pass; inspect the Scene evidence and report ambiguity without inventing a new field or label.
 
 ## Priority Scale
 

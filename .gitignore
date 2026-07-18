@@ -16,20 +16,24 @@ Thumbs.db
 
 node_modules/
 
+# Keep repository convenience links in fresh clones even if a local worktree
+# shares an info/exclude rule that ignores them.
+!skills
+!codex-agents
+
 # Generated production artifacts stay local by default.
 archives/*
-deliverables/10_story/
+!archives/README.md
+deliverables/10_story/*
+!deliverables/10_story/README.md
 deliverables/20_assets/refs/
 deliverables/20_assets/generated*/
 deliverables/30_shotlist/03_storyboard_v*.md
-deliverables/30_shotlist/03_shotlist_breakdown_v*.md
-deliverables/30_shotlist/scenes/*/assets/
-deliverables/30_shotlist/scenes/*/previews/
-deliverables/30_shotlist/scenes/*/generated/
-deliverables/00_admin/qa_reports/qa_report_hoshi_no_koe_*.md
-deliverables/00_admin/qa_reports/qa_report_your_name_*.md
-deliverables/00_admin/qa_reports/qa_report_script_docx_export_*.md
-deliverables/00_admin/qa_reports/qa_report_source_comparison_*.md
+deliverables/30_shotlist/*/03_shotlist_breakdown_*.md
+deliverables/30_shotlist/*/assets/
+deliverables/30_shotlist/*/previews/
+deliverables/30_shotlist/*/generated/
+deliverables/00_admin/qa_reports/qa_report_*.md
 deliverables/**/*.docx
 deliverables/**/*.pdf
 deliverables/**/*.png

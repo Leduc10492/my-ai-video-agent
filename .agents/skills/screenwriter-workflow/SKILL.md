@@ -207,6 +207,7 @@ When writing a persistent audit:
 - Use Chinese headings, table headers, issue descriptions, evidence, impact, and fix recommendations unless the user asks for another language.
 - Separate structure, continuity, production feasibility, and taste recommendations.
 - Lead with P0/P1 blockers when present.
+- Before handing the script to guides or shotlist production, persist the audit for the same script version and state whether unresolved P0/P1 findings block production. A missing audit or unresolved P0/P1 returns to this workflow; it is not a valid downstream handoff.
 
 Keep `.docx` exports as optional derived files when the user asks for them. The Markdown file in `deliverables/10_story/` remains the source of truth for this repo.
 
@@ -223,4 +224,4 @@ After script work, report:
 
 Report the handoff in Simplified Chinese by default.
 
-Next normal stage is `guide-director` / `guides.primary`, then `shotlist.breakdown`, unless the user explicitly skips guides.
+Next normal stage is `guide-director` / `guides.primary`, then `shotlist.breakdown`, unless the user explicitly skips guides. Route downstream only when the current script has a same-version audit with no unresolved P0/P1.

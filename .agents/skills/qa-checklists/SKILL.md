@@ -40,6 +40,8 @@ When reporting checklist results to the user or saving a QA report, translate ch
 
 ## Script Stage
 
+- [ ] The current script has a same-version audit report before guides or shotlist production begin.
+- [ ] The audit has no unresolved P0/P1 production blockers; otherwise downstream handoff is blocked.
 - [ ] Inciting incident is present and specific.
 - [ ] Crisis and climax test the protagonist's central conflict.
 - [ ] Three-act rhythm is proportionate to the intended duration.
@@ -65,9 +67,12 @@ When reporting checklist results to the user or saving a QA report, translate ch
 
 ## Shotlist Breakdown Stage
 
-- [ ] File path is `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`.
+- [ ] File path is `deliverables/30_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`.
+- [ ] The source script and source audit versions match, and the audit has no unresolved P0/P1.
 - [ ] Legacy `03_storyboard_v{N}.md` input, if used, is explicitly marked as migration source.
-- [ ] Scene inventory preserves screenplay order and scene labels.
+- [ ] A lightweight Scene queue was made from IDs/sluglines and line ranges; the selected Scene position and adjacent labels match it.
+- [ ] Only the selected Scene body and boundary evidence entered directing/prompt context; the full screenplay body was not used for one-pass Shot Rows or Prompts.
+- [ ] The Breakdown covers exactly one Scene and records its script header plus opening/closing source boundaries.
 - [ ] Action beat map lists source scene, action/dialogue source, emotional turn, visual focus, asset need, and blocking need.
 - [ ] Section durations add up to the target runtime or explain variance.
 - [ ] Shot rows use `<scene-label>-R<NN>`; future or drafted `P###` prompt envelopes are unique, reserved, and tied to source rows.
@@ -75,6 +80,7 @@ When reporting checklist results to the user or saving a QA report, translate ch
 - [ ] Key props, screens, vehicles, crowd movement, and practical light sources are marked in the relevant rows.
 - [ ] Missing guides, missing references, draft reference status, and spatial-blocking gaps are visible before Phase 4.
 - [ ] Production scope follows screenplay scenes first; overloaded scenes are split by action phase, camera setup, or reference-set change.
+- [ ] Production batches prefer 4-8 Prompt Envelopes; more than 10 is split-required and each batch has a QA checkpoint.
 
 ## Shotlist Prompt Envelope QA
 
@@ -86,20 +92,28 @@ When reporting checklist results to the user or saving a QA report, translate ch
 - [ ] Failure locks are shot-specific and name likely model errors.
 - [ ] Adjacent-beat boundaries prevent earlier/later action from leaking into this prompt.
 - [ ] Dialogue, if present, is constrained to the correct speaker and shot.
+- [ ] Exact source dialogue count and order match the selected Scene; raw speaker cues and spoken wording are unchanged.
+- [ ] Every spoken line has one distinct lip-sync Shot Row/internal shot; source-marked `O.S.` / `V.O.` lines remain explicit off-screen audio.
+- [ ] Speaker and addressee follow current Scene action, adjacent exchange, eyeline, and blocking; ambiguity is reported, while guessed names, generic stand-ins, and unexplained self-direction fail.
 - [ ] Forbidden elements from locks are preserved, including no captions, logos, watermarks, or unapproved story beats.
 
 ## Shotlist HTML / Preview QA
 
-- [ ] HTML is inside `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/`.
+- [ ] HTML and its Scene Breakdown are inside the same `deliverables/30_shotlist/<scene-label>_v{N}/` folder.
 - [ ] Common assets are referenced from `deliverables/20_assets/`; only scene-specific assets are stored under the scene package `assets/`.
 - [ ] HTML contains every expected source scene, shot row, and `P###` in order.
 - [ ] Prompt envelope count matches the breakdown or approved scope.
 - [ ] Copy buttons, filters, or search affordances do not alter prompt text.
-- [ ] Preview manifest entry count matches prompt envelope count, unless entries are marked `prompt_only`.
-- [ ] Every embedded `<img src>` is relative and points to an existing file.
+- [ ] Search and plan filters preserve complete Prompt Envelope row groups; a later matching Row never remains visible after the first `rowspan` Row carrying its prompt/source/preview cells is hidden.
+- [ ] When preview generation was authorized, preview manifest entry count matches Prompt Envelope count.
+- [ ] In `prompt_only`, HTML shows a visible text state and does not require a preview manifest.
+- [ ] Every generated `<img src>` is relative and points to an existing file.
 - [ ] Preview images are rough e-conte planning aids and do not claim final keyframe status.
 - [ ] Manifest records source artifact, scope, asset count, all four reference-state fields, and known limitations.
 - [ ] HTML metadata and manifest use the same reference-state values.
+- [ ] Independent QA derives expected Scenes, dialogue, IDs, and paths from the script and final files rather than trusting builder decisions or manifest counts.
+- [ ] A deliberately corrupted temporary copy fails for missing/duplicate dialogue, reused lip-sync Row, duplicate/gapped `P###`, placeholder, or broken preview state.
+- [ ] Structural proof, browser proof, and generation proof are reported as separate conclusions.
 
 ## Generated Assets And Video Tests
 

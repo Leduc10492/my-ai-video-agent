@@ -109,24 +109,17 @@ deliverables/20_assets/02_asset_guide_v{N}.md
 deliverables/20_assets/02_style_guide_v{N}.md
 ```
 
-### Shotlist Breakdown
+### Scene Shotlist Package
 
 ```text
-deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md
+deliverables/30_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md
+deliverables/30_shotlist/<scene-label>_v{N}/Shotlist_<scene-label>_ZH_v{N}.html
+deliverables/30_shotlist/<scene-label>_v{N}/manifest.md
+deliverables/30_shotlist/<scene-label>_v{N}/previews/manifest.md
+deliverables/30_shotlist/<scene-label>_v{N}/generated/<run_id>/README.md
 ```
 
-Legacy `03_storyboard_v{N}.md` files can be read from `archives/` as migration inputs. New planning artifacts should use the active shotlist breakdown path.
-
-### Shotlist Production
-
-```text
-deliverables/30_shotlist/scenes/<scene-scope>_v{N}/Shotlist_<scene-scope>_ZH_v{N}.html
-deliverables/30_shotlist/scenes/<scene-scope>_v{N}/manifest.md
-deliverables/30_shotlist/scenes/<scene-scope>_v{N}/previews/manifest.md
-deliverables/30_shotlist/scenes/<scene-scope>_v{N}/generated/<run_id>/README.md
-```
-
-Scene package revisions archive and replace the entire package directory, not only the HTML file.
+Legacy `03_storyboard_v{N}.md`, global Breakdown files, and multi-Scene packages can be read from `archives/` as migration inputs. New production uses one direct Scene folder. Scene revisions archive and replace the entire package directory, not only one file.
 
 ## Reference State Fields
 
@@ -147,10 +140,10 @@ Generated assets, scene packages, previews, and generated tests record:
 01_script_v{N}.md
   -> 01_audit_report_v{N}.md
   -> 02_asset_guide_v{N}.md + 02_style_guide_v{N}.md
-  -> 03_shotlist_breakdown_v{N}.md
-      -> scenes/<scene-scope>_v{N}/Shotlist_<scene-scope>_ZH_v{N}.html
-          -> scenes/<scene-scope>_v{N}/previews/manifest.md
-          -> scenes/<scene-scope>_v{N}/generated/<run_id>/README.md
+  -> <scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md
+      -> <scene-label>_v{N}/Shotlist_<scene-label>_ZH_v{N}.html
+          -> <scene-label>_v{N}/previews/manifest.md
+          -> <scene-label>_v{N}/generated/<run_id>/README.md
 ```
 
 ## Validation Checklist
@@ -170,7 +163,7 @@ Generated assets, scene packages, previews, and generated tests record:
 | --- | --- |
 | `02_asset_guides.md` | `02_asset_guide_v{N}.md` |
 | `deliverables/guides/` | `deliverables/20_assets/` |
-| `03_storyboard_v{N}.md` as a new file | `03_shotlist_breakdown_v{N}.md` |
+| `03_storyboard_v{N}.md` or global `03_shotlist_breakdown_v{N}.md` as a new file | `<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md` |
 | upstream: `01_script_v1.md` | upstream: `[A-20260121-001]` |
 
 **File templates**: See `references/file-templates.md`

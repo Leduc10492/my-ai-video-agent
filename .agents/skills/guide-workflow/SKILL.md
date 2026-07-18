@@ -20,14 +20,14 @@ Use this skill to create or revise the common asset/style stage under `deliverab
 ## Required Inputs
 
 - Latest script: `deliverables/10_story/01_script_v{N}.md`
-- Optional audit report: `deliverables/10_story/01_audit_report_v{N}.md`
-- Optional shotlist breakdown: `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`
+- Required same-version audit report: `deliverables/10_story/01_audit_report_v{N}.md`
+- Optional selected Scene Breakdown: `deliverables/30_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`
 - Optional legacy planning input: `archives/30_shotlist/03_storyboard_v{N}*.md`
 - Global locks: `deliverables/00_admin/locks.md`
 - Existing guide versions, if any
 - User-provided reference images or style requirements, if any
 
-If there is no script and the user has not supplied equivalent story context, stop and request the missing source. Do not invent character names, shot counts, platform choices, or reference image paths.
+If there is no script and the user has not supplied equivalent story context, stop and request the missing source. Before production guides, also stop when the same-version audit is missing or has unresolved P0/P1. Do not invent character names, shot counts, platform choices, or reference image paths.
 
 ## Outputs
 
@@ -79,7 +79,7 @@ When registering local references:
 3. Record the reference role, such as `<Character> identity reference`, `<Character> costume reference`, `<Prop> prop reference`, or `<Location> environment reference`.
 4. If a required reference is missing, mark it `missing` and state which downstream stages are blocked for production use.
 5. Do not treat Markdown image links as automatically loaded into an image model. Downstream image generation still must attach or load the files.
-6. Keep common reusable references in `deliverables/20_assets/`; scene-specific one-off references belong under the relevant `deliverables/30_shotlist/scenes/<scene-scope>_v{N}/assets/` package.
+6. Keep common reusable references in `deliverables/20_assets/`; Scene-specific one-off references belong under the relevant `deliverables/30_shotlist/<scene-label>_v{N}/assets/` package.
 
 For every reference batch, record `asset_origin`, `reference_binding`, `reference_approval`, and `output_status`. Generated-from-text images that exist on disk use `asset_origin: generated_from_text`; whether they are attached to a later model is recorded separately in that generation manifest.
 
@@ -94,6 +94,7 @@ For every reference batch, record `asset_origin`, `reference_binding`, `referenc
 ## QA Before Handoff
 
 - Asset and style guides both exist unless the user explicitly requested only one.
+- The source script and same-version audit exist, and the audit has no unresolved P0/P1.
 - Artifact metadata exists and version matches filename.
 - All local reference paths exist or are explicitly marked missing.
 - Character DNA is specific enough to prevent generic labels.

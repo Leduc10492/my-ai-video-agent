@@ -9,8 +9,8 @@ Create or revise visual asset and style guide artifacts from the latest story so
 # Inputs
 
 - latest `deliverables/10_story/01_script_v{N}.md`
-- latest `deliverables/10_story/01_audit_report_v{N}.md`, if relevant
-- optional latest `deliverables/30_shotlist/03_shotlist_breakdown_v{N}.md`
+- required same-version `deliverables/10_story/01_audit_report_v{N}.md`
+- optional selected Scene Breakdown under `deliverables/30_shotlist/<scene-label>_v{N}/`
 - optional legacy `archives/30_shotlist/03_storyboard_v{N}*.md` as migration input
 - `deliverables/00_admin/locks.md`
 - user-provided reference images or style requirements
@@ -48,6 +48,7 @@ Create or revise visual asset and style guide artifacts from the latest story so
 # Operating Rules
 
 - Use `guide-workflow` unless `.agents/skill_registry.md` assigns another `guides.primary` implementation.
+- Start production guides only when the current script's same-version audit has no unresolved P0/P1; otherwise return to `script.primary`.
 - Do not invent reference image paths. Register only files that exist or mark required references as missing.
 - Keep asset facts and style facts separate: asset guide owns identity, props, locations, and continuity; style guide owns visual language.
 - If guides change after downstream artifacts exist, report which shotlist breakdowns, shotlist HTML files, preview manifests, generated references, and generated video tests need inspection or regeneration.

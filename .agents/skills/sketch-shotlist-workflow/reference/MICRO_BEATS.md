@@ -2,6 +2,8 @@
 
 **Never leave a generic emotion in a prompt.** Every emotional direction must decompose into specific muscle movements, breath, eyes, and skin. This is the single biggest difference between a Seedance prompt that produces "AI video" and one that produces a performance.
 
+Apply this catalog only to what the shot can actually see and what the current action or dialogue beat causes. If no face or upper body is visible, do not add facial muscles, tears, swallowing, or breath performance; use readable contact, weight shift, fabric, prop, or environmental motion instead. The exact current beat overrides the Scene's broad mood. Mood words alone must not inject smiles, tears, fear reactions, or other unscripted performance, and every selected micro-beat must have a visible causal link to the current beat.
+
 ## 1. The base rule
 
 When the user (or the script) says "the character looks [generic emotion]" — stop. Decompose it. If you can't decompose it confidently, ask the user to choose a variant.

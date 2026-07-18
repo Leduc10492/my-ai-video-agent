@@ -85,19 +85,28 @@
     const search=document.getElementById("search");
     const plan=document.getElementById("planFilter");
     const scenes=[...document.querySelectorAll(".scene")];
+    function promptGroups(scene){
+      const groups=[];
+      scene.querySelectorAll("tbody tr").forEach(row=>{
+        if(row.querySelector("[data-prompt-id]")||groups.length===0)groups.push([]);
+        groups.at(-1).push(row);
+      });
+      return groups;
+    }
     function applyFilters(){
       const q=(search.value||"").trim().toLowerCase();
       const p=plan.value;
       let visible=0;
       scenes.forEach(scene=>{
-        let rowsVisible=0;
-        scene.querySelectorAll("tbody tr").forEach(row=>{
-          const ok=(!q||row.innerText.toLowerCase().includes(q))&&(!p||row.dataset.plan===p);
-          row.style.display=ok?"":"none";
-          if(ok)rowsVisible++;
+        let groupsVisible=0;
+        promptGroups(scene).forEach(rows=>{
+          const groupText=rows.map(row=>row.innerText).join(" ").toLowerCase();
+          const ok=(!q||groupText.includes(q))&&(!p||rows.some(row=>row.dataset.plan===p));
+          rows.forEach(row=>{row.style.display=ok?"":"none"});
+          if(ok)groupsVisible++;
         });
-        scene.style.display=rowsVisible?"":"none";
-        if(rowsVisible)visible++;
+        scene.style.display=groupsVisible?"":"none";
+        if(groupsVisible)visible++;
       });
       document.getElementById("emptyState").style.display=visible?"none":"block";
     }
