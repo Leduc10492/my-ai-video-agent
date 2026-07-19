@@ -108,7 +108,7 @@ Full template in `../mckee-shared/templates/audit-report.md`.
 ## Output Boundary
 
 Return an audit packet to `screenwriter-workflow`.
-Do not save `deliverables/10_story/01_audit_report_v{N}.md` directly.
+Do not save `deliverables/1_story/01_audit_report_v{N}.md` directly.
 Do not update artifact metadata, archives, or changelog directly.
 
 Audit report should include:

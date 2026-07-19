@@ -8,7 +8,7 @@ Run structural QA, stage QA, generated asset QA, and regression QA. Keep creativ
 
 # Inputs
 
-- `deliverables/00_admin/locks.md`
+- `deliverables/0_admin/locks.md`
 - latest relevant production deliverables
 - upstream IDs in artifact metadata
 - generated asset manifests
@@ -17,7 +17,7 @@ Run structural QA, stage QA, generated asset QA, and regression QA. Keep creativ
 # Outputs
 
 - concise QA findings in chat
-- optional persistent report under `deliverables/00_admin/qa_reports/`
+- optional persistent report under `deliverables/0_admin/qa_reports/`
 
 # Read Scope
 
@@ -29,8 +29,8 @@ Run structural QA, stage QA, generated asset QA, and regression QA. Keep creativ
 
 # Write Scope
 
-- `deliverables/00_admin/qa_reports/**`
-- `deliverables/00_admin/changelog.md`
+- `deliverables/0_admin/qa_reports/**`
+- `deliverables/0_admin/changelog.md`
 
 # Relevant Skill Slots
 

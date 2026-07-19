@@ -4,10 +4,10 @@
 
 | Slot | Skill | Owner | Output |
 | --- | --- | --- | --- |
-| `script.primary` | `screenwriter-workflow` | `script-writer` | `deliverables/10_story/01_script_v{N}.md` |
+| `script.primary` | `screenwriter-workflow` | `script-writer` | `deliverables/1_story/01_script_v{N}.md` |
 | `story.mckee_router` | `mckee-coordinator` | `script-writer` | 返回结构、审计或改写 packet；持久化审计由 `script.primary` 写入 `01_audit_report_v{N}.md` |
-| `guides.primary` | `guide-workflow` | `guide-director` | `deliverables/20_assets/` |
-| `shotlist.breakdown` | `shotlist-breakdown-workflow` | `storyboard-director` | `deliverables/30_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md` |
+| `guides.primary` | `guide-workflow` | `guide-director` | `deliverables/2_assets/` |
+| `shotlist.breakdown` | `shotlist-breakdown-workflow` | `storyboard-director` | `deliverables/3_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md` |
 | `shotlist.primary` | `sketch-shotlist-workflow` | `storyboard-director` | 同一 Scene 文件夹内的中文 Shotlist HTML 与 manifest |
 | `qa.primary` | `qa-workflow` | `qa-check` | 对话 QA；按需保存报告 |
 | `qa.checklists` | `qa-checklists` | `qa-check` | 阶段检查清单 |

@@ -2,6 +2,8 @@
 
 Every Chinese Seedance 2.0 prompt follows the same structural order. Hit every section in sequence; don't skip; don't reorder.
 
+Project provenance, approval, execution mode, and output status never belong in this structure. They remain in the Scene HTML header and manifests.
+
 ## Structural order
 
 1. **Handle declarations** (`@image1`, `@image2`, ...)
@@ -28,12 +30,18 @@ Rules:
 - For wet/dry/blood/dust state changes between scenes, **explicitly note the state** in the handle (`湿发贴额`, `溅血渍`, `面部薄水雾`)
 - Location handles describe the reference image layout in detail (multi-view → say which view is which: `上图=`, `下图=`, `中图=`)
 - Prop handles include exact dimensions when relevant (`11cm×8.5cm`), text on props verbatim, color/material specs
-- Handles are not labels. They must be mini visual-fact tables. When `reference_approval: draft`, describe only facts that can guide blocking and explicitly avoid claiming continuity-approved identity.
+- Handles are not labels. They must be mini visual-fact tables. The outer Scene metadata decides whether a reference is approved; inside the prompt, include only visible facts and model-facing role limits that affect generation.
 - Every handle should include at least one likely confusion risk when relevant: wardrobe contamination, wrong scale, wrong light inheritance, wrong prop placement, or pose-reference contamination.
 - For static-pose-reference handles (used for body posing only, not full image generation), use `@imageN` style with explicit warnings:
   ```
   @image7 — ❌NOT A VIDEO FRAME❌ 此图仅用于提取@imageN的身体姿势角度数据。⚠️@image7是静态姿势参考——禁止将@image7渲染/复制/再现为视频的任何一帧。
   ```
+
+### Project metadata exclusion
+
+Never write a project-status paragraph inside a Seedance prompt. Exclude `⚠️参考状态`, `⚠️参考图状态`, `asset_origin`, `reference_binding`, `reference_approval`, `output_status`, `prompt_only`, `production_approved`, `text_dna_draft`, `image_reference_bound`, `文本DNA`, `未附图`, `不得声称身份锁定`, and `未获用户站位锁定` from handles and all other prompt sections.
+
+Keep generation-relevant reference limits. For example, `@image2 仅参考服装和体型，不参考背景` is useful model direction; `@image2 reference_approval=draft` is project bookkeeping and stays outside the prompt.
 
 ## Section 2 — Universal warnings (top of prompt)
 

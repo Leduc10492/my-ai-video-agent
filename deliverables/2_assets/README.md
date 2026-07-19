@@ -7,4 +7,4 @@
 - `refs/`：用户提供并登记的共享参考图
 - `generated_ref_v{N}/`：需要时生成的共享参考图及 manifest
 
-Scene 专用资产放在对应 `deliverables/30_shotlist/<scene-label>_v{N}/assets/`，不要复制共享资产。
+Scene 专用资产放在对应 `deliverables/3_shotlist/<scene-label>_v{N}/assets/`，不要复制共享资产。

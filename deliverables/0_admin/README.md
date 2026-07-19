@@ -2,7 +2,9 @@
 
 This directory is the reusable starter state for a new file-based AI video workflow project.
 
-A fresh GitHub clone already contains project-neutral starter directories for `10_story`, `20_assets`, and `30_shotlist`. Create the active project's files directly inside them; no parent `main/test` split is required.
+A fresh GitHub clone already contains project-neutral starter directories for `1_story`, `2_assets`, and `3_shotlist`. Create the active project's files directly inside them; no parent `main/test` split is required.
+
+All stage directories use one-digit prefixes: `0_admin`, `1_story`, `2_assets`, and `3_shotlist`. The two-digit prefixes remain only on files inside those directories.
 
 It should stay project-neutral on `main`. Do not store story-specific scripts, reference images, generated previews, video tests, or historical project QA reports here.
 
@@ -19,20 +21,20 @@ It should stay project-neutral on `main`. Do not store story-specific scripts, r
 
 ```text
 deliverables/
-├── 00_admin/
+├── 0_admin/
 │   ├── README.md
 │   ├── locks.md
 │   ├── changelog.md
 │   └── qa_reports/
-├── 10_story/
+├── 1_story/
 │   ├── 01_script_v{N}.md
 │   └── 01_audit_report_v{N}.md
-├── 20_assets/
+├── 2_assets/
 │   ├── 02_asset_guide_v{N}.md
 │   ├── 02_style_guide_v{N}.md
 │   ├── refs/
 │   └── generated_ref_v{N}/
-└── 30_shotlist/
+└── 3_shotlist/
     └── <scene-label>_v{N}/
         ├── 03_shotlist_breakdown_<scene-label>_v{N}.md
         ├── Shotlist_<scene-label>_ZH_v{N}.html

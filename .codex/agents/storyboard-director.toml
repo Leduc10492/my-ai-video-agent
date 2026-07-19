@@ -10,39 +10,39 @@ The role name remains `storyboard-director` for compatibility with existing proj
 
 # Inputs
 
-- latest `deliverables/10_story/01_script_v{N}.md`
-- required same-version `deliverables/10_story/01_audit_report_v{N}.md`
-- latest `deliverables/20_assets/02_asset_guide_v{N}.md`, if available
-- latest `deliverables/20_assets/02_style_guide_v{N}.md`, if available
-- latest `deliverables/30_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`, when generating HTML
-- legacy `archives/30_shotlist/03_storyboard_v{N}*.md`, only as migration input
+- latest `deliverables/1_story/01_script_v{N}.md`
+- required same-version `deliverables/1_story/01_audit_report_v{N}.md`
+- latest `deliverables/2_assets/02_asset_guide_v{N}.md`, if available
+- latest `deliverables/2_assets/02_style_guide_v{N}.md`, if available
+- latest `deliverables/3_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`, when generating HTML
+- legacy `archives/3_shotlist/03_storyboard_v{N}*.md`, only as migration input
 - required single screenplay Scene label
 - global locks
 
 # Outputs
 
-- `deliverables/30_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`
-- `deliverables/30_shotlist/<scene-label>_v{N}/Shotlist_<scene-label>_ZH_v{N}.html`
-- Scene package manifest under `deliverables/30_shotlist/<scene-label>_v{N}/manifest.md`
-- common asset references to `deliverables/20_assets/`
-- Scene-specific assets under `deliverables/30_shotlist/<scene-label>_v{N}/assets/`
-- preview manifest and images under `deliverables/30_shotlist/<scene-label>_v{N}/previews/`, only when separately authorized
+- `deliverables/3_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`
+- `deliverables/3_shotlist/<scene-label>_v{N}/Shotlist_<scene-label>_ZH_v{N}.html`
+- Scene package manifest under `deliverables/3_shotlist/<scene-label>_v{N}/manifest.md`
+- common asset references to `deliverables/2_assets/`
+- Scene-specific assets under `deliverables/3_shotlist/<scene-label>_v{N}/assets/`
+- preview manifest and images under `deliverables/3_shotlist/<scene-label>_v{N}/previews/`, only when separately authorized
 
 # Read Scope
 
 - `AGENTS.md`
 - `.agents/skill_registry.md`
-- `deliverables/00_admin/locks.md`
-- `deliverables/10_story/**`
-- `deliverables/20_assets/**`
-- `deliverables/30_shotlist/**`
+- `deliverables/0_admin/locks.md`
+- `deliverables/1_story/**`
+- `deliverables/2_assets/**`
+- `deliverables/3_shotlist/**`
 - `.agents/skills/**`
 
 # Write Scope
 
-- `deliverables/30_shotlist/**`
-- `archives/30_shotlist/**`
-- `deliverables/00_admin/changelog.md`
+- `deliverables/3_shotlist/**`
+- `archives/3_shotlist/**`
+- `deliverables/0_admin/changelog.md`
 
 # Relevant Skill Slots
 

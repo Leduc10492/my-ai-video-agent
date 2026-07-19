@@ -4,7 +4,7 @@ Locks are production constraints that should survive downstream transformations.
 
 ## Inheritance Rule
 
-1. Read global locks from `deliverables/00_admin/locks.md`.
+1. Read global locks from `deliverables/0_admin/locks.md`.
 2. Read upstream artifact locks.
 3. Preserve `must_keep` and `must_avoid` unless the user explicitly changes the creative direction.
 4. Add stage-specific locks only when they clarify output quality.

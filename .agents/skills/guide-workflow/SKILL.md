@@ -10,20 +10,20 @@ description: Create and maintain visual asset and style guides for the file-base
 - slot: `guides.primary`
 - contract_version: `1`
 - canonical_outputs:
-  - `deliverables/20_assets/02_asset_guide_v{N}.md`
-  - `deliverables/20_assets/02_style_guide_v{N}.md`
+  - `deliverables/2_assets/02_asset_guide_v{N}.md`
+  - `deliverables/2_assets/02_style_guide_v{N}.md`
 - qa_handoff: `qa.primary`
 - state_contract: `reference-state-v2`
 
-Use this skill to create or revise the common asset/style stage under `deliverables/20_assets/`.
+Use this skill to create or revise the common asset/style stage under `deliverables/2_assets/`.
 
 ## Required Inputs
 
-- Latest script: `deliverables/10_story/01_script_v{N}.md`
-- Required same-version audit report: `deliverables/10_story/01_audit_report_v{N}.md`
-- Optional selected Scene Breakdown: `deliverables/30_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`
-- Optional legacy planning input: `archives/30_shotlist/03_storyboard_v{N}*.md`
-- Global locks: `deliverables/00_admin/locks.md`
+- Latest script: `deliverables/1_story/01_script_v{N}.md`
+- Required same-version audit report: `deliverables/1_story/01_audit_report_v{N}.md`
+- Optional selected Scene Breakdown: `deliverables/3_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`
+- Optional legacy planning input: `archives/3_shotlist/03_storyboard_v{N}*.md`
+- Global locks: `deliverables/0_admin/locks.md`
 - Existing guide versions, if any
 - User-provided reference images or style requirements, if any
 
@@ -31,10 +31,10 @@ If there is no script and the user has not supplied equivalent story context, st
 
 ## Outputs
 
-- Asset guide: `deliverables/20_assets/02_asset_guide_v{N}.md`
-- Style guide: `deliverables/20_assets/02_style_guide_v{N}.md`
-- Optional reference images under `deliverables/20_assets/refs/`
-- Optional shared generated references under `deliverables/20_assets/generated_ref_v{N}/`
+- Asset guide: `deliverables/2_assets/02_asset_guide_v{N}.md`
+- Style guide: `deliverables/2_assets/02_style_guide_v{N}.md`
+- Optional reference images under `deliverables/2_assets/refs/`
+- Optional shared generated references under `deliverables/2_assets/generated_ref_v{N}/`
 
 Both guide files are production deliverables and must use artifact metadata. Use `artifact-formatter` and `version-management` when saving.
 
@@ -79,16 +79,16 @@ When registering local references:
 3. Record the reference role, such as `<Character> identity reference`, `<Character> costume reference`, `<Prop> prop reference`, or `<Location> environment reference`.
 4. If a required reference is missing, mark it `missing` and state which downstream stages are blocked for production use.
 5. Do not treat Markdown image links as automatically loaded into an image model. Downstream image generation still must attach or load the files.
-6. Keep common reusable references in `deliverables/20_assets/`; Scene-specific one-off references belong under the relevant `deliverables/30_shotlist/<scene-label>_v{N}/assets/` package.
+6. Keep common reusable references in `deliverables/2_assets/`; Scene-specific one-off references belong under the relevant `deliverables/3_shotlist/<scene-label>_v{N}/assets/` package.
 
 For every reference batch, record `asset_origin`, `reference_binding`, `reference_approval`, and `output_status`. Generated-from-text images that exist on disk use `asset_origin: generated_from_text`; whether they are attached to a later model is recorded separately in that generation manifest.
 
 ## Save Rules
 
 - If no current guide exists, create `v1`.
-- If revising a current guide, archive the previous version under `archives/20_assets/` and save the next version under `deliverables/20_assets/`.
+- If revising a current guide, archive the previous version under `archives/2_assets/` and save the next version under `deliverables/2_assets/`.
 - Preserve artifact IDs across versions of the same guide.
-- Update `deliverables/00_admin/changelog.md`.
+- Update `deliverables/0_admin/changelog.md`.
 - After guide changes, list downstream artifacts that may need inspection: shotlist breakdowns, shotlist HTML, preview manifests, generated references, and generated video tests.
 
 ## QA Before Handoff

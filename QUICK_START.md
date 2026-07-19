@@ -13,6 +13,8 @@ pnpm validate
 
 仓库根目录就是创作项目根目录。不要再拆成 `main/` 和 `test/`；剧本、资产、分镜和 HTML 直接写入根目录下的 `deliverables/`。
 
+阶段目录固定为 `0_admin/`、`1_story/`、`2_assets/`、`3_shotlist/`；只有文件名继续使用 `01_`、`02_`、`03_` 前缀。
+
 直接告诉主控 Agent 当前目标和场景范围即可。
 
 ```text

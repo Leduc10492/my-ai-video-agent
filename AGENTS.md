@@ -16,14 +16,16 @@
 
 | 阶段 | Skill slot | 主要产物 |
 | --- | --- | --- |
-| 剧本 | `script.primary` | `deliverables/10_story/01_script_v{N}.md` |
-| 剧本审核门 | `script.primary` 调用 `story.mckee_router` | `deliverables/10_story/01_audit_report_v{N}.md` |
-| 资产 / 风格 | `guides.primary` | `deliverables/20_assets/` |
-| Scene 分镜拆解 | `shotlist.breakdown` | `deliverables/30_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md` |
-| Prompt + HTML | `shotlist.primary` | 同一 `deliverables/30_shotlist/<scene-label>_v{N}/` |
+| 剧本 | `script.primary` | `deliverables/1_story/01_script_v{N}.md` |
+| 剧本审核门 | `script.primary` 调用 `story.mckee_router` | `deliverables/1_story/01_audit_report_v{N}.md` |
+| 资产 / 风格 | `guides.primary` | `deliverables/2_assets/` |
+| Scene 分镜拆解 | `shotlist.breakdown` | `deliverables/3_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md` |
+| Prompt + HTML | `shotlist.primary` | 同一 `deliverables/3_shotlist/<scene-label>_v{N}/` |
 | 检查 | `qa.primary` | 默认在对话中报告；仅按用户要求保存报告 |
 
 所有实现只通过 `.agents/skill_registry.md` 解析。不要为 Beat、Shot、Prompt、Preview 或 Manifest 再创建新的平行工作流层，除非真实生产结果证明现有 Skill 无法承担该职责且用户明确批准重构。
+
+阶段目录前缀固定使用单个数字：`0_admin`、`1_story`、`2_assets`、`3_shotlist`。不要扩展成两位数。文件名继续使用既有的 `01_`、`02_`、`03_` 前缀，以保持同一阶段内部的产物排序。
 
 ## 主控 Agent 规则
 
@@ -53,13 +55,13 @@
 
 ## 文件边界
 
-- `deliverables/10_story/`：剧本与剧本审计
-- `deliverables/20_assets/`：共享人物、场景、道具和风格资料
-- `deliverables/30_shotlist/<scene-label>_v{N}/`：该 Scene 的 Breakdown、HTML、manifest、预演和生成记录
-- `deliverables/00_admin/`：锁定条件、变更记录和用户明确要求保存的 QA 报告
+- `deliverables/1_story/`：剧本与剧本审计
+- `deliverables/2_assets/`：共享人物、场景、道具和风格资料
+- `deliverables/3_shotlist/<scene-label>_v{N}/`：该 Scene 的 Breakdown、HTML、manifest、预演和生成记录
+- `deliverables/0_admin/`：锁定条件、变更记录和用户明确要求保存的 QA 报告
 - `archives/`：历史产物，只在比较或恢复时读取
 
-共享资产只放在 `20_assets`；Scene 目录只保存该场景的生产文件和场景独有补充资产。不要在 `30_shotlist` 与 Scene 目录之间再增加 `scenes/` 中间层。
+共享资产只放在 `2_assets`；Scene 目录只保存该场景的生产文件和场景独有补充资产。不要在 `3_shotlist` 与 Scene 目录之间再增加 `scenes/` 中间层。
 
 ## QA
 

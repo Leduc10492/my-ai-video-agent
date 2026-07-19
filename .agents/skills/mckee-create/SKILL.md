@@ -132,7 +132,7 @@ Example adaptations:
 
 ## Output Boundary
 
-Do not save directly to `deliverables/10_story/`.
+Do not save directly to `deliverables/1_story/`.
 Do not archive previous script versions.
 Do not write `01_script_v{N}.md` or `01_audit_report_v{N}.md`.
 

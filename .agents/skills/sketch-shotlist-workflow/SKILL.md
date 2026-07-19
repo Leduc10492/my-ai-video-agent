@@ -14,8 +14,8 @@ The HTML shotlist is the prompt source of truth. Do not split the same scope int
 - slot: `shotlist.primary`
 - contract_version: `1`
 - canonical_outputs:
-  - `deliverables/30_shotlist/<scene-label>_v{N}/Shotlist_<scene-label>_ZH_v{N}.html`
-  - `deliverables/30_shotlist/<scene-label>_v{N}/manifest.md`
+  - `deliverables/3_shotlist/<scene-label>_v{N}/Shotlist_<scene-label>_ZH_v{N}.html`
+  - `deliverables/3_shotlist/<scene-label>_v{N}/manifest.md`
 - qa_handoff: `qa.primary`
 - state_contract: `reference-state-v2`
 
@@ -23,11 +23,11 @@ The HTML shotlist is the prompt source of truth. Do not split the same scope int
 
 Use the latest numeric version for the selected Scene unless the user names a file:
 
-- Required: `deliverables/30_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`
+- Required: `deliverables/3_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`
 - Required upstream source: the script named by that Breakdown
-- Optional: `deliverables/20_assets/02_asset_guide_v{N}.md`
-- Optional: `deliverables/20_assets/02_style_guide_v{N}.md`
-- Optional: uploaded reference images, common local references under `deliverables/20_assets/`, scene-specific references under the scene package, rough sketch references, keyframes, generated video test results, or style override material
+- Optional: `deliverables/2_assets/02_asset_guide_v{N}.md`
+- Optional: `deliverables/2_assets/02_style_guide_v{N}.md`
+- Optional: uploaded reference images, common local references under `deliverables/2_assets/`, scene-specific references under the scene package, rough sketch references, keyframes, generated video test results, or style override material
 - Required: the same single `<scene-label>` named by the Breakdown
 - Optional: duration target, language, and separately authorized image/video generation tool
 
@@ -50,7 +50,7 @@ Consume the selected Scene Breakdown's four-phase structure before writing the H
 
 ## Outputs
 
-Save current production files directly under `deliverables/30_shotlist/<scene-label>_v{N}/`:
+Save current production files directly under `deliverables/3_shotlist/<scene-label>_v{N}/`:
 
 - `03_shotlist_breakdown_<scene-label>_v{N}.md` from the previous slot
 - `Shotlist_<scene-label>_ZH_v{N}.html`
@@ -72,8 +72,8 @@ Use exactly one screenplay Scene as the package unit. Older multi-Scene artifact
 
 Default asset lookup order:
 
-1. Common project assets in `deliverables/20_assets/refs/` and `deliverables/20_assets/generated_ref_v{N}/`.
-2. Scene-specific assets in `deliverables/30_shotlist/<scene-label>_v{N}/assets/`.
+1. Common project assets in `deliverables/2_assets/refs/` and `deliverables/2_assets/generated_ref_v{N}/`.
+2. Scene-specific assets in `deliverables/3_shotlist/<scene-label>_v{N}/assets/`.
 
 Do not duplicate common assets into a scene package unless the user asks for a portable export bundle. Scene `assets/` is for assets that exist only for that scene or override a common asset with an explicit manifest note.
 
@@ -85,6 +85,12 @@ Generated preview images are review assets, not production keyframes. Package, p
 - `output_status`: `prompt_only`, `smoke_test`, `review_ready`, or `production_approved`
 
 Read `text_only_draft`, `text_dna_draft`, and `image_reference_bound` only as legacy compatibility labels. `prompt_only` remains a valid current `output_status`. Never use `image_reference_bound` as proof that an image is approved.
+
+### Prompt Purity Boundary
+
+The four reference-state fields are project metadata, not Seedance instructions. Record them in `manifest.md` and expose them exactly once in the Scene HTML header through `{{REFERENCE_SUMMARY}}`. Never copy them into a Prompt Envelope, handle declaration, warning block, shot block, style block, footer, or clipboard payload.
+
+Seedance prompt text must contain only generation-executable information: reference roles and visible facts, camera, composition, blocking, action, performance, light, physical sound, continuity, and shot-specific failure prevention. Model-facing role limits such as `@image2 仅参考服装和体型` are valid; project lifecycle prose such as `⚠️参考状态`, `asset_origin=...`, `reference_approval=...`, `prompt_only`, `production_approved`, `文本DNA`, `未附图`, `未获用户站位锁定`, or legacy `text_dna_draft` labels is not.
 
 Generated video tests, if saved, belong under the scene package `generated/` directory with a manifest or README. They do not change the HTML source of truth.
 
@@ -139,7 +145,7 @@ Stop after Phase 2 only when scope or execution mode remains unresolved, filenam
 
 Project adaptation:
 
-- Store common reusable assets under `deliverables/20_assets/`.
+- Store common reusable assets under `deliverables/2_assets/`.
 - Store scene-only assets under the relevant scene package `assets/`.
 - If a required image is missing, production mode is blocked. Draft or prompt-only output may continue with `reference_binding: text_only`, `reference_approval: draft`, and a visible limitation.
 
@@ -164,12 +170,12 @@ For the selected Scene:
 2. Consume the breakdown `Prompt Envelope Plan` as the prompt grouping contract: source rows, beat boundary, dialogue boundary, character/asset set, intended duration, grouping reason, and next-beat reservation.
 3. Consume the breakdown `Prompt ID Reservation`. Shot rows use `<scene-label>-R<NN>`; only prompt envelopes use reserved `P###` IDs. Never reuse a retired prompt ID as a row ID.
 4. Revise grouping when `reference/PROMPT_DENSITY.md` clearly requires it; record the reason in `Prompt Density Notes` or the scene package manifest. Do not treat every shot-row boundary as a separate prompt. If adjacent short beats share location, character set, spatial axis, and one immediate emotional cause-effect turn, merge them into one compact multi-shot envelope with internal `【镜头N】` blocks.
-5. Write each Chinese Seedance 2.0 prompt following `reference/PROMPT_PATTERNS.md`, including handle declarations, universal warnings, camera/frame lock, spatial blocking, per-shot blocks, style block, background activity, shot-specific failure-mode lock, and closing footer.
+5. Write each Chinese Seedance 2.0 prompt following `reference/PROMPT_PATTERNS.md`, including handle declarations, universal warnings, camera/frame lock, spatial blocking, per-shot blocks, style block, background activity, shot-specific failure-mode lock, and closing footer. Keep project status and approval metadata outside the prompt block.
 6. For multi-shot prompts, structure each internal cut as a `【镜头N】` block with its own `机位 / 背景 / 动作 / 微表演细节` sub-blocks.
 7. Before grouping or writing prompts, compare the Breakdown dialogue lines against the selected Scene in the source script. Preserve every line once and in source order. Bind each line to its own lip-sync Shot Row and internal shot, or to one explicit off-screen-audio row when the source cue is marked `O.S.` / `V.O.`. A Prompt Envelope may contain several dialogue lines, but no internal shot may carry more than one independent source line.
 8. Run the Prompt Quality Gate below on every prompt envelope. If a prompt fails, rewrite it before HTML assembly.
 9. Assemble from `assets/shotlist-house-template.html` using the placeholder contract in `templates/HTML_TEMPLATE.md`.
-10. Save the complete Scene package under `deliverables/30_shotlist/<scene-label>_v{N}/`.
+10. Save the complete Scene package under `deliverables/3_shotlist/<scene-label>_v{N}/`.
 
 ## Prompt Density
 
@@ -199,17 +205,18 @@ When uncertain, test both risks: split if one envelope overloads blocking or per
 
 Every prompt envelope must pass all checks before HTML or preview generation:
 
-1. **Reference facts:** every handle contains concrete visual facts and respects the package's `reference_binding` and `reference_approval` values.
+1. **Reference facts:** every handle contains concrete visual facts and uses only references allowed by the package's `reference_binding` and `reference_approval` values, without serializing those project fields into the prompt.
 2. **Camera planted:** every prompt states where the camera is physically placed, what direction it faces, and foreground/midground/background.
 3. **Frame composition:** every prompt describes first-frame composition with left/right/top/bottom or foreground/midground/background relationships.
 4. **Action path:** every action is decomposed into physical steps with body movement, object contact, eyeline, and end state.
 5. **Micro-beats are unique:** emotional beats are tailored to this exact character, action, and scene turn.
 6. **Failure-mode lock:** every prompt names likely model errors specific to this shot.
 7. **Adjacent-beat boundary:** sequential prompt envelopes state which earlier/later beat must not leak into this prompt.
-8. **Reference state gate:** all four reference-state fields agree across HTML metadata, package manifest, preview manifest, and generated tests.
-9. **Batch pressure check:** prefer 4-8 Prompt Envelopes in one quality pass; more than 10 is split-required and must follow the Breakdown `Production Batch Plan` with QA after each batch.
-10. **Dialogue preservation:** exact source dialogue count and order match the selected source Scene; each line remains in its original language inside quotes, keeps its raw speaker cue, and has its own lip-sync Shot Row/internal shot or source-marked off-screen-audio row. The addressee follows current Scene action, adjacent exchange, eyeline, and blocking; unresolved ambiguity returns to the Breakdown instead of being guessed.
-11. **HTML language check:** UI labels, scene headers, action cells, scene-text cells, asset lists, prompt tags, and prompt blocks are Simplified Chinese, while stable machine fields remain unchanged.
+8. **Reference state gate:** all four reference-state fields agree across the Scene HTML header, package manifest, preview manifest, and generated tests.
+9. **Prompt purity:** Prompt Envelopes contain no project lifecycle/status paragraph or tokens such as `asset_origin`, `reference_binding`, `reference_approval`, `output_status`, `prompt_only`, `production_approved`, or `text_dna_draft`.
+10. **Batch pressure check:** prefer 4-8 Prompt Envelopes in one quality pass; more than 10 is split-required and must follow the Breakdown `Production Batch Plan` with QA after each batch.
+11. **Dialogue preservation:** exact source dialogue count and order match the selected source Scene; each line remains in its original language inside quotes, keeps its raw speaker cue, and has its own lip-sync Shot Row/internal shot or source-marked off-screen-audio row. The addressee follows current Scene action, adjacent exchange, eyeline, and blocking; unresolved ambiguity returns to the Breakdown instead of being guessed.
+12. **HTML language check:** UI labels, scene headers, action cells, scene-text cells, asset lists, prompt tags, and prompt blocks are Simplified Chinese, while stable machine fields remain unchanged.
 
 ## Production Batch Gate
 

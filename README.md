@@ -15,13 +15,24 @@ pnpm install --frozen-lockfile
 pnpm validate
 ```
 
-`pnpm install` 安装剧本 DOCX 导出所需的 `docx`；`pnpm validate` 会检查 Registry、Skills、Agents、脚本、模板、文档引用、依赖锁文件和快捷软链接。校验通过后即可把剧本放进 `deliverables/10_story/` 开始工作。
+`pnpm install` 安装剧本 DOCX 导出所需的 `docx`；`pnpm validate` 会检查 Registry、Skills、Agents、脚本、模板、文档引用、依赖锁文件和快捷软链接。校验通过后即可把剧本放进 `deliverables/1_story/` 开始工作。
+
+## 阶段目录命名
+
+| 目录 | 用途 |
+| --- | --- |
+| `deliverables/0_admin/` | 锁定条件、变更记录与 QA 报告 |
+| `deliverables/1_story/` | 剧本与剧本审计 |
+| `deliverables/2_assets/` | 共享人物、场景、道具与风格资产 |
+| `deliverables/3_shotlist/` | 按 Scene 保存 Breakdown、HTML 与 manifest |
+
+目录阶段号始终使用单个数字。文件名仍使用 `01_script`、`02_asset_guide`、`03_shotlist_breakdown` 等既有前缀，用于阶段内部排序。
 
 ```text
 剧本 -> 同版本审核通过 -> 按 Scene 分镜拆解 -> Shot Row -> Prompt Envelope -> 中文 HTML
 ```
 
-需要人物、地点或风格参考时，在分镜前补充 `deliverables/20_assets/`。图片和视频生成不属于默认最小闭环，必须由用户单独授权。
+需要人物、地点或风格参考时，在分镜前补充 `deliverables/2_assets/`。图片和视频生成不属于默认最小闭环，必须由用户单独授权。
 
 ## 核心入口
 
@@ -44,7 +55,7 @@ pnpm validate
 ## Shotlist 目录
 
 ```text
-deliverables/30_shotlist/
+deliverables/3_shotlist/
 └── scene-021_v1/
     ├── 03_shotlist_breakdown_scene-021_v1.md
     ├── Shotlist_scene-021_ZH_v1.html

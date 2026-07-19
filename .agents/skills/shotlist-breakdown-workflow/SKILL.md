@@ -14,17 +14,17 @@ This skill adapts the `shotlist-builder` four-phase method into one-Scene-at-a-t
 - slot: `shotlist.breakdown`
 - contract_version: `1`
 - canonical_outputs:
-  - `deliverables/30_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`
+  - `deliverables/3_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`
 - qa_handoff: `qa.primary`
 - state_contract: `reference-state-v2`
 
 ## Required Inputs
 
-- Latest script: `deliverables/10_story/01_script_v{N}.md`
-- Required same-version audit report: `deliverables/10_story/01_audit_report_v{N}.md`
-- Optional asset guide: `deliverables/20_assets/02_asset_guide_v{N}.md`
-- Optional style guide: `deliverables/20_assets/02_style_guide_v{N}.md`
-- Global locks: `deliverables/00_admin/locks.md`
+- Latest script: `deliverables/1_story/01_script_v{N}.md`
+- Required same-version audit report: `deliverables/1_story/01_audit_report_v{N}.md`
+- Optional asset guide: `deliverables/2_assets/02_asset_guide_v{N}.md`
+- Optional style guide: `deliverables/2_assets/02_style_guide_v{N}.md`
+- Global locks: `deliverables/0_admin/locks.md`
 - Required selected screenplay Scene label, such as `scene-021`
 
 For a long script, first scan only Scene IDs/sluglines and their line ranges to establish a lightweight Scene queue. From the repository root, use `node .agents/skills/shotlist-breakdown-workflow/scripts/index-screenplay-scenes.mjs <script-path>` when the source is a local Markdown screenplay. Then load the selected Scene body plus the immediately preceding/following boundary headers. Do not place the full screenplay body in the same directing or prompt-generation context, and do not draft Shot Rows or Prompt Envelopes for the whole screenplay in one pass. If the script has no explicit Scene IDs, derive stable labels from screenplay order and report the lightweight Scene queue before starting the first Scene.
@@ -35,9 +35,9 @@ If an existing `03_storyboard_v{N}.md` planning artifact is needed, read it from
 
 ## Outputs
 
-- `deliverables/30_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`
+- `deliverables/3_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`
 - Changelog entry and archives when revising
-- Optional updates or downstream recommendations for `deliverables/20_assets/`
+- Optional updates or downstream recommendations for `deliverables/2_assets/`
 - No board-prompt, art-prompt, standalone video-prompt, or final Seedance prompt file
 
 The artifact must include metadata and locks. Preserve the artifact ID across versions of the same breakdown family when migrating from an older planning file.
@@ -113,8 +113,8 @@ Create a clean Chinese asset request organized by the same categories used by `s
 
 Project adaptation:
 
-- Common reusable assets belong under `deliverables/20_assets/`.
-- Scene-specific one-off assets belong under `deliverables/30_shotlist/<scene-label>_v{N}/assets/`.
+- Common reusable assets belong under `deliverables/2_assets/`.
+- Scene-specific one-off assets belong under `deliverables/3_shotlist/<scene-label>_v{N}/assets/`.
 - Missing required assets must be marked as blockers for production mode or as draft constraints for `text_only_draft`, `text_dna_draft`, or `prompt_only`.
 
 Record the current state with `asset_origin`, `reference_binding`, `reference_approval`, and `output_status`. Keep old labels only in a `legacy_reference_mode` compatibility note.
@@ -189,7 +189,7 @@ Write Phase 4 with these Chinese subsections:
 
 `Prompt Envelope Plan` is a hard handoff contract. For every planned prompt, specify which shot rows it contains, the internal shot plan if multiple short beats share one envelope, the first and last action beat, any exact dialogue line that must be preserved, the shortest believable intended duration, why the grouping is safe, and which adjacent beat belongs to the next prompt. Complete dialogue extraction and dialogue-to-Row mapping before grouping Rows into Envelopes; Envelope grouping may not change the speaker, addressee, source order, or one-line/one-lip-sync-shot boundary.
 
-Shot rows and prompt envelopes are different entities. Use `<scene-label>-R<NN>` for rows, such as `scene-021-R01`; use `P###` only for prompt envelopes. Before assigning new prompt IDs, scan Scene folders directly under `deliverables/30_shotlist/` and `archives/30_shotlist/`, find the highest existing `P###`, and reserve a non-overlapping contiguous range in `Prompt ID Reservation`. Preserve migrated IDs only when a retained generated output depends on them; record any legacy aliases in the Scene manifest.
+Shot rows and prompt envelopes are different entities. Use `<scene-label>-R<NN>` for rows, such as `scene-021-R01`; use `P###` only for prompt envelopes. Before assigning new prompt IDs, scan Scene folders directly under `deliverables/3_shotlist/` and `archives/3_shotlist/`, find the highest existing `P###`, and reserve a non-overlapping contiguous range in `Prompt ID Reservation`. Preserve migrated IDs only when a retained generated output depends on them; record any legacy aliases in the Scene manifest.
 
 Do not inflate every shot row into its own prompt. When short adjacent beats share the same location, character set, spatial axis, and immediate cause-effect turn, plan them as one compact multi-shot envelope with internal timing derived from the action rather than a preset total.
 

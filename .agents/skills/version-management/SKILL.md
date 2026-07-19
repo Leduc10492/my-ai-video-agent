@@ -16,6 +16,8 @@ description: Archive old versions and update version numbers for active delivera
 
 Archive old versions and update version numbers for active deliverable files.
 
+Stage directories use the same single-digit contract in both active and archived trees: `1_story`, `2_assets`, and `3_shotlist`; admin state remains `deliverables/0_admin`. Artifact filenames retain their existing `01_`, `02_`, and `03_` prefixes.
+
 ## When to Use
 
 - Saving a new version of any active production deliverable
@@ -27,7 +29,7 @@ Archive old versions and update version numbers for active deliverable files.
 
 | Parameter | Description | Example |
 | --- | --- | --- |
-| file_path | Current file path with version | `deliverables/10_story/01_script_v2.md` |
+| file_path | Current file path with version | `deliverables/1_story/01_script_v2.md` |
 | change_description | What changed | `Added prompt-envelope batch gates` |
 | stage_name | Workflow stage | `Shotlist Breakdown` |
 
@@ -46,14 +48,14 @@ Extract version from file frontmatter:
 Archive with version suffix:
 
 ```text
-deliverables/10_story/01_script_v2.md -> archives/10_story/01_script_v2.md
+deliverables/1_story/01_script_v2.md -> archives/1_story/01_script_v2.md
 ```
 
 For a scene package, archive the entire directory:
 
 ```text
-deliverables/30_shotlist/scene-021_v1/
-  -> archives/30_shotlist/scene-021_v1/
+deliverables/3_shotlist/scene-021_v1/
+  -> archives/3_shotlist/scene-021_v1/
 ```
 
 ### Step 3: Save New Version
@@ -67,7 +69,7 @@ Save new file with incremented version in filename:
 
 ### Step 4: Update Changelog
 
-Append to `deliverables/00_admin/changelog.md`:
+Append to `deliverables/0_admin/changelog.md`:
 
 ```markdown
 ## [2026-01-21] - Scene Shotlist Package
@@ -75,8 +77,8 @@ Append to `deliverables/00_admin/changelog.md`:
 ### Changed
 - `scene-021_v2/` -> `scene-021_v3/`
   - Tightened batch ranges and spatial-blocking gates for scene-021.
-  - Archived: `archives/30_shotlist/scene-021_v2/`
-  - Current: `deliverables/30_shotlist/scene-021_v3/`
+  - Archived: `archives/3_shotlist/scene-021_v2/`
+  - Current: `deliverables/3_shotlist/scene-021_v3/`
 ```
 
 ### Step 5: Confirm
@@ -101,18 +103,18 @@ All archived files go to `archives/`, not `deliverables/*/archive/`.
 
 ```text
 archives/
-├── 10_story/
+├── 1_story/
 │   ├── 01_script_v1.md
 │   └── 01_script_v2.md
-├── 30_shotlist/
+├── 3_shotlist/
 │   └── scene-021_v1/
 │       ├── 03_shotlist_breakdown_scene-021_v1.md
 │       └── Shotlist_scene-021_ZH_v1.html
 
 deliverables/
-├── 10_story/
+├── 1_story/
 │   └── 01_script_v3.md
-└── 30_shotlist/
+└── 3_shotlist/
     └── scene-021_v2/
         ├── 03_shotlist_breakdown_scene-021_v2.md
         └── Shotlist_scene-021_ZH_v2.html
@@ -122,12 +124,12 @@ deliverables/
 
 | Stage | Current Path Pattern | Example |
 | --- | --- | --- |
-| Script | `deliverables/10_story/01_script_v{N}.md` | `01_script_v3.md` |
-| Audit | `deliverables/10_story/01_audit_report_v{N}.md` | `01_audit_report_v3.md` for `01_script_v3.md` |
-| Asset Guide | `deliverables/20_assets/02_asset_guide_v{N}.md` | `02_asset_guide_v2.md` |
-| Style Guide | `deliverables/20_assets/02_style_guide_v{N}.md` | `02_style_guide_v1.md` |
-| Scene Breakdown | `deliverables/30_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md` | `scene-021_v1/03_shotlist_breakdown_scene-021_v1.md` |
-| Shotlist HTML | `deliverables/30_shotlist/<scene-label>_v{N}/Shotlist_<scene-label>_ZH_v{N}.html` | `scene-021_v1/Shotlist_scene-021_ZH_v1.html` |
+| Script | `deliverables/1_story/01_script_v{N}.md` | `01_script_v3.md` |
+| Audit | `deliverables/1_story/01_audit_report_v{N}.md` | `01_audit_report_v3.md` for `01_script_v3.md` |
+| Asset Guide | `deliverables/2_assets/02_asset_guide_v{N}.md` | `02_asset_guide_v2.md` |
+| Style Guide | `deliverables/2_assets/02_style_guide_v{N}.md` | `02_style_guide_v1.md` |
+| Scene Breakdown | `deliverables/3_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md` | `scene-021_v1/03_shotlist_breakdown_scene-021_v1.md` |
+| Shotlist HTML | `deliverables/3_shotlist/<scene-label>_v{N}/Shotlist_<scene-label>_ZH_v{N}.html` | `scene-021_v1/Shotlist_scene-021_ZH_v1.html` |
 
 The scene package folder, HTML, manifest, previews, and generated mappings share the same package version. Never increment only the HTML suffix.
 
@@ -138,7 +140,7 @@ When migrating an existing `03_storyboard_v{N}.md`, global Breakdown, or multi-S
 1. Treat it as source input, not the new output name.
 2. Preserve the artifact ID if it is the same planning artifact family.
 3. Select one screenplay Scene and save it as `<scene-label>_v1/03_shotlist_breakdown_<scene-label>_v1.md`.
-4. Archive the old planning file under `archives/30_shotlist/` without using it as a new-production naming example.
+4. Archive the old planning file under `archives/3_shotlist/` without using it as a new-production naming example.
 5. Record the migration in changelog.
 
 ## Error Handling

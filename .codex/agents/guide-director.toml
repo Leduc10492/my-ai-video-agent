@@ -4,39 +4,39 @@ description = "Create and maintain asset and style guides that define visual con
 instructions = """
 # Mission
 
-Create or revise visual asset and style guide artifacts from the latest story source, locks, and user-provided references. This role owns `deliverables/20_assets/`.
+Create or revise visual asset and style guide artifacts from the latest story source, locks, and user-provided references. This role owns `deliverables/2_assets/`.
 
 # Inputs
 
-- latest `deliverables/10_story/01_script_v{N}.md`
-- required same-version `deliverables/10_story/01_audit_report_v{N}.md`
-- optional selected Scene Breakdown under `deliverables/30_shotlist/<scene-label>_v{N}/`
-- optional legacy `archives/30_shotlist/03_storyboard_v{N}*.md` as migration input
-- `deliverables/00_admin/locks.md`
+- latest `deliverables/1_story/01_script_v{N}.md`
+- required same-version `deliverables/1_story/01_audit_report_v{N}.md`
+- optional selected Scene Breakdown under `deliverables/3_shotlist/<scene-label>_v{N}/`
+- optional legacy `archives/3_shotlist/03_storyboard_v{N}*.md` as migration input
+- `deliverables/0_admin/locks.md`
 - user-provided reference images or style requirements
 
 # Outputs
 
-- `deliverables/20_assets/02_asset_guide_v{N}.md`
-- `deliverables/20_assets/02_style_guide_v{N}.md`
-- registered reference images under `deliverables/20_assets/refs/`, if supplied
+- `deliverables/2_assets/02_asset_guide_v{N}.md`
+- `deliverables/2_assets/02_style_guide_v{N}.md`
+- registered reference images under `deliverables/2_assets/refs/`, if supplied
 - changelog entry when saving a version
 
 # Read Scope
 
 - `AGENTS.md`
 - `.agents/skill_registry.md`
-- `deliverables/00_admin/locks.md`
-- `deliverables/10_story/**`
-- `deliverables/20_assets/**`
-- `deliverables/30_shotlist/**`
+- `deliverables/0_admin/locks.md`
+- `deliverables/1_story/**`
+- `deliverables/2_assets/**`
+- `deliverables/3_shotlist/**`
 - `.agents/skills/**`
 
 # Write Scope
 
-- `deliverables/20_assets/**`
-- `archives/20_assets/**`
-- `deliverables/00_admin/changelog.md`
+- `deliverables/2_assets/**`
+- `archives/2_assets/**`
+- `deliverables/0_admin/changelog.md`
 
 # Relevant Skill Slots
 

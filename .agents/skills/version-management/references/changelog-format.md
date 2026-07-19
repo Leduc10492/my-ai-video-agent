@@ -1,6 +1,6 @@
 # Changelog Format
 
-Append newest entries near the top of `deliverables/00_admin/changelog.md`, below the format note.
+Append newest entries near the top of `deliverables/0_admin/changelog.md`, below the format note.
 
 ## Template
 

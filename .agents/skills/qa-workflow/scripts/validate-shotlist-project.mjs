@@ -25,7 +25,7 @@ function parseArgs(argv) {
     }
   }
   if (!args.scriptPath || !args.shotlistRoot) {
-    throw new Error('Usage: validate-shotlist-project.mjs --script <script-path> --shotlist-root <deliverables/30_shotlist> [--require-complete]');
+    throw new Error('Usage: validate-shotlist-project.mjs --script <script-path> --shotlist-root <deliverables/3_shotlist> [--require-complete]');
   }
   return {
     scriptPath: path.resolve(args.scriptPath),
@@ -251,13 +251,35 @@ async function validatePackage({ packagePath, directoryName, sourceScene, add, g
 
   if (html.includes('{{')) add('error', 'placeholder', label, 'unresolved template placeholder in HTML');
 
+  const promptBlockPattern = /<pre\b(?=[^>]*\bclass=["'][^"']*\bprompt-block\b[^"']*["'])[^>]*>([\s\S]*?)<\/pre>/gi;
+  const promptBlocks = allMatches(html, promptBlockPattern).map(decodeHtml);
+  const htmlOutsidePromptBlocks = html.replace(promptBlockPattern, '');
+  const decodedHtmlOutsidePrompts = decodeHtml(htmlOutsidePromptBlocks);
+  const forbiddenPromptStatePatterns = [
+    /⚠️\s*参考(?:图)?状态/i,
+    /\b(?:asset_origin|reference_binding|reference_approval|output_status)\s*[:=]/i,
+    /\b(?:user_provided|generated_from_text|generated_from_references|text_only|images_attached|prompt[-_ ]only|smoke_test|review_ready|production_approved|text_only_draft|text_dna_draft|image_reference_bound)\b/i,
+    /文本\s*DNA|未附图|不得声称身份锁定|未获用户站位锁定/i,
+  ];
+  for (const [index, promptBlock] of promptBlocks.entries()) {
+    if (forbiddenPromptStatePatterns.some((pattern) => pattern.test(promptBlock))) {
+      add('error', 'prompt-purity', label, `Prompt block ${index + 1} contains project reference/output status metadata`);
+    }
+  }
+
   const outputStatus = manifestField(manifest, 'output_status');
   for (const field of ['asset_origin', 'reference_binding', 'reference_approval', 'output_status']) {
     const declared = manifestField(manifest, field);
     if (!declared) {
       add('error', 'reference-state', label, `manifest is missing ${field}`);
-    } else if (!decodeHtml(html).includes(`${field}=${declared}`)) {
-      add('error', 'reference-state', label, `HTML does not expose manifest claim ${field}=${declared}`);
+    } else {
+      const claim = `${field}=${declared}`;
+      const claimCount = decodedHtmlOutsidePrompts.split(claim).length - 1;
+      if (claimCount === 0) {
+        add('error', 'reference-state', label, `Scene HTML header does not expose manifest claim ${claim}`);
+      } else if (claimCount > 1) {
+        add('error', 'reference-state', label, `Scene HTML repeats ${claim}; expose each state field once outside prompt blocks`);
+      }
     }
   }
   const imageSources = allMatches(html, /<img\b[^>]*\bsrc="([^"]+)"/gi);

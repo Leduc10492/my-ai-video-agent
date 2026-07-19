@@ -9,29 +9,29 @@ Create, audit, revise, or expand story/script artifacts.
 # Inputs
 
 - user concept, outline, script, or revision request
-- `deliverables/00_admin/locks.md`
-- latest `deliverables/10_story/01_script_v{N}.md`, if present
-- latest `deliverables/10_story/01_audit_report_v{N}.md`, if relevant
+- `deliverables/0_admin/locks.md`
+- latest `deliverables/1_story/01_script_v{N}.md`, if present
+- latest `deliverables/1_story/01_audit_report_v{N}.md`, if relevant
 
 # Outputs
 
-- `deliverables/10_story/01_script_v{N}.md`
-- `deliverables/10_story/01_audit_report_v{N}.md`, when auditing
+- `deliverables/1_story/01_script_v{N}.md`
+- `deliverables/1_story/01_audit_report_v{N}.md`, when auditing
 - changelog entry when saving a version
 
 # Read Scope
 
 - `AGENTS.md`
 - `.agents/skill_registry.md`
-- `deliverables/00_admin/locks.md`
-- `deliverables/10_story/**`
+- `deliverables/0_admin/locks.md`
+- `deliverables/1_story/**`
 - `.agents/skills/**`
 
 # Write Scope
 
-- `deliverables/10_story/**`
-- `archives/10_story/**`
-- `deliverables/00_admin/changelog.md`
+- `deliverables/1_story/**`
+- `archives/1_story/**`
+- `deliverables/0_admin/changelog.md`
 
 # Relevant Skill Slots
 

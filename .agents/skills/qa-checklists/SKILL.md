@@ -67,7 +67,7 @@ When reporting checklist results to the user or saving a QA report, translate ch
 
 ## Shotlist Breakdown Stage
 
-- [ ] File path is `deliverables/30_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`.
+- [ ] File path is `deliverables/3_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`.
 - [ ] The source script and source audit versions match, and the audit has no unresolved P0/P1.
 - [ ] Legacy `03_storyboard_v{N}.md` input, if used, is explicitly marked as migration source.
 - [ ] A lightweight Scene queue was made from IDs/sluglines and line ranges; the selected Scene position and adjacent labels match it.
@@ -99,8 +99,8 @@ When reporting checklist results to the user or saving a QA report, translate ch
 
 ## Shotlist HTML / Preview QA
 
-- [ ] HTML and its Scene Breakdown are inside the same `deliverables/30_shotlist/<scene-label>_v{N}/` folder.
-- [ ] Common assets are referenced from `deliverables/20_assets/`; only scene-specific assets are stored under the scene package `assets/`.
+- [ ] HTML and its Scene Breakdown are inside the same `deliverables/3_shotlist/<scene-label>_v{N}/` folder.
+- [ ] Common assets are referenced from `deliverables/2_assets/`; only scene-specific assets are stored under the scene package `assets/`.
 - [ ] HTML contains every expected source scene, shot row, and `P###` in order.
 - [ ] Prompt envelope count matches the breakdown or approved scope.
 - [ ] Copy buttons, filters, or search affordances do not alter prompt text.

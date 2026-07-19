@@ -24,5 +24,5 @@ Newest entries should go near the top, below this format note.
 ## [2026-06-27] - Starter Baseline
 
 ### Changed
-- Reset `deliverables/00_admin/` to a reusable, project-neutral starter state for `main`.
+- Reset `deliverables/0_admin/` to a reusable, project-neutral starter state for `main`.
 - Removed historical project QA reports from the workflow package baseline.

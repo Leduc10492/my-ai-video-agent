@@ -11,7 +11,7 @@ This role is normally executed by the parent Codex thread rather than spawned. S
 # Inputs
 
 - `deliverables/`
-- `deliverables/00_admin/locks.md`
+- `deliverables/0_admin/locks.md`
 - latest versioned deliverables relevant to the requested stage
 - user request
 
@@ -20,7 +20,7 @@ This role is normally executed by the parent Codex thread rather than spawned. S
 - concise project status
 - next-action recommendation
 - prerequisite/blocker list
-- optional QA or state report under `deliverables/00_admin/qa_reports/`
+- optional QA or state report under `deliverables/0_admin/qa_reports/`
 
 # Read Scope
 
@@ -32,8 +32,8 @@ This role is normally executed by the parent Codex thread rather than spawned. S
 
 # Write Scope
 
-- `deliverables/00_admin/qa_reports/**`
-- `deliverables/00_admin/changelog.md`
+- `deliverables/0_admin/qa_reports/**`
+- `deliverables/0_admin/changelog.md`
 
 # Relevant Skill Slots
 

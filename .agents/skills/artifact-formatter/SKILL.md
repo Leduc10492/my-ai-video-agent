@@ -87,36 +87,38 @@ locks:
 
 Do not modify these active paths unless the user explicitly approves a migration:
 
+Stage directories use one-digit prefixes only: `0_admin`, `1_story`, `2_assets`, and `3_shotlist`. Keep the existing two-digit prefixes in artifact filenames (`01_`, `02_`, `03_`) because they order files inside a stage; do not copy that padding back onto directory names.
+
 ### Admin
 
 ```text
-deliverables/00_admin/README.md
-deliverables/00_admin/locks.md
-deliverables/00_admin/changelog.md
+deliverables/0_admin/README.md
+deliverables/0_admin/locks.md
+deliverables/0_admin/changelog.md
 ```
 
 ### Script
 
 ```text
-deliverables/10_story/01_script_v{N}.md
-deliverables/10_story/01_audit_report_v{N}.md
+deliverables/1_story/01_script_v{N}.md
+deliverables/1_story/01_audit_report_v{N}.md
 ```
 
 ### Guides
 
 ```text
-deliverables/20_assets/02_asset_guide_v{N}.md
-deliverables/20_assets/02_style_guide_v{N}.md
+deliverables/2_assets/02_asset_guide_v{N}.md
+deliverables/2_assets/02_style_guide_v{N}.md
 ```
 
 ### Scene Shotlist Package
 
 ```text
-deliverables/30_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md
-deliverables/30_shotlist/<scene-label>_v{N}/Shotlist_<scene-label>_ZH_v{N}.html
-deliverables/30_shotlist/<scene-label>_v{N}/manifest.md
-deliverables/30_shotlist/<scene-label>_v{N}/previews/manifest.md
-deliverables/30_shotlist/<scene-label>_v{N}/generated/<run_id>/README.md
+deliverables/3_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md
+deliverables/3_shotlist/<scene-label>_v{N}/Shotlist_<scene-label>_ZH_v{N}.html
+deliverables/3_shotlist/<scene-label>_v{N}/manifest.md
+deliverables/3_shotlist/<scene-label>_v{N}/previews/manifest.md
+deliverables/3_shotlist/<scene-label>_v{N}/generated/<run_id>/README.md
 ```
 
 Legacy `03_storyboard_v{N}.md`, global Breakdown files, and multi-Scene packages can be read from `archives/` as migration inputs. New production uses one direct Scene folder. Scene revisions archive and replace the entire package directory, not only one file.
@@ -133,6 +135,8 @@ Generated assets, scene packages, previews, and generated tests record:
 ```
 
 `image_reference_bound` is legacy shorthand for `reference_binding: images_attached`; it does not imply `reference_approval: locked`.
+
+Reference-state fields are artifact metadata. For a one-Scene shotlist package, write them in `manifest.md` and exactly once in the Scene HTML document header. Never place them inside a Seedance Prompt Envelope or its copyable `<pre class="prompt-block">` content.
 
 ## Dependency Graph
 
@@ -162,7 +166,7 @@ Generated assets, scene packages, previews, and generated tests record:
 | Error | Correct |
 | --- | --- |
 | `02_asset_guides.md` | `02_asset_guide_v{N}.md` |
-| `deliverables/guides/` | `deliverables/20_assets/` |
+| `deliverables/guides/` | `deliverables/2_assets/` |
 | `03_storyboard_v{N}.md` or global `03_shotlist_breakdown_v{N}.md` as a new file | `<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md` |
 | upstream: `01_script_v1.md` | upstream: `[A-20260121-001]` |
 

@@ -10,7 +10,7 @@ description: Run human-readable quality assurance for the shotlist-first AI vide
 - slot: `qa.primary`
 - contract_version: `1`
 - canonical_outputs:
-  - `deliverables/00_admin/qa_reports/qa_report_<stage>_v{N}.md`
+  - `deliverables/0_admin/qa_reports/qa_report_<stage>_v{N}.md`
 - qa_handoff: `none`
 - state_contract: `reference-state-v2`
 
@@ -26,7 +26,7 @@ This includes chat findings, persistent QA reports, table headers, issue descrip
 
 ## Inputs
 
-- `deliverables/00_admin/locks.md`
+- `deliverables/0_admin/locks.md`
 - `.agents/skill_registry.md` when checking workflow architecture or replacement skills
 - Latest relevant deliverables in the affected stage
 - Upstream deliverables listed in artifact metadata
@@ -75,12 +75,13 @@ For shotlist work, also check:
 
 - `03_shotlist_breakdown_<scene-label>_v{N}.md` exists in the selected Scene folder before HTML work, or legacy input is explicitly marked as migration source
 - screenplay scene labels, shot rows, prompt-envelope IDs, and source scene mapping are consistent
-- prompt envelopes include reference facts, planted camera, first-frame composition, physical action path, unique micro-beats, shot-specific failure locks, adjacent-beat boundary, and reference status
+- prompt envelopes include reference facts, planted camera, first-frame composition, physical action path, unique micro-beats, shot-specific failure locks, and adjacent-beat boundary; project reference status stays outside the prompt text
+- all four reference-state fields appear exactly once in the Scene HTML header, match `manifest.md`, and never appear inside `.prompt-block`
 - shot rows use `<scene-label>-R<NN>`, prompt envelopes use reserved `P###` IDs, and mappings are explicit
 - preview manifest entries match HTML Prompt Envelopes when preview generation was authorized
 - generated HTML preview paths are relative and files exist; `prompt_only` may use a text state without a preview manifest
-- shotlist HTML and Breakdown live together under `deliverables/30_shotlist/<scene-label>_v{N}/`
-- common references come from `deliverables/20_assets/`, while scene package `assets/` contains only scene-specific additions or explicit overrides
+- shotlist HTML and Breakdown live together under `deliverables/3_shotlist/<scene-label>_v{N}/`
+- common references come from `deliverables/2_assets/`, while scene package `assets/` contains only scene-specific additions or explicit overrides
 - generated video tests are labeled with source prompt envelope, all four reference-state fields, and known limitations
 
 For generated image/video work, validate manifests and paths directly: source `P###`, reference mode, scene package location, relative preview paths, file existence, and known limitations.
@@ -92,7 +93,7 @@ For a local Scene package or multi-Scene replay, run:
 ```bash
 node .agents/skills/qa-workflow/scripts/validate-shotlist-project.mjs \
   --script <script-path> \
-  --shotlist-root <deliverables/30_shotlist> \
+  --shotlist-root <deliverables/3_shotlist> \
   --require-complete
 ```
 
@@ -126,7 +127,7 @@ Save a report only when the user explicitly asks for a persistent QA artifact. O
 
 When requested, save it under:
 
-`deliverables/00_admin/qa_reports/qa_report_<stage>_v{N}.md`
+`deliverables/0_admin/qa_reports/qa_report_<stage>_v{N}.md`
 
 Use this report shape:
 

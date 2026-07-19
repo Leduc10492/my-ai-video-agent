@@ -1,6 +1,6 @@
 ---
 name: screenwriter-workflow
-description: Script-stage controller for this file-based AI video workflow. Use as the default script.primary skill when creating, revising, iterating, auditing, timing, cutting, polishing, or exporting script artifacts. It applies the Screenwriter writing mode as the main user-facing workflow, uses McKee skills as structure plugins, and preserves deliverables/10_story artifact versioning.
+description: Script-stage controller for this file-based AI video workflow. Use as the default script.primary skill when creating, revising, iterating, auditing, timing, cutting, polishing, or exporting script artifacts. It applies the Screenwriter writing mode as the main user-facing workflow, uses McKee skills as structure plugins, and preserves deliverables/1_story artifact versioning.
 ---
 
 # Screenwriter Workflow
@@ -10,8 +10,8 @@ description: Script-stage controller for this file-based AI video workflow. Use 
 - slot: `script.primary`
 - contract_version: `1`
 - canonical_outputs:
-  - `deliverables/10_story/01_script_v{N}.md`
-  - `deliverables/10_story/01_audit_report_v{N}.md`
+  - `deliverables/1_story/01_script_v{N}.md`
+  - `deliverables/1_story/01_audit_report_v{N}.md`
 - qa_handoff: `qa.primary`
 - state_contract: `n/a`
 
@@ -29,9 +29,9 @@ Do not make `mckee-create` the default script-writing entrance. For new script c
 
 Before substantial script work, read:
 
-1. `deliverables/00_admin/locks.md`
-2. Latest `deliverables/10_story/01_script_v{N}.md`, if present
-3. Latest `deliverables/10_story/01_audit_report_v{N}.md`, if relevant
+1. `deliverables/0_admin/locks.md`
+2. Latest `deliverables/1_story/01_script_v{N}.md`, if present
+3. Latest `deliverables/1_story/01_audit_report_v{N}.md`, if relevant
 4. `.agents/skill_registry.md`
 5. The specific McKee skill only when needed
 
@@ -193,23 +193,23 @@ Use only these gate decisions:
 
 When writing a production script artifact:
 
-- Path: `deliverables/10_story/01_script_v{N}.md`
+- Path: `deliverables/1_story/01_script_v{N}.md`
 - Use artifact metadata at the top.
 - If no current script exists, create `v1`.
-- If revising a current script, archive the previous current file to `archives/10_story/` before saving `v{N+1}`.
+- If revising a current script, archive the previous current file to `archives/1_story/` before saving `v{N+1}`.
 - Preserve the same artifact id across versions of the same script.
-- Append a short entry to `deliverables/00_admin/changelog.md`.
+- Append a short entry to `deliverables/0_admin/changelog.md`.
 
 When writing a persistent audit:
 
-- Path: `deliverables/10_story/01_audit_report_v{N}.md`
+- Path: `deliverables/1_story/01_audit_report_v{N}.md`
 - Use artifact metadata.
 - Use Chinese headings, table headers, issue descriptions, evidence, impact, and fix recommendations unless the user asks for another language.
 - Separate structure, continuity, production feasibility, and taste recommendations.
 - Lead with P0/P1 blockers when present.
 - Before handing the script to guides or shotlist production, persist the audit for the same script version and state whether unresolved P0/P1 findings block production. A missing audit or unresolved P0/P1 returns to this workflow; it is not a valid downstream handoff.
 
-Keep `.docx` exports as optional derived files when the user asks for them. The Markdown file in `deliverables/10_story/` remains the source of truth for this repo.
+Keep `.docx` exports as optional derived files when the user asks for them. The Markdown file in `deliverables/1_story/` remains the source of truth for this repo.
 
 For standard screenplay DOCX export, use `.agents/skills/screenwriter-workflow/scripts/export_screenplay_docx.js` on the current Markdown script after the iteration quality gate passes.
 

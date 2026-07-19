@@ -120,18 +120,69 @@ function validateCorePaths() {
     'QUICK_START.md',
     '.agents/skill_registry.md',
     '.codex/config.toml',
-    'deliverables/00_admin/locks.md',
-    'deliverables/00_admin/changelog.md',
-    'deliverables/00_admin/qa_reports/README.md',
-    'deliverables/10_story/README.md',
-    'deliverables/20_assets/README.md',
-    'deliverables/30_shotlist/README.md',
+    'deliverables/0_admin/locks.md',
+    'deliverables/0_admin/changelog.md',
+    'deliverables/0_admin/qa_reports/README.md',
+    'deliverables/1_story/README.md',
+    'deliverables/2_assets/README.md',
+    'deliverables/3_shotlist/README.md',
     'archives/README.md',
     'package.json',
     'pnpm-lock.yaml',
   ];
   const missing = required.filter((target) => !existsSync(path.join(repoRoot, target)));
   return missing.length === 0 ? pass('core repository paths', `${required.length} present`) : fail('core repository paths', missing);
+}
+
+function validateStageDirectoryNaming() {
+  const active = ['0_admin', '1_story', '2_assets', '3_shotlist'];
+  // Build deprecated padded names without leaving them as apparent path
+  // references in the repository contract itself.
+  const deprecated = [
+    ['0', '0_admin'].join(''),
+    ['1', '0_story'].join(''),
+    ['2', '0_assets'].join(''),
+    ['3', '0_shotlist'].join(''),
+  ];
+  const errors = [];
+
+  for (const directory of active) {
+    if (!existsSync(path.join(repoRoot, 'deliverables', directory))) {
+      errors.push(`missing single-digit stage directory deliverables/${directory}`);
+    }
+  }
+  for (const directory of deprecated) {
+    if (existsSync(path.join(repoRoot, 'deliverables', directory))) {
+      errors.push(`deprecated padded stage directory still exists: deliverables/${directory}`);
+    }
+    if (existsSync(path.join(repoRoot, 'archives', directory))) {
+      errors.push(`deprecated padded archive directory still exists: archives/${directory}`);
+    }
+  }
+
+  const contractFiles = [
+    path.join(repoRoot, 'AGENTS.md'),
+    path.join(repoRoot, 'README.md'),
+    path.join(repoRoot, 'QUICK_START.md'),
+    path.join(repoRoot, '.gitignore'),
+    ...walk(path.join(repoRoot, '.agents')),
+    ...walk(path.join(repoRoot, '.codex')),
+    ...walk(path.join(repoRoot, 'deliverables')),
+    ...walk(path.join(repoRoot, 'archives')),
+  ].filter((filePath) => /(?:\.md|\.toml|\.mjs|\.js|\.html|\.json|\.gitignore)$/.test(filePath));
+
+  for (const filePath of contractFiles) {
+    const source = readFileSync(filePath, 'utf8');
+    for (const directory of deprecated) {
+      if (source.includes(directory)) {
+        errors.push(`${path.relative(repoRoot, filePath)} references deprecated stage directory ${directory}`);
+      }
+    }
+  }
+
+  return errors.length === 0
+    ? pass('single-digit stage directory contract', `${active.length} stages`)
+    : fail('single-digit stage directory contract', errors);
 }
 
 function parseRegistry() {
@@ -263,7 +314,7 @@ function validateDocumentationLinks() {
     path.join(repoRoot, 'README.md'),
     path.join(repoRoot, 'QUICK_START.md'),
     ...walk(path.join(repoRoot, '.agents')).filter((filePath) => filePath.endsWith('.md')),
-    ...walk(path.join(repoRoot, 'deliverables', '00_admin')).filter((filePath) => filePath.endsWith('.md')),
+    ...walk(path.join(repoRoot, 'deliverables', '0_admin')).filter((filePath) => filePath.endsWith('.md')),
   ];
   const errors = [];
   for (const filePath of markdownFiles) {
@@ -288,6 +339,7 @@ const scriptFiles = walk(skillsRoot)
 
 let passed = true;
 passed = validateCorePaths() && passed;
+passed = validateStageDirectoryNaming() && passed;
 const registryRows = parseRegistry();
 passed = validateRegistry(registryRows) && passed;
 passed = validateAgents(registryRows) && passed;

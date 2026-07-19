@@ -16,13 +16,15 @@ Replace every placeholder before delivery:
 | `{{N_SCENES}}` | Screenplay scene count |
 | `{{N_ROWS}}` | Shot-row count |
 | `{{N_PROMPTS}}` | Prompt-envelope count |
-| `{{REFERENCE_SUMMARY}}` | Chinese summary of origin/binding/approval/output status |
+| `{{REFERENCE_SUMMARY}}` | One concise Chinese Scene-level summary containing all four reference-state fields; render once in the HTML header, never inside a prompt block |
 | `{{PLAN_OPTIONS}}` | Stable English values with Chinese visible labels |
 | `{{TOC_LINKS}}` | Scene links |
 | `{{ASSET_SUMMARY}}` | Chinese asset/reference table or summary |
 | `{{SCENE_BLOCKS}}` | Rendered scene sections |
 
 The final HTML must contain no unreplaced `{{...}}` tokens.
+
+Because each current package contains exactly one screenplay Scene, the document-header `{{REFERENCE_SUMMARY}}` is the single Scene-level state marker. Do not repeat it in individual Prompt Envelopes, asset handles, warnings, preview cells, or copyable prompt text.
 
 ## Identifier Contract
 
@@ -74,6 +76,12 @@ The final HTML must contain no unreplaced `{{...}}` tokens.
 
 Subsequent rows in the same prompt group contain only row ID, type, camera, and action cells.
 
+## Prompt Purity Contract
+
+`{{CHINESE_PROMPT}}` contains only Seedance-executable direction. It must not contain project-state headings, fields, values, or legacy labels such as `⚠️参考状态`, `asset_origin`, `reference_binding`, `reference_approval`, `output_status`, `prompt_only`, `production_approved`, `text_dna_draft`, `image_reference_bound`, `文本DNA`, `未附图`, or `未获用户站位锁定`.
+
+Reference handles may still state visible facts and model-facing use limits, such as `仅参考服装和体型，不参考背景`.
+
 ## Preview Rules
 
 For a real preview, embed a package-relative image:
@@ -85,7 +93,7 @@ For a real preview, embed a package-relative image:
 </a>
 ```
 
-For `output_status: prompt_only`, use a visible Chinese text state instead of a broken `<img>`.
+For `output_status: prompt_only`, use a concise visible Chinese result such as `本轮未生成线稿预览`, instead of a broken `<img>` or another copy of the project status token.
 
 ## Final Checks
 
@@ -94,4 +102,5 @@ For `output_status: prompt_only`, use a visible Chinese text state instead of a 
 - Copy, search, filter, print, and reset controls work.
 - Search and plan filters operate on complete Prompt Envelope row groups. If any row in a `rowspan` group matches, keep the first row and its prompt/source/preview cells visible with the whole group.
 - HTML metadata matches `manifest.md`.
+- All four reference-state fields appear exactly once in the Scene HTML header and never inside `.prompt-block`.
 - Every prompt is copied byte-for-byte from its `<pre>` content.

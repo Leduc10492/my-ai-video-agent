@@ -1,11 +1,12 @@
 # Artifact: Workflow Audit
 - id: A-20260718-201
-- version: v1
+- version: v2
 - upstream: []
 - locks:
   - must_keep:
     - GitHub 仓库根目录就是新项目根目录
     - 创作产物直接进入根目录 `deliverables/`
+    - 阶段目录固定为 `0_admin`、`1_story`、`2_assets`、`3_shotlist`
     - 稳定生产层级为 `Scene -> Shot Row -> Prompt Envelope`
     - 默认闭环停在中文 HTML；图片与视频生成需单独授权
   - must_avoid:
@@ -23,9 +24,11 @@
 - 结果：`pass`
 - 未解决 P0：0
 - 未解决 P1：0
-- 发布判断：允许提交并直接推送 GitHub `main`
+- 发布判断：本地验证通过；本轮目录命名迁移尚未推送
 
-当前仓库已经可以作为项目模板直接克隆。克隆后的仓库根目录包含 Registry、Agents、Skills、校验脚本、依赖锁文件，以及 `deliverables/10_story`、`deliverables/20_assets`、`deliverables/30_shotlist` 和 `archives` 的中性起始目录。旧开发环境中的外层 `main/test` 只是本地工作区安排，不是 GitHub 项目结构。
+当前仓库已经可以作为项目模板直接克隆。克隆后的仓库根目录包含 Registry、Agents、Skills、校验脚本、依赖锁文件，以及 `deliverables/0_admin`、`deliverables/1_story`、`deliverables/2_assets`、`deliverables/3_shotlist` 和 `archives` 的中性起始目录。旧开发环境中的外层 `main/test` 只是本地工作区安排，不是 GitHub 项目结构。
+
+阶段文件夹统一使用单数字前缀。文件名保留 `01_`、`02_`、`03_` 前缀，以维持阶段内部排序；目录编号与文件编号不再混用。
 
 ## 当前工作流
 
@@ -51,6 +54,7 @@
 | 检查项 | 结果 | 证据 |
 | --- | --- | --- |
 | 核心路径 | 通过 | 14 个仓库入口和起始目录全部存在 |
+| 阶段目录命名 | 通过 | `0_admin`、`1_story`、`2_assets`、`3_shotlist` 均存在且无废弃目录 |
 | Skill Registry | 通过 | 9 个 slot 均指向存在的 Skill 与 Owner Agent |
 | Agent 配置 | 通过 | 5 个 TOML；名称、slot、默认 Skill 均可解析 |
 | Skills | 通过 | 17 个 `SKILL.md`；frontmatter、名称、相对资源引用全部有效 |
@@ -74,12 +78,13 @@
 
 ## 实际执行证据
 
-1. `pnpm validate`：通过 14 个核心路径、9 个 Registry slot、5 个 Agent、17 个 Skill、60 个 Markdown 文件、2 个软链接、1 个依赖和 4 个 Node 脚本。
+1. `pnpm validate`：通过 14 个核心路径、4 个单数字阶段目录、9 个 Registry slot、5 个 Agent、17 个 Skill、60 个 Markdown 文件、2 个软链接、1 个依赖和 4 个 Node 脚本。
 2. Scene 索引脚本：临时双 Scene 剧本正确识别 `scene-001`、`scene-002`、行范围与前后关系。
 3. DOCX 导出：临时剧本成功生成 `.docx`，压缩包结构检查无错误。
 4. 隔离克隆模拟：把待提交 Git 树解包到全新 `/tmp` 目录，执行 `pnpm install --frozen-lockfile`、`pnpm validate`、`require('docx')` 和 DOCX 导出，全部通过。
 5. Git 检查：`git diff --check` 通过；没有断裂软链接。
 6. 对白对象回归：Skill 与独立 Shotlist validator 已改为从当前 Scene 动作、相邻对白、视线和 blocking 取证；证据不足时报告歧义，不发明“泛化听者”参数。历史 98 Scene 包未重建，符合本次只修 Skill 兜底的范围。
+7. 目录命名回归：在独立副本中故意加入废弃的两位数阶段目录，`pnpm validate` 按预期失败并指出该目录；删除污染后单数字目录校验通过。
 
 ## 本轮发现并修复的问题
 
@@ -89,8 +94,9 @@
 | P1 | `skills`、`codex-agents` 软链接受共享 worktree exclude 影响，可能不会进入 GitHub 克隆 | 用仓库级 negation 纳入 Git，并加入校验器 |
 | P1 | 对白对象可能被通用占位词掩盖，且多句对白可能错误复用 lip-sync Row | Breakdown、Prompt、HTML 与独立 validator 统一为逐原文对白、逐 Row 检查 |
 | P1 | HTML 筛选曾可能按内部 Shot Row 隐藏整个 Prompt Envelope | 筛选契约改为 Envelope 分组显示，保留 Envelope 内完整内部镜头 |
-| P2 | Git 不保存空目录，全新克隆可能没有 `10_story/20_assets/30_shotlist/archives` 起始结构 | 每个目录增加项目中性的 `README.md` |
+| P2 | Git 不保存空目录，全新克隆可能没有 `0_admin/1_story/2_assets/3_shotlist/archives` 起始结构 | 每个目录增加项目中性的 `README.md` |
 | P2 | 新项目结构仍可能被旧的外层 `main/test` 习惯误导 | README、Quick Start 与 Admin 说明明确改为仓库根目录直接创作 |
+| P2 | 阶段目录采用两位数前缀，不符合当前简洁命名约定 | 统一改为单数字阶段目录，并由仓库校验器阻止旧约定回流 |
 
 ## 仍需区分的证明边界
 
@@ -108,4 +114,4 @@ pnpm install --frozen-lockfile
 pnpm validate
 ```
 
-之后把当前项目剧本放进 `deliverables/10_story/`，直接从仓库根目录开始生产。生产产物默认被 `.gitignore` 留在项目本地；若某个新项目需要把剧本、图片或生成资产提交到自己的仓库，应在该项目副本中按团队的版本管理策略调整忽略规则，并把 remote 改成该项目自己的仓库。
+之后把当前项目剧本放进 `deliverables/1_story/`，直接从仓库根目录开始生产。生产产物默认被 `.gitignore` 留在项目本地；若某个新项目需要把剧本、图片或生成资产提交到自己的仓库，应在该项目副本中按团队的版本管理策略调整忽略规则，并把 remote 改成该项目自己的仓库。
