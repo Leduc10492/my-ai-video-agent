@@ -123,7 +123,7 @@ If required assets are missing, stop the production handoff and tell the user wh
 
 ### Phase 3 - 范围与空间调度
 
-Before `shotlist.primary` writes prompts, the breakdown should state:
+Before Prompt compilation begins, the Breakdown states:
 
 - approved single Scene label
 - target Scene package, such as `scene-021_v1`
@@ -151,16 +151,18 @@ Write Phase 3 with these Chinese subsections:
 ### 俯视图 / 站位图需求
 ```
 
-For each blocking item, record what must be approved before prompts are written: character positions, eyelines, prop placement, distances, camera positions, main view axis, and any occlusion or frame-edge constraints.
+For each blocking item, record what must be approved before Prompt compilation: character positions, eyelines, prop placement, distances, camera positions, main view axis, and any occlusion or frame-edge constraints.
 
-### Phase 4 - HTML 分镜生成计划
+Use `reference/SPATIAL_BLOCKING.md` for the approved spatial schema and the mode-aware fact packet handed to the Prompt compiler.
 
-This phase prepares the handoff to `sketch-shotlist-workflow`; it does not write final prompts or HTML.
+### Phase 4 - Prompt 编译与 HTML 汇总计划
+
+This phase prepares two separate downstream calls: first `shotlist.prompt_compiler`, then `shotlist.html_assembler`. It writes neither final Prompt prose nor HTML.
 
 Write Phase 4 with these Chinese subsections:
 
 ```markdown
-## Phase 4 - HTML 分镜生成计划
+## Phase 4 - Prompt 编译与 HTML 汇总计划
 
 ### Shot Row Plan
 
@@ -191,9 +193,11 @@ Write Phase 4 with these Chinese subsections:
 
 Shot rows and prompt envelopes are different entities. Use `<scene-label>-R<NN>` for rows, such as `scene-021-R01`; use `P###` only for prompt envelopes. Before assigning new prompt IDs, scan Scene folders directly under `deliverables/3_shotlist/` and `archives/3_shotlist/`, find the highest existing `P###`, and reserve a non-overlapping contiguous range in `Prompt ID Reservation`. Preserve migrated IDs only when a retained generated output depends on them; record any legacy aliases in the Scene manifest.
 
+Use the stable Shot Row codes in `reference/PLAN_TYPES.md`; detailed camera and action facts remain in their dedicated planning columns.
+
 Do not inflate every shot row into its own prompt. When short adjacent beats share the same location, character set, spatial axis, and immediate cause-effect turn, plan them as one compact multi-shot envelope with internal timing derived from the action rather than a preset total.
 
-`Prompt Density Notes` follows `../sketch-shotlist-workflow/reference/PROMPT_DENSITY.md`: group rows only when they share character set, location/sub-location, emotional/temporal unit, spatial axis, selected-generator feasibility, and practical prompt length. Split when location, character set, blocking, continuous action, or generation reliability changes materially; an insert or cutaway alone does not force a new envelope.
+`Prompt Density Notes` follows `reference/PROMPT_DENSITY.md`: group rows only when they share character set, location/sub-location, emotional/temporal unit, spatial axis, selected-generator feasibility, and practical Prompt length. Split when location, character set, blocking, continuous action, or generation reliability changes materially; an insert or cutaway alone does not force a new Envelope.
 
 `Production Batch Plan` is a hard quality gate:
 
@@ -234,7 +238,7 @@ Use this structure exactly:
 ### 空间 Blocking 队列
 ### 俯视图 / 站位图需求
 
-## Phase 4 - HTML 分镜生成计划
+## Phase 4 - Prompt 编译与 HTML 汇总计划
 
 ### Shot Row Plan
 ### Prompt Envelope Plan
@@ -277,3 +281,5 @@ Report in Simplified Chinese by default:
 - Phase 4 `Prompt Envelope Plan` readiness
 - production batch count and per-batch Prompt IDs
 - recommended next user action before prompt generation
+
+The downstream order is fixed: the orchestrating Agent sends each approved Prompt Envelope to `shotlist.prompt_compiler`, collects the compiled Prompt set, and then passes that set with all Breakdown outputs to `shotlist.html_assembler`.

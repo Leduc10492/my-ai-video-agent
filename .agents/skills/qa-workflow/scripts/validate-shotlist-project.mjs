@@ -106,25 +106,47 @@ function normalizePerson(value) {
     .replace(/[^A-Z\u3400-\u9FFF]/g, '');
 }
 
-function parseDialogueDirectives(html) {
-  const decoded = decodeHtml(html);
-  return allMatches(decoded, /⚠️对白保留：([^<\n]*)/g).map((text) => {
-    const row = text.match(/只在([a-z0-9-]+)对应内部镜头内/i)?.[1] ?? null;
-    const speaker = text.match(/对应内部镜头内，(.+?) (?:口型可见|以画外\/广播声)/)?.[1] ?? null;
-    const dialogue = text.match(/说出原文：["“](.*?)["”]。/)?.[1] ?? null;
-    const addressee = text.match(/严格朝向 (.+?) 说出原文/)?.[1]
-      ?? text.match(/以画外\/广播声对 (.+?) 说出原文/)?.[1]
-      ?? null;
-    return {
-      raw: text,
-      row,
-      speaker,
+function tagAttribute(tag, name) {
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const match = tag.match(new RegExp(`\\b${escaped}\\s*=\\s*(?:"([^"]*)"|'([^']*)')`, 'i'));
+  return match ? decodeHtml(match[1] ?? match[2] ?? '') : null;
+}
+
+function parseDialogueMetadata(html) {
+  const directives = [];
+  for (const match of html.matchAll(/<tr\b[^>]*>/gi)) {
+    const tag = match[0];
+    const cue = tagAttribute(tag, 'data-dialogue-cue');
+    const dialogue = tagAttribute(tag, 'data-dialogue-text');
+    const addressee = tagAttribute(tag, 'data-dialogue-addressee');
+    const mode = tagAttribute(tag, 'data-dialogue-mode');
+    if (![cue, dialogue, addressee, mode].some((value) => value !== null)) continue;
+    directives.push({
+      raw: tag,
+      row: tagAttribute(tag, 'data-row-id'),
+      speaker: cue,
       dialogue,
       addressee,
-      offscreen: text.includes('以画外/广播声'),
-      lipSync: text.includes('口型可见'),
-    };
-  });
+      mode,
+      offscreen: mode === 'offscreen',
+      lipSync: mode === 'lip_sync',
+    });
+  }
+  return directives;
+}
+
+function countCanonicalOccurrences(value, target) {
+  const haystack = canonicalText(value);
+  const needle = canonicalText(target);
+  if (!needle) return 0;
+  let count = 0;
+  let offset = 0;
+  while (true) {
+    const index = haystack.indexOf(needle, offset);
+    if (index < 0) return count;
+    count += 1;
+    offset = index + needle.length;
+  }
 }
 
 function manifestField(manifest, field) {
@@ -151,7 +173,7 @@ function issueCollector() {
   };
 }
 
-function compareDialogue(expected, actual, rows, sceneLabel, add) {
+function compareDialogue(expected, actual, rows, promptBlocks, sceneLabel, add) {
   if (expected.length !== actual.length) {
     add('error', 'dialogue-count', sceneLabel, `source=${expected.length}, html=${actual.length}`);
   }
@@ -182,6 +204,9 @@ function compareDialogue(expected, actual, rows, sceneLabel, add) {
     if (sourceLine.offscreen !== directive.offscreen) {
       add('error', 'dialogue-mode', sceneLabel, `${sourceLine.cue} source off-screen=${sourceLine.offscreen}, html off-screen=${directive.offscreen}`);
     }
+    if (!['lip_sync', 'offscreen'].includes(directive.mode)) {
+      add('error', 'dialogue-mode', sceneLabel, `${sourceLine.cue} has unsupported data-dialogue-mode=${directive.mode ?? 'missing'}`);
+    }
     if (!sourceLine.offscreen && !directive.lipSync) {
       add('error', 'lip-sync', sceneLabel, `${sourceLine.cue} lacks a lip-sync shot`);
     }
@@ -198,6 +223,19 @@ function compareDialogue(expected, actual, rows, sceneLabel, add) {
       if (speakerNames.includes(normalizePerson(directive.addressee))) {
         add('warning', 'self-direction', sceneLabel, `${sourceLine.cue} points toward ${directive.addressee}; inspect current Scene evidence`);
       }
+    }
+
+    const matchingPromptBlocks = promptBlocks.filter((block) => countCanonicalOccurrences(block, sourceLine.text) > 0);
+    const promptOccurrences = matchingPromptBlocks.reduce(
+      (count, block) => count + countCanonicalOccurrences(block, sourceLine.text),
+      0,
+    );
+    if (promptOccurrences === 0) {
+      add('error', 'dialogue-prompt-missing', sceneLabel, `${sourceLine.cue}: "${sourceLine.text}" is absent from prompt blocks`);
+    } else if (promptOccurrences > 1) {
+      add('error', 'dialogue-prompt-duplicate', sceneLabel, `${sourceLine.cue}: "${sourceLine.text}" occurs ${promptOccurrences} times in prompt blocks`);
+    } else if (!matchingPromptBlocks[0].includes(sourceLine.cue)) {
+      add('error', 'dialogue-prompt-speaker', sceneLabel, `${sourceLine.cue} cue is absent beside its exact prompt dialogue`);
     }
   }
 
@@ -232,7 +270,7 @@ async function validatePackage({ packagePath, directoryName, sourceScene, add, g
   ]);
   const rows = allMatches(html, /data-row-id="([^"]+)"/g);
   const promptIds = allMatches(html, /data-prompt-id="(P\d+)"/g);
-  const directives = parseDialogueDirectives(html);
+  const directives = parseDialogueMetadata(html);
 
   const uniqueRows = new Set(rows);
   const uniquePrompts = new Set(promptIds);
@@ -267,7 +305,6 @@ async function validatePackage({ packagePath, directoryName, sourceScene, add, g
     }
   }
 
-  const outputStatus = manifestField(manifest, 'output_status');
   for (const field of ['asset_origin', 'reference_binding', 'reference_approval', 'output_status']) {
     const declared = manifestField(manifest, field);
     if (!declared) {
@@ -282,22 +319,6 @@ async function validatePackage({ packagePath, directoryName, sourceScene, add, g
       }
     }
   }
-  const imageSources = allMatches(html, /<img\b[^>]*\bsrc="([^"]+)"/gi);
-  const previewGeneration = manifestField(manifest, 'preview_generation');
-  if ((outputStatus === 'prompt_only' || previewGeneration === 'not_authorized') && imageSources.length > 0) {
-    add('error', 'preview-state', label, 'HTML contains <img> while preview output is prompt_only or not authorized');
-  }
-  if (outputStatus === 'prompt_only' && !html.includes('preview-state')) {
-    add('error', 'preview-state', label, 'prompt_only HTML lacks a visible preview text state');
-  }
-  for (const source of imageSources) {
-    if (/^(?:data:|https?:|\/)/i.test(source)) {
-      add('error', 'preview-path', label, `preview path is not package-relative: ${source}`);
-    } else if (!(await exists(path.resolve(packagePath, source)))) {
-      add('error', 'preview-path', label, `missing preview file: ${source}`);
-    }
-  }
-
   const declaredRows = Number.parseInt(manifestField(manifest, 'shot_row_count') ?? '', 10);
   const declaredPrompts = Number.parseInt(manifestField(manifest, 'prompt_envelope_count') ?? '', 10);
   if (!Number.isNaN(declaredRows) && declaredRows !== rows.length) add('error', 'manifest-row-count', label, `manifest=${declaredRows}, html=${rows.length}`);
@@ -318,7 +339,7 @@ async function validatePackage({ packagePath, directoryName, sourceScene, add, g
       || Number(declaredLines[2]) !== sourceScene.endLine) {
       add('error', 'source-lines', label, `expected L${sourceScene.startLine}–L${sourceScene.endLine}, manifest=${manifestField(manifest, 'source_lines') ?? 'missing'}`);
     }
-    compareDialogue(extractSourceDialogue(sourceScene), directives, rows, label, add);
+    compareDialogue(extractSourceDialogue(sourceScene), directives, rows, promptBlocks, label, add);
   }
 
   return { label, rows: rows.length, prompts: promptIds.length, dialogue: directives.length };

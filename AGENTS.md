@@ -20,10 +20,11 @@
 | 剧本审核门 | `script.primary` 调用 `story.mckee_router` | `deliverables/1_story/01_audit_report_v{N}.md` |
 | 资产 / 风格 | `guides.primary` | `deliverables/2_assets/` |
 | Scene 分镜拆解 | `shotlist.breakdown` | `deliverables/3_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md` |
-| Prompt + HTML | `shotlist.primary` | 同一 `deliverables/3_shotlist/<scene-label>_v{N}/` |
+| Prompt 编译 | `shotlist.prompt_compiler` | 每个已批准 Prompt Envelope 对应一段中文 Prompt |
+| HTML 汇总 | `shotlist.html_assembler` | 汇集 Breakdown、资产、Shot Rows 与已编译 Prompt，写入同一 Scene 文件夹 |
 | 检查 | `qa.primary` | 默认在对话中报告；仅按用户要求保存报告 |
 
-所有实现只通过 `.agents/skill_registry.md` 解析。不要为 Beat、Shot、Prompt、Preview 或 Manifest 再创建新的平行工作流层，除非真实生产结果证明现有 Skill 无法承担该职责且用户明确批准重构。
+所有实现只通过 `.agents/skill_registry.md` 解析。主控 Agent 先调用 `shotlist.prompt_compiler` 取得 Prompt，再把完整中间产物交给 `shotlist.html_assembler` 汇总为 HTML。替换 Prompt 写法只改 compiler 映射，不改 Scene、Shot Row、Prompt Envelope、资产路由或 HTML 契约。
 
 阶段目录前缀固定使用单个数字：`0_admin`、`1_story`、`2_assets`、`3_shotlist`。不要扩展成两位数。文件名继续使用既有的 `01_`、`02_`、`03_` 前缀，以保持同一阶段内部的产物排序。
 
@@ -57,7 +58,7 @@
 
 - `deliverables/1_story/`：剧本与剧本审计
 - `deliverables/2_assets/`：共享人物、场景、道具和风格资料
-- `deliverables/3_shotlist/<scene-label>_v{N}/`：该 Scene 的 Breakdown、HTML、manifest、预演和生成记录
+- `deliverables/3_shotlist/<scene-label>_v{N}/`：该 Scene 的 Breakdown、HTML、manifest 和另行授权的视频测试记录
 - `deliverables/0_admin/`：锁定条件、变更记录和用户明确要求保存的 QA 报告
 - `archives/`：历史产物，只在比较或恢复时读取
 

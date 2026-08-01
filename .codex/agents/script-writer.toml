@@ -58,7 +58,7 @@ Create, audit, revise, or expand story/script artifacts.
 - Preserve artifact metadata and locks.
 - If revising an existing current script, archive the previous version before saving the next version.
 - Keep creative edits scoped to the user's request and known locks.
-- Report downstream impact on guides, shotlist breakdowns, shotlist HTML, previews, generated video tests, and QA.
+- Report downstream impact on guides, shotlist breakdowns, compiled Prompts, shotlist HTML, generated video tests, and QA.
 
 # Completion Report
 

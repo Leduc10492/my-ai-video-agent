@@ -21,6 +21,39 @@ Newest entries should go near the top, below this format note.
 
 ---
 
+## [2026-08-01] - Remove Storyboard Preview Generation
+
+### Changed
+- The active production chain now ends at the Chinese shotlist HTML and no longer generates line-art storyboard images, e-conte sheets, preview manifests, or preview columns.
+- `storyboard-director` now calls `shotlist.prompt_compiler` first and passes the complete compiled Prompt set to `shotlist.html_assembler` for byte-for-byte HTML integration.
+- Renamed the HTML integration slot to `shotlist.html_assembler` so Prompt compilation and HTML assembly cannot be interpreted as one responsibility.
+- Moved Prompt Envelope density, Shot Row plan types, and spatial blocking references under `shotlist-breakdown-workflow`.
+- QA and repository validation now check the Prompt compiler / HTML ownership boundary without prescribing the compiler's creative Prompt method.
+
+### Archived
+- Removed `econte-preview-prompt.template.md` and `preview-manifest.template.md` from the active HTML Skill.
+- Removed legacy camera, micro-performance, Prompt pattern, and style-compiler references from the HTML Skill; final Prompt method now comes only from the resolved `shotlist.prompt_compiler`.
+
+## [2026-08-01] - Plug-in Prompt Compiler Replacement
+
+### Added
+- Added the Registry slot `shotlist.prompt_compiler` with `seedance-clean-zh` as the default implementation.
+- Added `.agents/skills/seedance-clean-zh/SKILL.md`, preserving the original `seedance-clean` directing method while changing model-facing block labels and direction to Simplified Chinese.
+
+### Changed
+- `shotlist.prompt_compiler` owns final Prompt wording, while `sketch-shotlist-workflow` owns final HTML and manifest integration.
+- Repository QA resolves the compiler from the Registry and records its implementation independently from the HTML Skill.
+
+### Archived
+- Removed the trial-only embedded `reference/I2V_PROMPT_COMPILER.md`; its responsibility now belongs to the replaceable `seedance-clean-zh` Skill.
+
+## [2026-07-30] - Shotlist Prompt Compiler Trial
+
+### Changed
+- `.agents/skills/sketch-shotlist-workflow/`: trialed a project-routed Chinese adaptation of `seedance-clean_v2.skill` while preserving the HTML integration contract, Scene packages, Shot Rows, Prompt Envelopes, asset tags, manifests, and QA.
+- Added sealed-context, reference-fitness, FOV, visible-action, distributed-style, explicit 60:30:10, and positive-lock gates to the existing Prompt stage.
+- Source package SHA-256: `d07994192d04beb3b52d8e470f91bc2c86774c43f4c81b17096dc17ad5db901d`; internal `seedance-clean/SKILL.md` SHA-256: `482895ec5d731ea67f42d8d644454549c519f15ce2d08cf24e6fc33a874573d5`.
+
 ## [2026-06-27] - Starter Baseline
 
 ### Changed

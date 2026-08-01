@@ -52,6 +52,8 @@ pnpm validate
 - 不使用硬编码 fixture 代替 Skill 运行。
 - QA 检查真实产物，不用结构通过冒充创作质量。
 
+Prompt 写法通过 Registry 的 `shotlist.prompt_compiler` 独立替换。当前默认实现是 `seedance-clean-zh`。主控 Agent 先取得每个 Prompt Envelope 的编译结果，再由 `shotlist.html_assembler` 将 Breakdown、Shot Rows、资产信息和 Prompt 原样汇集到最终 HTML。HTML Skill 不参与 Prompt 创作。
+
 ## Shotlist 目录
 
 ```text
@@ -62,9 +64,10 @@ deliverables/3_shotlist/
     ├── manifest.md
     ├── spatial_blocking.md        # 需要时
     ├── assets/                    # 仅 Scene 专用资产
-    ├── previews/                  # 用户单独授权后
-    └── generated/                 # 用户单独授权后
+    └── generated/                 # 另行授权的视频测试记录
 ```
+
+当前工作流不生成线稿分镜图、e-conte 或 preview manifest；最终可视化交付物是包含完整分镜与 Seedance Prompt 的 HTML。
 
 生产层级是 `Scene -> Shot Row -> Prompt Envelope`。文件夹按 Scene 建；Shot Row 和 Prompt Envelope 是 Scene 文件内部的导演与生成映射，不再建立额外目录。
 

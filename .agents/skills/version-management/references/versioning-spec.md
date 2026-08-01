@@ -30,7 +30,7 @@ Scene shotlist HTML uses a package directory as the versioned unit:
 - current: `deliverables/3_shotlist/scene-021_v2/Shotlist_scene-021_ZH_v2.html`
 - archived: `archives/3_shotlist/scene-021_v1/Shotlist_scene-021_ZH_v1.html`
 
-Keep previews, scene-specific assets, generated tests, and scene QA inside the same package version.
+Keep Scene-specific assets, generated tests, and Scene QA inside the same package version.
 
 ## Rollback
 

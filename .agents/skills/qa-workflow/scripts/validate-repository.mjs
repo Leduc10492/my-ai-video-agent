@@ -325,6 +325,51 @@ function validateDocumentationLinks() {
   return errors.length === 0 ? pass('Markdown file links', `${markdownFiles.length} files`) : fail('Markdown file links', errors);
 }
 
+function validatePromptCompilerContract(registryRows) {
+  const compilerRow = registryRows.find((row) => row.slot === 'shotlist.prompt_compiler');
+  if (!compilerRow) return fail('replaceable Prompt compiler contract', 'Registry is missing shotlist.prompt_compiler');
+  const htmlRow = registryRows.find((row) => row.slot === 'shotlist.html_assembler');
+  if (!htmlRow) return fail('replaceable Prompt compiler contract', 'Registry is missing shotlist.html_assembler');
+  const compilerPath = path.join(skillsRoot, compilerRow.skill, 'SKILL.md');
+  const htmlPath = path.join(skillsRoot, htmlRow.skill, 'SKILL.md');
+  const errors = [];
+
+  for (const [label, filePath] of [['compiler', compilerPath], ['HTML assembler', htmlPath]]) {
+    if (!existsSync(filePath)) errors.push(`${label} contract is missing: ${path.relative(repoRoot, filePath)}`);
+  }
+  if (errors.length > 0) return fail('replaceable Prompt compiler contract', errors);
+
+  const sources = {
+    compiler: readFileSync(compilerPath, 'utf8'),
+    html: readFileSync(htmlPath, 'utf8'),
+  };
+  const required = [
+    ['compiler', '## Source And Language Override'],
+    ['compiler', '- slot: `shotlist.prompt_compiler`'],
+    ['compiler', 'Prompt content only'],
+    ['compiler', '**Simplified Chinese prompts only.**'],
+    ['html', '- slot: `shotlist.html_assembler`'],
+    ['html', 'already compiled Seedance Prompt set'],
+    ['html', 'preserves it byte-for-byte'],
+    ['html', 'six production columns'],
+  ];
+  for (const [label, needle] of required) {
+    if (!sources[label].includes(needle)) errors.push(`${label} contract is missing required rule: ${needle}`);
+  }
+
+  const retiredFiles = [
+    path.join(skillsRoot, htmlRow.skill, 'templates', 'econte-preview-prompt.template.md'),
+    path.join(skillsRoot, htmlRow.skill, 'templates', 'preview-manifest.template.md'),
+  ];
+  for (const filePath of retiredFiles) {
+    if (existsSync(filePath)) errors.push(`retired storyboard-preview workflow file still exists: ${path.relative(repoRoot, filePath)}`);
+  }
+
+  return errors.length === 0
+    ? pass('Prompt compiler / HTML boundary', `${compilerRow.skill} -> ${htmlRow.skill}; ${required.length} interface rules`)
+    : fail('replaceable Prompt compiler contract', errors);
+}
+
 if (!existsSync(skillsRoot)) {
   console.error(`FAIL skills root not found: ${skillsRoot}`);
   process.exit(1);
@@ -345,6 +390,7 @@ passed = validateRegistry(registryRows) && passed;
 passed = validateAgents(registryRows) && passed;
 passed = validateConvenienceLinks() && passed;
 passed = validateDocumentationLinks() && passed;
+passed = validatePromptCompilerContract(registryRows) && passed;
 for (const skillDirectory of skillDirectories) {
   passed = validateSkill(skillDirectory) && passed;
 }

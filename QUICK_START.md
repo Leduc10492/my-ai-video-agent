@@ -26,11 +26,13 @@ pnpm validate
 ```
 
 ```text
-根据 scene-081 文件夹内已确认的 Breakdown，在同一文件夹生成中文 Prompt、HTML 和 manifest。
+根据 scene-081 文件夹内已确认的 Breakdown，先调用 `shotlist.prompt_compiler` 生成每个 Prompt Envelope 的中文 Prompt，再调用 `shotlist.html_assembler` 将全部中间产物汇总成同一文件夹内的 HTML 和 manifest。
 ```
+
+Prompt 内容由 `.agents/skill_registry.md` 的 `shotlist.prompt_compiler` 独立生成；`shotlist.html_assembler` 只负责 HTML 汇总。替换 Prompt Skill 时，Scene 目录、Shot Row、Prompt Envelope、资产标签和 HTML 契约保持不变。
 
 ```text
 检查 scene-081：原台词覆盖、切镜理由、Prompt 打包、实际时长和 HTML 映射。
 ```
 
-主流程默认停在 HTML。需要预演图或视频时，再明确指定 Prompt ID 和生成范围。
+主流程固定停在 HTML，不生成线稿分镜图。需要视频测试时，再单独指定 Prompt ID 和生成范围。

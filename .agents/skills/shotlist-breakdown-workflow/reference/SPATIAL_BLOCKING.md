@@ -1,4 +1,4 @@
-# Spatial Blocking — Top-Down Schema
+# Breakdown Spatial Blocking — Top-Down Schema
 
 **Rule:** before writing any prompt with 2+ characters, key props on a specific surface, or complex camera geometry — produce a top-down (bird's-eye) SVG schema and get user approval. AI video models hallucinate spatial relationships unless they're declared in absolute terms; the schema is how you lock blocking before the prompt is written.
 
@@ -30,36 +30,24 @@ Skip it for:
 
 Use an available diagram or canvas tool, or create a simple SVG/Markdown coordinate plan when no visual tool is available. Use a stable legend and consistent character colors across the selected scope. The schema must remain readable without depending on a specific tool name.
 
-After rendering, ask in Chinese: **"这个站位和道具位置对吗？需要改哪里？"** Iterate until approved before writing any prompt.
+After rendering, ask in Chinese: **"这个站位和道具位置对吗？需要改哪里？"** Iterate until the spatial plan is approved.
 
-## 4. After approval — translating the schema into the prompt
+## 4. After approval — downstream handoff packet
 
-Every prompt for that scene includes a `⚠️空间布局` block that mirrors the approved schema:
+The approved schema remains the planning source of truth. Pass a mode-aware spatial-fact packet to the orchestrating Agent and selected Prompt compiler:
 
-```
-⚠️空间布局（MAIN VIEW=从 [direction]，俯视图布局）：
-位置A：[Character1]靠/站在 [exact location]——[detail, e.g. height, angle]
-位置B：[Character2]站在 [exact location]——[detail]
-位置C：[Prop]放置在 [exact location]——[detail]
-⚠️[Critical alignment rules: distances, axes, mirroring, occlusion]
-```
+- **T2V / text-only:** positions, distances, axis, facing, and occlusion needed to construct the shot.
+- **I2V / R2V:** visible starting state carried by the opening image plus the required movement delta, target position, contact, axis, or occlusion.
 
-Example:
-```
-⚠️空间布局（MAIN VIEW=从入口看向背景墙）：
-位置A：@image1站在入口内侧偏左，面朝空间中央。
-位置B：@image2站在中央轴线，距@image1约3米，面朝@image1。
-位置C：@image3位于@image2后方1.5米，部分被@image2遮挡。
-⚠️@image1与@image2不得交换左右位置；@image3必须保持后景遮挡关系。
-```
-
-Always include in the prompt:
+The packet records only relationships the current action, camera move, or known failure risk depends on:
 - Distances in meters
 - Cardinal directions or "north/south/east/west" relative to the declared main view
 - Who occludes whom
 - Which direction each character faces
 - Any heights or eyelines that the model might get wrong
 
+The selected Prompt compiler owns the final wording and placement of these facts.
+
 ## 5. Position changes
 
-If the user revises a position after approval — **redraw the schema first**, get re-approval, then update the prompt. Do not edit the prompt's `空间布局` block from memory; always work from the latest approved schema.
+If the user revises a position after approval, redraw the schema, obtain re-approval, and send the latest spatial-fact packet back through Prompt compilation. For I2V, mark which starting relationships are already visible in the attached opening image.

@@ -51,7 +51,7 @@ Create or revise visual asset and style guide artifacts from the latest story so
 - Start production guides only when the current script's same-version audit has no unresolved P0/P1; otherwise return to `script.primary`.
 - Do not invent reference image paths. Register only files that exist or mark required references as missing.
 - Keep asset facts and style facts separate: asset guide owns identity, props, locations, and continuity; style guide owns visual language.
-- If guides change after downstream artifacts exist, report which shotlist breakdowns, shotlist HTML files, preview manifests, generated references, and generated video tests need inspection or regeneration.
+- If guides change after downstream artifacts exist, report which shotlist breakdowns, compiled Prompts, shotlist HTML files, generated references, and generated video tests need inspection or regeneration.
 - Preserve artifact metadata and locks.
 
 # Completion Report

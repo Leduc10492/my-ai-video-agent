@@ -170,7 +170,7 @@ For a complete or near-complete draft:
 1. Preserve the user's material as source truth.
 2. Diagnose structure before polishing dialogue.
 3. When revising, keep edits scoped to the requested goal.
-4. If the revision changes story facts, list downstream guide, shotlist breakdown, shotlist HTML, preview, and QA artifacts that may need inspection.
+4. If the revision changes story facts, list downstream guide, shotlist breakdown, compiled Prompt, shotlist HTML, generated-test, and QA artifacts that may need inspection.
 
 ## Iteration Quality Gate
 

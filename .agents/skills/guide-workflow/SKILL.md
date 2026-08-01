@@ -49,7 +49,7 @@ The asset guide owns continuity facts that downstream shotlist and generation st
 | Character references | Local image path, role, status: provided / missing / draft / approved |
 | Locations | Spatial layout, lighting logic, recurring background details |
 | Props and motifs | Appearance, state changes, shots or beats where they appear |
-| Continuity rules | What must remain stable across shotlist breakdown, prompt envelopes, previews, and generated video tests |
+| Continuity rules | What must remain stable across shotlist breakdown, Prompt compilation, final HTML, and generated video tests |
 | Open gaps | Missing refs, unresolved costume/prop/location decisions |
 
 For every named character, include a concise DNA line that downstream prompts can copy without generic substitutes.
@@ -65,7 +65,7 @@ The style guide owns visual language, not story facts:
 | Lighting | Section-specific or emotional lighting rules |
 | Texture and medium | Lens, grain, line quality, rendering style, material feel |
 | Composition | Framing, camera distance tendencies, negative space, movement taste |
-| Platform-neutral prompt tokens | Reusable descriptors for shotlist prompt envelopes and preview generation |
+| Platform-neutral visual facts | Reusable visual facts passed as input to the selected Prompt compiler |
 | Negative style rules | What should be avoided across platforms |
 
 If the user requests platform-specific style syntax, keep it in a clearly labeled section and do not mix it with platform-neutral rules.
@@ -89,7 +89,7 @@ For every reference batch, record `asset_origin`, `reference_binding`, `referenc
 - If revising a current guide, archive the previous version under `archives/2_assets/` and save the next version under `deliverables/2_assets/`.
 - Preserve artifact IDs across versions of the same guide.
 - Update `deliverables/0_admin/changelog.md`.
-- After guide changes, list downstream artifacts that may need inspection: shotlist breakdowns, shotlist HTML, preview manifests, generated references, and generated video tests.
+- After guide changes, list downstream artifacts that may need inspection: shotlist breakdowns, compiled Prompts, shotlist HTML, generated references, and generated video tests.
 
 ## QA Before Handoff
 
@@ -98,6 +98,6 @@ For every reference batch, record `asset_origin`, `reference_binding`, `referenc
 - Artifact metadata exists and version matches filename.
 - All local reference paths exist or are explicitly marked missing.
 - Character DNA is specific enough to prevent generic labels.
-- Style guide can support shotlist prompt envelopes, rough e-conte previews, and generated video tests.
+- Style guide can support shotlist Prompt compilation, HTML integration, and generated video tests.
 - Open gaps and production blockers are visible before downstream generation.
 - All four reference-state fields are present and semantically independent.
