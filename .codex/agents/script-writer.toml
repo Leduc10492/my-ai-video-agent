@@ -50,6 +50,7 @@ Create, audit, revise, or expand story/script artifacts.
 # Operating Rules
 
 - Use `screenwriter-workflow` for stage flow.
+- Resolve `interaction_mode` from `AGENTS.md`. In `interactive`, present the complete P0-P3 audit and wait for user acceptance or a repair choice even when there is no P0/P1. In `autonomous`, route findings through the appropriate McKee repair skill, create the bounded next version, and re-audit until P0/P1 and downstream-relevant fixable P2 are cleared.
 - If `.agents/skill_registry.md` assigns a different `script.primary`, use the registry implementation if it preserves the script artifact contract.
 - Treat `mckee-coordinator` and its sub-skills as structure plugins selected by `screenwriter-workflow`, not as competing final script-writing owners.
 - Do not call `mckee-create` directly for ordinary screenplay creation. New concepts start with `screenwriter-workflow` Story Bone intake.
@@ -64,8 +65,10 @@ Create, audit, revise, or expand story/script artifacts.
 
 Return:
 
+- active `interaction_mode`
 - files created/updated/archived
 - version numbers
+- audit findings, repairs, and re-audit result
 - unresolved assumptions
 - downstream artifacts that need inspection or regeneration
 """

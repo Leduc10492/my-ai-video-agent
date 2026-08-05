@@ -31,6 +31,13 @@ For a long script, first scan only Scene IDs/sluglines and their line ranges to 
 
 Before Scene work, verify that the audit names the same script version and has no unresolved P0/P1. If the audit is missing, stale, or blocking, stop and return the exact script/audit paths to `script.primary` for revision or re-audit.
 
+Resolve `interaction_mode` from `AGENTS.md` before selecting the Scene:
+
+- `interactive`: require evidence that the user accepted the current script/audit and asset/style stage. After the first Scene Breakdown, stop before Prompt compilation and present the asset requests, blocking plan, Prompt Envelope plan, risks, and QA findings. After each Scene or approved 4—8 Envelope batch, stop before the next Scene.
+- `autonomous`: treat the first Scene as an internal pilot. Run Breakdown QA, repair all P0/P1 and downstream-relevant P2 findings through the owning stage, re-run QA, then compile Prompt/HTML and continue Scene by Scene without routine confirmation. If a failure comes from the script or shared assets, return to that owning Skill, revise/version the upstream artifact, re-run impacted downstream work, and only then continue.
+
+Do not interpret a broad workflow request as autonomous mode. Do not silently keep `text_only` when the autonomous scope requires complete production design.
+
 If an existing `03_storyboard_v{N}.md` planning artifact is needed, read it from `archives/` as legacy input only. New production planning must use the selected Scene's canonical folder and filename.
 
 ## Outputs
@@ -119,7 +126,7 @@ Project adaptation:
 
 Record the current state with `asset_origin`, `reference_binding`, `reference_approval`, and `output_status`. Keep old labels only in a `legacy_reference_mode` compatibility note.
 
-If required assets are missing, stop the production handoff and tell the user which assets to generate/upload before Phase 3. Continue only if the user explicitly accepts a draft/reference-limited mode.
+If required assets are missing, stop the production handoff. In `interactive`, tell the user which assets to upload/generate and continue only after an explicit draft/reference-limited choice. In `autonomous`, return the missing-asset packet to `guides.primary`, generate or repair the shared references, QA them, update the guide and this Breakdown, then resume Phase 3. Continue as `text_only` only when the user's autonomous scope explicitly ends at text planning.
 
 ### Phase 3 - 范围与空间调度
 
@@ -268,11 +275,13 @@ Use this structure exactly:
 - `Production Batch Plan` keeps quality passes near 4-8 Envelopes and splits any Scene above 10 Envelopes before production prompting.
 - Shot-row IDs and `P###` prompt IDs are distinct, and `Prompt ID Reservation` proves the range does not collide with active or archived packages.
 - Phase 4 recommendation names exact scene scope and whether output is production or draft mode.
+- The active interaction-mode gate is satisfied. `interactive` has user approval for this Scene/batch; `autonomous` has repair evidence and no unresolved P0/P1 or fixable downstream-relevant P2.
 
 ## Handoff
 
 Report in Simplified Chinese by default:
 
+- active `interaction_mode`
 - file created/updated/archived
 - selected Scene label and its position in the full script Scene queue
 - asset request summary
@@ -282,4 +291,4 @@ Report in Simplified Chinese by default:
 - production batch count and per-batch Prompt IDs
 - recommended next user action before prompt generation
 
-The downstream order is fixed: the orchestrating Agent sends each approved Prompt Envelope to `shotlist.prompt_compiler`, collects the compiled Prompt set, and then passes that set with all Breakdown outputs to `shotlist.html_assembler`.
+The downstream order is fixed: the orchestrating Agent sends each approved Prompt Envelope to `shotlist.prompt_compiler`, collects the compiled Prompt set, and then passes that set with all Breakdown outputs to `shotlist.html_assembler`. In `interactive`, approval comes from the user gate. In `autonomous`, approval comes from the completed repair-and-QA loop.

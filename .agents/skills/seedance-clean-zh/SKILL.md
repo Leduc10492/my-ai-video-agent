@@ -45,7 +45,7 @@ The caller supplies only the current Envelope and its approved evidence:
 - model-facing mode: `T2V`, `I2V`, `R2V`, or `FLF2V`;
 - current beat boundary, intended duration, and observable endpoint;
 - source Shot Rows and exact dialogue carried by this Envelope;
-- approved blocking, action axis, screen direction, and camera plan;
+- approved blocking, action axis, screen direction, and camera plan, including any required first-frame occupancy, landmark contact/distance, and lens-risk note already decided by `shotlist.breakdown`;
 - exact active `@imageN`, `@videoN`, and `@audioN` set with project routes;
 - visual fitness for each reference: `supported`, `partial`, or `conflicting`;
 - relevant asset/style-guide facts, including the project 60:30:10 hierarchy.
@@ -60,13 +60,13 @@ The model reacts to what can be seen, heard, and measured. Translate abstraction
 - `态度软化` -> `呼吸停半拍，下颌松开，抬起的手掌旋转成放行手势。`
 - `车辆开始移动` -> `发动机转速抬升，前轮滚过检查线，乘员重心轻微后移。`
 
-Use plain instruction-style language. Fewer precise words beat many vague ones. Mentally watch the Prompt before delivery: the first frame is occupied, every subject has a position and eyeline, the light has a source, the action has a path, and the clip has a visible endpoint.
+Use plain instruction-style language. Fewer precise words beat many vague ones. Mentally watch the Prompt before delivery: the first frame matches the approved occupied/empty/insert state, every visible subject has a position and eyeline, the light has a source, the action has a path, and the clip has a visible endpoint.
 
 ## Workflow
 
 1. Read the Envelope as a director and locate its turn, landing point, and breathing room.
 2. Define continuity anchors: active people, current wardrobe/condition, props, vehicle, geometry, and light.
-3. Apply the mode gate and reference-fitness gate.
+3. Apply the mode gate, reference-fitness gate, first-frame/spatial-risk gate, and FOV outcome/drift gate.
 4. Write one sealed Chinese Prompt using the block structure below.
 5. Compress repeated static facts, generic quality words, and duplicated locks.
 
@@ -115,6 +115,19 @@ Keep outside the Prompt:
 
 End on the current positive observable state. Planning keeps completed and reserved beats.
 
+## First-Frame And Landmark Gate
+
+Treat the first frame as an approved directing fact, not a generic requirement that every clip must open on every subject.
+
+- If the Envelope requires active people, props, vehicles, or a location fact to be visible immediately, place those exact elements in frame one with their approved screen position, depth layer, body orientation, gaze, hand/prop state, and occlusion.
+- If the approved plan begins empty, offscreen, black, or on an environmental/prop insert, preserve that opening. Never add characters merely to satisfy an occupancy template.
+- Do not delay an approved frame-one subject behind an establishing shot, abstract insert, or unplanned reveal.
+- For a landmark-critical action, bind the subject to the approved physical relation: touching, back against, directly under, inside a marked zone, or a supplied distance. Put the relation in `场地关系` or `第一帧 / 调度`, not in a separate generic warning block.
+- Distinguish screen position from world position, and body direction from gaze direction. `画面右侧` does not prove which way the torso or eyes face.
+- Never invent meters, cardinal directions, landmark names, or contact states. If the Breakdown says only `near` and exact proximity changes the shot, return an ambiguity packet instead of silently choosing a number.
+
+When the first-frame or landmark state is fragile, express it once as a compact positive target. Repeat it in `正向锁` only if it is one of the Envelope's one to three highest-risk anchors.
+
 ## Reference Fitness Gate
 
 Compare each claimed responsibility with the actual pixels before writing:
@@ -159,7 +172,7 @@ Use these Simplified Chinese labels in this order. Optional blocks may be omitte
 [前景/中景/背景、摄影机侧、光源方向、人物与运动路径。]
 
 第一帧 / 调度
-[第一帧中每个人的位置、朝向、视线、手/道具状态和动作准备。]
+[严格服从已批准开场：第一帧需要出现的主体、画面位置、景深层、朝向、视线、手/道具状态，以及已批准的地标接触或距离。若批准为空镜/黑场/物件开场，不强行加入人物。]
 
 镜头形式
 [单镜头、顺序切镜或定时多镜头。]
@@ -230,6 +243,8 @@ Across internal cuts hold the same character set, geometry, screen direction, ga
 ## Directing
 
 - **Blocking:** state where each person stands/sits/moves, what the hands do, and what lies between subjects.
+- **First frame:** show only the subjects required at frame one and make their approved positions readable immediately; preserve an approved empty or insert opening.
+- **Landmark relation:** when the beat depends on a door, car, tape mark, table edge, sign, tree, or other landmark, state the approved contact or distance once in physical language.
 - **Pace:** give confessions and realizations air; compress action; land a reveal on one held readable image.
 - **Acting:** translate emotion into eye, jaw, breath, fingers, shoulders, weight, and timing. Restraint is the default.
 - **Camera:** state FOV, height, physical position, axis, movement motivation, and endpoint.
@@ -247,23 +262,38 @@ Across internal cuts hold the same character set, geometry, screen direction, ga
 - Express emotion through muscle movement and timing.
 - Describe the look rather than naming camera, lens, film-stock, director, or studio models.
 
-## Optics: FOV In Prompt Text
+## Optics: FOV Outcome And Drift Control
 
 Millimeter values remain in Shot Rows and internal planning. Final Prompt text uses only these discrete FOV anchors:
 
-| FOV | Planning equivalent | Use |
-| ---: | ---: | --- |
-| 180° | fisheye | spherical distortion |
-| 107° | 14–16mm | architectural ultra-wide |
-| 84° | 20–24mm | wide spatial establishment |
-| 63° | 28–35mm | observational wide |
-| 47° | 40–50mm | neutral human perspective / medium |
-| 29° | 75–85mm | dialogue isolation / medium-close |
-| 18° | 100–135mm | close portrait |
-| 12° | 180–200mm | compressed detail |
-| 8° | 300–400mm | distant observation |
+| FOV | Planning equivalent | Use | Compact model-facing outcome |
+| ---: | ---: | --- | --- |
+| 180° | fisheye | spherical distortion | 球面弯曲包围画面，边缘强烈变形；仅在批准使用鱼眼时写入 |
+| 107° | 14–16mm | architectural ultra-wide | 摄影机贴近前景，空间延展到四边，建筑直线保持笔直 |
+| 84° | 20–24mm | wide spatial establishment | 摄影机靠近主体，前景存在感增强，环境持续可读 |
+| 63° | 28–35mm | observational wide | 人物与环境同时清楚，透视有轻微扩张但不过度 |
+| 47° | 40–50mm | neutral human perspective / medium | 比例自然，背景可读，不强调广角扩张或长焦压缩 |
+| 29° | 75–85mm | dialogue isolation / medium-close | 通过较远机位取得近景，背景开始压缩并柔化 |
+| 18° | 100–135mm | close portrait | 主体锐利隔离，背景明显压缩成浅景深色块 |
+| 12° | 180–200mm | compressed detail | 远距离观察，空间层次压紧，焦点只留在关键细节 |
+| 8° | 300–400mm | distant observation | 摄影机远离主体，背景极度压缩；前景遮挡仅在已批准时加入 |
 
-Every segment states one FOV and holds it stable through the segment. Extreme-FOV multishots at 8° or 107° also require: one sequence-wide location/identity lock, a FOV lock at each segment opener, a FOV confirmation at each segment closer, and color tied to material/light rather than a flat list.
+Every segment states one FOV and one short observable outcome, then holds both stable through that segment. Camera distance comes from the approved camera plan; the table's visual language does not authorize the compiler to invent a new distance or reframe the Shot Row.
+
+Use the least drift control the shot needs:
+
+- Normal coverage: state the FOV and outcome once in `光学`; do not add a separate lens lock.
+- Wide/high-risk coverage: keep the camera physically close as approved, preserve visible environment and rectilinear lines, and avoid silently collapsing to comfortable portrait coverage.
+- Telephoto/high-risk coverage: keep the camera physically distant as approved, preserve compression and subject isolation, and avoid silently widening to normal coverage.
+- Multi-shot: each internal shot receives its approved FOV and outcome. A FOV change happens only at an approved cut, never as an unplanned smooth drift inside a segment.
+- Extreme 8° or 107° coverage, or a known failed-generation pattern, may use one compact positive drift lock. Do not repeat opener/check/closer slogans or add a large negative lens block.
+
+Compact drift-lock patterns, used only when justified:
+
+```text
+全段保持84°广角结果：摄影机维持已批准近距离，环境延伸到画面边缘，建筑直线保持笔直。
+全段保持18°长焦结果：摄影机维持已批准远距离，主体锐利，背景持续压缩柔化。
+```
 
 ## Camera, Light, And Color
 
@@ -297,6 +327,7 @@ End with one to three short desired-state fixers for real fragile anchors:
 - identity and wardrobe across a specified cut;
 - one hand/prop contact state;
 - one vehicle/axis/weight relationship;
+- one first-frame/landmark or FOV-drift relationship when it is a demonstrated failure risk;
 - the 60:30:10 light hierarchy when another block has not already made it exact.
 
 Lock text stays shorter than action, camera, and performance content.
@@ -312,7 +343,7 @@ Delete in this order:
 5. background facts that neither move nor affect action;
 6. duplicated locks.
 
-Keep exact active tags, first frame, current action and endpoint, camera, intent-carrying performance, motivated light/color, essential audio, and fragile continuity.
+Keep exact active tags, the approved first-frame/landmark state, current action and endpoint, camera, one observable FOV outcome, intent-carrying performance, motivated light/color, essential audio, and fragile continuity.
 
 ## Rejection Gate
 
@@ -321,7 +352,10 @@ Rewrite before returning the Prompt when any condition is true:
 - project/QA metadata, prior/future summaries, or an unused tag enters the Prompt;
 - a tag role exceeds pixel evidence;
 - the first frame, camera side, action path, or endpoint is missing;
+- a required frame-one subject is delayed/absent, or an approved empty/insert opening is overwritten with unplanned characters;
+- a landmark-critical relation is vague or invented rather than carried from approved blocking;
 - multishot order/cut logic or per-segment FOV is ambiguous;
+- a FOV number appears without an observable visual outcome, or lens character drifts inside a segment;
 - the dialogue speaker, addressee, exact line, or lip-sync framing is missing;
 - millimeter lens values appear in model-facing prose;
 - abstract emotion or generic cinematic language replaces visible direction;
@@ -336,10 +370,11 @@ When capacity fails, reduce inactive references or secondary actions, request a 
 
 - one standalone Simplified Chinese Prompt and no surrounding analysis;
 - exact active project tags and routes only;
-- sealed current context, occupied first frame, approved blocking, and visible endpoint;
+- sealed current context, first frame matching the approved occupied/empty/insert state, approved blocking, and visible endpoint;
+- landmark contact/distance copied only from approved blocking, with screen position, body direction, and gaze kept distinct when relevant;
 - blocks in the required order, with empty optional blocks omitted;
 - distributed scene-specific style;
-- discrete FOV degrees, fixed Kelvin white balance, stated camera side, and useful depth layers;
+- discrete FOV degrees paired with one observable result, conditional compact drift control, fixed Kelvin white balance, stated camera side, and useful depth layers;
 - visible acting, credible physics, motivated sound, and 60:30:10 tied to material/light/role;
 - exact source dialogue once, in original language;
 - positive direction and one to three compact positive locks;

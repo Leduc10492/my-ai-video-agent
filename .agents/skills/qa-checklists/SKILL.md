@@ -16,6 +16,14 @@ description: Quality checklists for the shotlist-first workflow. Use when perfor
 
 Use these checklists for stage QA, batch QA, regression QA, and final delivery review.
 
+## Execution Mode Gate
+
+- [ ] `interaction_mode` is explicitly resolved as `interactive` or `autonomous`; absence means `interactive`.
+- [ ] `interactive` stage conclusions show P0—P3, unresolved assumptions, choices, and explicit user acceptance before downstream work.
+- [ ] `autonomous` stage conclusions show findings, owning Skill, repair applied, version/downstream impact, recheck evidence, and no unresolved fixable P0—P2 affecting the next stage.
+- [ ] No stage silently changes from `interactive` to `autonomous`, or silently chooses `text_only` because references are missing.
+- [ ] Final QA does not introduce a problem that was detectable but unreported/unrepaired at an earlier stage.
+
 ## Output Language
 
 When reporting checklist results to the user or saving a QA report, translate checklist item names and explanations into Simplified Chinese by default. Keep technical tokens such as paths, artifact IDs, reference-state values, scene labels, shot-row IDs, `P###`, `P0/P1/P2/P3`, and `no action / inspect / regenerate / blocked` unchanged when they are part of the workflow contract.
@@ -48,6 +56,7 @@ When reporting checklist results to the user or saving a QA report, translate ch
 - [ ] Character desire and motivation stay consistent.
 - [ ] Key props and motifs are introduced before they pay off.
 - [ ] Estimated runtime stays within budget.
+- [ ] `interactive`: user accepted the script/audit gate; `autonomous`: P0/P1 and downstream-relevant P2 were repaired and the same-version re-audit passed.
 
 ## Guide Stage
 
@@ -58,6 +67,7 @@ When reporting checklist results to the user or saving a QA report, translate ch
 - [ ] Every local reference image path exists or is explicitly marked missing.
 - [ ] Reference roles are labeled, such as `<Character> identity reference` or `<Prop> prop reference`.
 - [ ] Missing references list downstream production blockers.
+- [ ] `interactive`: missing/draft/research-only references triggered an upload/generate/text-only decision. `autonomous`: production-critical missing references were generated or otherwise resolved, QA'd, and versioned unless the requested scope is explicitly text-only.
 
 ### Style Guide
 
@@ -81,6 +91,7 @@ When reporting checklist results to the user or saving a QA report, translate ch
 - [ ] Missing guides, missing references, draft reference status, and spatial-blocking gaps are visible before Phase 4.
 - [ ] Production scope follows screenplay scenes first; overloaded scenes are split by action phase, camera setup, or reference-set change.
 - [ ] Production batches prefer 4-8 Prompt Envelopes; more than 10 is split-required and each batch has a QA checkpoint.
+- [ ] `interactive`: the user approved the first Scene pilot and the current Scene/batch gate. `autonomous`: the Scene repair-and-recheck loop passed before the next Scene began.
 
 ## Compiled Prompt Boundary QA
 

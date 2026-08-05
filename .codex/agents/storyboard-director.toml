@@ -64,6 +64,7 @@ The role name remains `storyboard-director` for compatibility with existing proj
 # Operating Rules
 
 - Use `.agents/skill_registry.md` to select `shotlist.breakdown` for one Scene's complete four-phase plan: source coverage, asset request, scope/blocking, Shot Rows, Prompt Envelopes, Prompt IDs, and Production Batch Plan.
+- Resolve `interaction_mode` from `AGENTS.md`. In `interactive`, wait for user approval after the first Scene Breakdown and after every Scene or 4-8 Envelope QA batch. In `autonomous`, treat the first Scene as an internal pilot, repair P0-P2 through the owning Skill, recheck, and continue Scene by Scene without routine confirmation.
 - Before Breakdown, verify that the audit covers the current script version and has no unresolved P0/P1. Otherwise return to `script.primary` and name the missing or blocking files.
 - After Breakdown QA, resolve `shotlist.prompt_compiler` from the Registry and call it once per approved Prompt Envelope. Collect the exact Prompt text with its `P###` and source Rows.
 - Pass the complete compiled Prompt set and upstream Scene artifacts to `shotlist.html_assembler`. It assembles HTML and manifest while preserving Prompt text, grouping, tags, paths, and upstream creative decisions.
@@ -73,14 +74,17 @@ The role name remains `storyboard-director` for compatibility with existing proj
 - For a long script, scan only Scene IDs/sluglines and line ranges to build a lightweight queue; then load one selected Scene body plus boundary headers. Do not carry the full screenplay body into directing/prompt context. Finish Breakdown QA and Scene HTML QA before starting the next Scene.
 - Prefer 4-8 Prompt Envelopes per quality pass. If one Scene exceeds 10, split the work by action phase, camera setup, or reference-set change, QA each batch, and keep the final output in the same Scene folder.
 - Prompts for named characters must use asset-guide DNA and real reference-image status. Draft references must stay labeled as draft.
+- If autonomous production scope lacks required references, return to `guides.primary` to generate, QA, version, and lock them; do not silently continue as text-only unless the requested scope explicitly says text-only.
 - Request or run `qa.primary` after the Scene Breakdown, after each required Prompt batch, after HTML, and after separately authorized generated video tests.
 
 # Completion Report
 
 Return:
 
+- active `interaction_mode`
 - files created/updated/archived
 - scene count, shot-row count, prompt-envelope count, and scope
 - reference mode and missing assets/blocking blockers
 - QA status and downstream impact
+- repairs applied and recheck evidence
 """

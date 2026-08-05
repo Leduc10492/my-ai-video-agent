@@ -48,19 +48,24 @@ Run structural QA, stage QA, generated asset QA, and regression QA. Keep creativ
 
 - Use explorer-style read-only work for quick QA.
 - Use worker-style work only when writing a QA report or changelog entry.
+- Resolve `interaction_mode` from `AGENTS.md`. In `interactive`, report findings and wait for the user's repair/accept decision. In `autonomous`, route every P0/P1 and fixable downstream-relevant P2 to the owning Skill, verify the revision, and rerun QA before allowing handoff.
 - Lead with blockers.
 - Render user-facing QA findings, persistent reports, table labels, downstream impact, and completion reports in Simplified Chinese unless the user explicitly requests another language.
 - Validate version suffix, artifact metadata, upstream IDs, locks, latest-version usage, generated asset manifests, reference modes, shot counts, durations, prompt-envelope IDs, HTML structure, and downstream impact.
 - For shotlist work, cite concrete scene labels, shot rows, and `P###` IDs and separate structural checks, spatial continuity, prompt executability, reference status, platform production risk, and creative taste.
 - Validate that default skill implementations in `.agents/skill_registry.md` exist when workflow architecture is in scope.
 - Do not rewrite creative content unless explicitly asked.
+- Explicit autonomous execution counts as a bounded request to fix creative and production issues, but QA must still route each change to the owning Skill and preserve canon/locks.
+- Do not let final QA become the first report of a problem that was detectable at script, guide, Breakdown, Prompt, HTML, or generation QA.
 - If the user asks for review, prioritize bugs, risks, regressions, and missing tests/checks.
 
 # Completion Report
 
 Return:
 
+- active `interaction_mode`
 - P0/P1/P2/P3 findings with file references
+- repair owner, repair applied, and recheck result when autonomous
 - open questions or assumptions
 - downstream impact matrix
 - report path, if saved

@@ -34,6 +34,15 @@ This includes chat findings, persistent QA reports, table headers, issue descrip
 - Generated asset or generated video test manifests when applicable
 - `qa-checklists` for stage-specific checks
 
+## Interaction Mode Contract
+
+Resolve `interaction_mode` from `AGENTS.md` and include it in every stage conclusion:
+
+- `interactive`: report P0—P3 with evidence and repair options. Do not repair creative artifacts or advance the owning stage until the user accepts the risk or selects a repair. A structural pass is presented as eligible for approval, not as approval itself.
+- `autonomous`: QA is part of a repair loop, not a terminal report. Route each finding to the owning Skill, verify the actual revision, and re-run the affected QA. Block the stage while any P0/P1 or fixable P2 that affects downstream completeness remains. Apply or route clear low-risk P3 polish when it improves completeness without changing canon.
+
+Missing production references are stage-dependent: they are not screenplay-structure P0/P1, but they block production-mode image/video work. In autonomous mode, return them to `guides.primary` for reference generation and QA rather than merely carrying them into final QA. Final QA must not be the first place a detectable stage problem appears.
+
 ## Trigger Points
 
 Run QA:
@@ -56,6 +65,8 @@ Run QA:
 | Scene QA | A Scene's Prompt Envelopes are compiled | Scene / Shot Row / `P###` findings before HTML assembly or generated tests |
 | Regression QA | Upstream changed | impacted downstream list |
 | Final QA | Before delivery/export | persistent report recommended |
+
+In autonomous mode, every Stage QA result also includes `repair_required`, `repair_owner`, `recheck_scope`, and the evidence that the recheck passed. A `pass-with-warnings` result may advance only when remaining warnings are non-fixable external blockers or explicitly out-of-scope P3 items.
 
 ## Structural Checks
 
@@ -187,4 +198,5 @@ For dialogue, compare raw screenplay lines against the HTML in source order. Eac
 - Separate structure, spatial continuity, prompt executability, reference status, platform production risk, and taste recommendations.
 - Give concrete file paths and affected scene labels, shot rows, and `P###` IDs.
 - Do not rewrite creative content during QA unless the user asks for fixes.
+- An explicit autonomous instruction counts as a request for bounded fixes. QA still routes creative changes to the owning Skill instead of silently rewriting them inside the report.
 - Prompt rewrites return to the resolved `shotlist.prompt_compiler`; HTML fixes preserve the compiled Prompt text byte-for-byte.
