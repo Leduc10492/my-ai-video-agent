@@ -32,7 +32,15 @@ pnpm validate
 剧本 -> 同版本审核通过 -> 按 Scene 分镜拆解 -> Shot Row -> Prompt Envelope -> 中文 HTML
 ```
 
-需要人物、地点或风格参考时，在分镜前补充 `deliverables/2_assets/`。图片和视频生成不属于默认最小闭环，必须由用户单独授权。
+需要人物、地点或风格参考时，在分镜前补充 `deliverables/2_assets/`。
+
+## 执行模式
+
+- 默认 `interactive`：剧本审核、资产缺口、第一个 Scene、每个 Scene / Prompt 批次 QA 都是用户确认门。主控 Agent 先报告 P0—P3、缺少素材和选项，不能自动默选 `text_only` 或直接跑完整个项目。
+- 显式 `autonomous`：只有用户说“自主执行”“自动完成”“不用逐阶段确认”等明确指令才启用。主控 Agent 在每个阶段自行执行“诊断 → 修复 → QA → 复跑”，补齐可修 P0—P2 和明确低风险 P3，再进入下游。
+- 自主项目工作流包含项目范围内可逆的本地设计补全与参考图片生成；最终视频生成仅在用户请求范围明确包含视频 / 成片 / 生成测试时执行。外部发布、付费、权限变化和破坏性操作不因自主模式自动获批。
+
+没有显式自主指令时，图片和视频生成仍需要在对应阶段由用户选择或授权。
 
 ## 核心入口
 
@@ -47,10 +55,13 @@ pnpm validate
 
 - 分镜先服务观众体验，再考虑 AI 打包。
 - 当前剧本没有同版本审核，或审核仍有 P0/P1 时，不进入资产与分镜阶段。
+- “没有 P0/P1”只表示结构上可继续，不等于用户已接受审核意见；交互式模式必须完成用户确认，自主模式必须完成问题修复与复审。
 - Shot Row 与 Prompt Envelope 分离。
 - 15 秒是生成上限，不是填充目标。
 - 不使用硬编码 fixture 代替 Skill 运行。
 - QA 检查真实产物，不用结构通过冒充创作质量。
+
+Prompt 写法通过 Registry 的 `shotlist.prompt_compiler` 独立替换。当前默认实现是 `seedance-clean-zh`。主控 Agent 先取得每个 Prompt Envelope 的编译结果，再由 `shotlist.html_assembler` 将 Breakdown、Shot Rows、资产信息和 Prompt 原样汇集到最终 HTML。HTML Skill 不参与 Prompt 创作。
 
 ## Shotlist 目录
 
@@ -62,9 +73,10 @@ deliverables/3_shotlist/
     ├── manifest.md
     ├── spatial_blocking.md        # 需要时
     ├── assets/                    # 仅 Scene 专用资产
-    ├── previews/                  # 用户单独授权后
-    └── generated/                 # 用户单独授权后
+    └── generated/                 # 另行授权的视频测试记录
 ```
+
+当前工作流不生成线稿分镜图、e-conte 或 preview manifest；最终可视化交付物是包含完整分镜与 Seedance Prompt 的 HTML。
 
 生产层级是 `Scene -> Shot Row -> Prompt Envelope`。文件夹按 Scene 建；Shot Row 和 Prompt Envelope 是 Scene 文件内部的导演与生成映射，不再建立额外目录。
 

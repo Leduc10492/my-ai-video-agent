@@ -131,7 +131,7 @@ deliverables/
 | Scene Breakdown | `deliverables/3_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md` | `scene-021_v1/03_shotlist_breakdown_scene-021_v1.md` |
 | Shotlist HTML | `deliverables/3_shotlist/<scene-label>_v{N}/Shotlist_<scene-label>_ZH_v{N}.html` | `scene-021_v1/Shotlist_scene-021_ZH_v1.html` |
 
-The scene package folder, HTML, manifest, previews, and generated mappings share the same package version. Never increment only the HTML suffix.
+The Scene package folder, Breakdown, HTML, manifest, assets, and generated-test mappings share the same package version. Never increment only the HTML suffix.
 
 ## Legacy Migration
 

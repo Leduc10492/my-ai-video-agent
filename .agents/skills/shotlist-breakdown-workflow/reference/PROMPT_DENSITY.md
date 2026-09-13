@@ -1,4 +1,4 @@
-# Prompt Density
+# Prompt Envelope Density
 
 Group shot rows into practical variable-duration prompt envelopes without stretching short causal beats or overloading one generation. The selected generator duration is a cap, not a target.
 
@@ -28,10 +28,10 @@ Merge adjacent rows into one envelope only when all are true:
 3. Spatial axis and blocking remain coherent.
 4. Beats form one immediate emotional or causal turn.
 5. Total staged action fits the selected generator cap without padding or invented holds.
-6. The prompt remains executable after handles, blocking, dialogue, style, and failure locks are included.
+6. The Envelope remains feasible after all approved assets, blocking, dialogue, style facts, and fragile continuity anchors are accounted for.
 7. Every source dialogue line keeps its own internal shot and source order; merging does not combine independent lines into one lip-sync performance.
 
-Prefer one multi-shot envelope when separate clips would make a short cause-effect chain feel slow. Preserve row detail with internal `【镜头1】`, `【镜头2】`, and `【镜头3】` blocks rather than erasing the cuts.
+Prefer one multi-shot Envelope when separate clips would make a short cause-effect chain feel slow. Preserve every internal Shot Row and its order in the plan; the selected Prompt compiler decides how that order is expressed in Prompt prose.
 
 Generic example:
 
@@ -61,14 +61,14 @@ Before drafting each prompt, answer:
 - What exact action starts this envelope?
 - What exact action ends it?
 - Which previous beat is already complete?
-- Which next beat is forbidden here?
+- Which next beat belongs to the following Envelope?
 - Which exact dialogue belongs here?
 - What is the shortest believable duration for this grouping, and why?
 - What is the main overload or leakage risk?
 
 ## Internal Cuts
 
-A single envelope usually contains 1-3 internal shots. It may contain 4-5 fast internal shots only when every duration is explicit, the total remains within the selected generator cap, cast/location/axis stay stable, and scene-level review confirms the prompt is still executable. Every internal shot states its own duration, lens, camera position, background, action path, and performance detail. Internal shot boundaries do not automatically require separate prompt envelopes.
+A single Envelope usually contains 1-3 internal shots. It may contain 4-5 fast internal shots only when every duration is explicit, the total remains within the selected generator cap, cast/location/axis stay stable, and Scene-level review confirms the generation remains feasible. Every internal Shot Row records its duration, lens plan, camera position, background, action path, and performance beat as compiler input. Internal shot boundaries do not automatically require separate Prompt Envelopes.
 
 Use a one-shot envelope when one continuous performance or camera move carries the emotional turn. Use a multi-shot envelope when a few fast cuts express one uninterrupted unit.
 

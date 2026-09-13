@@ -1,6 +1,6 @@
 ---
 name: qa-checklists
-description: Quality checklists for the shotlist-first workflow. Use when performing script, guide, shotlist breakdown, prompt-envelope, HTML/preview, generated test, or regression QA.
+description: Quality checklists for the shotlist-first workflow. Use when performing script, guide, shotlist breakdown, Prompt compilation, final HTML, generated test, or regression QA.
 ---
 
 # Quality Checklists
@@ -15,6 +15,14 @@ description: Quality checklists for the shotlist-first workflow. Use when perfor
 - state_contract: `reference-state-v2`
 
 Use these checklists for stage QA, batch QA, regression QA, and final delivery review.
+
+## Execution Mode Gate
+
+- [ ] `interaction_mode` is explicitly resolved as `interactive` or `autonomous`; absence means `interactive`.
+- [ ] `interactive` stage conclusions show P0—P3, unresolved assumptions, choices, and explicit user acceptance before downstream work.
+- [ ] `autonomous` stage conclusions show findings, owning Skill, repair applied, version/downstream impact, recheck evidence, and no unresolved fixable P0—P2 affecting the next stage.
+- [ ] No stage silently changes from `interactive` to `autonomous`, or silently chooses `text_only` because references are missing.
+- [ ] Final QA does not introduce a problem that was detectable but unreported/unrepaired at an earlier stage.
 
 ## Output Language
 
@@ -48,6 +56,7 @@ When reporting checklist results to the user or saving a QA report, translate ch
 - [ ] Character desire and motivation stay consistent.
 - [ ] Key props and motifs are introduced before they pay off.
 - [ ] Estimated runtime stays within budget.
+- [ ] `interactive`: user accepted the script/audit gate; `autonomous`: P0/P1 and downstream-relevant P2 were repaired and the same-version re-audit passed.
 
 ## Guide Stage
 
@@ -58,12 +67,13 @@ When reporting checklist results to the user or saving a QA report, translate ch
 - [ ] Every local reference image path exists or is explicitly marked missing.
 - [ ] Reference roles are labeled, such as `<Character> identity reference` or `<Prop> prop reference`.
 - [ ] Missing references list downstream production blockers.
+- [ ] `interactive`: missing/draft/research-only references triggered an upload/generate/text-only decision. `autonomous`: production-critical missing references were generated or otherwise resolved, QA'd, and versioned unless the requested scope is explicitly text-only.
 
 ### Style Guide
 
 - [ ] Palette, lighting, texture, composition, and negative style rules are defined.
 - [ ] Style language is platform-neutral unless a platform-specific section is labeled.
-- [ ] The style guide can support Seedance/Higgsfield shotlist prompts and e-conte previews.
+- [ ] The style guide can support Prompt compilation and final HTML integration.
 
 ## Shotlist Breakdown Stage
 
@@ -81,38 +91,30 @@ When reporting checklist results to the user or saving a QA report, translate ch
 - [ ] Missing guides, missing references, draft reference status, and spatial-blocking gaps are visible before Phase 4.
 - [ ] Production scope follows screenplay scenes first; overloaded scenes are split by action phase, camera setup, or reference-set change.
 - [ ] Production batches prefer 4-8 Prompt Envelopes; more than 10 is split-required and each batch has a QA checkpoint.
+- [ ] `interactive`: the user approved the first Scene pilot and the current Scene/batch gate. `autonomous`: the Scene repair-and-recheck loop passed before the next Scene began.
 
-## Shotlist Prompt Envelope QA
+## Compiled Prompt Boundary QA
 
-- [ ] Every envelope cites its source scene/shot row and `P###` ID.
-- [ ] Reference handles include concrete visual facts and the manifest records all four `reference-state-v2` fields.
-- [ ] Camera is physically planted: position, facing direction, foreground/midground/background, and first-frame composition are stated.
-- [ ] Action path is decomposed into physical steps with object contact, eyeline, body movement, and end state.
-- [ ] Micro-beats are specific to the exact character, shot, and emotional turn; generic repeated beats fail.
-- [ ] Failure locks are shot-specific and name likely model errors.
-- [ ] Adjacent-beat boundaries prevent earlier/later action from leaking into this prompt.
-- [ ] Dialogue, if present, is constrained to the correct speaker and shot.
-- [ ] Exact source dialogue count and order match the selected Scene; raw speaker cues and spoken wording are unchanged.
-- [ ] Every spoken line has one distinct lip-sync Shot Row/internal shot; source-marked `O.S.` / `V.O.` lines remain explicit off-screen audio.
-- [ ] Speaker and addressee follow current Scene action, adjacent exchange, eyeline, and blocking; ambiguity is reported, while guessed names, generic stand-ins, and unexplained self-direction fail.
-- [ ] Forbidden elements from locks are preserved, including no captions, logos, watermarks, or unapproved story beats.
+- [ ] `shotlist.prompt_compiler` resolves to one existing Skill and its implementation name is recorded.
+- [ ] Every approved Prompt Envelope maps to exactly one compiled result with the same `P###` and source Rows.
+- [ ] The compiler received the approved beat boundary, duration, dialogue, blocking, active asset tags/routes, reference-fitness findings, and style facts.
+- [ ] The compiler result passed that Skill's own acceptance gate; QA does not substitute a second Prompt grammar.
+- [ ] Exact source dialogue count, order, raw cues, wording, addressee evidence, and lip-sync/off-screen mapping remain unchanged.
+- [ ] The final HTML embeds each compiled Prompt byte-for-byte.
+- [ ] Project state, Row IDs, QA prose, and workflow mapping remain outside copyable Prompt blocks.
 
-## Shotlist HTML / Preview QA
+## Shotlist HTML QA
 
 - [ ] HTML and its Scene Breakdown are inside the same `deliverables/3_shotlist/<scene-label>_v{N}/` folder.
 - [ ] Common assets are referenced from `deliverables/2_assets/`; only scene-specific assets are stored under the scene package `assets/`.
 - [ ] HTML contains every expected source scene, shot row, and `P###` in order.
 - [ ] Prompt envelope count matches the breakdown or approved scope.
 - [ ] Copy buttons, filters, or search affordances do not alter prompt text.
-- [ ] Search and plan filters preserve complete Prompt Envelope row groups; a later matching Row never remains visible after the first `rowspan` Row carrying its prompt/source/preview cells is hidden.
-- [ ] When preview generation was authorized, preview manifest entry count matches Prompt Envelope count.
-- [ ] In `prompt_only`, HTML shows a visible text state and does not require a preview manifest.
-- [ ] Every generated `<img src>` is relative and points to an existing file.
-- [ ] Preview images are rough e-conte planning aids and do not claim final keyframe status.
+- [ ] Search and plan filters preserve complete Prompt Envelope row groups; a later matching Row never remains visible after the first `rowspan` Row carrying its Prompt/source cells is hidden.
 - [ ] Manifest records source artifact, scope, asset count, all four reference-state fields, and known limitations.
 - [ ] HTML metadata and manifest use the same reference-state values.
 - [ ] Independent QA derives expected Scenes, dialogue, IDs, and paths from the script and final files rather than trusting builder decisions or manifest counts.
-- [ ] A deliberately corrupted temporary copy fails for missing/duplicate dialogue, reused lip-sync Row, duplicate/gapped `P###`, placeholder, or broken preview state.
+- [ ] A deliberately corrupted temporary copy fails for missing/duplicate dialogue, reused lip-sync Row, duplicate/gapped `P###`, unresolved placeholder, or broken Prompt-row grouping.
 - [ ] Structural proof, browser proof, and generation proof are reported as separate conclusions.
 
 ## Generated Assets And Video Tests
@@ -128,14 +130,13 @@ When reporting checklist results to the user or saving a QA report, translate ch
 
 | Upstream Change | Downstream To Check | Focus |
 | --- | --- | --- |
-| Script | audit, guides, shotlist breakdown, shotlist HTML, previews | beat, motivation, motif arc, duration |
-| Guide slot or guide content | shotlist breakdown, prompt envelopes, previews, generated tests | DNA, style, refs, props, locations |
+| Script | audit, guides, shotlist breakdown, compiled Prompts, shotlist HTML | beat, motivation, motif arc, duration |
+| Guide slot or guide content | shotlist breakdown, compiled Prompts, shotlist HTML, generated tests | DNA, style, refs, props, locations |
 | Asset guide | prompt handles, generated references, generated video tests | DNA, costume, props, reference images |
-| Character reference image | prompt handles, previews, generated tests | identity anchor, face, hair, costume |
-| Style guide | prompt envelopes, previews, generated tests | color temperature, lighting, texture |
-| Shotlist breakdown | shotlist HTML, preview manifest, generated tests | scene labels, shot rows, `P###`, duration, composition, narrative function |
-| Shotlist HTML | previews, generated tests | prompt text, handles, reference mode, copy behavior |
-| Preview manifest | HTML and preview files | path existence, count parity, reference status |
+| Character reference image | compiled Prompts, shotlist HTML, generated tests | identity anchor, face, hair, costume |
+| Style guide | compiled Prompts, shotlist HTML, generated tests | color temperature, lighting, texture |
+| Shotlist breakdown | compiled Prompts, shotlist HTML, generated tests | scene labels, shot rows, `P###`, duration, composition, narrative function |
+| Shotlist HTML | generated tests | Prompt text, handles, reference mode, copy behavior |
 | Generated video test | prompt batch and QA report | model failure modes and retry guidance |
 | Skill registry | affected role and stage outputs | replacement skill exists, preserves paths, satisfies slot interface |
 

@@ -1,6 +1,6 @@
 ---
 name: qa-workflow
-description: Run human-readable quality assurance for the shotlist-first AI video workflow, including source coverage, directing, prompt-envelope, HTML, preview, and generated-output review.
+description: Run human-readable quality assurance for the shotlist-first AI video workflow, including source coverage, directing, Prompt compilation, final HTML, and generated-output review.
 ---
 
 # QA Workflow
@@ -30,9 +30,18 @@ This includes chat findings, persistent QA reports, table headers, issue descrip
 - `.agents/skill_registry.md` when checking workflow architecture or replacement skills
 - Latest relevant deliverables in the affected stage
 - Upstream deliverables listed in artifact metadata
-- Scene package shotlist HTML and preview manifest when applicable
+- Scene package shotlist HTML and manifest
 - Generated asset or generated video test manifests when applicable
 - `qa-checklists` for stage-specific checks
+
+## Interaction Mode Contract
+
+Resolve `interaction_mode` from `AGENTS.md` and include it in every stage conclusion:
+
+- `interactive`: report P0—P3 with evidence and repair options. Do not repair creative artifacts or advance the owning stage until the user accepts the risk or selects a repair. A structural pass is presented as eligible for approval, not as approval itself.
+- `autonomous`: QA is part of a repair loop, not a terminal report. Route each finding to the owning Skill, verify the actual revision, and re-run the affected QA. Block the stage while any P0/P1 or fixable P2 that affects downstream completeness remains. Apply or route clear low-risk P3 polish when it improves completeness without changing canon.
+
+Missing production references are stage-dependent: they are not screenplay-structure P0/P1, but they block production-mode image/video work. In autonomous mode, return them to `guides.primary` for reference generation and QA rather than merely carrying them into final QA. Final QA must not be the first place a detectable stage problem appears.
 
 ## Trigger Points
 
@@ -41,7 +50,7 @@ Run QA:
 1. after the selected Scene Breakdown is complete and before HTML generation
 2. after each dense or split-required Scene prompt batch
 3. before splitting or merging any overloaded scene scope
-4. after shotlist HTML and previews are complete
+4. after shotlist HTML assembly is complete
 5. after real video generation tests are saved
 6. after editing any upstream artifact
 7. before saving a new production version
@@ -53,9 +62,11 @@ Run QA:
 | --- | --- | --- |
 | State check | User asks progress/current state | concise status in chat |
 | Stage QA | One stage just finished | issue list + optional report |
-| Scene QA | A scene's prompt envelopes are drafted | scene / shot-row / `P###` findings before previews or generated tests |
+| Scene QA | A Scene's Prompt Envelopes are compiled | Scene / Shot Row / `P###` findings before HTML assembly or generated tests |
 | Regression QA | Upstream changed | impacted downstream list |
 | Final QA | Before delivery/export | persistent report recommended |
+
+In autonomous mode, every Stage QA result also includes `repair_required`, `repair_owner`, `recheck_scope`, and the evidence that the recheck passed. A `pass-with-warnings` result may advance only when remaining warnings are non-fixable external blockers or explicitly out-of-scope P3 items.
 
 ## Structural Checks
 
@@ -75,16 +86,16 @@ For shotlist work, also check:
 
 - `03_shotlist_breakdown_<scene-label>_v{N}.md` exists in the selected Scene folder before HTML work, or legacy input is explicitly marked as migration source
 - screenplay scene labels, shot rows, prompt-envelope IDs, and source scene mapping are consistent
-- prompt envelopes include reference facts, planted camera, first-frame composition, physical action path, unique micro-beats, shot-specific failure locks, and adjacent-beat boundary; project reference status stays outside the prompt text
+- `shotlist.prompt_compiler` resolves through `.agents/skill_registry.md` to one existing Prompt-only Skill, and the package manifest records the resolved implementation
+- each approved Prompt Envelope has one result from the resolved compiler, and the HTML embeds that result byte-for-byte
 - all four reference-state fields appear exactly once in the Scene HTML header, match `manifest.md`, and never appear inside `.prompt-block`
 - shot rows use `<scene-label>-R<NN>`, prompt envelopes use reserved `P###` IDs, and mappings are explicit
-- preview manifest entries match HTML Prompt Envelopes when preview generation was authorized
-- generated HTML preview paths are relative and files exist; `prompt_only` may use a text state without a preview manifest
+- spoken Rows expose source cue, exact text, addressee, and lip-sync/off-screen mode through non-copyable `<tr>` data attributes; Prompt Envelopes contain the exact line naturally but no Row IDs or QA mapping prose
 - shotlist HTML and Breakdown live together under `deliverables/3_shotlist/<scene-label>_v{N}/`
 - common references come from `deliverables/2_assets/`, while scene package `assets/` contains only scene-specific additions or explicit overrides
 - generated video tests are labeled with source prompt envelope, all four reference-state fields, and known limitations
 
-For generated image/video work, validate manifests and paths directly: source `P###`, reference mode, scene package location, relative preview paths, file existence, and known limitations.
+For generated asset/video work, validate manifests and paths directly: source artifact or `P###`, reference mode, package location, file existence, and known limitations.
 
 ## Independent Shotlist Validation
 
@@ -101,12 +112,12 @@ Use `--require-complete` for a full-screenplay replay so any missing Scene packa
 
 The validator derives expected Scenes and source dialogue from the raw screenplay, then inspects Scene folders, HTML, and manifests directly. Do not use a renderer's in-memory objects, builder decisions, copied expected counts, or the builder manifest as the source of truth. Manifest values are claims to compare against independently counted files and HTML content.
 
-Treat its result as structural evidence, not creative proof. Independently review speaker/addressee against current Scene action, adjacent exchange, eyeline, and blocking; review camera, performance, spatial continuity, and prompt executability as human directing judgments. Validate at least one deliberately corrupted temporary copy so a missing/duplicate dialogue line, reused lip-sync Row, duplicate/gapped `P###`, placeholder, or broken preview state is proven to fail.
+Treat its result as structural evidence, not creative proof. Independently review speaker/addressee against current Scene action, adjacent exchange, eyeline, and blocking; review camera, performance, spatial continuity, and Prompt executability as human directing judgments. Validate at least one deliberately corrupted temporary copy so a missing/duplicate dialogue line, reused lip-sync Row, duplicate/gapped `P###`, unresolved placeholder, or broken Prompt-row grouping is proven to fail.
 
 Keep three conclusions separate:
 
 - structural proof: source coverage, IDs, paths, states, and file consistency
-- browser proof: rendered HTML, copy/filter behavior, layout, and visible preview state
+- browser proof: rendered HTML, copy/filter behavior, layout, and visible metadata state
 - generation proof: saved image/video output from the named prompt and reference state
 
 ## Stage Checks
@@ -117,7 +128,7 @@ Use `qa-checklists` sections:
 - asset/style guide
 - shotlist breakdown
 - shotlist prompt envelope
-- shotlist HTML/preview
+- shotlist HTML
 - generated assets and generated video tests
 - regression matrix
 
@@ -187,4 +198,5 @@ For dialogue, compare raw screenplay lines against the HTML in source order. Eac
 - Separate structure, spatial continuity, prompt executability, reference status, platform production risk, and taste recommendations.
 - Give concrete file paths and affected scene labels, shot rows, and `P###` IDs.
 - Do not rewrite creative content during QA unless the user asks for fixes.
-- Do not replace `sketch-shotlist-workflow` internal hard gates; QA verifies that those gates were applied and catches missed failures.
+- An explicit autonomous instruction counts as a request for bounded fixes. QA still routes creative changes to the owning Skill instead of silently rewriting them inside the report.
+- Prompt rewrites return to the resolved `shotlist.prompt_compiler`; HTML fixes preserve the compiled Prompt text byte-for-byte.

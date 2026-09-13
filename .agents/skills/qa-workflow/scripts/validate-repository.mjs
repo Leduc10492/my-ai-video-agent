@@ -325,6 +325,86 @@ function validateDocumentationLinks() {
   return errors.length === 0 ? pass('Markdown file links', `${markdownFiles.length} files`) : fail('Markdown file links', errors);
 }
 
+function validatePromptCompilerContract(registryRows) {
+  const compilerRow = registryRows.find((row) => row.slot === 'shotlist.prompt_compiler');
+  if (!compilerRow) return fail('replaceable Prompt compiler contract', 'Registry is missing shotlist.prompt_compiler');
+  const htmlRow = registryRows.find((row) => row.slot === 'shotlist.html_assembler');
+  if (!htmlRow) return fail('replaceable Prompt compiler contract', 'Registry is missing shotlist.html_assembler');
+  const compilerPath = path.join(skillsRoot, compilerRow.skill, 'SKILL.md');
+  const htmlPath = path.join(skillsRoot, htmlRow.skill, 'SKILL.md');
+  const errors = [];
+
+  for (const [label, filePath] of [['compiler', compilerPath], ['HTML assembler', htmlPath]]) {
+    if (!existsSync(filePath)) errors.push(`${label} contract is missing: ${path.relative(repoRoot, filePath)}`);
+  }
+  if (errors.length > 0) return fail('replaceable Prompt compiler contract', errors);
+
+  const sources = {
+    compiler: readFileSync(compilerPath, 'utf8'),
+    html: readFileSync(htmlPath, 'utf8'),
+  };
+  const required = [
+    ['compiler', '## Source And Language Override'],
+    ['compiler', '- slot: `shotlist.prompt_compiler`'],
+    ['compiler', 'Prompt content only'],
+    ['compiler', '**Simplified Chinese prompts only.**'],
+    ['html', '- slot: `shotlist.html_assembler`'],
+    ['html', 'already compiled Seedance Prompt set'],
+    ['html', 'preserves it byte-for-byte'],
+    ['html', 'six production columns'],
+  ];
+  for (const [label, needle] of required) {
+    if (!sources[label].includes(needle)) errors.push(`${label} contract is missing required rule: ${needle}`);
+  }
+
+  const retiredFiles = [
+    path.join(skillsRoot, htmlRow.skill, 'templates', 'econte-preview-prompt.template.md'),
+    path.join(skillsRoot, htmlRow.skill, 'templates', 'preview-manifest.template.md'),
+  ];
+  for (const filePath of retiredFiles) {
+    if (existsSync(filePath)) errors.push(`retired storyboard-preview workflow file still exists: ${path.relative(repoRoot, filePath)}`);
+  }
+
+  return errors.length === 0
+    ? pass('Prompt compiler / HTML boundary', `${compilerRow.skill} -> ${htmlRow.skill}; ${required.length} interface rules`)
+    : fail('replaceable Prompt compiler contract', errors);
+}
+
+function validateInteractionModeContract() {
+  const contracts = [
+    ['AGENTS.md', ['## 执行模式', '### `interactive`（默认）', '### `autonomous`（仅显式触发）', '诊断 -> 修复 -> 阶段 QA -> 复跑 -> 达到门禁 -> 下一阶段']],
+    ['README.md', ['## 执行模式', '默认 `interactive`', '显式 `autonomous`']],
+    ['QUICK_START.md', ['默认进入交互式模式', '自主执行完整项目前期工作流']],
+    ['.agents/skills/screenwriter-workflow/SKILL.md', ['## Interaction Mode Contract', '`interactive` is the default', '`autonomous` applies only when the user explicitly grants autonomous execution']],
+    ['.agents/skills/guide-workflow/SKILL.md', ['## Interaction Mode Contract', 'authorization for reversible reference-image generation', 'generated_ref_v{N}']],
+    ['.agents/skills/shotlist-breakdown-workflow/SKILL.md', ['Resolve `interaction_mode` from `AGENTS.md` before selecting the Scene', 'treat the first Scene as an internal pilot']],
+    ['.agents/skills/qa-workflow/SKILL.md', ['## Interaction Mode Contract', 'QA is part of a repair loop', 'Final QA must not be the first place']],
+    ['.agents/skills/qa-checklists/SKILL.md', ['## Execution Mode Gate', 'No stage silently changes from `interactive` to `autonomous`']],
+    ['.codex/agents/project-director.toml', ['Default to `interactive`', 'diagnose -> repair -> QA -> recheck']],
+    ['.codex/agents/script-writer.toml', ['In `interactive`, present the complete P0-P3 audit', 'In `autonomous`, route findings through the appropriate McKee repair skill']],
+    ['.codex/agents/guide-director.toml', ['generate versioned candidate references', 'Do not leave production-critical references `missing`']],
+    ['.codex/agents/storyboard-director.toml', ['treat the first Scene as an internal pilot', 'do not silently continue as text-only']],
+    ['.codex/agents/qa-check.toml', ['In `interactive`, report findings and wait', 'In `autonomous`, route every P0/P1 and fixable downstream-relevant P2']],
+  ];
+  const errors = [];
+
+  for (const [relativePath, needles] of contracts) {
+    const filePath = path.join(repoRoot, relativePath);
+    if (!existsSync(filePath)) {
+      errors.push(`missing interaction-mode contract file: ${relativePath}`);
+      continue;
+    }
+    const source = readFileSync(filePath, 'utf8');
+    for (const needle of needles) {
+      if (!source.includes(needle)) errors.push(`${relativePath} is missing interaction-mode rule: ${needle}`);
+    }
+  }
+
+  return errors.length === 0
+    ? pass('interactive / autonomous execution-mode contract', `${contracts.length} files`)
+    : fail('interactive / autonomous execution-mode contract', errors);
+}
+
 if (!existsSync(skillsRoot)) {
   console.error(`FAIL skills root not found: ${skillsRoot}`);
   process.exit(1);
@@ -345,6 +425,8 @@ passed = validateRegistry(registryRows) && passed;
 passed = validateAgents(registryRows) && passed;
 passed = validateConvenienceLinks() && passed;
 passed = validateDocumentationLinks() && passed;
+passed = validatePromptCompilerContract(registryRows) && passed;
+passed = validateInteractionModeContract() && passed;
 for (const skillDirectory of skillDirectories) {
   passed = validateSkill(skillDirectory) && passed;
 }

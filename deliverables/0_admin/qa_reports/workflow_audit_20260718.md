@@ -41,10 +41,11 @@
   -> 轻量 Scene 索引
   -> shotlist.breakdown 一次处理一个 Scene
   -> Breakdown QA
-  -> shotlist.primary 生成 Shot Row / Prompt Envelope / 中文 HTML / manifest
+  -> shotlist.prompt_compiler 将每个已批准 Prompt Envelope 编译为中文 Prompt
+  -> shotlist.html_assembler 汇集 Breakdown / Shot Rows / 资产 / Prompt，生成中文 HTML / manifest
   -> Scene HTML QA
   -> 下一 Scene
-  -> 图片或视频生成（仅用户另行授权）
+  -> 视频测试（仅用户另行授权）
 ```
 
 长剧本不会一次把全文交给分镜或 Prompt 阶段。系统先读取 Scene 标题、编号和行范围，然后只加载选中 Scene 与前后边界。一个 Scene 建议每批审查 4–8 个 Prompt Envelope；超过 10 个时在同一 Scene 内分批 QA，最终仍写入同一个 Scene 文件夹。

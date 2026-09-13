@@ -37,6 +37,17 @@ Before substantial script work, read:
 
 Find the highest numeric version suffix. Do not assume `v1`.
 
+## Interaction Mode Contract
+
+Resolve `interaction_mode` from `AGENTS.md` before writing:
+
+- `interactive` is the default. After creating the script and same-version audit, show the user the iteration layer, gate decision, every P0—P3 finding, unresolved assumptions, and downstream impact. Stop for an explicit `accept / revise / choose repair path` decision even when the audit has no P0/P1 or says `hold_current`.
+- `autonomous` applies only when the user explicitly grants autonomous execution. Run an internal audit-repair loop: route P0/P1 to the appropriate McKee repair skill, repair any P2 that weakens structure, density, continuity, production feasibility, or downstream design completeness, then create the necessary next script version and re-audit. Apply clear low-risk P3 improvements when they do not change canon. Continue only after the same-version audit proves the repaired state.
+
+Do not treat `no unresolved P0/P1` as equivalent to user acceptance. In `interactive`, it means the artifact is eligible to be presented at the stage gate. In `autonomous`, it is necessary but not sufficient when fixable P2 findings still affect downstream work.
+
+Record `interaction_mode` in the user-facing handoff. Do not silently switch modes inside the task.
+
 ## Screenwriter Mode
 
 Use these rules for all user-facing script work:
@@ -170,7 +181,7 @@ For a complete or near-complete draft:
 1. Preserve the user's material as source truth.
 2. Diagnose structure before polishing dialogue.
 3. When revising, keep edits scoped to the requested goal.
-4. If the revision changes story facts, list downstream guide, shotlist breakdown, shotlist HTML, preview, and QA artifacts that may need inspection.
+4. If the revision changes story facts, list downstream guide, shotlist breakdown, compiled Prompt, shotlist HTML, generated-test, and QA artifacts that may need inspection.
 
 ## Iteration Quality Gate
 
@@ -179,6 +190,8 @@ Use `templates/iteration-quality-gate.template.md` before creating a new script 
 The gate decides whether to revise structure, expand density, cut runtime, polish dialogue/action, hold the current version, or export. It must check Story Bone readiness, main story engine, structure drift, story spine, causality, protagonist agency, second-side agency, copyright distance, runtime density, motif payoff, Screenwriter style, dialogue/texture constraints, concise Anti-AI risks, production feasibility, scene/transition count, screenplay body lines, dialogue cue count, overloaded scenes, and executable rescue/action chain where relevant.
 
 Create the smallest useful next script version only when the gate finds a real P0-P2 issue or a clearly bounded P3 polish pass requested by the user. Do not keep rewriting just because another pass is possible.
+
+In `autonomous`, the explicit autonomous instruction satisfies the request requirement for bounded P3 polish and P0—P2 repair within existing canon. It does not authorize changing the premise, ending, genre, or other locked story facts merely to make the audit empty.
 
 Use only these gate decisions:
 
@@ -208,6 +221,7 @@ When writing a persistent audit:
 - Separate structure, continuity, production feasibility, and taste recommendations.
 - Lead with P0/P1 blockers when present.
 - Before handing the script to guides or shotlist production, persist the audit for the same script version and state whether unresolved P0/P1 findings block production. A missing audit or unresolved P0/P1 returns to this workflow; it is not a valid downstream handoff.
+- In `interactive`, do not hand off until the user accepts the current script/audit or chooses a repair path. In `autonomous`, do not hand off until the audit-repair-re-audit loop has cleared P0/P1 and all fixable downstream-relevant P2 findings.
 
 Keep `.docx` exports as optional derived files when the user asks for them. The Markdown file in `deliverables/1_story/` remains the source of truth for this repo.
 
@@ -217,11 +231,13 @@ For standard screenplay DOCX export, use `.agents/skills/screenwriter-workflow/s
 
 After script work, report:
 
+- active `interaction_mode`
 - files created, updated, or archived
 - current script and audit versions
+- P0—P3 findings, repairs applied, and re-audit result
 - unresolved assumptions
 - downstream artifacts to inspect or regenerate
 
 Report the handoff in Simplified Chinese by default.
 
-Next normal stage is `guide-director` / `guides.primary`, then `shotlist.breakdown`, unless the user explicitly skips guides. Route downstream only when the current script has a same-version audit with no unresolved P0/P1.
+Next normal stage is `guide-director` / `guides.primary`, then `shotlist.breakdown`, unless the user explicitly skips guides. Route downstream only when the current script has a same-version audit with no unresolved P0/P1 and the active interaction-mode gate is satisfied.

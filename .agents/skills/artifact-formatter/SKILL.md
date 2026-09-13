@@ -117,7 +117,6 @@ deliverables/2_assets/02_style_guide_v{N}.md
 deliverables/3_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md
 deliverables/3_shotlist/<scene-label>_v{N}/Shotlist_<scene-label>_ZH_v{N}.html
 deliverables/3_shotlist/<scene-label>_v{N}/manifest.md
-deliverables/3_shotlist/<scene-label>_v{N}/previews/manifest.md
 deliverables/3_shotlist/<scene-label>_v{N}/generated/<run_id>/README.md
 ```
 
@@ -125,7 +124,7 @@ Legacy `03_storyboard_v{N}.md`, global Breakdown files, and multi-Scene packages
 
 ## Reference State Fields
 
-Generated assets, scene packages, previews, and generated tests record:
+Generated assets, Scene packages, and generated tests record:
 
 ```markdown
 - asset_origin: user_provided | generated_from_text | generated_from_references | mixed
@@ -145,9 +144,9 @@ Reference-state fields are artifact metadata. For a one-Scene shotlist package, 
   -> 01_audit_report_v{N}.md
   -> 02_asset_guide_v{N}.md + 02_style_guide_v{N}.md
   -> <scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md
-      -> <scene-label>_v{N}/Shotlist_<scene-label>_ZH_v{N}.html
-          -> <scene-label>_v{N}/previews/manifest.md
-          -> <scene-label>_v{N}/generated/<run_id>/README.md
+      -> compiled Prompt set
+          -> <scene-label>_v{N}/Shotlist_<scene-label>_ZH_v{N}.html
+              -> <scene-label>_v{N}/generated/<run_id>/README.md
 ```
 
 ## Validation Checklist

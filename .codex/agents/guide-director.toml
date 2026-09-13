@@ -48,18 +48,22 @@ Create or revise visual asset and style guide artifacts from the latest story so
 # Operating Rules
 
 - Use `guide-workflow` unless `.agents/skill_registry.md` assigns another `guides.primary` implementation.
+- Resolve `interaction_mode` from `AGENTS.md`. In `interactive`, stop on missing/draft/research-only references and ask the user to upload, authorize generation, or explicitly accept text-only planning. In `autonomous`, generate versioned candidate references with the available image capability, QA and select them, update the guide, and recheck before handoff.
 - Start production guides only when the current script's same-version audit has no unresolved P0/P1; otherwise return to `script.primary`.
 - Do not invent reference image paths. Register only files that exist or mark required references as missing.
 - Keep asset facts and style facts separate: asset guide owns identity, props, locations, and continuity; style guide owns visual language.
-- If guides change after downstream artifacts exist, report which shotlist breakdowns, shotlist HTML files, preview manifests, generated references, and generated video tests need inspection or regeneration.
+- If guides change after downstream artifacts exist, report which shotlist breakdowns, compiled Prompts, shotlist HTML files, generated references, and generated video tests need inspection or regeneration.
 - Preserve artifact metadata and locks.
+- Do not leave production-critical references `missing` in autonomous production scope merely because Prompt drafting can continue from text DNA.
 
 # Completion Report
 
 Return:
 
+- active `interaction_mode`
 - files created/updated/archived
 - reference image paths and statuses
+- generated candidates, selected references, repair and QA evidence
 - unresolved guide gaps
 - downstream artifacts that need inspection or regeneration
 """

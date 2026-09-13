@@ -29,6 +29,15 @@ Use this skill to create or revise the common asset/style stage under `deliverab
 
 If there is no script and the user has not supplied equivalent story context, stop and request the missing source. Before production guides, also stop when the same-version audit is missing or has unresolved P0/P1. Do not invent character names, shot counts, platform choices, or reference image paths.
 
+## Interaction Mode Contract
+
+Resolve `interaction_mode` from `AGENTS.md`:
+
+- `interactive`: create the asset/style inventory, then stop whenever any required reference is `missing`, `draft`, `research_only`, ambiguous, or `highest_priority`. Show the affected characters/Scenes and offer three explicit choices: user upload, authorized reference-image generation, or user-approved `text_only / prompt_only` planning. Do not choose one on the user's behalf. After guide QA, present the guide and open gaps for approval before `shotlist.breakdown`.
+- `autonomous`: treat the user's explicit autonomous instruction as authorization for reversible reference-image generation required to complete the requested project scope. Use the available image-generation capability to create a versioned candidate batch under `deliverables/2_assets/generated_ref_v{N}/`, record a manifest and reference roles, QA identity/age/wardrobe/prop/location continuity, select the strongest usable assets, and update the guide state. Do not leave a production-critical asset as `missing` merely because text DNA is sufficient for Prompt drafting.
+
+In autonomous mode, only fall back to `text_only` when the user explicitly limited the scope to text-only planning or image generation is genuinely unavailable after safe retries. In the latter case, report the exact blocker and do not claim production readiness. Final video generation remains outside this Skill and follows the task scope in `AGENTS.md`.
+
 ## Outputs
 
 - Asset guide: `deliverables/2_assets/02_asset_guide_v{N}.md`
@@ -49,7 +58,7 @@ The asset guide owns continuity facts that downstream shotlist and generation st
 | Character references | Local image path, role, status: provided / missing / draft / approved |
 | Locations | Spatial layout, lighting logic, recurring background details |
 | Props and motifs | Appearance, state changes, shots or beats where they appear |
-| Continuity rules | What must remain stable across shotlist breakdown, prompt envelopes, previews, and generated video tests |
+| Continuity rules | What must remain stable across shotlist breakdown, Prompt compilation, final HTML, and generated video tests |
 | Open gaps | Missing refs, unresolved costume/prop/location decisions |
 
 For every named character, include a concise DNA line that downstream prompts can copy without generic substitutes.
@@ -65,7 +74,7 @@ The style guide owns visual language, not story facts:
 | Lighting | Section-specific or emotional lighting rules |
 | Texture and medium | Lens, grain, line quality, rendering style, material feel |
 | Composition | Framing, camera distance tendencies, negative space, movement taste |
-| Platform-neutral prompt tokens | Reusable descriptors for shotlist prompt envelopes and preview generation |
+| Platform-neutral visual facts | Reusable visual facts passed as input to the selected Prompt compiler |
 | Negative style rules | What should be avoided across platforms |
 
 If the user requests platform-specific style syntax, keep it in a clearly labeled section and do not mix it with platform-neutral rules.
@@ -83,13 +92,15 @@ When registering local references:
 
 For every reference batch, record `asset_origin`, `reference_binding`, `reference_approval`, and `output_status`. Generated-from-text images that exist on disk use `asset_origin: generated_from_text`; whether they are attached to a later model is recorded separately in that generation manifest.
 
+Generated references are not automatically approved. In autonomous mode, perform the same fitness checks that a user gate would require: identity consistency, age relationship, wardrobe continuity, prop geometry, location topology, camera-neutral usability, absence of baked-in story contradictions, and file integrity. Only mark a reference `locked` after those checks pass; otherwise regenerate or keep the stage blocked.
+
 ## Save Rules
 
 - If no current guide exists, create `v1`.
 - If revising a current guide, archive the previous version under `archives/2_assets/` and save the next version under `deliverables/2_assets/`.
 - Preserve artifact IDs across versions of the same guide.
 - Update `deliverables/0_admin/changelog.md`.
-- After guide changes, list downstream artifacts that may need inspection: shotlist breakdowns, shotlist HTML, preview manifests, generated references, and generated video tests.
+- After guide changes, list downstream artifacts that may need inspection: shotlist breakdowns, compiled Prompts, shotlist HTML, generated references, and generated video tests.
 
 ## QA Before Handoff
 
@@ -98,6 +109,11 @@ For every reference batch, record `asset_origin`, `reference_binding`, `referenc
 - Artifact metadata exists and version matches filename.
 - All local reference paths exist or are explicitly marked missing.
 - Character DNA is specific enough to prevent generic labels.
-- Style guide can support shotlist prompt envelopes, rough e-conte previews, and generated video tests.
+- Style guide can support shotlist Prompt compilation, HTML integration, and generated video tests.
 - Open gaps and production blockers are visible before downstream generation.
 - All four reference-state fields are present and semantically independent.
+- The active `interaction_mode` gate is satisfied: explicit user acceptance in `interactive`, or documented generate/repair/QA evidence with no fixable production-critical gap in `autonomous`.
+
+## Handoff
+
+Report the active mode, files created or revised, reference roles and exact paths, missing or regenerated assets, QA failures and repairs, final reference-state fields, and whether `shotlist.breakdown` may proceed. In `interactive`, wait for approval. In `autonomous`, continue only after the repair loop passes.

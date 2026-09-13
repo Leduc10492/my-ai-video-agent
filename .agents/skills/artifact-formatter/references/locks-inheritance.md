@@ -16,7 +16,6 @@ Locks are production constraints that should survive downstream transformations.
 - Style guide: color temperature, lighting, performance tone.
 - Shotlist breakdown: scene order, action beats, asset needs, spatial-blocking queue.
 - Shotlist HTML: prompt-envelope grouping, camera blocking, reference status, failure locks.
-- E-conte previews: prompt-envelope ID, rough staging readability, non-keyframe status.
 - Generated tests: source `P###`, platform settings, reference mode, known limitations.
 
 ## Regression Rule

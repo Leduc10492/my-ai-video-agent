@@ -1,4 +1,4 @@
-# Plan Types
+# Shot Row Plan Types
 
 Shot-plan taxonomy used in the shotlist. Keep the `data-plan` attribute and filter values in English for stable JS filtering. Visible labels default to Simplified Chinese unless the user explicitly requests English output. Older Cyrillic-coded HTMLs will need their filter JS updated; new shotlists use the codes below.
 
