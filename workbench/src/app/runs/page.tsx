@@ -1,10 +1,21 @@
-export default function RunsPlaceholder() {
-  return (
-    <main className="mx-auto max-w-3xl space-y-3 p-6">
-      <h1 className="text-2xl font-semibold tracking-tight">任务</h1>
-      <p className="text-sm leading-6 text-muted-foreground">
-        队列还没接上本地数据库。生成不会从这一页扣费。批准和估价会在任务页里单独确认。
-      </p>
-    </main>
-  );
+import { RunsTable, type JobView } from "@/components/runs-table";
+import { JOB_STATUS_LABEL } from "@/lib/jobs/policy";
+import { indexStats, listJobs } from "@/lib/jobs/store";
+import { tickQueue } from "@/lib/jobs/queue";
+
+export default function RunsPage() {
+  tickQueue();
+  const stats = indexStats();
+  const jobs: JobView[] = listJobs().map((job) => ({
+    id: job.id,
+    title: job.title,
+    status: job.status,
+    statusLabel: JOB_STATUS_LABEL[job.status] ?? job.status,
+    estCost: job.estCost,
+    actualCost: job.actualCost,
+    projectId: job.projectId,
+    episodeId: job.episodeId,
+    result: job.result,
+  }));
+  return <RunsTable jobs={jobs} files={stats.files} media={stats.media} />;
 }

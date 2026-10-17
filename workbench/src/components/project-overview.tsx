@@ -17,6 +17,8 @@ export function ProjectOverview({
   style,
   example,
   episodes,
+  estimate,
+  actual,
 }: {
   projectId: string;
   title: string;
@@ -24,6 +26,8 @@ export function ProjectOverview({
   style: string;
   example: boolean;
   episodes: EpisodeSummary[];
+  estimate: number;
+  actual: number;
 }) {
   const storageKey = `workbench-episode-order:${projectId}`;
   const styleKey = `workbench-style:${projectId}`;
@@ -67,7 +71,10 @@ export function ProjectOverview({
           <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
           {example ? <Badge variant="secondary">示例数据</Badge> : <Badge variant="outline">当前仓库</Badge>}
         </div>
-        <p className="max-w-3xl text-sm leading-6 text-muted-foreground">{logline}</p>
+        <p className="text-sm leading-6 text-muted-foreground">{logline}</p>
+        <p className="text-sm">
+          估价合计 {estimate.toFixed(2)} 美元 · 实际花费 {actual.toFixed(2)} 美元
+        </p>
       </header>
       <Card>
         <CardHeader>

@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
 
 import { EpisodeFrame } from "@/components/episode-frame";
+import { ExportForm } from "@/components/export-form";
 import { loadProject } from "@/lib/workspace";
 
-export default async function ExportPlaceholder({
+export default async function ExportPage({
   params,
   searchParams,
 }: {
@@ -13,11 +14,11 @@ export default async function ExportPlaceholder({
   const { id } = await params;
   const project = loadProject(id);
   if (!project) notFound();
-  const ep = (await searchParams).ep ?? project.episodes[0]?.id;
-  if (!ep) notFound();
+  const episodeId = (await searchParams).ep ?? project.episodes[0]?.id;
+  if (!episodeId) notFound();
   return (
-    <EpisodeFrame projectId={id} episodeId={ep} active="qa">
-      <div className="p-6 text-sm leading-6 text-muted-foreground">导出交接单还没接上。QA 报告仍然以文件为准。</div>
+    <EpisodeFrame projectId={id} episodeId={episodeId} active="qa">
+      <ExportForm projectId={id} episodeId={episodeId} example={project.example} />
     </EpisodeFrame>
   );
 }

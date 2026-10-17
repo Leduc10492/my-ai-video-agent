@@ -23,5 +23,5 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "src/lib/router.test.ts", "src/lib/episode-state.test.ts", "src/lib/shot-parse.test.ts"]
+  "exclude": ["node_modules", "src/lib/router.test.ts", "src/lib/episode-state.test.ts", "src/lib/shot-parse.test.ts", "src/lib/jobs/policy.test.ts"]
 }
