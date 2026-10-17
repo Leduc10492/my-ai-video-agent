@@ -1,0 +1,11 @@
+{
+  "id": "moban",
+  "title": "末班",
+  "logline": "夜班便利店打烊前，林夏必须决定要不要把老周的钥匙留下，再去赶那班不一定会停的车。",
+  "style": "冷白荧光，手持贴近，少配乐。老周不是反派。",
+  "assets": "deliverables/2_assets",
+  "episodes": [
+    { "id": "ep-01", "number": 1, "title": "错站", "dir": "episodes/ep-01" },
+    { "id": "ep-02", "number": 2, "title": "对表", "dir": "episodes/ep-02" }
+  ]
+}
