@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>末班 - scene-002 分镜表</title>
+  <style>
+    :root { color-scheme: dark; --bg:#111; --panel:#1b1b1b; --line:#333; --text:#f2f2f2; --muted:#a3a3a3; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.55 "WenQuanYi Micro Hei", "Noto Sans CJK SC", sans-serif; }
+    main { width: min(1100px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 48px; }
+    header, section, table { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+    header, section { padding: 16px 18px; margin-bottom: 12px; }
+    h1 { font-size: 22px; margin: 0 0 6px; }
+    .muted { color: var(--muted); }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 14px; }
+    .stat { border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; }
+    .stat b { display: block; font-size: 18px; }
+    table { width: 100%; border-collapse: collapse; overflow: hidden; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px; vertical-align: top; text-align: left; }
+    th { color: var(--muted); font-size: 12px; }
+    .id { font-family: ui-monospace, monospace; font-size: 12px; }
+    pre { white-space: pre-wrap; margin: 8px 0 0; background: #101010; border: 1px solid var(--line); border-radius: 6px; padding: 10px; font: 12px/1.6 ui-monospace, monospace; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>末班 · scene-002 分镜表</h1>
+      <div class="muted">示例数据。便利店夜班，钥匙交出。未授权预演，也未生成视频。</div>
+      <div class="stats">
+        <div class="stat"><b>1</b><span class="muted">场景</span></div>
+        <div class="stat"><b>4</b><span class="muted">镜头行</span></div>
+        <div class="stat"><b>2</b><span class="muted">提示词包</span></div>
+        <div class="stat"><b>v1</b><span class="muted">版本</span></div>
+      </div>
+    </header>
+    <section>
+      <h2>资产与状态</h2>
+      <p class="muted">林夏、老周、便利店、黄铜钥匙。参考图：缺失，生成前不得假装已有参考。</p>
+    </section>
+    <table>
+      <thead>
+        <tr>
+          <th>镜头行</th>
+          <th>景别</th>
+          <th>动作与切镜理由</th>
+          <th>台词</th>
+          <th>提示词包</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="id">SR01</td>
+          <td>全景 / 35mm</td>
+          <td>林夏把卷帘拉到肩高。门铃响，老周进门。先看清店还开着。</td>
+          <td>林夏：老周，热水。</td>
+          <td class="id">P001</td>
+        </tr>
+        <tr>
+          <td class="id">SR02</td>
+          <td>中景 / 50mm</td>
+          <td>老周把黄铜钥匙放上台面，不看她。观众要看见交出，而不是听解释。</td>
+          <td>老周：侧门那辆。司机没交钥匙。</td>
+          <td class="id">P001</td>
+        </tr>
+        <tr>
+          <td class="id">SR03</td>
+          <td>特写 / 85mm</td>
+          <td>林夏的手停在钥匙上方。决定还没做。</td>
+          <td>林夏：我走了，店就空了。</td>
+          <td class="id">P002</td>
+        </tr>
+        <tr>
+          <td class="id">SR04</td>
+          <td>近景 / 50mm</td>
+          <td>她看向门口夜色，把卷帘绳从手腕解下。选择落到动作上。</td>
+          <td>老周：我留在这儿看着。</td>
+          <td class="id">P002</td>
+        </tr>
+      </tbody>
+    </table>
+    <section>
+      <h2>P001 · 6 秒</h2>
+      <pre>夜班便利店，荧光灯偏青，货架深处是暗的。林夏（24，黑马尾，深灰店员背心）把卷帘拉到肩高，门铃响。老周（60，藏青旧制服外套，左手拎保温杯）走进来，停在柜台外。镜头从门口全景缓推到中景。老周把一把黄铜钥匙放到台面上，不解释。环境声只有冰柜。不要字幕，不要背景音乐。6秒。</pre>
+    </section>
+    <section>
+      <h2>P002 · 5 秒</h2>
+      <pre>同一柜台。特写：黄铜钥匙，蓝塑料牌没有可读文字。林夏的手停在钥匙上方，没有拿走。切到她的近景，她看向门口的夜色，把卷帘绳从手腕解下来，放在收银台边缘。老周站在柜台外，不催。5秒。不要字幕，不要配乐。</pre>
+    </section>
+  </main>
+</body>
+</html>

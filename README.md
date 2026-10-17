@@ -17,6 +17,8 @@ pnpm validate
 
 `pnpm install` 安装剧本 DOCX 导出所需的 `docx`；`pnpm validate` 会检查 Registry、Skills、Agents、脚本、模板、文档引用、依赖锁文件和快捷软链接。校验通过后即可把剧本放进 `deliverables/1_story/` 开始工作。
 
+本地只读原型「AI 视频工作台」在 [`workbench/`](workbench/README.md)。用 Node.js 22 或更高版本，在仓库根目录执行 `pnpm --dir workbench dev`。
+
 ## 阶段目录命名
 
 | 目录 | 用途 |
