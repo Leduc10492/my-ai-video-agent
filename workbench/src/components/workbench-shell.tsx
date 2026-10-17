@@ -7,10 +7,13 @@ import {
   ClapperboardIcon,
   FolderTreeIcon,
   LibraryIcon,
+  ListTodoIcon,
   MoonIcon,
   RouteIcon,
   SearchIcon,
+  SettingsIcon,
   SunIcon,
+  WaypointsIcon,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 
@@ -51,7 +54,10 @@ type Catalog = {
 };
 
 const NAV = [
-  { href: "/", label: "工作台", icon: ClapperboardIcon },
+  { href: "/", label: "项目", icon: ClapperboardIcon },
+  { href: "/runs", label: "任务", icon: ListTodoIcon },
+  { href: "/settings", label: "设置", icon: SettingsIcon },
+  { href: "/pipeline", label: "链路", icon: WaypointsIcon },
   { href: "/router", label: "路由台", icon: RouteIcon },
   { href: "/skills", label: "Skills 库", icon: LibraryIcon },
   { href: "/deliverables", label: "交付物", icon: FolderTreeIcon },
@@ -89,12 +95,12 @@ export function WorkbenchShell({ catalog, children }: { catalog: Catalog; childr
   }
 
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
       <Sidebar>
         <SidebarHeader>
           <div className="px-2 py-1.5">
             <div className="text-sm font-semibold tracking-tight">AI 视频工作台</div>
-            <p className="mt-1 text-xs text-muted-foreground">本地只读 · 不调用模型</p>
+            <p className="mt-1 text-xs text-muted-foreground">文件是事实来源 · 不扣费</p>
           </div>
         </SidebarHeader>
         <SidebarContent>
@@ -103,7 +109,7 @@ export function WorkbenchShell({ catalog, children }: { catalog: Catalog; childr
             <SidebarGroupContent>
               <SidebarMenu>
                 {NAV.map((item) => {
-                  const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+                  const active = item.href === "/" ? pathname === "/" || pathname.startsWith("/p/") : pathname.startsWith(item.href);
                   const Icon = item.icon;
                   return (
                     <SidebarMenuItem key={item.href}>
@@ -207,7 +213,8 @@ function SourceSwitch({ source }: { source: DataSource }) {
       {options.map((option) => {
         const query = Object.fromEntries(params.entries());
         delete query.source;
-        const href = withSource(pathname, option.id, query);
+        const target = pathname.startsWith("/p/") ? (option.id === "example" ? "/p/moban" : "/p/repo") : pathname;
+        const href = withSource(target, option.id, pathname.startsWith("/p/") ? undefined : query);
         const active = source === option.id;
         return (
           <Link
