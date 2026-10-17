@@ -1,23 +1,38 @@
 import { notFound } from "next/navigation";
 
+import { AssetLibrary } from "@/components/asset-library";
 import { EpisodeFrame } from "@/components/episode-frame";
-import { loadProject } from "@/lib/workspace";
+import { loadLibrary } from "@/lib/production";
+import { loadEpisode, loadProject } from "@/lib/workspace";
 
-export default async function AssetsPlaceholder({
+export default async function AssetsPage({
   params,
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ ep?: string }>;
+  searchParams: Promise<{ ep?: string; source?: string }>;
 }) {
   const { id } = await params;
+  const query = await searchParams;
   const project = loadProject(id);
-  if (!project) notFound();
-  const ep = (await searchParams).ep ?? project.episodes[0]?.id;
-  if (!ep) notFound();
+  const library = loadLibrary(id);
+  if (!project || !library) notFound();
+  const episodeId = query.ep ?? project.episodes[0]?.id;
+  if (!episodeId) notFound();
+  const episode = loadEpisode(id, episodeId);
+  if (!episode) notFound();
   return (
-    <EpisodeFrame projectId={id} episodeId={ep} active="assets">
-      <div className="p-6 text-sm leading-6 text-muted-foreground">资产库还没装上角色、场景和道具。锁定原因已经写在左侧阶段上。</div>
+    <EpisodeFrame projectId={id} episodeId={episodeId} active="assets">
+      <AssetLibrary
+        projectId={id}
+        example={library.example}
+        source={project.example ? "example" : "repo"}
+        gateOpen={episode.gateOpen}
+        stale={episode.stale}
+        characters={library.characters}
+        scenes={library.scenes}
+        props={library.props}
+      />
     </EpisodeFrame>
   );
 }

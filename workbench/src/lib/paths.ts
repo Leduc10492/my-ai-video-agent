@@ -32,6 +32,9 @@ export function contentType(filePath: string) {
   if (extension === ".md") return "text/markdown; charset=utf-8";
   if (extension === ".json") return "application/json; charset=utf-8";
   if (extension === ".txt") return "text/plain; charset=utf-8";
+  if (extension === ".png") return "image/png";
+  if (extension === ".jpg" || extension === ".jpeg") return "image/jpeg";
+  if (extension === ".webp") return "image/webp";
   return "application/octet-stream";
 }
 
