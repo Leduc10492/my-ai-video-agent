@@ -3,6 +3,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { createHash, randomUUID } from 'node:crypto';
 import { parseScreenplay } from '../../shotlist-breakdown-workflow/scripts/index-screenplay-scenes.mjs';
+import { projectRelative, projectLayout, outputRoots, canonicalScriptPath, archivePath } from '../../../project-layout.mjs';
 
 export const STATE_PATH = 'deliverables/0_admin/workflow_state.json';
 const PREVIOUS_PATH = 'deliverables/0_admin/workflow_state.previous.json';
@@ -17,6 +18,7 @@ const now = () => new Date().toISOString();
 // Every writable path is project-relative, including through existing symlinks.
 function localPath(root, relative) {
   assert(typeof relative === 'string' && relative && !path.isAbsolute(relative), `Expected project-relative path: ${relative}`);
+  relative = projectRelative(root, relative);
   const base = fs.realpathSync(root);
   const target = path.resolve(base, relative);
   assert(target.startsWith(`${base}${path.sep}`), `Path escapes project: ${relative}`);
@@ -53,19 +55,19 @@ function writeAtomic(root, relative, content, { replace = false } = {}) {
   } finally {
     if (fs.existsSync(temporary)) fs.unlinkSync(temporary);
   }
-  return { path: relative, sha256: hash(content) };
+  return { path: projectRelative(root, relative), sha256: hash(content) };
 }
 
 function readReference(root, ref) {
   assert(ref && /^[a-f0-9]{64}$/.test(ref.sha256 ?? ''), 'Reference requires a SHA-256 hash');
   const candidates = [ref.path];
-  if (ref.path?.startsWith('deliverables/')) candidates.push(ref.path.replace(/^deliverables\//, 'archives/'));
+  candidates.push(archivePath(root, ref.path));
   for (const candidate of candidates) {
     const file = localPath(root, candidate);
     if (!fs.existsSync(file)) continue;
     const content = fs.readFileSync(file, 'utf8');
     assert(hash(content) === ref.sha256, `Hash mismatch: ${candidate}. Preserve the external edit and reconcile it explicitly.`);
-    return { path: candidate, content };
+    return { path: projectRelative(root, candidate), content };
   }
   throw new Error(`Unresolved artifact: ${ref.path}`);
 }
@@ -179,7 +181,7 @@ function allocateArtifactId(root) {
       }
     }
   };
-  for (const stage of ['deliverables', 'archives']) scan(localPath(root, stage));
+  for (const stage of [...outputRoots(root), 'archives']) scan(localPath(root, stage));
   return `${prefix}${String(sequence + 1).padStart(3, '0')}`;
 }
 
@@ -236,7 +238,8 @@ function scriptCandidates(root) {
 }
 
 function registerScript(root, relative, state, bindings, numbering = state.working_script?.numbering ?? 'stable') {
-  assert(/^(deliverables|archives)\/1_story\/01_script_v[1-9]\d*\.md$/.test(relative), 'Select an exact canonical script path');
+  relative = projectRelative(root, relative);
+  assert(canonicalScriptPath(relative), 'Select an exact canonical script path');
   const content = fs.readFileSync(localPath(root, relative), 'utf8');
   assert(['stable', 'positional'].includes(numbering), 'numbering must be stable or positional');
   const parsed = segments(unwrap(content).body, { ...sceneOptions(state, state.working_script?.scene_map ?? [], bindings), numbering });
@@ -486,8 +489,8 @@ export function selectProduction(root, request, hooks = {}) {
     const script = Object.values(state.artifacts).find((item) => item.kind === 'script' && item.sha256 === request.script_sha256);
     assert(script, 'Select a registered script by its exact hash');
     readReference(root, script);
-    const auditPath = request.audit?.path;
-    assert(/^(deliverables|archives)\/1_story\/01_audit_report_v[1-9]\d*\.md$/.test(auditPath ?? ''), 'An exact same-version audit report is required');
+    const auditPath = projectRelative(root, request.audit?.path);
+    assert(canonicalScriptPath(auditPath ?? '', 'audit'), 'An exact same-version audit report is required');
     const auditText = fs.readFileSync(localPath(root, auditPath), 'utf8');
     let audit = { ...metadata(auditText, auditPath, 'audit'), path: auditPath, sha256: hash(auditText) };
     assert(audit.artifact_id, 'Production audit needs an Artifact header with an id');
@@ -524,8 +527,8 @@ export function archiveArtifact(root, request, hooks = {}) {
     assert(ref && ['script', 'audit'].includes(ref.kind), 'Archive an exact registered script or audit key');
     const original = ref.path;
     const current = readReference(root, ref);
-    if (original.startsWith('archives/')) return { state, change: { operation: 'archive', changed: false } };
-    const archived = original.replace(/^deliverables\//, 'archives/');
+    if (original.startsWith('archives/') || original.startsWith('.project/历史/')) return { state, change: { operation: 'archive', changed: false } };
+    const archived = archivePath(root, original);
     if (fs.existsSync(localPath(root, archived))) readReference(root, { path: archived, sha256: ref.sha256 });
     else writeAtomic(root, archived, current.content);
     hooks.onPhase?.('after_archive_copy');

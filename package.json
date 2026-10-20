@@ -16,7 +16,10 @@
     "workbench:dev": "pnpm --dir workbench dev",
     "workbench:build": "pnpm --dir workbench build",
     "workbench:start": "pnpm --dir workbench start",
-    "workbench:test": "pnpm --dir workbench test"
+    "workbench:test": "pnpm --dir workbench test",
+    "workspace:context": "node workbench/scripts/project-context.mjs",
+    "workspace:migrate": "node workbench/scripts/migrate-workspace.mjs",
+    "workspace:publish": "node workbench/scripts/publish-workspace.mjs"
   },
   "dependencies": {
     "docx": "^9.7.1"

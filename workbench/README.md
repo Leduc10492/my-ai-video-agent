@@ -24,7 +24,7 @@ pnpm dlx puppeteer@23.11.1 browsers install chrome-headless-shell
 
 ## 使用
 
-1. 左侧新建项目，或打开具有 `.agents/skill_registry.md` 的本地项目。新项目复制当前项目的 Skills，独立保存媒体、状态与数据库。
+1. 左侧新建视频项目，默认保存到工作区 `projects/<作品名>/`，也可指定其他目录；已有文件夹不会被覆盖。「打开已有项目」可登记含 `project.json` 或 `.agents/skill_registry.md` 的目录。新项目复制平台默认 Skills，独立保存媒体、状态与数据库。
 2. 在「剧本」粘贴 / 导入 Markdown 或文本，或从 idea 启动创作。每次保存新版本；历史版本可比较，Scene 导航定位正文。Skills 使用 Registry 的精确文件路径，返回待审阅产物，用户保存后再登记工作稿。
 3. 同版本审核完成后，审阅报告并确认生产输入。进入资产、分镜和 Prompt 阶段时核对这份版本；普通工作稿保存不会自动提升生产版本。
 4. 「资产库」导入本地图片、视频、音频；同名新结果需明确选“添加 take”。生成前展示整批名称、Prompt、模型、参考角色及用量方式，确认后提交。真实 tag 在详情中手动填写，逐字保留。
@@ -36,9 +36,21 @@ pnpm dlx puppeteer@23.11.1 browsers install chrome-headless-shell
 
 界面默认使用亮色 shadcn neutral 配色、圆角面板与镜头卡片；左下角仍可切换深色。项目信息、Skill 路径和本地产物收在顶部信息按钮中。镜头详情的「准备生成」进入既有批次审阅流程，保存镜头不会提交生成任务。
 
+### 工作区、视频项目与 Codex 创作
+
+`workbench/` 是平台程序，`projects/` 中每部视频有自己的根目录。平台索引与当前选择保存在根目录 `.workbench/`，不再把新项目放进程序的隐藏运行目录。空工作区显示新建入口，平台自身不再自动作为一个视频项目。
+
+每个项目保存可迁移的 `project.json`，项目 ID 不随目录变化。项目内 `AGENTS.md` 指示 Codex 每个阶段读取自己的最新 Registry，并读取绑定 Skill 的完整 source。平台根目录的 `.agents/` 是新项目模板；现有项目不跟随模板或全局 Skill 自动更新。
+
+切换项目同时更新 `.workbench/active-project.json`，它只用于尚未绑定的对话选择入口；已启动任务和已绑定对话始终保留自己的项目 ID、目录与输入快照。侧栏「在 Codex 中创作」和「项目设置 → 项目与创作」显示项目目录、当前阶段 Skill、可复制的创作指令与 `codex --cd` 命令。复制前会重新读取已保存配置，不自动新建对话或开始生成。
+
+平台目录中的 Codex 可运行 `pnpm workspace:context` 读取当前项目，之后使用 `node workbench/scripts/project-context.mjs --project <ID或绝对路径>` 保持绑定。该命令只读，不要求本地服务在线。直接打开视频项目目录的 Codex 则读取该项目自己的 `AGENTS.md`。普通对话产物仍需按契约保存、载入，不能将聊天输出视为已登记的资产。
+
+旧项目迁移：停止服务，先运行 `pnpm workspace:migrate` 查看目录计划，再运行 `pnpm workspace:migrate --apply`。迁移保持项目、take、job、clip ID，逐文件核对哈希及数据库记录，保存备份后切换索引。旧独立项目路径保留兼容符号链接，避免旧任务引用失效；历史平台根项目单独复制其生产目录，根目录保留回归材料。迁移备份位于 `.workbench/migrations/`。
+
 ### 项目设置 → Skills
 
-设置使用固定尺寸的窗口，左侧切换「项目规格 / Skills」，Skills 页内的阶段导航为第二级。内容在窗口内部滚动，底部保存操作固定；在两个一级页面间切换会保留尚未保存的输入和 Skill 选择。
+设置使用固定尺寸的窗口，左侧切换「项目与创作 / 项目规格 / Skills」，Skills 页内的阶段导航为第二级。内容在窗口内部滚动，底部保存操作固定；切换分类会保留尚未保存的输入和 Skill 选择。
 
 打开顶部「项目设置」的「Skills」页，选择剧本创作、剧本审核、资产拆分、分镜设计、视频 Prompt 或生产 HTML 阶段，再从已发现的本地 Skill 中选择。支持按名称、用途和来源筛选；同名 Skill 按实际路径区分。可以一次调整多个阶段，点击「检查兼容性」后查看问题和阶段接口，再「保存到当前项目」。未保存的选择不会影响任务。
 
@@ -82,7 +94,7 @@ node scripts/benchmark-skill-plans.mjs /absolute/project/path scene-002 scene-00
 
 ## 数据与恢复
 
-- 应用项目索引：`workbench/.local/projects.json`，新项目默认在同目录的 `projects/` 下。
+- 应用项目索引：`.workbench/projects.json`；当前项目：`.workbench/active-project.json`；新项目默认在 `projects/<作品名>/` 下。
 - 剧本状态：`deliverables/0_admin/workflow_state.json`，继续使用原有脚本版本 / SHA-256 / 审核与接受协议。
 - 项目数据库：`deliverables/0_admin/workbench.sqlite`（WAL）。关闭服务后备份整个项目目录；运行时备份需一并保留 SQLite 的 `-wal` 文件。
 - 共享媒体：`deliverables/2_assets/<标准文件名主干>/<take_id>/<标准文件名>.<扩展名>`。

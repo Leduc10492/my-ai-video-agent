@@ -5,7 +5,6 @@ import {
   Check,
   Clapperboard,
   Copy,
-  Film,
   Link2,
   Save,
   Sparkles,
@@ -19,6 +18,7 @@ import {
   Input,
   Textarea,
   cn,
+  Placeholder,
 } from "./components/ui";
 import { api, post, pretty, time } from "./lib/api";
 import {
@@ -180,24 +180,21 @@ export default function ShotInspector({
     <>
       <Dialog
         wide
-        className="shot-dialog max-w-6xl p-0"
+        className="shot-dialog flex max-w-6xl flex-col overflow-hidden p-0"
         open
         onOpenChange={(o) => !o && onClose()}
         title={`${shot.id} · ${shot.title || "镜头详情"}`}
         description={`${shot.scene} / ${envelope.id} · ${envelope.source_rows.length > 1 ? `${envelope.source_rows.length} 个镜头共用一个生成片段` : "单镜头生成片段"}`}
       >
-        <div className="grid min-h-0 lg:grid-cols-[minmax(300px,0.9fr)_minmax(0,1.1fr)]">
+        <div className="shot-dialog-body grid min-h-0 overflow-auto lg:grid-cols-[minmax(300px,0.9fr)_minmax(0,1.1fr)]">
           <div className="space-y-5 border-b bg-muted/35 p-6 lg:border-b-0 lg:border-r">
             <div className="aspect-video overflow-hidden rounded-2xl border bg-muted shadow-xs">
               {viewed ? (
                 <Media key={viewed.take_id} base={base} take={viewed} />
               ) : (
-                <div className="flex h-full flex-col items-center justify-center gap-3 text-muted-foreground">
-                  <Film size={36} strokeWidth={1} />
-                  <span className="text-sm">这个镜头还没有素材</span>
-                  <span className="text-xs">
-                    完成 Prompt 后，可准备生成批次
-                  </span>
+                <div className="flex h-full flex-col items-center justify-center text-muted-foreground">
+                  <Placeholder kind="video" />
+                  <span className="mb-5 text-xs">暂无镜头素材</span>
                 </div>
               )}
             </div>
@@ -625,7 +622,7 @@ export default function ShotInspector({
             </Tabs.Content>
           </Tabs.Root>
         </div>
-        <div className="sticky bottom-0 flex flex-wrap items-center gap-3 border-t bg-background px-6 py-4">
+        <div className="shot-dialog-footer flex shrink-0 flex-wrap items-center gap-3 border-t bg-background px-6 py-3">
           <span className="mr-auto text-xs text-muted-foreground">
             {dirty ? "未保存修改 · 草稿暂存于此浏览器" : "已保存到本地项目"}
           </span>

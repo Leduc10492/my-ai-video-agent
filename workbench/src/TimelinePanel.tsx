@@ -29,9 +29,11 @@ import {
   Input,
   Select,
   Textarea,
+  Placeholder,
 } from "./components/ui";
 import { api, post, uid, pretty } from "./lib/api";
 import type { ShotSelection } from "./lib/storyboard";
+import { previewMediaUrl, timelineForPreview } from "./lib/timeline-media";
 import "./generated/twick.css";
 const empty = () => ({
   version: 1,
@@ -73,6 +75,17 @@ export default function TimelinePanel({
     );
   const [dirty, setDirty] = useState(false);
   const projectFile = useRef<HTMLInputElement>(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const previewVideo = useRef<HTMLVideoElement>(null);
+  const renderedPreview = initial.metadata?.rendered_preview;
+  const previewTake = data.takes.find(
+    (take: any) => take.take_id === renderedPreview?.take_id &&
+      take.media.kind === "video",
+  );
+  const previewInitial = useMemo(
+    () => timelineForPreview(initial, window.location.origin),
+    [initial],
+  );
   useEffect(() => {
     onDirty(dirty);
     return () => onDirty(false);
@@ -87,15 +100,21 @@ export default function TimelinePanel({
     setContext((v) => v + 1);
   };
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex flex-wrap items-center gap-2 border-b px-5 py-3">
+    <div className="timeline-workspace flex min-h-0 flex-1 flex-col overflow-auto">
+      <div className="panel-toolbar flex shrink-0 flex-wrap items-center gap-2 border-b px-5 py-3">
         <span className="mr-auto font-medium">
           剪辑时间轴{" "}
           <span className="ml-2 text-xs text-muted-foreground">
-            Twick · {data.settings.width} × {data.settings.height} /{" "}
+            {data.settings.width} × {data.settings.height} /{" "}
             {data.settings.fps}fps
           </span>
         </span>
+        {previewTake && (
+          <Button variant="outline" size="sm" onClick={() => setPreviewOpen(true)}>
+            <Clapperboard />
+            播放预演
+          </Button>
+        )}
         <Button variant="outline" size="sm" onClick={onStoryboard}>
           <Clapperboard />
           可视化分镜
@@ -174,7 +193,7 @@ export default function TimelinePanel({
         <TimelineProvider
           key={`${projectId}-${context}`}
           contextId={`${projectId}-${context}`}
-          initialData={initial}
+          initialData={previewInitial}
           resolution={{
             width: data.settings.width,
             height: data.settings.height,
@@ -197,6 +216,46 @@ export default function TimelinePanel({
           />
         </TimelineProvider>
       </LivePlayerProvider>
+      <Dialog
+        open={previewOpen}
+        onOpenChange={setPreviewOpen}
+        title={renderedPreview?.title || "已渲染预演"}
+        description="已渲染整片 · 包含临时对白。后续时间轴剪辑修改需重新导出。"
+        wide
+      >
+        {previewOpen && previewTake && (
+          <>
+            <video
+              ref={previewVideo}
+              aria-label="已渲染预演播放器"
+              className="aspect-video w-full rounded-lg bg-black"
+              src={`/api${base}/media/${previewTake.take_id}`}
+              controls
+              autoPlay
+              playsInline
+              preload="metadata"
+            />
+            {Array.isArray(renderedPreview?.chapters) && (
+              <div className="mt-3 flex flex-wrap gap-2" aria-label="预演场次">
+                {renderedPreview.chapters
+                  .filter((chapter: any) => Number.isFinite(chapter.time) && chapter.time >= 0)
+                  .map((chapter: any, index: number) => (
+                    <Button
+                      key={index}
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        if (previewVideo.current) previewVideo.current.currentTime = chapter.time;
+                      }}
+                    >
+                      {chapter.title}
+                    </Button>
+                  ))}
+              </div>
+            )}
+          </>
+        )}
+      </Dialog>
     </div>
   );
 }
@@ -331,7 +390,7 @@ function Editor({
   const add = async () => {
     const take = data.takes.find((t: any) => t.take_id === takeId);
     if (!take) return;
-    const src = `/api${base}/media/${takeId}`,
+    const src = previewMediaUrl(`/api${base}/media/${takeId}`, window.location.origin),
       size = { width: data.settings.width, height: data.settings.height };
     const element: any =
       take.media.kind === "video"
@@ -360,7 +419,7 @@ function Editor({
           {focusNotice}
         </p>
       )}
-      <div className="flex flex-wrap items-center gap-2 border-b px-5 py-2">
+      <div className="panel-toolbar flex shrink-0 flex-wrap items-center gap-2 border-b px-5 py-2">
         <Button
           size="icon"
           variant="ghost"
@@ -446,7 +505,7 @@ function Editor({
             elementColors: colors as any,
           }}
           rightPanel={
-            <div className="w-60 space-y-4 overflow-auto p-4 text-sm">
+            <div className="timeline-inspector w-60 space-y-4 overflow-auto p-4 text-sm">
               <h3 className="font-semibold">片段详情</h3>
               {isClip ? (
                 <>
@@ -614,7 +673,7 @@ function Editor({
                                     ...e,
                                     type: "video",
                                     props: {
-                                      src: `/api${base}/media/${takeId}`,
+                                      src: previewMediaUrl(`/api${base}/media/${takeId}`, window.location.origin),
                                       time: 0,
                                       volume: 1,
                                       muted: false,
@@ -643,7 +702,7 @@ function Editor({
                         } else {
                           if (!selected.setSrc)
                             throw new Error("请选择视频或缺失素材占位");
-                          await selected.setSrc(`/api${base}/media/${takeId}`);
+                          await selected.setSrc(previewMediaUrl(`/api${base}/media/${takeId}`, window.location.origin));
                           selected
                             .setStartAt(0)
                             .setMediaDuration(take.media.duration)
@@ -662,22 +721,19 @@ function Editor({
                   </Button>
                 </>
               ) : (
-                <p className="text-xs leading-6 text-neutral-400">
-                  选择时间轴中的片段可裁切、分割、换 take
-                  和调节音量。拖动片段可重新排序。
-                </p>
+                <div className="timeline-no-selection flex flex-col items-center text-center">
+                  <Placeholder kind="video" compact />
+                  <p className="text-xs leading-6 text-muted-foreground">选择片段以编辑</p>
+                </div>
               )}
-              <div className="border-t border-neutral-700 pt-3">
+              {!!(present?.metadata as any)?.markers?.length && <div className="border-t pt-3">
                 <p className="mb-2 text-xs font-medium">计划镜头标记</p>
                 {(present?.metadata as any)?.markers?.map((m: any) => (
                   <p key={m.id} className="mb-2 text-xs text-neutral-400">
                     {m.time.toFixed(2)}s · {m.title}
                   </p>
                 ))}
-                <p className="text-xs text-neutral-500">
-                  标记来自分镜计划，实际切点由你调整。
-                </p>
-              </div>
+              </div>}
             </div>
           }
         />

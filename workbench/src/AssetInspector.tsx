@@ -97,7 +97,7 @@ export default function AssetInspector({ asset, takes, base, busy, run, onDirtyC
         </div>
       ) : <div className="rounded-lg border border-dashed px-3 py-5 text-center text-sm text-muted-foreground">尚未补入素材</div>}
       <div className="space-y-3 border-t pt-4">
-        <Field label="生成提示词" hint="保存到这个资产；生成新版本时会自动带入。">
+        <Field label="生成提示词" hint="生成新版本时使用。">
           <Textarea aria-label="生成提示词" className="min-h-36 resize-y leading-6" placeholder="在这里填写或粘贴提示词…" value={form.prompt} onChange={(e) => setForm({ ...form, prompt: e.target.value })} />
         </Field>
         {stale && dirty && <p role="alert" className="text-xs text-destructive">素材详情已在别处修改。你的输入仍保留；可先复制提示词，再载入最新内容。</p>}
@@ -107,12 +107,12 @@ export default function AssetInspector({ asset, takes, base, busy, run, onDirtyC
           {dirty && <Button size="sm" variant="ghost" disabled={busy} onClick={reset}>{stale ? "载入最新内容" : "撤销编辑"}</Button>}
         </div>
         <Button className="w-full" variant="outline" disabled={busy || asset.kind === "audio"} onClick={async () => { if (!dirty || await save()) onGenerate(form.prompt); }}><RefreshCw />{dirty ? "保存并生成新版本…" : "生成新版本…"}</Button>
-        <p className="text-xs leading-5 text-muted-foreground">打开生成设置，确认模型、参考图和用量方式后提交。完成后添加为新版本，保留旧版本。</p>
+        <p className="text-xs leading-5 text-muted-foreground">确认模型与用量后提交。</p>
         {asset.kind === "audio" && <p className="text-xs text-muted-foreground">目前可生成图片和视频；音频可通过导入媒体添加版本。</p>}
         {viewedTake && <details className="text-xs text-muted-foreground"><summary className="cursor-pointer">当前图片或版本的原始提示词</summary><p className="mt-2 whitespace-pre-wrap leading-6">{viewedTake.prompt || "这个文件未附带原始提示词。上方可填写后续生成使用的提示词。"}</p></details>}
       </div>
       <details className="border-t pt-4">
-        <summary className="cursor-pointer text-sm font-medium">Higgsfield 参考与平台 Tag（可选）</summary>
+        <summary className="cursor-pointer text-sm font-medium">Higgsfield 参考与 Tag</summary>
         <div className="mt-3 space-y-3">
           <p className="text-xs leading-6 text-muted-foreground">将当前素材上传到已连接的 Higgsfield 账户，供生成时选作参考。上传不会自动生成或接受素材。</p>
           {viewedTake && <Button className="w-full" variant="outline" disabled={busy} onClick={() => run(() => post(`${base}/takes/${viewedTake.take_id}/upload`), "Higgsfield 参考已上传并绑定")}><Upload />{viewedTake.external?.media_id ? "核对已上传的参考" : "上传当前素材为参考"}</Button>}

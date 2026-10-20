@@ -8,6 +8,7 @@ import {
   RefreshCw,
   Search,
   ShieldCheck,
+  FolderOpen,
 } from "lucide-react";
 import {
   Badge,
@@ -19,6 +20,7 @@ import {
   cn,
 } from "./components/ui";
 import { api, post } from "./lib/api";
+import { CreationContext } from "./WorkspaceProjects";
 
 type Candidate = {
   candidate_id: string;
@@ -188,9 +190,6 @@ function SkillsSettings({
       <div className="flex shrink-0 items-start justify-between gap-4 px-6 pb-4 pt-5">
         <div>
           <h3 className="font-semibold">Skills</h3>
-          <p className="mt-1 text-sm leading-6 text-muted-foreground">
-            为每个阶段选择本机已安装的 Skill。
-          </p>
         </div>
         <Button variant="outline" size="sm" disabled={busy} onClick={reload}>
           <RefreshCw size={14} />
@@ -485,13 +484,10 @@ function SkillsSettings({
               onClick={save}
             >
               {saving && <Loader2 className="animate-spin" size={14} />}
-              保存到当前项目
+              保存配置
             </Button>
           </div>
         </div>
-        <p className="mt-3 text-xs leading-5 text-muted-foreground">
-          仅保存到当前项目。编辑器的「对话修改」使用独立助手。
-        </p>
       </div>
     </div>
   );
@@ -528,7 +524,7 @@ export default function ProjectSettings({
       open={open}
       onOpenChange={onOpenChange}
       wide
-      className="flex h-[min(780px,calc(100dvh-48px))] max-w-[1120px] flex-col overflow-hidden p-0 [&>.dialog-title]:px-6 [&>.dialog-title]:pt-5 [&>.dialog-description]:px-6"
+      className="settings-dialog flex h-[min(780px,calc(100dvh-32px))] max-w-[1120px] flex-col overflow-hidden p-0 [&>.dialog-title]:px-6 [&>.dialog-title]:pt-5 [&>.dialog-description]:px-6"
       title="项目设置"
       description={`仅应用于「${name}」`}
     >
@@ -539,12 +535,16 @@ export default function ProjectSettings({
           setTab(value);
           if (value === "skills") setSkillsVisited(true);
         }}
-        className="flex min-h-0 flex-1 border-t"
+        className="settings-layout flex min-h-0 flex-1 border-t"
       >
         <Tabs.List
           aria-label="项目设置分类"
-          className="flex w-40 shrink-0 flex-col gap-1 border-r bg-muted/30 p-3 sm:w-48"
+          className="settings-navigation flex w-40 shrink-0 flex-col gap-1 border-r bg-muted/30 p-3 sm:w-48"
         >
+          <Tabs.Trigger value="project" className={tabsClass}>
+            <FolderOpen size={16} />
+            项目与创作
+          </Tabs.Trigger>
           <Tabs.Trigger value="spec" className={tabsClass}>
             <SlidersHorizontal size={16} />
             项目规格
@@ -554,23 +554,23 @@ export default function ProjectSettings({
             Skills
           </Tabs.Trigger>
         </Tabs.List>
+        <Tabs.Content value="project" className="min-h-0 min-w-0 flex-1 overflow-auto p-6 outline-none">
+          <CreationContext base={base} />
+        </Tabs.Content>
         <Tabs.Content
           forceMount
           value="spec"
-          className="flex min-w-0 flex-1 flex-col outline-none data-[state=inactive]:hidden"
+          className="flex min-h-0 min-w-0 flex-1 flex-col outline-none data-[state=inactive]:hidden"
         >
           <div className="min-h-0 flex-1 overflow-auto p-6">
             <h3 className="font-semibold">项目规格</h3>
-            <p className="mt-1 text-sm text-muted-foreground">
-              设置画面尺寸与帧率，用于剪辑工程和导出。
-            </p>
             <section className="mt-6 rounded-2xl border p-5">
               <h4 className="mb-4 text-sm font-medium">画面与时间基准</h4>
               <div className="grid gap-4 sm:grid-cols-3">
                 {[
-                  ["width", "宽度"],
-                  ["height", "高度"],
-                  ["fps", "帧率"],
+                  ["width", "宽度 · px"],
+                  ["height", "高度 · px"],
+                  ["fps", "帧率 · fps"],
                 ].map(([key, label]) => (
                   <Field key={key} label={label}>
                     <Input
@@ -584,9 +584,6 @@ export default function ProjectSettings({
                   </Field>
                 ))}
               </div>
-              <p className="mt-4 text-xs text-muted-foreground">
-                画面尺寸单位为像素，帧率单位为 fps。
-              </p>
             </section>
             {error && (
               <p role="alert" className="mt-3 text-sm text-destructive">

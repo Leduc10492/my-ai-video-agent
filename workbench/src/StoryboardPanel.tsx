@@ -1,8 +1,6 @@
 import { useRef, useState } from "react";
 import {
   ArrowRight,
-  Clapperboard,
-  Film,
   FileJson,
   Plus,
   Search,
@@ -20,6 +18,8 @@ import {
   Select,
   Textarea,
   cn,
+  Placeholder,
+  EmptyState,
 } from "./components/ui";
 import { api, post, pretty } from "./lib/api";
 import {
@@ -139,26 +139,18 @@ export default function StoryboardPanel({
   };
   return (
     <div className="board-workspace flex min-h-0 flex-1 flex-col">
-      <div className="flex flex-wrap items-start justify-between gap-4 px-7 pb-5 pt-6">
-        <div>
-          <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
-            <Clapperboard size={14} /> 镜头工作区
+      <div className="panel-toolbar flex shrink-0 flex-wrap items-center justify-between gap-3 px-6 py-4">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <h2 className="font-semibold">分镜</h2>
             {board?.output_status === "text_only_draft" && (
-              <Badge>规划草案 · 待审阅</Badge>
+              <Badge>草案 · 待审阅</Badge>
             )}
           </div>
-          <h2 className="text-2xl font-semibold tracking-tight">
-            把故事，逐镜展开
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {rows.length} 个镜头 · {board?.envelopes.length || 0} 个生成片段 ·{" "}
-            {adopted} 个已采用
+          <p className="mt-1 text-xs text-muted-foreground">
+            {rows.length} 镜 · {board?.envelopes.length || 0} 片段 ·{" "}
+            {adopted} 已采用
           </p>
-          {typeof board?.planning_notes === "string" && (
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground">
-              {board.planning_notes}
-            </p>
-          )}
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <Button
@@ -194,20 +186,26 @@ export default function StoryboardPanel({
             onClick={() => onStage(rows.length ? "prompts" : "storyboard")}
           >
             <Sparkles />
-            {rows.length ? "编译 Prompt" : "用 Skill 制作分镜"}
+            {rows.length ? "编译 Prompt" : "制作分镜"}
           </Button>
         </div>
       </div>
-      <div className="mx-7 flex flex-wrap items-center gap-3 rounded-2xl border bg-card px-4 py-3 shadow-xs">
-        <div className="relative min-w-48 flex-1">
+      {typeof board?.planning_notes === "string" && board.planning_notes && (
+        <details className="board-notes mx-6 mb-3 shrink-0 rounded-xl border bg-card px-3 py-2 text-xs text-muted-foreground">
+          <summary className="cursor-pointer">分镜备注</summary>
+          <p className="mt-2 max-h-28 overflow-auto whitespace-pre-wrap leading-6">{board.planning_notes}</p>
+        </details>
+      )}
+      <div className="board-filters mx-6 flex shrink-0 flex-wrap items-center gap-2">
+        <div className="relative min-w-36 flex-1">
           <Search
             className="absolute left-3 top-3 text-muted-foreground"
             size={15}
           />
           <Input
-            className="border-0 bg-muted/60 pl-9 shadow-none"
+            className="bg-card pl-9 shadow-none"
             aria-label="搜索分镜"
-            placeholder="搜索镜号、画面或文件名…"
+            placeholder="搜索镜头"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
@@ -233,27 +231,16 @@ export default function StoryboardPanel({
         </Select>
         <Button variant="ghost" onClick={() => onTimeline()}>
           <Layers3 />
-          打开时间轴
-          <ArrowRight />
+          时间轴
         </Button>
       </div>
-      <div className="flex-1 overflow-auto px-7 pb-8 pt-6">
+      <div className="panel-scroll min-h-0 flex-1 overflow-auto px-6 pb-6 pt-5">
         {!filtered.length ? (
-          <div className="flex min-h-80 flex-col items-center justify-center rounded-3xl border border-dashed bg-card/70 p-8 text-center">
-            <div className="mb-5 grid size-16 place-items-center rounded-2xl border bg-background shadow-sm">
-              <Clapperboard size={25} />
-            </div>
-            <h3 className="text-lg font-semibold">
-              {rows.length ? "没有符合条件的镜头" : "让第一个镜头落在这里"}
-            </h3>
-            <p className="mt-3 max-w-md text-sm leading-7 text-muted-foreground">
-              {rows.length
-                ? "调整搜索、Scene 或制作状态，查看其他镜头。"
-                : "从工作流产物载入分镜，或确认剧本后运行分镜 Skill。已有素材会按标准文件名自动关联。"}
-            </p>
+          <EmptyState kind={rows.length ? "search" : "video"} title={rows.length ? "没有匹配的镜头" : "暂无分镜"}
+            description={scene !== "all" ? `${scene} · 可切换场景或调整筛选` : undefined}>
+            {!!rows.length && (query || filter !== "all") && <Button variant="outline" onClick={() => { setQuery(""); setFilter("all"); }}>清除筛选</Button>}
             {!rows.length && (
               <Button
-                className="mt-6"
                 variant="outline"
                 onClick={() => onStage("storyboard")}
               >
@@ -261,7 +248,7 @@ export default function StoryboardPanel({
                 制作分镜
               </Button>
             )}
-          </div>
+          </EmptyState>
         ) : (
           scenes.map((label) => (
             <section className="mb-8" key={label}>
@@ -273,7 +260,7 @@ export default function StoryboardPanel({
                 </span>
                 <div className="h-px flex-1 bg-border" />
               </div>
-              <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-5">
+              <div className="shot-grid grid gap-4">
                 {filtered
                   .filter((r) => r.shot.scene === label)
                   .map((row, index) => {
@@ -288,7 +275,7 @@ export default function StoryboardPanel({
                         onClick={() => onSelect(row.selection)}
                         aria-label={`打开镜头 ${row.shot.id}`}
                         className={cn(
-                          "shot-card group overflow-hidden rounded-2xl border bg-card text-left shadow-xs transition-all hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                          "shot-card group min-w-0 overflow-hidden rounded-2xl border bg-card text-left shadow-xs transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                           active && "border-foreground ring-1 ring-foreground",
                         )}
                       >
@@ -296,10 +283,7 @@ export default function StoryboardPanel({
                           {take ? (
                             <Media base={base} take={take} controls={false} />
                           ) : (
-                            <div className="flex h-full flex-col items-center justify-center gap-2 text-muted-foreground">
-                              <Film size={28} strokeWidth={1} />
-                              <span className="text-xs">等待镜头素材</span>
-                            </div>
+                            <Placeholder kind="video" className="h-full w-full" />
                           )}
                           <span className="absolute left-3 top-3 rounded-lg border bg-background/95 px-2.5 py-1 text-xs font-medium">
                             {row.shot.id}
@@ -326,7 +310,7 @@ export default function StoryboardPanel({
                             {row.shot.description ||
                               (row.envelope.prompt
                                 ? `Prompt 摘要：${row.envelope.prompt}`
-                                : "点击补充画面描述、声音和引用素材。")}
+                                : "暂无画面描述")}
                           </p>
                           <div className="flex items-center gap-2">
                             <Badge
@@ -345,7 +329,7 @@ export default function StoryboardPanel({
                             </span>
                           </div>
                           <p
-                            className="truncate border-t pt-3 font-mono text-[11px] text-muted-foreground"
+                            className="sr-only"
                             title={row.envelope.asset_name}
                           >
                             {row.envelope.asset_name}

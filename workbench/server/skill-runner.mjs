@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { projectLayout, projectRelative } from "../../.agents/project-layout.mjs";
 import { atomic, check, contained, id, now, sha } from "./files.mjs";
 import { artifactSchema, startSkill } from "./codex.mjs";
 import { archiveSkillThread } from "./skill-threads.mjs";
@@ -21,9 +22,9 @@ function preflight(store, job, expected) {
   const seen = new Set();
   for (const a of job.result.artifacts || []) {
     check(
-      /^deliverables\/(1_story|2_assets|3_shotlist)\/.+\.(md|html|json)$/.test(
+      (/^deliverables\/(1_story|2_assets|3_shotlist)\/.+\.(md|html|json)$/.test(
         a.path,
-      ) && typeof a.content === "string",
+      ) || (projectLayout(store.root) && /^0[123]_(?:剧本|资产|分镜)\/.+\.(md|html|json)$/.test(a.path))) && typeof a.content === "string",
       "产物路径或内容不符合契约",
     );
     const file = contained(store.root, a.path);
@@ -201,6 +202,7 @@ export class SkillRunner {
   accept(store, job, raw) {
     const result = job.packet ? materializePlan(store, job, raw) : raw;
     check(Array.isArray(result.artifacts), "Skill 未返回完整产物");
+    result.artifacts = result.artifacts.map(a => ({ ...a, path: projectRelative(store.root, a.path) }));
     return store.updateJob(job.job_id, {
       result,
       result_sha256: sha(result),

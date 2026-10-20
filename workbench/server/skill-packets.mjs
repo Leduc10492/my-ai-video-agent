@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { outputRoots, projectRelative } from "../../.agents/project-layout.mjs";
 import path from "node:path";
 import {
   check,
@@ -490,7 +491,7 @@ function nextVersion(root, stage, scene, store) {
   const pattern =
     stage === "assets"
       ? /(?:asset_inventory|02_asset_guide|02_style_guide)_v(\d+)/
-      : new RegExp(`${scene}_v(\\d+)`);
+      : new RegExp(`${scene}(?:_v|/v)(\\d+)`);
   return (
     Math.max(0, ...files.map((f) => Number(f.match(pattern)?.[1] || 0))) + 1
   );
@@ -508,11 +509,11 @@ function artifactFamily(store, key, files) {
     const prior = fs.readFileSync(file, "utf8").match(/^- id:\s*(\S+)/m)?.[1];
     if (prior) return store.meta(`artifact_family:${key}`, prior);
   }
-  const known = walk(
-    contained(store.root, "deliverables"),
+  const known = outputRoots(store.root).flatMap(folder => walk(
+    contained(store.root, folder),
     (n) => /\.md$/.test(n),
     3,
-  ).concat(walk(contained(store.root, "archives"), (n) => /\.md$/.test(n), 3));
+  )).concat(walk(contained(store.root, "archives"), (n) => /\.md$/.test(n), 3));
   let sequence = store.meta("artifact_sequence") || 0;
   const date = new Date().toISOString().slice(0, 10).replaceAll("-", "");
   for (const file of known) {

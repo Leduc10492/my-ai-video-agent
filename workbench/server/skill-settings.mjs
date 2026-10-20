@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { atomic, check, contained, id, now, sha } from "./files.mjs";
+import { sharedSkillsRoot } from "./installation.mjs";
 
 export const skillStages = [
   {
@@ -45,7 +46,7 @@ export const skillStages = [
   },
 ];
 const bindingFile = "workbench-binding.json";
-const adapterVersion = 1;
+const adapterVersion = 2;
 function stageAdapter(slot) {
   if (slot === "shotlist.prompt_compiler")
     return "\n## Source And Language Override\n\n- Prompt content only: compiler owns the generation Prompt payload; artifact metadata stays outside that payload.\n- **Simplified Chinese prompts only.** Preserve exact dialogue, attached tags and approved control strings.\n- The current project's approved Scene, Shot Row and Prompt Envelope plan is authoritative.\n";
@@ -340,13 +341,23 @@ export class SkillSettings {
     const cached = this.catalogs.get(root);
     if (!refresh && cached && Date.now() - cached.at < 60000)
       return cached.value;
-    const response = await this.client.request(
-      "skills/list",
-      { cwds: [root], forceReload: true },
-      20000,
-    );
-    const group = response.data?.find((d) => path.resolve(d.cwd) === root);
-    check(group, "Codex 未返回当前项目的 Skill 列表，请刷新重试");
+    let group;
+    try {
+      const response = await this.client.request("skills/list", { cwds: [root], forceReload: true }, 20000);
+      group = response.data?.find((d) => path.resolve(d.cwd) === root);
+      check(group, "Codex 未返回当前项目的 Skill 列表，请刷新重试");
+    } catch (error) {
+      group = { skills: [], errors: [{ message: `本机 Codex 发现暂不可用：${error.message}。仍可选择随工作台附带及项目内的 Skills。` }] };
+    }
+    if (sharedSkillsRoot && fs.existsSync(sharedSkillsRoot)) {
+      for (const entry of fs.readdirSync(sharedSkillsRoot, { withFileTypes: true })) {
+        const file = path.join(sharedSkillsRoot, entry.name, "SKILL.md");
+        if (!entry.isDirectory() || !fs.existsSync(file)) continue;
+        const content = read(file);
+        group.skills.push({ name: entry.name, path: file, scope: "user", enabled: true,
+          description: content.match(/^description:\s*(.+)$/m)?.[1] || "公共工作流 Skill" });
+      }
+    }
     const candidates = new Map();
     for (const s of group.skills || []) {
       if (
@@ -667,7 +678,7 @@ export class SkillSettings {
       sha256: r.source_sha256,
       bundle_sha256: r.bundle_sha256,
     };
-    const wrapper = `---\nname: ${r.registry_name}\ndescription: ${JSON.stringify(`Project binding for ${stage.label}; use the selected ${source.name} skill within the current workflow stage.`)}\n---\n\n# ${stage.label} · 项目绑定\n\n- slot: \`${r.slot}\`\n- source: [${source.name}](${r.bundle.entry})\n\n本项目明确选择以上 Skill 的创作方法，原 Skill 已与本入口一起注入，不需要重复读取。其相对资源路径以来源 SKILL.md 所在目录为准。\n\n## 阶段接口\n\n${stage.contract}\n\n用户指令、当前项目 Registry、生产契约和本次 outputSchema 决定阶段范围与输出形式。来源 Skill 中的默认输出模板按本阶段接口适配；不启动其他阶段或自行替换 Registry 中的其他 Skill。不把创作、素材、空间或视觉 QA 状态假定为已批准。媒体生成、上传与发布不属于本阶段。来源 Skill 的生产 Prompt 只保留影响输出的内容，不包含此处元数据。\n`;
+    const wrapper = `---\nname: ${r.registry_name}\ndescription: ${JSON.stringify(`Project binding for ${stage.label}; use the selected ${source.name} skill within the current workflow stage.`)}\n---\n\n# ${stage.label} · 项目绑定\n\n- slot: \`${r.slot}\`\n- source: [${source.name}](${r.bundle.entry})\n\n本项目明确选择以上 Skill 的创作方法。通过工作台启动任务时，原 Skill 与本入口一起注入；普通 Codex 对话需要读取上方 source 链接中的完整 Skill。只有本轮已经实际提供原文时才跳过重复读取。其相对资源路径以来源 SKILL.md 所在目录为准。\n\n## 阶段接口\n\n${stage.contract}\n\n用户指令、当前项目 Registry、生产契约和本次 outputSchema 决定阶段范围与输出形式。来源 Skill 中的默认输出模板按本阶段接口适配；不启动其他阶段或自行替换 Registry 中的其他 Skill。不把创作、素材、空间或视觉 QA 状态假定为已批准。媒体生成、上传与发布不属于本阶段。来源 Skill 的生产 Prompt 只保留影响输出的内容，不包含此处元数据。\n`;
     const adaptedWrapper = wrapper + stageAdapter(r.slot);
     const files = [
       ...r.bundle.files,

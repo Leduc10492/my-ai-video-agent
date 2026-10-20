@@ -8,6 +8,7 @@ import { contained, sha } from "./files.mjs";
 import { makePacket, planSchemas } from "./skill-packets.mjs";
 import { skillInputs } from "./skill-settings.mjs";
 import { skillThreadName, skillThreadProject } from "./skill-threads.mjs";
+import { projectLayout, portableInstructions } from "../../.agents/project-layout.mjs";
 
 export class CodexClient extends EventEmitter {
   constructor() {
@@ -424,7 +425,9 @@ export async function startSkill(client, store, input) {
           type: "text",
           text: structured
             ? JSON.stringify(prepared.packet)
-            : text + boardContext + planningContext,
+            : projectLayout(store.root)
+              ? portableInstructions(text + boardContext + planningContext) + "\n本项目使用六类目录。分镜版本保存在 03_分镜/<scene>/vN/；生成视频进入 04_镜头/<scene>/。以本项目 .agents/production-contract.md 为路径依据。"
+              : text + boardContext + planningContext,
           text_elements: [],
         },
       ],

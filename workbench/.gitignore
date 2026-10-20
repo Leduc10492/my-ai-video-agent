@@ -4,3 +4,4 @@ dist/
 test-results/
 *.tsbuildinfo
 src/generated/
+output/playwright/

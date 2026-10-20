@@ -25,6 +25,7 @@ import {
   ExternalLink,
   Copy,
   Info,
+  MessageSquare,
 } from "lucide-react";
 import {
   ErrorContext,
@@ -36,6 +37,7 @@ import {
   Select,
   Textarea,
   cn,
+  EmptyState,
 } from "./components/ui";
 import { api, post, pretty } from "./lib/api";
 import ScriptPanel from "./ScriptPanel";
@@ -44,6 +46,7 @@ import AssetInspector from "./AssetInspector";
 import JobsPanel from "./JobsPanel";
 import ShotInspector from "./ShotInspector";
 import ProjectSettings from "./ProjectSettings";
+import { ProjectDialog, CreationContext } from "./WorkspaceProjects";
 import { boardRows, shotKey, type ShotSelection } from "./lib/storyboard";
 const TimelinePanel = lazy(() => import("./TimelinePanel"));
 export default function App() {
@@ -61,8 +64,11 @@ export default function App() {
     ),
     [jobsOpen, setJobsOpen] = useState(false),
     [newProject, setNewProject] = useState(false),
-    [projectName, setProjectName] = useState(""),
-    [projectRoot, setProjectRoot] = useState(""),
+    [projectSwitcher, setProjectSwitcher] = useState(false),
+    [assetOpen, setAssetOpen] = useState(false),
+    [workspace, setWorkspace] = useState<any>(null),
+    [projectsLoaded, setProjectsLoaded] = useState(false),
+    [creationOpen, setCreationOpen] = useState(false),
     [settings, setSettings] = useState(false),
     [error, setError] = useState(""),
     [notice, setNotice] = useState(""),
@@ -122,11 +128,19 @@ export default function App() {
       setData({ ...value, __projectId: projectId });
   };
   useEffect(() => {
-    api("/projects")
-      .then((p) => {
+    Promise.all([api("/projects"), api("/workspace")])
+      .then(async ([p, w]) => {
         setProjects(p);
-        if (!p.some((x: any) => x.project_id === projectId) && p[0])
-          setProjectId(p[0].project_id);
+        setWorkspace(w);
+        const chosen = p.find((x: any) => x.project_id === w.active_project_id)
+          || p.find((x: any) => x.project_id === projectId) || p[0];
+        if (chosen) {
+          if (!w.active_project_id) setWorkspace(await api("/workspace/active-project", {
+            method: "PUT", body: JSON.stringify({ project_id: chosen.project_id }),
+          }));
+          setProjectId(chosen.project_id);
+        }
+        setProjectsLoaded(true);
       })
       .catch((e) => setError(e.message));
   }, []);
@@ -135,11 +149,14 @@ export default function App() {
     setData(null);
     setScene("all");
     setSelected("");
+    setAssetOpen(false);
+    setInfoOpen(false);
     setShotOpen(false);
     setShotSelection(null);
     setFocusEnvelope(null);
     setStageRequest(null);
     setSettings(false);
+    setCreationOpen(false);
     setDirtyParts({});
     setVisited(["script"]);
     setModule("script");
@@ -186,6 +203,15 @@ export default function App() {
     setModule(value);
     setVisited((v) => [...new Set([...v, value])]);
   };
+  const switchProject = (next: string) => {
+    if (canLeave()) void run(async () => {
+      setWorkspace(await api("/workspace/active-project", {
+        method: "PUT", body: JSON.stringify({ project_id: next }),
+      }));
+      setProjectId(next);
+      setProjectSwitcher(false);
+    });
+  };
   const openShot = (selection: ShotSelection) => {
     setError("");
     setShotSelection(selection);
@@ -209,29 +235,22 @@ export default function App() {
   ];
   return (
     <ErrorContext.Provider value={error}>
-      <div className="workbench-app flex h-screen min-h-[600px] overflow-hidden p-3 gap-3 max-[720px]:p-2 max-[720px]:gap-2">
-        <aside className="workbench-sidebar flex w-56 shrink-0 flex-col rounded-3xl border bg-card shadow-xs max-[720px]:w-16">
-          <div className="flex h-20 items-center gap-3 px-5 max-[720px]:justify-center max-[720px]:px-0">
+      <div className="workbench-app flex h-dvh overflow-hidden p-3 gap-3 max-[900px]:p-2 max-[900px]:gap-2">
+        <aside className="workbench-sidebar flex w-52 shrink-0 flex-col rounded-2xl border bg-card shadow-xs max-[900px]:w-14">
+          <div className="flex h-16 shrink-0 items-center gap-3 px-4 max-[900px]:justify-center max-[900px]:px-0">
             <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
               <Clapperboard size={20} />
             </div>
-            <div className="max-[720px]:hidden">
+            <div className="max-[900px]:hidden">
               <p className="text-sm font-semibold">影视工作台</p>
-              <p className="mt-1 text-[10px] tracking-widest text-muted-foreground">
-                FILM WORKSPACE
-              </p>
             </div>
           </div>
-          <div className="border-b p-3 max-[720px]:hidden">
-            <label className="mb-2 block px-1 text-[11px] text-muted-foreground">
-              当前项目
-            </label>
+          <div className="shrink-0 border-b p-3 max-[900px]:hidden">
             <Select
               aria-label="选择项目"
               value={projectId}
-              onChange={(e) => {
-                if (canLeave()) setProjectId(e.target.value);
-              }}
+              onChange={(e) => switchProject(e.target.value)}
+              disabled={busy || !projects.length}
             >
               {projects.map((p) => (
                 <option key={p.project_id} value={p.project_id}>
@@ -250,8 +269,15 @@ export default function App() {
               <Plus />
               新建 / 打开项目
             </Button>
+            <Button className="mt-1 w-full justify-start" variant="ghost" size="sm"
+              disabled={!data} onClick={() => setCreationOpen(true)}>
+              <MessageSquare />在 Codex 中创作
+            </Button>
           </div>
-          <nav className="space-y-1 p-3">
+          <div className="hidden justify-center border-b py-2 max-[900px]:flex">
+            <Button variant="ghost" size="icon" aria-label="切换或新建项目" title={`${project?.name || "未选择项目"} · 切换项目`} onClick={() => setProjectSwitcher(true)}><Folder /></Button>
+          </div>
+          <nav aria-label="工作区" className="shrink-0 space-y-1 p-3 max-[900px]:p-2">
             {[
               ["script", "剧本", FileText],
               ["assets", "资产库", Images],
@@ -259,19 +285,22 @@ export default function App() {
             ].map(([key, label, Icon]: any) => (
               <button
                 key={key}
+                aria-label={label}
+                aria-current={module === key ? "page" : undefined}
+                title={label}
                 onClick={() => chooseModule(key)}
                 className={cn(
-                  "flex h-11 w-full items-center gap-3 rounded-xl px-3 text-sm text-muted-foreground transition-colors hover:bg-accent",
+                  "flex h-10 w-full items-center gap-3 rounded-xl px-3 text-sm text-muted-foreground transition-colors hover:bg-accent max-[900px]:justify-center max-[900px]:px-0",
                   module === key &&
                     "bg-primary font-medium text-primary-foreground hover:bg-primary/90",
                 )}
               >
                 <Icon size={17} />
-                <span className="max-[720px]:hidden">{label}</span>
+                <span className="max-[900px]:hidden">{label}</span>
               </button>
             ))}
           </nav>
-          <div className="flex-1 overflow-auto border-t px-3 py-4 max-[720px]:hidden">
+          <div className="min-h-0 flex-1 overflow-auto border-t px-3 py-4 max-[900px]:hidden">
             <p className="mb-3 px-3 text-[11px] font-medium text-muted-foreground">
               场景导航
             </p>
@@ -283,7 +312,7 @@ export default function App() {
               onClick={() => setScene("all")}
             >
               <Folder size={13} />
-              全部 / 共享资产
+              全部场景
               <span className="ml-auto text-muted-foreground">
                 {scenes.length}
               </span>
@@ -303,11 +332,11 @@ export default function App() {
             ))}
             {!scenes.length && (
               <p className="px-3 py-3 text-xs leading-6 text-muted-foreground">
-                导入剧本或分镜后，Scene 会显示在这里。
+                暂无场景
               </p>
             )}
           </div>
-          <div className="flex items-center gap-2 border-t p-3">
+          <div className="sidebar-footer mt-auto flex shrink-0 items-center gap-2 border-t p-3 max-[900px]:flex-col max-[900px]:px-2">
             <Button
               variant="ghost"
               size="icon"
@@ -327,18 +356,15 @@ export default function App() {
             >
               <Settings2 />
             </Button>
-            <span className="ml-auto text-[10px] text-muted-foreground max-[720px]:hidden">
-              本机存储
-            </span>
           </div>
         </aside>
-        <div className="workbench-content flex min-w-0 flex-1 flex-col overflow-hidden rounded-3xl border bg-card shadow-xs">
-          <header className="flex h-[68px] shrink-0 items-center gap-3 border-b px-7">
-            <span className="text-sm font-medium">
+        <div className="workbench-content flex min-w-0 flex-1 flex-col overflow-hidden rounded-2xl border bg-card shadow-xs">
+          <header className="workbench-header flex h-14 shrink-0 items-center gap-3 border-b px-6">
+            <span className="min-w-0 truncate text-sm font-medium" title={project?.name}>
               {project?.name || "影视工作台"}
             </span>
-            <span className="text-muted-foreground">/</span>
-            <span className="text-sm text-muted-foreground">
+            <span className="header-divider text-muted-foreground">/</span>
+            <span className="header-module shrink-0 text-sm text-muted-foreground">
               {
                 (
                   {
@@ -349,33 +375,29 @@ export default function App() {
                 )[module]
               }
             </span>
-            <div className="ml-auto flex items-center gap-2 text-xs text-muted-foreground">
+            <div className="ml-auto flex shrink-0 items-center gap-1 text-xs text-muted-foreground">
+              <Select className="compact-scene-select hidden h-8 max-w-32 max-[900px]:block" aria-label="场景导航" value={scene} onChange={e => setScene(e.target.value)}>
+                <option value="all">全部场景</option>
+                {scenes.map(s => <option key={s}>{s}</option>)}
+              </Select>
               <Button
                 variant="ghost"
                 size="icon"
                 aria-label="项目信息与本地产物"
-                onClick={() => setInfoOpen(!infoOpen)}
+                disabled={!data}
+                onClick={() => setInfoOpen(true)}
               >
                 <Info />
               </Button>
-              {busy ? (
-                <>
-                  <Loader2 size={13} className="animate-spin" />
-                  处理中
-                </>
-              ) : (
-                <>
-                  <span className="size-1.5 rounded-full bg-foreground" />
-                  本地服务{data ? "已连接" : "连接中"}
-                </>
-              )}
               <Button
                 variant="ghost"
                 size="icon"
                 aria-label="刷新本地状态"
+                title={busy ? "处理中" : data ? "已连接 · 刷新" : "连接中 · 重试"}
+                disabled={busy || !projectId}
                 onClick={() => run(refresh)}
               >
-                <RefreshCw />
+                <RefreshCw className={busy ? "animate-spin" : ""} />
               </Button>
             </div>
           </header>
@@ -396,7 +418,19 @@ export default function App() {
               busy && "[&_button]:cursor-wait",
             )}
           >
-            {!data ? (
+            {!data && error ? (
+              <div className="m-auto">
+                <EmptyState kind="project" title="暂时无法连接" description="检查本地服务后重试。">
+                  <Button onClick={() => window.location.reload()}><RefreshCw />重新连接</Button>
+                </EmptyState>
+              </div>
+            ) : projectsLoaded && !projects.length ? (
+              <div className="m-auto">
+                <EmptyState kind="project" title="开始一个视频项目">
+                <Button onClick={() => setNewProject(true)}><Plus />新建 / 打开项目</Button>
+                </EmptyState>
+              </div>
+            ) : !data ? (
               <div className="m-auto flex gap-3 text-muted-foreground">
                 <Loader2 className="animate-spin" size={18} />
                 正在载入本地项目…
@@ -449,6 +483,7 @@ export default function App() {
                                   r.shot.id === shotSelection?.rowId &&
                                   r.shot.scene === shotSelection?.scene,
                               ) || matches[0];
+                            setAssetOpen(!row);
                             if (row) openShot(row.selection);
                           }}
                           run={run}
@@ -479,12 +514,18 @@ export default function App() {
                     </div>
                   ))}
                 </main>
-                {module !== "timeline" && (module === "assets" || infoOpen) && (
-                  <aside className="details-panel w-[360px] shrink-0 overflow-auto border-l bg-muted/20">
-                    <div className="border-b px-5 py-4 text-sm font-medium">
-                      {module === "assets" ? "素材详情" : "生产信息"}
-                    </div>
-                    {module === "assets" && asset ? (
+                {(infoOpen || (assetOpen && asset)) && (
+                  <Dialog open onOpenChange={(open) => {
+                    if (open) return;
+                    if (assetOpen && dirtyParts.asset) {
+                      setError("素材详情还有未保存的修改，请先保存或撤销编辑。");
+                      return;
+                    }
+                    setAssetOpen(false); setInfoOpen(false); setError("");
+                  }} title={assetOpen ? "素材详情" : "项目信息"}
+                    className="inspector-dialog left-auto right-3 top-3 flex h-[calc(100dvh-24px)] max-h-none w-[min(420px,calc(100%-24px))] translate-x-0 translate-y-0 flex-col overflow-hidden p-0 [&>.dialog-title]:px-5 [&>.dialog-title]:pt-5">
+                    <div className="min-h-0 flex-1 overflow-auto border-t">
+                    {assetOpen && asset ? (
                       <AssetInspector
                         key={`${base}:${selected}`}
                         asset={asset}
@@ -577,7 +618,8 @@ export default function App() {
                         </p>
                       </div>
                     )}
-                  </aside>
+                    </div>
+                  </Dialog>
                 )}
               </>
             )}
@@ -609,6 +651,7 @@ export default function App() {
               onTimeline={goTimeline}
               onAsset={(name) => {
                 setSelected(name);
+                setAssetOpen(true);
                 setShotOpen(false);
                 chooseModule("assets");
               }}
@@ -626,52 +669,35 @@ export default function App() {
         {notice && (
           <div
             role="status"
-            className="fixed bottom-16 left-1/2 z-50 flex max-w-xl -translate-x-1/2 items-center gap-3 rounded-lg border bg-background px-5 py-3 text-sm shadow-lg"
+            className="fixed bottom-16 left-1/2 z-[60] flex w-max max-w-[calc(100%-32px)] -translate-x-1/2 items-center gap-3 rounded-xl border bg-background px-5 py-3 text-sm shadow-lg"
           >
             <Check size={16} />
             {notice}
           </div>
         )}
-        <Dialog
+        <Dialog open={projectSwitcher} onOpenChange={setProjectSwitcher} title="项目">
+          <div className="space-y-4">
+            <Select aria-label="切换项目" value={projectId} disabled={busy || !projects.length} onChange={e => switchProject(e.target.value)}>
+              {projects.map(p => <option key={p.project_id} value={p.project_id}>{p.name}</option>)}
+            </Select>
+            <Button variant="outline" className="w-full" onClick={() => { if (canLeave()) { setProjectSwitcher(false); setNewProject(true); } }}><Plus />新建 / 打开项目</Button>
+            <Button variant="ghost" className="w-full" disabled={!data} onClick={() => { setProjectSwitcher(false); setCreationOpen(true); }}><MessageSquare />在 Codex 中创作</Button>
+          </div>
+        </Dialog>
+        <ProjectDialog
           open={newProject}
           onOpenChange={setNewProject}
-          title="新建或打开本地项目"
-        >
-          <div className="space-y-4">
-            <Field label="项目名称">
-              <Input
-                value={projectName}
-                onChange={(e) => setProjectName(e.target.value)}
-                placeholder="这部作品的名称"
-              />
-            </Field>
-            <Field
-              label="已有项目路径（可留空）"
-              hint="留空会创建独立项目目录，并复制当前 Registry 与 Skills。"
-            >
-              <Input
-                value={projectRoot}
-                onChange={(e) => setProjectRoot(e.target.value)}
-                placeholder="/Users/…/my-project"
-              />
-            </Field>
-            <Button
-              disabled={!projectName.trim()}
-              onClick={() =>
-                run(async () => {
-                  const p = await post("/projects", {
-                    name: projectName,
-                    root: projectRoot || undefined,
-                  });
-                  setProjects(await api("/projects"));
-                  setProjectId(p.project_id);
-                  setNewProject(false);
-                }, "项目已打开")
-              }
-            >
-              打开工作台
-            </Button>
-          </div>
+          workspace={workspace}
+          onCreated={async (project) => {
+            setProjects(await api("/projects"));
+            setWorkspace(await api("/workspace"));
+            setProjectId(project.project_id);
+            setNotice("项目已打开");
+          }}
+        />
+        <Dialog open={creationOpen} onOpenChange={setCreationOpen}
+          title="在 Codex 中创作" description={`当前绑定「${project?.name || ""}」`}>
+          {creationOpen && <CreationContext key={base} base={base} />}
         </Dialog>
         <ProjectSettings
           key={base}

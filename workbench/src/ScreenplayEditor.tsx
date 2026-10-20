@@ -5,8 +5,8 @@ import Text from "@tiptap/extension-text";
 import HardBreak from "@tiptap/extension-hard-break";
 import { UndoRedo } from "@tiptap/extensions";
 import { Fragment, Slice } from "@tiptap/pm/model";
-import { Download, Upload, Undo2, Redo2, MessageSquare, Send, X, Loader2, CornerDownLeft, Check, AlertCircle } from "lucide-react";
-import { Button, Dialog, Badge, Textarea } from "./components/ui";
+import { Download, Upload, Undo2, Redo2, MessageSquare, Send, X, Loader2, Check, AlertCircle } from "lucide-react";
+import { Button, Dialog, Badge, Textarea, Placeholder } from "./components/ui";
 import { api, post, uid } from "./lib/api";
 import { ScriptParagraph, changeParagraphType, toEditorDocument, fromEditor, replaceDocument, focusBlock } from "./lib/screenplay-editor";
 import { importMarkdown, exportMarkdown, paragraphTypes, applyProposal, validateDocument, type ScriptDocument, type EditProposal } from "../shared/screenplay";
@@ -164,7 +164,7 @@ export default function ScreenplayEditor({ base, body, baselineHash, sceneHeadin
     const url = URL.createObjectURL(new Blob([text], { type: "text/markdown;charset=utf-8" }));
     const a = document.createElement("a"); a.href = url; a.download = filename.replace(/\.[^.]+$/, "") + "_编辑稿.md";
     a.click(); window.setTimeout(() => URL.revokeObjectURL(url), 10000);
-    setNotice("已发起 Markdown 下载，导出包含当前未保存的修改。");
+    setNotice("已发起草稿下载");
   };
   if (!editor) return null;
   const screenplay = fromEditor(editor), warnings = screenplay.blocks.filter(b => b.warning);
@@ -175,7 +175,7 @@ export default function ScreenplayEditor({ base, body, baselineHash, sceneHeadin
   const hasTargets = (entry: EditEntry) => entry.result?.edits.every(edit => screenplay.blocks.some(b => b.id === edit.id));
   const selectedType = editor.state.selection.$from.parent.attrs.kind;
   return <div className="screenplay-workspace flex min-h-0 flex-1 flex-col">
-    <div className="flex flex-wrap items-center gap-2 border-b px-6 py-2.5">
+    <div className="panel-toolbar flex shrink-0 flex-wrap items-center gap-2 border-b px-6 py-2">
       <span className="mr-auto text-xs text-muted-foreground">{screenplay.blocks.filter(b => b.type === "scene").length} 场 · {screenplay.blocks.length} 段</span>
       <Button size="sm" variant="ghost" onClick={() => { const first = screenplay.blocks.find(b => b.type === "scene"); if (first) focusBlock(editor, first.id); }}>跳到正文</Button>
       <Button size="sm" variant="outline" onClick={() => fileInput.current?.click()}><Upload />导入 MD</Button>
@@ -195,10 +195,10 @@ export default function ScreenplayEditor({ base, body, baselineHash, sceneHeadin
       }}>使用项目已保存稿</button></span>}
       {notice && <span>{notice}</span>}{(draftError || error) && <p role="alert" className="text-destructive">{draftError || error}</p>}
     </div>}
-    <div className="flex min-h-0 flex-1">
+    <div className="screenplay-body relative flex min-h-0 flex-1">
       <div className="flex min-w-0 flex-1 flex-col">
         {warnings.length > 0 && <div className="flex items-center gap-2 border-b bg-amber-50 px-6 py-2 text-xs text-amber-950 dark:bg-amber-950/20 dark:text-amber-200">
-          <AlertCircle size={14} /><span>{warnings.length} 处引用文字保留原文，需确认是否为对白。</span>
+          <AlertCircle size={14} className="shrink-0" /><span title="引用文字保留原文，请确认段落类型是否为对白。">{warnings.length} 处引用待确认</span>
           <button className="ml-auto shrink-0 underline" onClick={() => focusBlock(editor, warnings[0].id)}>定位第一处</button>
         </div>}
         <div className="screenplay-scroll min-h-0 flex-1 overflow-auto bg-muted/30 px-4 py-7 md:px-8">
@@ -208,14 +208,13 @@ export default function ScreenplayEditor({ base, body, baselineHash, sceneHeadin
           <Button variant="ghost" size="icon" title="撤销（⌘Z）" aria-label="撤销剧本修改" onMouseDown={e => e.preventDefault()} onClick={() => editor.chain().focus().undo().run()}><Undo2 /></Button>
           <Button variant="ghost" size="icon" title="重做（⌘⇧Z）" aria-label="重做剧本修改" onMouseDown={e => e.preventDefault()} onClick={() => editor.chain().focus().redo().run()}><Redo2 /></Button>
           <span className="mx-1 h-6 border-l" />
-          {paragraphTypes.map((p, i) => <button key={p.type} type="button" aria-label={`${p.label} ${p.short}`} aria-pressed={selectedType === p.type} title={`设为${p.label} · ⌘⌥${i + 1}`} className="screenplay-type" onMouseDown={e => e.preventDefault()} onClick={() => changeParagraphType(editor, p.type)}><span>{p.label}</span><small>{p.short}</small></button>)}
-          <span className="ml-auto hidden items-center gap-1 px-3 text-[10px] text-muted-foreground xl:flex"><CornerDownLeft size={12} />下一段 · Tab 切换 · Esc 离开</span>
+          {paragraphTypes.map((p, i) => <button key={p.type} type="button" aria-label={`${p.label} ${p.short}`} aria-pressed={selectedType === p.type} title={`设为${p.label} · ⌘⌥${i + 1}`} className="screenplay-type" onMouseDown={e => e.preventDefault()} onClick={() => changeParagraphType(editor, p.type)}><span>{p.label}</span></button>)}
         </div>
       </div>
       {chat && <aside className="screenplay-chat flex w-80 shrink-0 flex-col border-l bg-background xl:w-96" aria-label="剧本修改对话">
-        <div className="flex items-center border-b px-4 py-3"><div className="mr-auto"><p className="text-sm font-medium">一起改这份剧本</p><p className="mt-1 text-xs text-muted-foreground">读取当前草稿，也包含尚未保存的手改</p></div><Button variant="ghost" size="icon" aria-label="收起对话" onClick={() => setChat(false)}><X /></Button></div>
+        <div className="flex shrink-0 items-center border-b px-4 py-2"><p className="mr-auto text-sm font-medium">对话修改</p><Button variant="ghost" size="icon" aria-label="收起对话" onClick={() => setChat(false)}><X /></Button></div>
         <div className="min-h-0 flex-1 space-y-5 overflow-auto p-4" aria-live="polite">
-          {!entries.length && <p className="pt-8 text-sm leading-7 text-muted-foreground">例如：“把第 2 场老周的第一句对白改成‘先说规矩。’，其他不动。”<br />也可以先在正文选中一段，再描述怎么改。</p>}
+          {!entries.length && <div className="flex flex-col items-center py-5 text-center"><Placeholder kind="project" compact /><p className="mt-3 text-xs leading-6 text-muted-foreground">描述修改要求，或先选中一段正文。</p></div>}
           {entries.map(entry => <article key={entry.id} className="space-y-3 text-sm">
             <p className="ml-4 whitespace-pre-wrap rounded-2xl bg-muted px-4 py-3 leading-6">{entry.instruction}</p>
             {["starting", "running"].includes(entry.status) ? <div className="flex items-center gap-2 text-xs text-muted-foreground"><Loader2 size={14} className="animate-spin" />正在修改…<button className="ml-auto underline" onClick={async () => { try { await post(`${base}/script/edits/${entry.id}/cancel`); await refreshEdits(); } catch (e) { setError((e as Error).message); } }}>取消</button></div> : <>
@@ -225,7 +224,7 @@ export default function ScreenplayEditor({ base, body, baselineHash, sceneHeadin
             </>}
           </article>)}
         </div>
-        <div className="space-y-3 border-t p-4">
+        <div className="shrink-0 space-y-3 border-t p-4">
           <Textarea aria-label="对话修改要求" placeholder="告诉我想改哪里、怎么改…" className="min-h-24 resize-none" value={instruction} onChange={e => setInstruction(e.target.value)} />
           <div className="flex items-center gap-2"><label className="mr-auto flex items-center gap-2 text-xs text-muted-foreground"><input type="checkbox" checked={selectedOnly} onChange={e => setSelectedOnly(e.target.checked)} />有选区时仅修改选中段落</label><Button size="sm" disabled={pending || active || !instruction.trim()} onClick={() => void send()}><Send size={14} />发送</Button></div>
         </div>

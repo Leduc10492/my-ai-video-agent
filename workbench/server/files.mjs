@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { createHash, randomUUID } from "node:crypto";
+import { projectRelative } from "../../.agents/project-layout.mjs";
 export const sha = (value) =>
   createHash("sha256")
     .update(
@@ -19,6 +20,7 @@ export function contained(root, relative) {
     typeof relative === "string" && relative && !path.isAbsolute(relative),
     "需要项目内的相对路径",
   );
+  relative = projectRelative(root, relative);
   const base = fs.realpathSync(root),
     target = path.resolve(base, relative);
   check(target.startsWith(base + path.sep), "路径超出项目");

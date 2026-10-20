@@ -49,3 +49,8 @@ deliverables/0_admin/workbench.sqlite*
 deliverables/0_admin/workbench/
 deliverables/4_edit/*
 !deliverables/4_edit/README.md
+
+# Workspace index, private video projects, and migration backups.
+/.workbench/
+/projects/*
+!/projects/README.md

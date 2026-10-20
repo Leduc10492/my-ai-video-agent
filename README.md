@@ -1,21 +1,46 @@
 # My AI Video Agent
 
-一个以主控 Agent、Skills 和少量可选 Sub Agents 组成的 AI 影片前期生产工作流。
+一个管理多部视频的本地影视工作台。平台负责项目、任务与预览，每部视频在独立文件夹内保存剧本、资产、分镜、剪辑和 Skill 配置。
+
+## 正式创作目录与更新
+
+开发 checkout 与正式作品可以分开。构建后运行：
+
+```bash
+node workbench/scripts/publish-workspace.mjs --destination "/你的路径/我的AI视频"
+```
+
+它建立 `00_工作流/工作台`、`00_工作流/Skills`、`00_工作流/项目模板`，并复制当前选择的视频项目到总目录；原开发、测试及备份不动。项目使用 `01_剧本` 至 `06_导出` 六类目录，技术状态在 `.project/`，工作区索引使用相对路径。新项目在总目录直接建立；既有旧路径通过项目映射读取。
+
+双击正式目录的 `启动工作台.command` 使用。打包包含当前 OS/CPU 的运行组件；本机整体复制后可以从新位置启动。跨系统或不同芯片需重装相应依赖，Codex/Higgsfield 需在目标电脑安装和登录。复制前先停止服务，完整带走隐藏目录。
+
+更新时先在开发仓库取得所需 GitHub 版本，完成验证与构建，关闭正式服务，再运行同一命令并加 `--update`。只替换公共工作流，旧版保存在 `.workbench/更新备份/`；作品数据及项目固定 Skill 不变。未提交的修改不会由 `git pull` 获取，实际打包来源记录在 `00_工作流/release.json`。
+
+以下安装与旧阶段目录说明适用于开发 checkout 和原有项目；正式目录依据 `.agents/project-layout.mjs` 与项目自身的目录契约。
 
 ## 新项目安装
 
-GitHub 仓库根目录就是项目根目录。克隆后直接在同一个目录的 `deliverables/` 内创作，不需要再建立 `main/` 与 `test/` 两层：
+GitHub 仓库是平台工作区。`workbench/` 保存程序，`projects/<作品名>/` 保存独立视频项目；也可以打开其他硬盘上的项目。根目录的 `.agents/` 是默认模板，实际创作读取各视频项目自己的 Registry。
 
-环境要求：Node.js 18 或更高版本、pnpm 9 或更高版本。仓库用 `pnpm-lock.yaml` 锁定依赖，并在 `package.json` 中记录当前验证使用的 pnpm 版本。
+环境要求：Node.js 24 或更高版本（工作台使用内置 SQLite）、pnpm 9 或更高版本。仓库用 `pnpm-lock.yaml` 锁定依赖，并在 `package.json` 中记录当前验证使用的 pnpm 版本。
 
 ```bash
-git clone https://github.com/Leduc10492/my-ai-video-agent.git my-film-project
-cd my-film-project
+git clone https://github.com/Leduc10492/my-ai-video-agent.git my-film-workspace
+cd my-film-workspace
 pnpm install --frozen-lockfile
+pnpm --dir workbench install --frozen-lockfile
 pnpm validate
+pnpm workbench:build
+pnpm workbench:start
 ```
 
-`pnpm install` 安装剧本 DOCX 导出所需的 `docx`；`pnpm validate` 会检查 Registry、Skills、Agents、脚本、模板、文档引用、依赖锁文件和快捷软链接。校验通过后即可把剧本放进 `deliverables/1_story/` 开始工作。
+打开 `http://127.0.0.1:4310`，新建或打开视频项目。每个项目包含 `project.json`、`AGENTS.md`、`.agents/` 和 `deliverables/`。平台索引及当前选择保存在 `.workbench/`，私人项目默认不提交到平台 Git。
+
+点击「在 Codex 中创作」复制该项目的创作指令或启动命令。直接从平台聊天时，先用 `pnpm workspace:context` 取得当前项目，然后在后续阶段通过 `--project <项目ID或绝对路径>` 保持绑定。界面切换项目不会改变已有任务的目录。
+
+旧版用户先停止服务，运行 `pnpm workspace:migrate` 查看计划，再运行 `pnpm workspace:migrate --apply` 迁移。迁移逐文件校验、保留原 ID、备份和旧路径兼容链接。详见 [工作台文档](workbench/README.md)。
+
+`pnpm validate` 检查平台提供的默认 Registry、Skills、Agents、脚本、模板、文档引用、依赖锁文件和快捷软链接。根目录历史 `deliverables/` 继续作为回归材料保留，以下生产路径均相对于具体视频项目。
 
 ## 阶段目录命名
 
@@ -25,6 +50,7 @@ pnpm validate
 | `deliverables/1_story/` | 剧本与剧本审计 |
 | `deliverables/2_assets/` | 共享人物、场景、道具与风格资产 |
 | `deliverables/3_shotlist/` | 按 Scene 保存 Breakdown、HTML 与 manifest |
+| `deliverables/4_edit/` | 剪辑工程、时间轴版本与成片导出 |
 
 目录阶段号始终使用单个数字。文件名仍使用 `01_script`、`02_asset_guide`、`03_shotlist_breakdown` 等既有前缀，用于阶段内部排序。
 
@@ -86,7 +112,7 @@ deliverables/3_shotlist/
 
 先首次导入 Notion 剧本，之后持续使用本地版本；只有明确来源更新请求才读取 Notion。台词／剧情修改只写本地，局部更新只改目标，全量更新保留旧版，不自动回写。`workflow_state.json` 明确区分工作稿与已选生产输入，最高版本号仅用于分配新文件名。
 
-操作见 [本地剧本协议](.agents/skills/version-management/references/local-script-workflow.md)。`pnpm workflow status` 检查本地状态；`pnpm test:workflow` 验证范围更新、失败恢复、版本选择和归档引用。完整运行恢复、Skill 版本锁定和视频生成留待后续。
+操作见 [本地剧本协议](.agents/skills/version-management/references/local-script-workflow.md)。在平台目录运行 `pnpm workflow status --root <视频项目绝对路径>` 检查指定项目状态；`pnpm test:workflow` 验证范围更新、失败恢复、版本选择和归档引用。
 
 ## 本地影视工作台
 

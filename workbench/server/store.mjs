@@ -2,8 +2,11 @@ import fs from "node:fs";
 import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { id, now, check, atomic, sha, contained, assetName } from "./files.mjs";
+import { projectRelative, projectLayout, encodeProjectPaths, decodeProjectPaths } from "../../.agents/project-layout.mjs";
 
 export class Store {
+  serialize(value) { return JSON.stringify(projectLayout(this.root) ? encodeProjectPaths(this.root, value) : value); }
+  parse(value) { return decodeProjectPaths(this.root, JSON.parse(value)); }
   constructor(root) {
     this.root = fs.realpathSync(root);
     const file = contained(this.root, "deliverables/0_admin/workbench.sqlite");
@@ -20,20 +23,20 @@ export class Store {
     const row = this.db
       .prepare("SELECT data FROM records WHERE kind=? AND id=?")
       .get(kind, key);
-    return row ? JSON.parse(row.data) : null;
+    return row ? this.parse(row.data) : null;
   }
   list(kind) {
     return this.db
       .prepare("SELECT data FROM records WHERE kind=? ORDER BY rowid")
       .all(kind)
-      .map((r) => JSON.parse(r.data));
+      .map((r) => this.parse(r.data));
   }
   put(kind, key, data) {
     this.db
       .prepare(
         "INSERT INTO records VALUES(?,?,?) ON CONFLICT(kind,id) DO UPDATE SET data=excluded.data",
       )
-      .run(kind, key, JSON.stringify(data));
+      .run(kind, key, this.serialize(data));
     return data;
   }
   transaction(fn) {
@@ -53,9 +56,9 @@ export class Store {
         .prepare(
           "INSERT INTO meta VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value",
         )
-        .run(key, JSON.stringify(value));
+        .run(key, this.serialize(value));
     const row = this.db.prepare("SELECT value FROM meta WHERE key=?").get(key);
-    return row ? JSON.parse(row.value) : null;
+    return row ? this.parse(row.value) : null;
   }
   settings() {
     return this.meta("settings") ?? { width: 1920, height: 1080, fps: 24 };
@@ -124,7 +127,7 @@ export class Store {
             "SELECT revision,data FROM revisions ORDER BY revision DESC LIMIT 1",
           )
           .get();
-    return row ? { ...JSON.parse(row.data), revision: row.revision } : null;
+    return row ? { ...this.parse(row.data), revision: row.revision } : null;
   }
   saveTimeline(project, expectedRevision, source = "manual") {
     return this.transaction(() => {
@@ -154,12 +157,12 @@ export class Store {
         revision++;
       this.db
         .prepare("INSERT INTO revisions(revision,data) VALUES(?,?)")
-        .run(revision, JSON.stringify(record));
-      const relative = `deliverables/4_edit/timeline_v${revision}.json`;
+        .run(revision, this.serialize(record));
+      const relative = projectRelative(this.root, `deliverables/4_edit/timeline_v${revision}.json`);
       atomic(contained(this.root, relative), { ...record, revision });
       this.db
         .prepare("UPDATE revisions SET data=? WHERE revision=?")
-        .run(JSON.stringify({ ...record, path: relative }), revision);
+        .run(this.serialize({ ...record, path: relative }), revision);
       return this.timeline(revision);
     });
   }
@@ -168,7 +171,7 @@ export class Store {
       .prepare("SELECT revision,data FROM revisions ORDER BY revision DESC")
       .all()
       .map((r) => {
-        const { project, ...rest } = JSON.parse(r.data);
+        const { project, ...rest } = this.parse(r.data);
         return { ...rest, revision: r.revision };
       });
   }

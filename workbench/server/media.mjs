@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { projectLayout, assetCategory } from "../../.agents/project-layout.mjs";
 import path from "node:path";
 import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
@@ -121,7 +122,16 @@ export async function registerFile(store, source, input) {
     !input.scene || /^scene-[A-Za-z0-9_-]+$/.test(input.scene),
     "Scene 标识无效",
   );
-  const relative = `${base}/${asset.asset_name}/${takeId}/${asset.asset_name}${extension}`;
+  let relative = `${base}/${asset.asset_name}/${takeId}/${asset.asset_name}${extension}`;
+  if (projectLayout(store.root)) {
+    const folder = info.kind === "video"
+      ? `04_镜头/${(input.scene || "未分场").replace(/_v\d+$/, "")}`
+      : `02_资产/${assetCategory(asset.asset_name, info.kind)}`;
+    const parent = contained(store.root, `${folder}/${asset.asset_name}`);
+    const used = fs.existsSync(parent) ? fs.readdirSync(parent).map(n => Number(n.match(/^take_(\d+)$/)?.[1] || 0)) : [];
+    const label = `take_${String(Math.max(0, ...used) + 1).padStart(3, "0")}`;
+    relative = `${folder}/${asset.asset_name}/${label}/${asset.asset_name}${extension}`;
+  }
   const target = contained(store.root, relative);
   fs.mkdirSync(path.dirname(target), { recursive: true });
   fs.copyFileSync(source, target, fs.constants.COPYFILE_EXCL);

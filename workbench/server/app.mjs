@@ -38,10 +38,13 @@ import {
 import { renderExport } from "./render.mjs";
 import { ScriptAssistant } from "./script-assistant.mjs";
 import { SkillSettings } from "./skill-settings.mjs";
+import { Workspace, defaultDataDir, defaultWorkspaceRoot, projectContext } from "./workspace.mjs";
 
 export async function createApp({
-  dataDir = path.join(templateRoot, "workbench/.local"),
-  initialRoot = templateRoot,
+  dataDir = process.env.WORKBENCH_DATA_DIR || defaultDataDir,
+  workspaceRoot = dataDir === defaultDataDir ? defaultWorkspaceRoot : path.dirname(dataDir),
+  projectsRoot,
+  initialRoot = null,
   provider: injectedProvider,
   runWorker = true,
   codexClient,
@@ -53,21 +56,8 @@ export async function createApp({
   const scriptAssistant = new ScriptAssistant(client);
   const skillRunner = new SkillRunner(client);
   const skillSettings = new SkillSettings(client);
-  fs.mkdirSync(dataDir, { recursive: true });
-  const registryFile = path.join(dataDir, "projects.json");
-  let projects = fs.existsSync(registryFile)
-    ? JSON.parse(fs.readFileSync(registryFile, "utf8"))
-    : [];
-  const persist = () => atomic(registryFile, projects, true);
-  if (!projects.length && initialRoot) {
-    projects.push({
-      project_id: id(),
-      name: path.basename(initialRoot),
-      root: fs.realpathSync(initialRoot),
-      created_at: now(),
-    });
-    persist();
-  }
+  const workspace = new Workspace({ root: workspaceRoot, dataDir, projectsRoot, initialRoot });
+  const projects = workspace.projects;
   const stores = new Map();
   function project(key) {
     const p = projects.find((p) => p.project_id === key);
@@ -137,56 +127,15 @@ export async function createApp({
     local: true,
   }));
   app.get("/api/projects", () => projects);
+  app.get("/api/workspace", () => workspace.snapshot());
+  app.put("/api/workspace/active-project", req =>
+    workspace.select(req.body.project_id));
   app.post("/api/projects", async (req) => {
-    check(
-      typeof req.body.name === "string" && req.body.name.trim(),
-      "请填写项目名称",
-    );
-    let root;
-    if (req.body.root) {
-      check(
-        path.isAbsolute(req.body.root) && fs.existsSync(req.body.root),
-        "项目目录不存在",
-      );
-      root = fs.realpathSync(req.body.root);
-      check(
-        fs.existsSync(path.join(root, ".agents/skill_registry.md")),
-        "所选目录没有项目 Skill Registry",
-      );
-    } else {
-      root = path.join(dataDir, "projects", id());
-      fs.mkdirSync(root, { recursive: true });
-      fs.cpSync(
-        path.join(templateRoot, ".agents"),
-        path.join(root, ".agents"),
-        { recursive: true },
-      );
-      fs.copyFileSync(
-        path.join(templateRoot, "AGENTS.md"),
-        path.join(root, "AGENTS.md"),
-      );
-      for (const stage of [
-        "0_admin",
-        "1_story",
-        "2_assets",
-        "3_shotlist",
-        "4_edit",
-      ])
-        fs.mkdirSync(path.join(root, "deliverables", stage), {
-          recursive: true,
-        });
-    }
-    check(!projects.some((p) => p.root === root), "该项目已经打开", 409);
-    const p = {
-      project_id: id(),
-      name: req.body.name.trim(),
-      root,
-      created_at: now(),
-    };
-    projects.push(p);
-    persist();
-    return p;
+    const project = workspace.add(req.body);
+    workspace.select(project.project_id);
+    return project;
   });
+  route("GET", "/context", (s, req, reply, project) => projectContext(project));
   route("GET", "", (s, req, reply, pj) => {
     let script;
     try {
@@ -505,5 +454,5 @@ export async function createApp({
     client.close();
     for (const s of stores.values()) s.close();
   });
-  return { app, stores, projects, client, runner, skillRunner };
+  return { app, stores, projects, client, runner, skillRunner, workspace };
 }

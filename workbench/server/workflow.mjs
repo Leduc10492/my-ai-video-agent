@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { registrySkills } from "./skill-settings.mjs";
+import { outputRoots, projectRelative } from "../../.agents/project-layout.mjs";
 import {
   readState,
   initialize,
@@ -32,14 +33,14 @@ export function skills(root) {
 export function scriptStatus(root) {
   const state = readState(root, { optional: true });
   const candidates = walk(
-    path.join(root, "deliverables/1_story"),
+    contained(root, "deliverables/1_story"),
     (n) => /^01_script_v\d+\.md$/.test(n),
     0,
   ).map((f) => path.relative(root, f));
   if (!state)
     return { state: null, body: "", candidates, versions: [], audit: null };
   const resolved = resolveArtifact(root, { kind: "working" });
-  const auditPath = `deliverables/1_story/01_audit_report_v${resolved.version}.md`;
+  const auditPath = projectRelative(root, `deliverables/1_story/01_audit_report_v${resolved.version}.md`);
   const auditFile = contained(root, auditPath);
   const audit = fs.existsSync(auditFile)
     ? {
@@ -223,16 +224,16 @@ export function importStoryboard(store, input) {
     );
   }
   const board = { ...input, imported_at: now(), sha256: sha(input) };
-  const relative = `deliverables/0_admin/workbench/storyboards/${id()}.json`;
+  const relative = projectRelative(store.root, `deliverables/0_admin/workbench/storyboards/${id()}.json`);
   atomic(contained(store.root, relative), board);
   return store.meta("storyboard", { ...board, path: relative });
 }
 export function existingOutputs(root) {
-  return walk(
-    path.join(root, "deliverables"),
+  return outputRoots(root).flatMap(folder => walk(
+    contained(root, folder),
     (n) => /\.(md|html|json)$/.test(n),
-    3,
-  )
+    4,
+  ))
     .map((f) => path.relative(root, f))
     .filter(
       (relative) =>

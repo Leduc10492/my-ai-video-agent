@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { atomic, contained, check, walk } from "./files.mjs";
 import { command, probe, digest } from "./media.mjs";
 import { validateTimeline } from "./timeline.mjs";
+import { projectRelative } from "../../.agents/project-layout.mjs";
 const appRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
@@ -85,7 +86,7 @@ async function runRender(store, projectId, timeline, job, port) {
     `import project from '@twick/visualizer/dist/project.js';\nproject.settings.rendering.fps = ${settings.fps};\nproject.settings.preview.fps = ${settings.fps};\nexport default project;\n`,
     true,
   );
-  const directory = `deliverables/4_edit/exports/${job.job_id}`,
+  const directory = projectRelative(store.root, `deliverables/4_edit/exports/${job.job_id}`),
     absolute = contained(store.root, directory);
   fs.mkdirSync(absolute, { recursive: true });
   const rendered = await renderVideo({
@@ -106,6 +107,9 @@ async function runRender(store, projectId, timeline, job, port) {
         args: ["--autoplay-policy=no-user-gesture-required"],
       },
       ffmpeg: { ffmpegPath, ffprobePath },
+      // Resolve Twick's virtual client imports from this installation, regardless
+      // of the shell/Finder/Codex working directory used to launch the service.
+      viteConfig: { root: appRoot },
       viteServerOptions: { host: "127.0.0.1" },
     },
   });

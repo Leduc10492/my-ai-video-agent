@@ -144,9 +144,11 @@ export default function JobsPanel({ base, data, open, setOpen, run }: any) {
       ].includes(j.status),
     );
   return (
-    <div className="shrink-0 border-t bg-background">
+    <div className="jobs-panel shrink-0 border-t bg-background">
       <button
-        className="flex w-full items-center gap-3 px-5 py-3 text-left text-sm"
+        aria-expanded={open}
+        aria-controls="workbench-jobs"
+        className="flex w-full items-center gap-3 px-5 py-2.5 text-left text-sm"
         onClick={() => setOpen(!open)}
       >
         {working.length ? (
@@ -154,7 +156,7 @@ export default function JobsPanel({ base, data, open, setOpen, run }: any) {
         ) : (
           <Check size={14} />
         )}
-        <span className="font-medium">任务面板</span>
+        <span className="shrink-0 font-medium">任务</span>
         <span className="text-xs text-muted-foreground">
           {working.length} 进行中 · {data.jobs.length} 条记录
           {pending.length ? ` · ${pending.length} 批待确认` : ""}
@@ -166,7 +168,7 @@ export default function JobsPanel({ base, data, open, setOpen, run }: any) {
         )}
       </button>
       {open && (
-        <div className="max-h-60 overflow-auto border-t">
+        <div id="workbench-jobs" className="max-h-[min(240px,35dvh)] overflow-auto border-t">
           <div className="divide-y">
             {(data.skill_batches || []).map((batch: any) => (
               <div

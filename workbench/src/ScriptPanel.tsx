@@ -7,6 +7,9 @@ import {
   GitCompareArrows,
   ShieldCheck,
   Clapperboard,
+  Images,
+  WandSparkles,
+  Code2,
 } from "lucide-react";
 import { diffLines } from "diff";
 import {
@@ -120,43 +123,44 @@ export default function ScriptPanel({
     }
   };
   const stages = [
-    ["script", "创作 / 改写"],
-    ["audit", "审核剧本"],
-    ["assets", "提取资产"],
-    ["storyboard", "制作分镜"],
-    ["prompts", "编译 Prompt"],
-    ["html", "生产 HTML"],
-  ];
+    ["script", "创作 / 改写", Sparkles],
+    ["audit", "审核剧本", ShieldCheck],
+    ["assets", "提取资产", Images],
+    ["storyboard", "制作分镜", Clapperboard],
+    ["prompts", "编译 Prompt", WandSparkles],
+    ["html", "生产 HTML", Code2],
+  ] as const;
   return (
     <Tabs.Root
       value={view}
       onValueChange={onView}
       className="flex min-h-0 flex-1 flex-col"
     >
-      <div className="flex flex-wrap items-center gap-3 border-b bg-card px-7 py-4">
+      <div className="panel-toolbar flex shrink-0 flex-wrap items-center gap-2 border-b bg-card px-6 py-2">
         <Tabs.List
           className="segmented-control mr-auto"
           aria-label="剧本工作区"
         >
           <Tabs.Trigger
             value="text"
+            aria-label="剧本正文"
             className={view === "text" ? "active" : ""}
           >
             <FileText size={15} />
-            剧本正文
+            正文
           </Tabs.Trigger>
           <Tabs.Trigger
             value="board"
+            aria-label="可视化分镜"
             className={view === "board" ? "active" : ""}
           >
             <Clapperboard size={15} />
-            可视化分镜
+            分镜
           </Tabs.Trigger>
         </Tabs.List>
         {view === "text" && (
           <>
-            {ref && <Badge>v{ref.version}</Badge>}
-            <Badge>{dirty ? "有未保存修改" : ref ? "已保存" : "未导入"}</Badge>
+            <span className="text-xs text-muted-foreground">{ref ? `v${ref.version} · ` : ""}{dirty ? "未保存" : ref ? "已保存" : "未导入"}</span>
             <Button
               variant="outline"
               size="sm"
@@ -176,9 +180,6 @@ export default function ScriptPanel({
             </Button>
           </>
         )}
-        {view === "board" && (
-          <Badge>{data.storyboard ? "分镜已载入" : "待制作"}</Badge>
-        )}
       </div>
       <Tabs.Content
         value="text"
@@ -190,8 +191,8 @@ export default function ScriptPanel({
             {script.error}
           </div>
         )}
-        <div className="flex flex-wrap gap-2 border-b bg-muted/30 px-6 py-3">
-          {stages.map(([key, label]) => (
+        <div className="stage-toolbar flex shrink-0 gap-1 overflow-x-auto border-b bg-muted/20 px-5 py-1.5">
+          {stages.map(([key, label, Icon]) => (
             <Button
               key={key}
               size="sm"
@@ -201,7 +202,7 @@ export default function ScriptPanel({
                 setInstruction("");
               }}
             >
-              <Sparkles />
+              <Icon />
               {label}
             </Button>
           ))}
@@ -249,15 +250,14 @@ export default function ScriptPanel({
             bindings.current = value;
           }}
         />
-        <div className="flex items-center justify-between border-t px-6 py-2 text-xs text-muted-foreground">
+        <div className="script-status flex shrink-0 flex-wrap items-center justify-between gap-2 border-t px-6 py-2 text-xs text-muted-foreground">
           <span>
-            {body.length.toLocaleString()} 字符 ·{" "}
-            {ref ? `已存档 ${ref.scene_map?.length || 0} 场` : "尚未存档"}
+            {body.length.toLocaleString()} 字符
           </span>
           <span>
             {script.state?.production_inputs
               ? `生产版本 v${script.state.production_inputs.script.version}`
-              : "生产版本尚未确认"}
+              : "生产版待确认"}
           </span>
         </div>
       </Tabs.Content>

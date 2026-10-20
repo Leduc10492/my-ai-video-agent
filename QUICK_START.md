@@ -1,21 +1,28 @@
 # Quick Start
 
-首次从 GitHub 创建项目：
+首次从 GitHub 安装工作台：
 
-先准备 Node.js 18+ 与 pnpm 9+，然后执行：
+先准备 Node.js 24+ 与 pnpm 9+，然后执行：
 
 ```bash
-git clone https://github.com/Leduc10492/my-ai-video-agent.git my-film-project
-cd my-film-project
+git clone https://github.com/Leduc10492/my-ai-video-agent.git my-film-workspace
+cd my-film-workspace
 pnpm install --frozen-lockfile
+pnpm --dir workbench install --frozen-lockfile
 pnpm validate
+pnpm workbench:build
+pnpm workbench:start
 ```
 
-仓库根目录就是创作项目根目录。不要再拆成 `main/` 和 `test/`；剧本、资产、分镜和 HTML 直接写入根目录下的 `deliverables/`。
+打开 `http://127.0.0.1:4310`，新建视频项目。平台代码在 `workbench/`，新项目默认位于 `projects/<作品名>/`。每部视频有自己的 `project.json`、`AGENTS.md`、Skill Registry 和 `deliverables/`；也可打开其他目录中的项目。
 
-阶段目录固定为 `0_admin/`、`1_story/`、`2_assets/`、`3_shotlist/`；只有文件名继续使用 `01_`、`02_`、`03_` 前缀。
+点击「在 Codex 中创作」，复制创作指令到 Codex，或复制 `codex --cd` 命令在对应目录启动。已有对话保持自己的项目；改变页面选择不会重定向正在执行的任务。每个创作阶段重新读取该项目最新保存的 Skill 配置。
 
-直接告诉主控 Agent 当前目标和场景范围即可。默认进入交互式模式：每个阶段先给你看审核结果和缺口，再等待确认。
+旧版项目先停止服务，执行 `pnpm workspace:migrate` 查看迁移计划，再执行 `pnpm workspace:migrate --apply`。备份保存在 `.workbench/migrations/`，项目 ID、素材文件名和旧版本保持不变。
+
+视频项目内的阶段目录固定为 `0_admin/`、`1_story/`、`2_assets/`、`3_shotlist/`、`4_edit/`；文件名继续使用 `01_`、`02_`、`03_` 前缀。
+
+绑定项目后，告诉主控 Agent 当前目标和场景范围。默认进入交互式（interactive）模式，在需要创作决定的阶段展示审核结果和缺口。
 
 ```text
 把这份故事整理成短片剧本。

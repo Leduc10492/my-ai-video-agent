@@ -2,9 +2,6 @@ import { useEffect, useState } from "react";
 import BatchReview from "./BatchReview";
 import { AssetStatus, assetState } from "./AssetStatus";
 import {
-  Film,
-  Image,
-  Music,
   Plus,
   Search,
   Upload,
@@ -19,6 +16,8 @@ import {
   Select,
   Textarea,
   cn,
+  Placeholder,
+  EmptyState,
 } from "./components/ui";
 import { api, post, pretty } from "./lib/api";
 export function mediaDetails(take: any) {
@@ -53,8 +52,8 @@ export function Media({
     />
   ) : (
     <div className="flex h-full flex-col items-center justify-center gap-4">
-      <Music size={28} />
-      <audio className="w-full" src={src} controls />
+      <Placeholder kind="audio" compact />
+      {controls && <audio className="w-full" src={src} controls />}
     </div>
   );
 }
@@ -96,8 +95,8 @@ export default function AssetsPanel({
   );
   const assetsWithMedia = new Set(data.takes.map((t: any) => t.asset_name));
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex flex-wrap items-center gap-2 border-b px-6 py-3">
+    <div className="assets-workspace flex min-h-0 flex-1 flex-col">
+      <div className="panel-toolbar flex shrink-0 flex-wrap items-center gap-2 border-b px-6 py-3">
         <span className="mr-auto font-medium">
           资产库{" "}
           <span className="ml-2 text-xs text-muted-foreground">
@@ -124,14 +123,15 @@ export default function AssetsPanel({
           生成批次
         </Button>
       </div>
-      <div className="flex flex-wrap items-center gap-2 px-6 py-4">
-        <div className="relative mr-auto w-56">
+      <div className="panel-toolbar flex shrink-0 flex-wrap items-center gap-2 px-6 py-3">
+        <div className="relative mr-auto min-w-36 flex-1">
           <Search
             size={14}
             className="absolute left-3 top-3 text-muted-foreground"
           />
           <Input
             className="pl-9"
+            aria-label="搜索资产"
             placeholder="搜索资产名称"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -160,9 +160,9 @@ export default function AssetsPanel({
           <option value="accepted">已接受</option>
         </Select>
       </div>
-      <div className="flex-1 overflow-auto px-6 pb-6">
+      <div className="panel-scroll min-h-0 flex-1 overflow-auto px-6 pb-6">
         {filtered.length ? (
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(210px,1fr))] gap-4">
+          <div className="asset-grid grid gap-4">
             {filtered.map((asset: any) => {
               const takes = data.takes.filter(
                   (t: any) => t.asset_name === asset.asset_name,
@@ -170,27 +170,21 @@ export default function AssetsPanel({
                 take =
                   takes.find(
                     (t: any) => t.take_id === asset.selected_take_id,
-                  ) || takes.at(-1),
-                Icon =
-                  asset.kind === "video"
-                    ? Film
-                    : asset.kind === "audio"
-                      ? Music
-                      : Image;
+                  ) || takes.at(-1);
               return (
                 <button
                   key={asset.asset_name}
                   className={cn(
-                    "overflow-hidden rounded-lg border bg-card text-left transition-shadow hover:shadow-md",
+                    "asset-card group min-w-0 overflow-hidden rounded-2xl border bg-card text-left transition-shadow hover:shadow-md focus-visible:outline-2 focus-visible:outline-ring",
                     selected === asset.asset_name && "ring-2 ring-foreground",
                   )}
                   onClick={() => onSelect(asset.asset_name)}
                 >
-                  <div className="flex aspect-video items-center justify-center bg-muted/50">
+                  <div className="relative flex aspect-video items-center justify-center overflow-hidden bg-muted/50">
                     {take ? (
                       <Media base={base} take={take} controls={false} />
                     ) : (
-                      <Icon size={28} className="text-muted-foreground" />
+                      <Placeholder kind={asset.kind === "video" ? "video" : asset.kind === "audio" ? "audio" : "image"} />
                     )}
                   </div>
                   <div className="space-y-2 p-3">
@@ -201,7 +195,7 @@ export default function AssetsPanel({
                       {asset.display_name || asset.asset_name}
                     </div>
                     {typeof asset.description === "string" && (
-                      <p className="line-clamp-3 text-xs leading-5 text-muted-foreground">
+                      <p className="line-clamp-2 text-xs leading-5 text-muted-foreground">
                         {asset.description}
                       </p>
                     )}
@@ -217,30 +211,24 @@ export default function AssetsPanel({
             })}
           </div>
         ) : (
-          <div className="flex min-h-80 flex-col items-center justify-center rounded-lg border border-dashed text-center">
-            <Image className="mb-4 text-muted-foreground" size={28} />
-            <h2 className="font-medium">
-              {query ? "没有匹配的资产" : "让每个素材都有清晰的来处"}
-            </h2>
-            <p className="mt-2 max-w-sm text-sm leading-6 text-muted-foreground">
-              导入已有素材，或确认一个生成批次，再查看和选择适合的版本。
-            </p>
+          <EmptyState kind={data.assets.length ? "search" : "image"} title={data.assets.length ? "没有匹配的资产" : "暂无素材"}
+            description={scene !== "all" ? `${scene} · 可切换场景或调整筛选` : undefined}>
+            {data.assets.length && (query || type !== "all" || status !== "all") ? <Button variant="outline" onClick={() => { setQuery(""); setType("all"); setStatus("all"); }}>清除筛选</Button> :
             <Button
               variant="outline"
-              className="mt-5"
               onClick={() => setImportOpen(true)}
             >
               <Upload />
-              导入第一批素材
-            </Button>
-          </div>
+              导入媒体
+            </Button>}
+          </EmptyState>
         )}
       </div>
       <Dialog
         open={importOpen}
         onOpenChange={setImportOpen}
         title="导入本地媒体"
-        description="名称逐字保留；文件会复制到项目目录，检查可正常打开后保存为素材版本。"
+        description="复制到项目目录，保留原文件与名称。"
       >
         <div className="space-y-4">
           <Input
