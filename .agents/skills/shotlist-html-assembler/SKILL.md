@@ -1,9 +1,9 @@
 ---
-name: sketch-shotlist-workflow
+name: shotlist-html-assembler
 description: Assemble one approved Scene Breakdown and an already compiled Seedance Prompt set into the final Chinese shotlist HTML and package manifest. This Skill owns HTML integration only; Prompt wording belongs to shotlist.prompt_compiler.
 ---
 
-# Sketch Shotlist Workflow
+# Shotlist HTML Assembler
 
 This is the final HTML assembly stage for one Scene package. The active production chain reaches this Skill only after `shotlist.breakdown` has approved the Scene plan and `shotlist.prompt_compiler` has returned one Prompt for every approved Prompt Envelope.
 
@@ -37,7 +37,7 @@ The active workflow ends with the text-based HTML shotlist. Generated line-art s
 
 ## Required Inputs
 
-Use the latest numeric version for the selected Scene unless the user names an exact file:
+Use the exact Scene package selected by the coordinator or the user, including named archived dependencies. Do not infer the approved package from the largest numeric suffix. The Breakdown’s script/audit references must match the selected production input; a newer working draft needs its own review before replacing those inputs:
 
 - `deliverables/3_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`
 - the exact script and audit named by that Breakdown

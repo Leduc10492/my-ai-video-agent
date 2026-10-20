@@ -119,6 +119,11 @@ function validateCorePaths() {
     'README.md',
     'QUICK_START.md',
     '.agents/skill_registry.md',
+    '.agents/production-contract.md',
+    '.agents/skills/version-management/references/local-script-workflow.md',
+    '.agents/skills/version-management/references/workflow-state.schema.json',
+    '.agents/skills/version-management/scripts/workflow-state.mjs',
+    '.agents/skills/version-management/tests/local-script-workflow.test.mjs',
     '.codex/config.toml',
     'deliverables/0_admin/locks.md',
     'deliverables/0_admin/changelog.md',
@@ -135,7 +140,7 @@ function validateCorePaths() {
 }
 
 function validateStageDirectoryNaming() {
-  const active = ['0_admin', '1_story', '2_assets', '3_shotlist'];
+  const active = ['0_admin', '1_story', '2_assets', '3_shotlist', '4_edit'];
   // Build deprecated padded names without leaving them as apparent path
   // references in the repository contract itself.
   const deprecated = [
@@ -253,7 +258,7 @@ function validatePackageAndImports(scriptFiles) {
   if (!packageJson.engines?.pnpm) errors.push('package.json is missing engines.pnpm');
 
   for (const [name, command] of Object.entries(packageJson.scripts ?? {})) {
-    const nodeTarget = command.match(/^node\s+([^\s]+)/)?.[1];
+    const nodeTarget = command.match(/^node(?:\s+--[\w-]+)*\s+([^\s]+)/)?.[1];
     if (nodeTarget && !existsSync(path.resolve(repoRoot, nodeTarget))) {
       errors.push(`package script ${name} references missing ${nodeTarget}`);
     }
@@ -371,38 +376,43 @@ function validatePromptCompilerContract(registryRows) {
 }
 
 function validateInteractionModeContract() {
-  const contracts = [
-    ['AGENTS.md', ['## 执行模式', '### `interactive`（默认）', '### `autonomous`（仅显式触发）', '诊断 -> 修复 -> 阶段 QA -> 复跑 -> 达到门禁 -> 下一阶段']],
-    ['README.md', ['## 执行模式', '默认 `interactive`', '显式 `autonomous`']],
-    ['QUICK_START.md', ['默认进入交互式模式', '自主执行完整项目前期工作流']],
-    ['.agents/skills/screenwriter-workflow/SKILL.md', ['## Interaction Mode Contract', '`interactive` is the default', '`autonomous` applies only when the user explicitly grants autonomous execution']],
-    ['.agents/skills/guide-workflow/SKILL.md', ['## Interaction Mode Contract', 'authorization for reversible reference-image generation', 'generated_ref_v{N}']],
-    ['.agents/skills/shotlist-breakdown-workflow/SKILL.md', ['Resolve `interaction_mode` from `AGENTS.md` before selecting the Scene', 'treat the first Scene as an internal pilot']],
-    ['.agents/skills/qa-workflow/SKILL.md', ['## Interaction Mode Contract', 'QA is part of a repair loop', 'Final QA must not be the first place']],
-    ['.agents/skills/qa-checklists/SKILL.md', ['## Execution Mode Gate', 'No stage silently changes from `interactive` to `autonomous`']],
-    ['.codex/agents/project-director.toml', ['Default to `interactive`', 'diagnose -> repair -> QA -> recheck']],
-    ['.codex/agents/script-writer.toml', ['In `interactive`, present the complete P0-P3 audit', 'In `autonomous`, route findings through the appropriate McKee repair skill']],
-    ['.codex/agents/guide-director.toml', ['generate versioned candidate references', 'Do not leave production-critical references `missing`']],
-    ['.codex/agents/storyboard-director.toml', ['treat the first Scene as an internal pilot', 'do not silently continue as text-only']],
-    ['.codex/agents/qa-check.toml', ['In `interactive`, report findings and wait', 'In `autonomous`, route every P0/P1 and fixable downstream-relevant P2']],
+  // This is documentation coverage, not proof of behavior or creative approval.
+  // Do not freeze the exact wording of rules that owners need to improve.
+  const files = [
+    'AGENTS.md', 'README.md', 'QUICK_START.md', '.agents/production-contract.md',
+    ...['screenwriter-workflow', 'guide-workflow', 'shotlist-breakdown-workflow', 'qa-workflow', 'qa-checklists']
+      .map((name) => `.agents/skills/${name}/SKILL.md`),
+    ...['project-director', 'script-writer', 'guide-director', 'storyboard-director', 'qa-check']
+      .map((name) => `.codex/agents/${name}.toml`),
   ];
   const errors = [];
-
-  for (const [relativePath, needles] of contracts) {
-    const filePath = path.join(repoRoot, relativePath);
-    if (!existsSync(filePath)) {
-      errors.push(`missing interaction-mode contract file: ${relativePath}`);
-      continue;
-    }
-    const source = readFileSync(filePath, 'utf8');
-    for (const needle of needles) {
-      if (!source.includes(needle)) errors.push(`${relativePath} is missing interaction-mode rule: ${needle}`);
+  for (const relativePath of files) {
+    const file = path.join(repoRoot, relativePath);
+    if (!existsSync(file)) { errors.push(`missing mode documentation: ${relativePath}`); continue; }
+    const source = readFileSync(file, 'utf8');
+    for (const [mode, vocabulary] of [['interactive', /interactive|交互式/], ['autonomous', /autonomous|自主执行/]]) {
+      if (!vocabulary.test(source)) errors.push(`${relativePath} does not document ${mode}`);
     }
   }
-
   return errors.length === 0
-    ? pass('interactive / autonomous execution-mode contract', `${contracts.length} files`)
-    : fail('interactive / autonomous execution-mode contract', errors);
+    ? pass('execution-mode documentation coverage (not behavior proof)', `${files.length} files`)
+    : fail('execution-mode documentation coverage', errors);
+}
+
+function validateLocalScriptContract() {
+  const schema = JSON.parse(readFileSync(path.join(skillsRoot, 'version-management/references/workflow-state.schema.json'), 'utf8'));
+  const errors = [];
+  if (schema.properties?.schema_version?.const !== 1) errors.push('unsupported state schema version');
+  for (const key of ['source', 'source_history', 'working_script', 'production_inputs', 'artifacts', 'scene_labels', 'locks', 'last_change']) {
+    if (!schema.required?.includes(key) || !schema.properties?.[key]) errors.push(`state schema is missing ${key}`);
+  }
+  for (const file of ['workflow_state.json', 'workflow_state.previous.json', 'script_decisions/example.json', 'recovery/example.json']) {
+    const ignored = spawnSync('git', ['check-ignore', '-q', `deliverables/0_admin/${file}`], { cwd: repoRoot });
+    if (ignored.status !== 0) errors.push(`runtime data is not excluded from Git: ${file}`);
+  }
+  return errors.length === 0
+    ? pass('local script schema and private runtime paths', 'run pnpm test:workflow for behavioral evidence')
+    : fail('local script schema and private runtime paths', errors);
 }
 
 if (!existsSync(skillsRoot)) {
@@ -414,7 +424,7 @@ const skillDirectories = readdirSync(skillsRoot, { withFileTypes: true })
   .map((entry) => path.join(skillsRoot, entry.name))
   .sort();
 const scriptFiles = walk(skillsRoot)
-  .filter((filePath) => /[/\\]scripts[/\\].+\.(?:js|mjs)$/.test(filePath))
+  .filter((filePath) => /[/\\](?:scripts|tests)[/\\].+\.(?:js|mjs)$/.test(filePath))
   .sort();
 
 let passed = true;
@@ -427,6 +437,7 @@ passed = validateConvenienceLinks() && passed;
 passed = validateDocumentationLinks() && passed;
 passed = validatePromptCompilerContract(registryRows) && passed;
 passed = validateInteractionModeContract() && passed;
+passed = validateLocalScriptContract() && passed;
 for (const skillDirectory of skillDirectories) {
   passed = validateSkill(skillDirectory) && passed;
 }

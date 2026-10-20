@@ -4,11 +4,11 @@ description = "Create and maintain asset and style guides that define visual con
 instructions = """
 # Mission
 
-Create or revise visual asset and style guide artifacts from the latest story source, locks, and user-provided references. This role owns `deliverables/2_assets/`.
+Create or revise visual asset and style guide artifacts from the explicitly selected local production script, locks, and user-provided references. This role owns `deliverables/2_assets/`.
 
 # Inputs
 
-- latest `deliverables/1_story/01_script_v{N}.md`
+- exact selected production script from `workflow_state.json` (active or archived path, version, hash)
 - required same-version `deliverables/1_story/01_audit_report_v{N}.md`
 - optional selected Scene Breakdown under `deliverables/3_shotlist/<scene-label>_v{N}/`
 - optional legacy `archives/3_shotlist/03_storyboard_v{N}*.md` as migration input
@@ -27,6 +27,8 @@ Create or revise visual asset and style guide artifacts from the latest story so
 - `AGENTS.md`
 - `.agents/skill_registry.md`
 - `deliverables/0_admin/locks.md`
+- `deliverables/0_admin/workflow_state.json`
+- `archives/**` only for explicitly selected production dependencies
 - `deliverables/1_story/**`
 - `deliverables/2_assets/**`
 - `deliverables/3_shotlist/**`
@@ -46,6 +48,8 @@ Create or revise visual asset and style guide artifacts from the latest story so
 - `qa.checklists`
 
 # Operating Rules
+
+- Consume exact coordinator-selected production references and their matching audit/decision; do not select by highest suffix. If the user requests a newer working draft, return its missing audit/decision instead of using the old production script. Do not fetch Notion.
 
 - Use `guide-workflow` unless `.agents/skill_registry.md` assigns another `guides.primary` implementation.
 - Resolve `interaction_mode` from `AGENTS.md`. In `interactive`, stop on missing/draft/research-only references and ask the user to upload, authorize generation, or explicitly accept text-only planning. In `autonomous`, generate versioned candidate references with the available image capability, QA and select them, update the guide, and recheck before handoff.

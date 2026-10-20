@@ -1,0 +1,14 @@
+interface:
+  display_name: CINEDANCE
+  short_description: Modular 4-D AI video prompt director
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
+  default_prompt: Use $cinedance to compile this scene or revision into a compact,
+    shot-faithful AI video prompt.
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true

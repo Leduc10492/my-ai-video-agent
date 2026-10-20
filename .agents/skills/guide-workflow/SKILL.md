@@ -19,7 +19,9 @@ Use this skill to create or revise the common asset/style stage under `deliverab
 
 ## Required Inputs
 
-- Latest script: `deliverables/1_story/01_script_v{N}.md`
+Resolve inputs with [local-script-workflow.md](../version-management/references/local-script-workflow.md). Use the coordinator’s exact script/audit and matching production decision; do not infer them from the largest version number or refresh Notion. If the requested working draft differs, handle its required audit/decision first.
+
+- Exact production script selected by `workflow_state.json` (path, version, hash; active or archived)
 - Required same-version audit report: `deliverables/1_story/01_audit_report_v{N}.md`
 - Optional selected Scene Breakdown: `deliverables/3_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md`
 - Optional legacy planning input: `archives/3_shotlist/03_storyboard_v{N}*.md`
@@ -97,7 +99,7 @@ Generated references are not automatically approved. In autonomous mode, perform
 ## Save Rules
 
 - If no current guide exists, create `v1`.
-- If revising a current guide, archive the previous version under `archives/2_assets/` and save the next version under `deliverables/2_assets/`.
+- If revising a selected guide, safely save and verify its next unused version before changing the selection or archiving the old version. Preserve exact downstream references per `version-management`.
 - Preserve artifact IDs across versions of the same guide.
 - Update `deliverables/0_admin/changelog.md`.
 - After guide changes, list downstream artifacts that may need inspection: shotlist breakdowns, compiled Prompts, shotlist HTML, generated references, and generated video tests.

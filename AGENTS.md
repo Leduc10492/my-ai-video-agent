@@ -9,6 +9,13 @@
 - 进入 Scene 生产、Prompt／HTML 装配或修改契约时读取 [.agents/production-contract.md](.agents/production-contract.md)。局部文字修订不必加载完整工作流。
 - 一个产物由一个写入者修改；可把独立研究或检查交给子 Agent，主线程整合。不要硬编码创作判断或预写 `QA passed`。
 
+## 本地剧本与来源
+
+- 首次提供 Notion 剧本链接时核对页面、完整读取约定正文及字段，忠实保存本地剧本和来源快照。已有本地稿时先按状态登记的文件继续；再次提到同一链接或说“继续”不会访问 Notion。
+- 只有明确要求“按 Notion 更新”才读取来源。局部更新只采用指定范围；全量更新保存新版本并保留旧稿。直接改台词、剧情或采用用户新文字只修改本地文件。不自动回写 Notion；“回写／同步 Notion”属于另行明确授权的操作。
+- `deliverables/0_admin/workflow_state.json` 区分 `working_script` 与 `production_inputs`。按精确路径、版本和哈希选输入，不把最大版本号当成工作稿或接受证据。无状态时优先登记用户指定文件，其次可验证的既有引用；仅有一个候选时可登记，多个候选列出供选择。
+- 主线程以 `project-director` 职责独占状态写入；保存采用“新文件可读 → 原子切换引用 → 可选归档”。普通导入和局部编辑不触发全剧审核门；进入生产时才核对所选版本的审计和接受／自主范围。保存与引用操作见 [本地剧本协议](.agents/skills/version-management/references/local-script-workflow.md)。
+
 ## 执行模式
 
 ### `interactive`（默认）

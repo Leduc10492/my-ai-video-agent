@@ -1,0 +1,343 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Local script workflow state v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "revision",
+    "source",
+    "source_history",
+    "working_script",
+    "production_inputs",
+    "artifacts",
+    "scene_labels",
+    "locks",
+    "last_change"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "source": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/source"
+        }
+      ]
+    },
+    "source_history": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "working_script": {
+      "$ref": "#/$defs/artifact"
+    },
+    "production_inputs": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "required": [
+            "script",
+            "audit",
+            "decision",
+            "mode",
+            "scope"
+          ],
+          "properties": {
+            "script": {
+              "$ref": "#/$defs/artifact"
+            },
+            "audit": {
+              "$ref": "#/$defs/artifact"
+            },
+            "decision": {
+              "$ref": "#/$defs/artifact"
+            },
+            "mode": {
+              "enum": [
+                "interactive",
+                "autonomous"
+              ]
+            },
+            "scope": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/artifact"
+      }
+    },
+    "scene_labels": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^scene-[0-9]+[a-z]?$"
+      }
+    },
+    "locks": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/file"
+        }
+      ]
+    },
+    "last_change": {
+      "type": "object",
+      "required": [
+        "at",
+        "operation",
+        "changed"
+      ],
+      "properties": {
+        "at": {
+          "type": "string"
+        },
+        "operation": {
+          "type": "string"
+        },
+        "changed": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "file": {
+      "type": "object",
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "artifact": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/file"
+        }
+      ],
+      "type": "object",
+      "required": [
+        "artifact_id",
+        "version",
+        "kind"
+      ],
+      "properties": {
+        "artifact_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "kind": {
+          "enum": [
+            "script",
+            "audit",
+            "decision"
+          ]
+        },
+        "body_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "numbering": {
+          "enum": [
+            "stable",
+            "positional"
+          ]
+        },
+        "derived_from": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "scene_map": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/scene"
+          }
+        }
+      }
+    },
+    "scene": {
+      "type": "object",
+      "required": [
+        "label",
+        "position",
+        "header",
+        "contentHash",
+        "matchHeader"
+      ],
+      "properties": {
+        "label": {
+          "type": "string",
+          "pattern": "^scene-[0-9]+[a-z]?$"
+        },
+        "position": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "header": {
+          "type": "string"
+        },
+        "matchHeader": {
+          "type": "string"
+        },
+        "contentHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "type",
+        "page_id",
+        "url",
+        "imports",
+        "baselines",
+        "last_explicit_import",
+        "last_update_scope",
+        "last_source_version"
+      ],
+      "properties": {
+        "type": {
+          "const": "notion"
+        },
+        "page_id": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "url": {
+          "type": "string"
+        },
+        "last_explicit_import": {
+          "type": "string"
+        },
+        "last_source_version": {},
+        "last_update_scope": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "imports": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "import_id",
+              "imported_at",
+              "snapshot",
+              "capture",
+              "mode",
+              "scope",
+              "authorization",
+              "result_script"
+            ],
+            "properties": {
+              "import_id": {
+                "type": "string"
+              },
+              "snapshot": {
+                "$ref": "#/$defs/file"
+              },
+              "capture": {
+                "$ref": "#/$defs/file"
+              },
+              "mode": {
+                "enum": [
+                  "initial",
+                  "partial",
+                  "full"
+                ]
+              },
+              "scope": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "result_script": {
+                "type": "object",
+                "required": [
+                  "key",
+                  "sha256"
+                ]
+              }
+            }
+          }
+        },
+        "baselines": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "import_id",
+              "sha256",
+              "scene"
+            ],
+            "properties": {
+              "import_id": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "scene": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/$defs/scene"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

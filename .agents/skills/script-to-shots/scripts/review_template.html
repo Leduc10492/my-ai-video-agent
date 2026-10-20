@@ -1,0 +1,477 @@
+<title>%%TITLE%% 审片台</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* 审片台：顶部是舞台时间轴和镜头条，下面左边是这一镜的俯视图（视野扇形），右边是自动编出的提示词。 */
+:root {
+  --bg: #eceff2; --panel: #ffffff; --ink: #1a1e23; --muted: #5d6670; --line: #d3d8de;
+  --in: #e2e9f2; --out: #f1eee4; --glass: #2f5d8a; --cam: #c27a12; --cam-fill: rgba(194, 122, 18, .16);
+  --seen: #1a1e23; --unseen: #a9b1ba; --err: #c2362b; --err-bg: #fbe9e7; --warn: #9a6200; --warn-bg: #fbf1dc;
+  --ok: #2e7d4f; --sel: #1a1e23;
+  --sky: #dfe7ee; --ground-out: #cfc8b6; --wall-in: #e4e1da; --floor-in: #c9c3b7;
+  --fig: #3b4550; --fig-far: #8e98a3; --fig-sub: #c27a12; --skin: #f3ece2; --glass-fill: rgba(47, 93, 138, .14); --obj: #f4f4f2;
+  --k-act: #2f5d8a; --k-say: #2e7d4f; --k-sound: #7b4fa0; --k-move: #c27a12; --k-change: #c2362b; --k-other: #8a939c;
+  --f-display: "Noto Serif SC", "Songti SC", serif;
+  --f-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #14171b; --panel: #1d2127; --ink: #e7eaee; --muted: #98a2ad; --line: #2e343c;
+  --in: #1e2834; --out: #29261e; --glass: #84b3e2; --cam: #f0a840; --cam-fill: rgba(240, 168, 64, .18);
+  --seen: #e7eaee; --unseen: #59626c; --err: #ff7a6e; --err-bg: #3a1c19; --warn: #e6aa45; --warn-bg: #352a14;
+  --ok: #62c58f; --sel: #e7eaee;
+  --sky: #1f2731; --ground-out: #2c2a25; --wall-in: #26292e; --floor-in: #1d1f22;
+  --fig: #c7cfd8; --fig-far: #6c7781; --fig-sub: #f0a840; --skin: #2a2f36; --glass-fill: rgba(132, 179, 226, .14); --obj: #3a4048;
+  --k-act: #84b3e2; --k-say: #62c58f; --k-sound: #b994dc; --k-move: #f0a840; --k-change: #ff7a6e; --k-other: #6c757f;
+  color-scheme: dark;
+}}
+:root[data-theme="dark"] {
+  --bg: #14171b; --panel: #1d2127; --ink: #e7eaee; --muted: #98a2ad; --line: #2e343c;
+  --in: #1e2834; --out: #29261e; --glass: #84b3e2; --cam: #f0a840; --cam-fill: rgba(240, 168, 64, .18);
+  --seen: #e7eaee; --unseen: #59626c; --err: #ff7a6e; --err-bg: #3a1c19; --warn: #e6aa45; --warn-bg: #352a14;
+  --ok: #62c58f; --sel: #e7eaee;
+  --sky: #1f2731; --ground-out: #2c2a25; --wall-in: #26292e; --floor-in: #1d1f22;
+  --fig: #c7cfd8; --fig-far: #6c7781; --fig-sub: #f0a840; --skin: #2a2f36; --glass-fill: rgba(132, 179, 226, .14); --obj: #3a4048;
+  --k-act: #84b3e2; --k-say: #62c58f; --k-sound: #b994dc; --k-move: #f0a840; --k-change: #ff7a6e; --k-other: #6c757f;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 24px 64px; }
+.wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 18px; }
+h1 { font-family: var(--f-display); font-size: 26px; margin: 0; text-wrap: balance; }
+.lede { color: var(--muted); margin: 4px 0 0; max-width: 66ch; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; min-width: 0; }
+.h { font-size: 12px; letter-spacing: .08em; color: var(--muted); margin: 0 0 8px; font-weight: 500; }
+.tl-scroll { overflow-x: auto; }
+.tl { min-width: 760px; }
+.tl svg { display: block; width: 100%; height: auto; }
+.k-act { fill: var(--k-act); } .k-say { fill: var(--k-say); } .k-sound { fill: var(--k-sound); }
+.k-move { fill: var(--k-move); } .k-change { fill: var(--k-change); } .k-other { fill: var(--k-other); }
+.shotblk { cursor: pointer; outline: none; }
+.shotblk rect { fill: var(--panel); stroke: var(--line); }
+.shotblk:focus-visible rect { stroke: var(--cam); stroke-width: 2; }
+.shotblk.s-err rect { stroke: var(--err); stroke-width: 2; }
+.shotblk.hero rect { fill: var(--cam-fill); stroke: var(--cam); }
+.shotblk.on rect { fill: var(--sel); stroke: var(--sel); }
+.shotblk text { font-family: var(--f-mono); font-size: 10px; fill: var(--ink); text-anchor: middle; }
+.shotblk.on text { fill: var(--bg); }
+.axis text { font-family: var(--f-mono); font-size: 10px; fill: var(--muted); }
+.axis line { stroke: var(--line); }
+.gap { fill: var(--err-bg); }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; color: var(--muted); margin-top: 8px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: -1px; }
+.main { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 18px; align-items: start; }
+@media (max-width: 820px) { .main { grid-template-columns: minmax(0, 1fr); } }
+.map svg { width: 100%; height: auto; display: block; border-radius: 6px; }
+.z-in { fill: var(--in); } .z-out { fill: var(--out); }
+.fx { stroke: var(--glass); stroke-width: 4; fill: none; }
+.fx.cracked { stroke-dasharray: 6 4; } .fx.falling { stroke-dasharray: 2 6; } .fx.gone { stroke-opacity: .25; stroke-dasharray: 2 6; }
+.door { stroke: var(--glass); stroke-width: 4; }
+.door.open { stroke-opacity: .25; }
+.cordon { stroke: var(--warn); stroke-width: 2; stroke-dasharray: 8 5; }
+.zl { font-size: 12px; fill: var(--muted); font-family: var(--f-body); }
+.wedge { fill: var(--cam-fill); stroke: var(--cam); stroke-width: 1.2; }
+.cam { fill: var(--cam); }
+.p circle { fill: var(--seen); } .p.unseen circle { fill: var(--panel); stroke: var(--unseen); stroke-width: 1.5; }
+.p line { stroke: var(--seen); stroke-width: 2; } .p.unseen line { stroke: var(--unseen); }
+.p text { font-size: 12px; fill: var(--seen); font-family: var(--f-body); } .p.unseen text { fill: var(--unseen); }
+.p.grp rect { fill: var(--seen); fill-opacity: .14; stroke: var(--seen); stroke-dasharray: 3 3; }
+.p.grp.unseen rect { fill: none; stroke: var(--unseen); }
+.head { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; }
+.sid { font-family: var(--f-mono); font-weight: 700; font-size: 22px; }
+.meta { color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+.why { font-family: var(--f-display); font-size: 18px; margin: 4px 0 10px; text-wrap: balance; }
+.nav { margin-left: auto; display: flex; gap: 6px; }
+button { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); padding: 3px 12px; border-radius: 6px; cursor: pointer; }
+button:focus-visible { outline: 2px solid var(--cam); outline-offset: 2px; }
+pre { font-family: var(--f-body); font-size: 14px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; margin: 0;
+  background: var(--bg); border-radius: 8px; padding: 12px 14px; }
+.issues { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 6px; }
+.issues li { font-size: 14px; display: flex; gap: 8px; align-items: baseline; }
+.issues li span { flex: none; font-size: 12px; font-weight: 700; padding: 0 6px; border-radius: 4px; }
+.lv-ERROR span { background: var(--err-bg); color: var(--err); } .lv-WARN span, .lv-INFO span { background: var(--warn-bg); color: var(--warn); }
+.okline { color: var(--ok); font-size: 14px; margin: 0 0 12px; }
+.beats { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 14px; }
+.beats li { display: flex; gap: 8px; } .beats b { font-family: var(--f-mono); font-weight: 500; color: var(--muted); flex: none; width: 5.5em; font-variant-numeric: tabular-nums; }
+.general { display: grid; gap: 4px; font-size: 14px; }
+.board { display: grid; grid-auto-flow: column; grid-auto-columns: 112px; gap: 10px; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x proximity; }
+.board .card { scroll-snap-align: start; }
+.card { cursor: pointer; border: 1px solid var(--line); border-radius: 8px; padding: 6px; background: var(--panel); text-align: left; font: inherit; color: inherit; display: grid; gap: 4px; align-content: start; }
+.card.on { border-color: var(--cam); box-shadow: 0 0 0 2px var(--cam); }
+.card.bad { border-color: var(--err); }
+.card svg { width: 100%; height: auto; display: block; border-radius: 4px; }
+.card .cid { font-family: var(--f-mono); font-weight: 700; font-size: 13px; }
+.card .cm { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.card .cw { font-size: 12.5px; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.views { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 12px; align-items: start; }
+.views .frame svg { width: 100%; height: auto; display: block; border-radius: 6px; }
+.fr-sky { fill: var(--sky); } .fr-gnd { fill: var(--ground-out); } .fr-wall { fill: var(--wall-in); } .fr-floor { fill: var(--floor-in); }
+.fr-glass { fill: var(--glass-fill); stroke: var(--glass); stroke-width: .6; }
+.fr-glass.gone { fill: none; stroke-dasharray: 2 2; stroke-opacity: .5; } .fr-glass.fall { stroke-dasharray: 1.5 1.5; }
+.fr-crack { fill: none; stroke: var(--glass); stroke-width: .35; }
+.fr-rope { stroke: var(--warn); stroke-width: .8; stroke-dasharray: 2.5 1.5; }
+.fr-shard { fill: var(--glass); fill-opacity: .7; }
+.fr-obj { fill: var(--obj); stroke: var(--fig); stroke-width: .5; } .fr-win { fill: var(--fig); fill-opacity: .55; }
+.fig { fill: var(--fig); } .fig.far { fill: var(--fig-far); } .fig.sub { fill: var(--fig-sub); }
+.fig-face { fill: var(--skin); } .fig-feat { fill: var(--fig); stroke: var(--fig); stroke-width: .4; }
+.fr-lab { font-family: var(--f-body); fill: var(--ink); paint-order: stroke; stroke: var(--panel); stroke-width: 1.4px; stroke-linejoin: round; }
+.fr-lab.sub { fill: var(--cam); font-weight: 700; }
+.fr-say { fill: var(--k-say); }
+.fr-note { font-family: var(--f-body); fill: var(--ink); }
+.fr-ins { fill: var(--panel); stroke: var(--ink); stroke-width: .8; }
+.chips { display: flex; flex-wrap: wrap; gap: 4px 6px; }
+.chip { font-family: var(--f-mono); font-size: 12px; border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; background: var(--bg); cursor: pointer; color: var(--ink); }
+.claims { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 4px; font-size: 14px; }
+.claims b { font-family: var(--f-mono); font-weight: 700; margin-right: 6px; }
+.tbl-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+th { font-size: 12px; color: var(--muted); font-weight: 500; white-space: nowrap; }
+td.id { font-family: var(--f-mono); font-weight: 700; white-space: nowrap; }
+tr.miss td { background: var(--err-bg); }
+.cat { font-size: 12px; color: var(--muted); white-space: nowrap; }
+details summary { cursor: pointer; font-weight: 500; }
+.modes { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin-top: 4px; }
+.modes button { border: 0; border-radius: 0; padding: 6px 14px; background: var(--panel); }
+.modes button + button { border-left: 1px solid var(--line); }
+.modes button[aria-pressed="true"] { background: var(--cam); color: var(--panel); font-weight: 700; }
+body.v-all #tlsec, body.v-all .main { display: none; }
+body.v-all .board { grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); overflow-x: visible; }
+body.v-all .card .cw { -webkit-line-clamp: unset; display: block; }
+.board-h-one { display: inline; } .board-h-all { display: none; }
+body.v-all .board-h-one { display: none; } body.v-all .board-h-all { display: inline; }
+@media (max-width: 560px) { .views { grid-template-columns: minmax(0, 1fr); } }
+</style>
+
+<div class="wrap">
+  <div>
+    <h1>%%TITLE%% 审片台</h1>
+    <p class="lede">舞台只写了一次。下面每一镜的画面草图、站位、画面左右、谁拍得到、谁闭嘴、玻璃现在什么状态，都是程序从舞台和机位算出来的。上面两个按钮切换查看方式。“总览”一次摊开所有分镜草图；“按时间轴看”一次看一镜，点时间轴上的镜头或按左右方向键：左边是这一镜的画面草图和俯视图，右边是检查结果和提示词。下面的分镜板可以横着扫一遍节奏，最下面的拆解表看有没有漏拍。</p>
+    <div class="modes" role="group" aria-label="查看方式">
+      <button type="button" id="m-one" aria-pressed="true">按时间轴看（单镜）</button>
+      <button type="button" id="m-all" aria-pressed="false">总览（全部分镜）</button>
+    </div>
+  </div>
+
+  <section class="panel" id="tlsec">
+    <p class="h">舞台时间轴（秒）· 上面五行是舞台上发生的事，下面是镜头（同一时间的多角度镜头排在第二排，橙色是赵凯登场重做的镜头组）。红底是没有镜头的时间</p>
+    <div class="tl-scroll"><div class="tl" id="tl"></div></div>
+    <div class="legend">
+      <span><i style="background:var(--k-act)"></i>动作／移动</span><span><i style="background:var(--k-say)"></i>台词</span>
+      <span><i style="background:var(--k-sound)"></i>画外声音</span>
+      <span><i style="background:var(--k-change)"></i>状态变化</span><span><i style="background:var(--k-other)"></i>静止／后期</span>
+    </div>
+  </section>
+
+  <section class="main">
+    <div class="panel"><div class="views"><div class="frame" id="frame"></div><div class="map" id="map"></div></div>
+      <div class="legend">
+        <span><i style="background:var(--cam)"></i>机位和视野</span>
+        <span><i style="background:var(--seen)"></i>拍得到</span>
+        <span><i style="border:1.5px solid var(--unseen)"></i>拍不到</span>
+        <span><i style="background:var(--glass)"></i>玻璃幕墙，虚线＝裂了或碎了</span>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="head"><span class="sid" id="sid"></span><span class="meta" id="meta"></span>
+        <span class="nav"><button type="button" id="prev">上一镜</button><button type="button" id="next">下一镜</button></span></div>
+      <p class="why" id="why"></p>
+      <div id="iss"></div>
+      <ul class="claims" id="claims"></ul>
+      <p class="h">这段时间舞台上发生的事</p>
+      <ul class="beats" id="beats"></ul>
+      <p class="h" style="margin-top:14px">自动生成的提示词</p>
+      <pre id="prompt"></pre>
+    </div>
+  </section>
+
+  <section class="panel">
+    <p class="h"><span class="board-h-one">分镜板</span><span class="board-h-all">总览</span> · 每格是程序按机位从舞台投影出来的草图（%%ASPECT%%）。橙色是镜头主体，绿点表示在对口型，浅灰小人是远处的人。<span class="board-h-one">左右滑动，点任意一格，上面的详情会切到这一镜</span><span class="board-h-all">点任意一格，切回单镜看它的俯视图和提示词</span></p>
+    <div class="board" id="board"></div>
+  </section>
+
+
+  <section class="panel" id="bd" hidden>
+    <p class="h">拆解表 · 人审的主要是这一张：每一句剧本欠镜头什么，由哪几镜兑现。红底是没有镜头兑现的</p>
+    <div class="tbl-wrap"><table id="plan"></table></div>
+    <div class="tbl-wrap" style="margin-top:14px"><table id="oblig"></table></div>
+  </section>
+
+  <section class="panel" id="gen" hidden>
+    <p class="h">不属于某一镜的提示</p>
+    <div class="general" id="general"></div>
+  </section>
+</div>
+
+<script>
+var D = %%DATA%%;
+(function () {
+  var NS = "http://www.w3.org/2000/svg";
+  var cur = 0;
+  function el(tag, attrs, parent, text) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+  function kindClass(k) { return { act: "k-act", move: "k-act", say: "k-say", sound: "k-sound", change: "k-change", exit: "k-change" }[k] || "k-other"; }
+
+  function drawTimeline() {
+    var W = 1000, L = 12, R = 12, T = D.end, px = (W - L - R) / T;
+    var svg = el("svg", { viewBox: "0 0 " + W + " 170", role: "img", "aria-label": "舞台时间轴" });
+    var t = 0;
+    D.shots.map(function (s) { return [s.from, s.to]; }).sort(function (a, b) { return a[0] - b[0]; }).forEach(function (c) {
+      if (c[0] > t) el("rect", { x: L + t * px, y: 0, width: (c[0] - t) * px, height: 136, class: "gap" }, svg);
+      t = Math.max(t, c[1]);
+    });
+    var lanes = { act: 0, move: 0, say: 1, sound: 2, change: 3, exit: 3, hold: 4, overlay: 4 };
+    D.beats.forEach(function (b) {
+      var g = el("g", {}, svg);
+      el("rect", { x: L + b.t * px, y: 4 + lanes[b.kind] * 13, width: Math.max(3, b.dur * px - 1), height: 10, rx: 2, class: kindClass(b.kind) }, g);
+      el("title", {}, g, b.t + "s " + b.txt);
+    });
+    D.shots.forEach(function (s, i) {
+      var bad = s.issues.some(function (x) { return x.level === "ERROR"; });
+      var g = el("g", { class: "shotblk" + (bad ? " s-err" : ""), tabindex: 0, role: "button", "aria-label": s.id + " " + s.why }, svg);
+      var row = D.shots.slice(0, i).some(function (o) { return o.from < s.to && o.to > s.from; }) ? 1 : 0;
+      el("rect", { x: L + s.from * px + 1, y: 74 + row * 32, width: (s.to - s.from) * px - 2, height: 28, rx: 4 }, g);
+      el("text", { x: L + (s.from + s.to) / 2 * px, y: 92 + row * 32 }, g, s.id.replace("C", ""));
+      if (s.id[0] === "H") g.classList.add("hero");
+      if (s.insert) g.classList.add("ins");
+      el("title", {}, g, s.id + " " + s.why);
+      g.addEventListener("click", function () { show(i); });
+      g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); show(i); } });
+      s._g = g;
+    });
+    var ax = el("g", { class: "axis" }, svg);
+    for (var s = 0; s <= T; s += 10) {
+      el("line", { x1: L + s * px, x2: L + s * px, y1: 142, y2: 148 }, ax);
+      el("text", { x: L + s * px, y: 162, "text-anchor": "middle" }, ax, s + "s");
+    }
+    document.getElementById("tl").appendChild(svg);
+  }
+
+  var X0 = -10, X1 = 10, Y0 = -9, Y1 = 14, S = 22;
+  function X(x) { return (x - X0) * S; }
+  function Y(y) { return (Y1 - y) * S; }
+  function glassClass(st) {
+    if (/空框/.test(st)) return "fx gone";
+    if (/碎/.test(st)) return "fx falling";
+    if (/裂/.test(st)) return "fx cracked";
+    return "fx";
+  }
+  // ───── 分镜草图：数据是编译器按机位投影好的二维图元 ─────
+  function drawFrame(s, host, small) {
+    var f = s.frame, W = f.W, H = f.H;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": s.id + " 分镜草图" });
+    var cid = "clip-" + s.id + (small ? "-s" : "-b");
+    var cp = el("clipPath", { id: cid }, el("defs", {}, svg));
+    el("rect", { x: 0, y: 0, width: W, height: H }, cp);
+    var g = el("g", { "clip-path": "url(#" + cid + ")" }, svg);
+    if (f.insert) {
+      el("rect", { x: 0, y: 0, width: W, height: H, class: "fr-floor" }, g);
+      el("rect", { x: W * .14, y: H * .12, width: W * .72, height: H * .76, rx: 4, class: "fr-ins" }, g);
+      el("text", { x: W / 2, y: H / 2, "text-anchor": "middle", "font-size": 7, class: "fr-note" }, g, f.insert);
+      el("text", { x: W / 2, y: H / 2 + 10, "text-anchor": "middle", "font-size": 5.5, class: "fr-note" }, g, "（内容后期合成）");
+      host.appendChild(svg); return;
+    }
+    W0 = W; H0 = H;
+    var hz = Math.max(0, Math.min(H, f.horizon));
+    el("rect", { x: 0, y: 0, width: W, height: hz, class: f.outdoor ? "fr-sky" : "fr-wall" }, g);
+    el("rect", { x: 0, y: hz, width: W, height: H - hz, class: f.outdoor ? "fr-gnd" : "fr-floor" }, g);
+    var labels = [];
+    f.items.forEach(function (it) {
+      if (it.k === "wall") {
+        el("polygon", { points: it.pts.map(function (p) { return p.join(","); }).join(" "), class: "fr-glass " + it.style }, g);
+        it.cracks.forEach(function (c) { el("polyline", { points: c.map(function (p) { return p.join(","); }).join(" "), class: "fr-crack" }, g); });
+      } else if (it.k === "rope") {
+        el("line", { x1: it.pts[0][0], y1: it.pts[0][1], x2: it.pts[1][0], y2: it.pts[1][1], class: "fr-rope" }, g);
+      } else if (it.k === "shard") {
+        var q = it.pt, r = it.s;
+        el("path", { d: "M" + q[0] + "," + (q[1] - r) + "L" + (q[0] + r * .7) + "," + q[1] + "L" + q[0] + "," + (q[1] + r) + "L" + (q[0] - r * .7) + "," + q[1] + "Z", class: "fr-shard" }, g);
+      } else if (it.k === "object") {
+        var w = it.x1 - it.x0, h = it.y1 - it.y0;
+        el("rect", { x: it.x0, y: it.y0, width: w, height: h, rx: Math.min(w, h) * .12, class: "fr-obj" }, g);
+        el("rect", { x: it.x0 + w * .08, y: it.y0 + h * .12, width: w * .84, height: h * .3, rx: 1, class: "fr-win" }, g);
+        labels.push({ x: (it.x0 + it.x1) / 2, y: it.y0 - 2, t: it.who, sub: false, fs: 5 });
+      } else if (it.k === "person") {
+        drawPerson(it, g, labels);
+      }
+    });
+    var placed = [];
+    labels.sort(function (a, b) { return (b.sub ? 1 : 0) - (a.sub ? 1 : 0); }).forEach(function (l) {
+      var x = Math.max(6, Math.min(W - 6, l.x)), y = Math.max(l.fs + 1, Math.min(H - 3, l.y));
+      if (placed.some(function (p) { return Math.abs(p[0] - x) < 14 && Math.abs(p[1] - y) < 7; })) return;
+      if (placed.some(function (p) { return p[2] === l.t; })) return;
+      placed.push([x, y, l.t]);
+      el("text", { x: x, y: y, "text-anchor": "middle", "font-size": l.fs, class: "fr-lab" + (l.sub ? " sub" : "") }, g, l.t);
+    });
+    if (f.part) {
+      el("text", { x: 4, y: H - 4, "font-size": 6, class: "fr-lab sub", "text-anchor": "start" }, g, "只拍：" + f.part);
+    }
+    host.appendChild(svg);
+  }
+  var W0 = 90, H0 = 160;
+  function drawPerson(it, g, labels) {
+    var h = it.bot - it.top, u = it.u, w = Math.max(.6, it.w);
+    if (h < 1.2) return;
+    var far = h < 14 && !it.subject, cls = "fig" + (it.subject ? " sub" : far ? " far" : "");
+    var hr = Math.max(.5, h * .075), hy = it.top + hr;
+    // 身体：躯干、两条腿
+    el("rect", { x: u - w * .5, y: it.top + hr * 2.1, width: w, height: h * .42, rx: w * .25, class: cls }, g);
+    el("rect", { x: u - w * .42, y: it.top + h * .5, width: w * .36, height: h * .5, rx: w * .12, class: cls }, g);
+    el("rect", { x: u + w * .06, y: it.top + h * .5, width: w * .36, height: h * .5, rx: w * .12, class: cls }, g);
+    var back = it.facing === "back" || it.facing === "b34";
+    el("circle", { cx: u, cy: hy, r: hr, class: back ? cls : "fig-face" }, g);
+    if (!back) {
+      el("circle", { cx: u, cy: hy, r: hr, style: "fill:none", class: "fig-feat", "stroke-width": Math.max(.3, hr * .08) }, g);
+      if (hr > 2) {
+        var sx = it.side === "r" ? 1 : -1, off = it.facing === "front" ? 0 : it.facing === "f34" ? hr * .3 : hr * .55;
+        var ex = it.facing === "side" ? [u + sx * off] : [u - hr * .35 + sx * off, u + hr * .35 + sx * off];
+        ex.forEach(function (x) { el("circle", { cx: x, cy: hy - hr * .1, r: hr * .09, class: "fig-feat" }, g); });
+        var mx = u + sx * off * .8, my = hy + hr * .45;
+        if (it.mouth === "talk") el("ellipse", { cx: mx, cy: my, rx: hr * .18, ry: hr * .14, class: "fr-say" }, g);
+        else el("line", { x1: mx - hr * .18, y1: my, x2: mx + hr * .18, y2: my, class: "fig-feat", "stroke-width": Math.max(.3, hr * .06) }, g);
+      }
+    }
+    if (it.mouth === "talk") el("circle", { cx: u + hr * 1.3, cy: hy - hr * .9, r: Math.max(1.2, hr * .28), class: "fr-say" }, g);
+    if (it.label && h >= 6 && u > -2 && u < W0 + 2 && hy < H0 && hy > -hr) labels.push({ x: u, y: it.top - 2, t: it.who, sub: it.subject, fs: h > 60 ? 7 : 5.5 });
+  }
+
+  function drawBoard() {
+    var host = document.getElementById("board");
+    D.shots.forEach(function (s, i) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "card" + (s.issues.some(function (x) { return x.level === "ERROR"; }) ? " bad" : "");
+      drawFrame(s, b, true);
+      var cap = document.createElement("div");
+      cap.innerHTML = '<div class="cid">' + esc(s.id) + '</div><div class="cm">' + esc(s.size + (s.cut ? " · 留 " + s.cut + "s" : " · " + (s.to - s.from) + "s")) + '</div><div class="cw">' + esc(s.why) + "</div>";
+      b.appendChild(cap);
+      b.addEventListener("click", function () { setView("one"); show(i); document.querySelector(".main").scrollIntoView({ behavior: "smooth", block: "start" }); });
+      host.appendChild(b);
+      s._card = b;
+    });
+  }
+
+  function drawBreakdown() {
+    if (!D.oblig.length && !D.plan.length) return;
+    document.getElementById("bd").hidden = false;
+    var idx = {}; D.shots.forEach(function (s, i) { idx[s.id] = i; });
+    var tot = D.plan.reduce(function (a, b) { return a + (b["秒"] || 0); }, 0);
+    document.getElementById("plan").innerHTML = "<tr><th>节拍</th><th>剧本</th><th>价值变化</th><th>重量</th><th>秒</th><th>拍法</th></tr>" +
+      D.plan.map(function (b) {
+        return "<tr><td>" + esc(b["名"] || "") + '</td><td class="id">' + esc((b["从"] || "") + "–" + (b["到"] || "")) + "</td><td>" + esc(b["价值"] || "") + "</td><td>" + esc(String(b["重量"] || "")) + "</td><td>" + esc(String(b["秒"] || "")) + "</td><td>" + esc(b["拍法"] || "") + "</td></tr>";
+      }).join("") + "<tr><td>合计</td><td></td><td></td><td></td><td>" + tot + (D.target ? " / 目标 " + D.target : "") + "</td><td></td></tr>";
+    var tb = document.getElementById("oblig");
+    tb.innerHTML = "<tr><th>编号</th><th>类</th><th>对镜头的义务</th><th>兑现</th></tr>";
+    D.oblig.forEach(function (o) {
+      var tr = document.createElement("tr");
+      if (!o.shots.length && !o.optional) tr.className = "miss";
+      tr.innerHTML = '<td class="id">' + esc(o.id) + '</td><td class="cat">' + esc(o.cats.join(" · ")) + "</td><td>" + esc(o.req) +
+        (o.frame.length ? '<div class="cat">同框：' + esc(o.frame.join("、")) + "</div>" : "") +
+        o.issues.map(function (x) { return '<div class="cat" style="color:var(--err)">' + esc(x.msg) + "</div>"; }).join("") + '</td><td><div class="chips"></div></td>';
+      var chips = tr.querySelector(".chips");
+      o.shots.forEach(function (sid) {
+        var c = document.createElement("button"); c.type = "button"; c.className = "chip"; c.textContent = sid;
+        c.addEventListener("click", function () { setView("one"); show(idx[sid]); document.querySelector(".main").scrollIntoView({ behavior: "smooth", block: "start" }); });
+        chips.appendChild(c);
+      });
+      if (!o.shots.length) chips.textContent = o.optional ? "可省" : "没有";
+      tb.appendChild(tr);
+    });
+  }
+
+  function drawMap(s) {
+    var host = document.getElementById("map"); host.innerHTML = "";
+    if (s.insert) { host.innerHTML = '<p class="meta">插入镜头，没有机位</p>'; return; }
+    var w = (X1 - X0) * S, h = (Y1 - Y0) * S;
+    var svg = el("svg", { viewBox: "0 0 " + w + " " + h, role: "img", "aria-label": s.id + " 俯视图" });
+    el("rect", { x: 0, y: 0, width: w, height: Y(0), class: "z-out" }, svg);
+    el("rect", { x: 0, y: Y(0), width: w, height: h - Y(0), class: "z-in" }, svg);
+    el("text", { x: 10, y: 20, class: "zl" }, svg, "广场（门外）");
+    el("text", { x: 10, y: h - 10, class: "zl" }, svg, "银行大厅");
+    el("line", { x1: X(-8), y1: Y(6), x2: X(8), y2: Y(6), class: "cordon" }, svg);
+    el("text", { x: X(8), y: Y(6) - 6, class: "zl", "text-anchor": "end" }, svg, "警戒线");
+    var gc = glassClass(s.glass);
+    el("line", { x1: X(-10), y1: Y(0), x2: X(-1.2), y2: Y(0), class: gc }, svg);
+    el("line", { x1: X(1.2), y1: Y(0), x2: X(10), y2: Y(0), class: gc }, svg);
+    el("line", { x1: X(-1.2), y1: Y(0), x2: X(1.2), y2: Y(0), class: "door" + (/敞开|门框/.test(s.door) ? " open" : "") }, svg);
+    el("text", { x: 10, y: Y(0) + 18, class: "zl" }, svg, "幕墙：" + (s.glass || "?") + " · 大门：" + (s.door || "?"));
+    var cx = s.at[0], cy = s.at[1], a0 = Math.atan2(s.dir[1], s.dir[0]), half = s.fov / 2 * Math.PI / 180, R = 30;
+    var p1 = [cx + R * Math.cos(a0 - half), cy + R * Math.sin(a0 - half)], p2 = [cx + R * Math.cos(a0 + half), cy + R * Math.sin(a0 + half)];
+    el("path", { d: "M" + X(cx) + "," + Y(cy) + " L" + X(p1[0]) + "," + Y(p1[1]) + " L" + X(p2[0]) + "," + Y(p2[1]) + " Z", class: "wedge" }, svg);
+    el("circle", { cx: X(cx), cy: Y(cy), r: 7, class: "cam" }, svg);
+    var placed = [];
+    s.people.forEach(function (p) {
+      var g = el("g", { class: "p" + (p.seen ? "" : " unseen") + (p.group ? " grp" : "") }, svg);
+      var x = X(p.at[0]), y = Y(p.at[1]);
+      if (p.group) {
+        el("rect", { x: X(p.at[0] + p.span[0]), y: y - 12, width: (p.span[1] - p.span[0]) * S, height: 24, rx: 6 }, g);
+        el("text", { x: X(p.at[0] + p.span[1]) - 6, y: y + 4, "text-anchor": "end" }, g, p.who);
+        return;
+      }
+      el("line", { x1: x, y1: y, x2: x + p.face[0] * 16, y2: y - p.face[1] * 16 }, g);
+      el("circle", { cx: x, cy: y, r: p.object ? 7 : 5.5 }, g);
+      var crowded = placed.some(function (q) { return Math.hypot(q[0] - p.at[0], q[1] - p.at[1]) < 1.6; });
+      if (crowded) el("text", { x: x - 9, y: y + 16, "text-anchor": "end" }, g, p.who);
+      else el("text", { x: x + 9, y: y - 7 }, g, p.who);
+      placed.push(p.at);
+    });
+    host.appendChild(svg);
+  }
+
+  function show(i) {
+    cur = (i + D.shots.length) % D.shots.length;
+    var s = D.shots[cur];
+    D.shots.forEach(function (x, j) { x._g.classList.toggle("on", j === cur); x._card.classList.toggle("on", j === cur); });
+    var bc = s._card, bd = document.getElementById("board"); if (bc && bd && view === "one") bd.scrollTo({ left: bc.offsetLeft - bd.offsetLeft - 8, behavior: "smooth" });
+    var fh = document.getElementById("frame"); fh.innerHTML = ""; drawFrame(s, fh, false);
+    document.getElementById("claims").innerHTML = (s.claims || []).map(function (c) { return "<li><b>" + esc(c.id) + "</b>" + esc(c.req) + "</li>"; }).join("");
+    document.getElementById("sid").textContent = s.id;
+    document.getElementById("meta").textContent = s.from + "–" + s.to + " 秒 · " + s.size + (s.camx ? " · " + s.camx : "") + (s.cut ? " · 成片用 " + s.cut + " 秒" : "") + " · 第 " + s.seg + " 段";
+    document.getElementById("why").textContent = s.why;
+    document.getElementById("iss").innerHTML = s.issues.length
+      ? '<ul class="issues">' + s.issues.map(function (x) { return '<li class="lv-' + x.level + '"><span>' + (x.level === "ERROR" ? "必须改" : "提示") + "</span>" + esc(x.msg) + "</li>"; }).join("") + "</ul>"
+      : '<p class="okline">检查通过</p>';
+    document.getElementById("prompt").textContent = s.prompt;
+    document.getElementById("beats").innerHTML = D.beats.filter(function (b) {
+      return (b.t < s.to && b.t + b.dur > s.from) || (b.dur === 0 && b.t >= s.from && b.t < s.to);
+    }).map(function (b) { return "<li><b>" + b.t + "–" + (b.t + b.dur) + "s</b><span>" + esc(b.txt) + "</span></li>"; }).join("");
+    drawMap(s);
+  }
+
+  var view = "one";
+  function setView(v) {
+    view = v;
+    document.body.classList.toggle("v-all", v === "all");
+    document.getElementById("m-one").setAttribute("aria-pressed", String(v === "one"));
+    document.getElementById("m-all").setAttribute("aria-pressed", String(v === "all"));
+    try { localStorage.setItem("review-view", v); } catch (e) {}
+  }
+  document.getElementById("m-one").addEventListener("click", function () { setView("one"); show(cur); });
+  document.getElementById("m-all").addEventListener("click", function () { setView("all"); });
+
+  drawTimeline();
+  drawBoard();
+  drawBreakdown();
+  if (D.general.length) {
+    document.getElementById("gen").hidden = false;
+    document.getElementById("general").innerHTML = D.general.map(function (x) { return "<div>" + esc(x.id + "：" + x.msg) + "</div>"; }).join("");
+  }
+  document.getElementById("prev").addEventListener("click", function () { show(cur - 1); });
+  document.getElementById("next").addEventListener("click", function () { show(cur + 1); });
+  document.addEventListener("keydown", function (e) {
+    if (view !== "one") return;
+    if (e.target.closest && e.target.closest(".shotblk")) return;
+    if (e.key === "ArrowRight") show(cur + 1);
+    if (e.key === "ArrowLeft") show(cur - 1);
+  });
+  show(Math.max(0, D.shots.findIndex(function (x) { return !x.insert; })));
+  try { if (localStorage.getItem("review-view") === "all") setView("all"); } catch (e) {}
+})();
+</script>

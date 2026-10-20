@@ -1,6 +1,6 @@
 ---
 name: shotlist-breakdown-workflow
-description: Prepare one Scene at a time for the project-local shotlist-builder loop. Use as the default shotlist.breakdown slot when creating a Scene-scoped breakdown with Chinese Phase 1/2/3 analysis, asset requests, spatial-blocking needs, Shot Rows, Prompt Envelope planning, and batch gates.
+description: "Project-only shotlist.breakdown workflow for one-Scene asset, blocking, Shot Row, and Prompt Envelope planning. Auto-select only in a project that registers this skill; elsewhere require explicit invocation."
 ---
 
 # Shotlist Breakdown Workflow
@@ -20,14 +20,16 @@ This skill adapts the `shotlist-builder` four-phase method into one-Scene-at-a-t
 
 ## Required Inputs
 
-- Latest script: `deliverables/1_story/01_script_v{N}.md`
+Resolve inputs with [local-script-workflow.md](../version-management/references/local-script-workflow.md). Use the coordinator’s exact script/audit and matching production decision; do not infer them from the largest version number or refresh Notion. If the requested working draft differs, handle its required audit/decision first.
+
+- Exact production script selected by `workflow_state.json` (path, version, hash; active or archived)
 - Required same-version audit report: `deliverables/1_story/01_audit_report_v{N}.md`
 - Optional asset guide: `deliverables/2_assets/02_asset_guide_v{N}.md`
 - Optional style guide: `deliverables/2_assets/02_style_guide_v{N}.md`
 - Global locks: `deliverables/0_admin/locks.md`
 - Required selected screenplay Scene label, such as `scene-021`
 
-For a long script, first scan only Scene IDs/sluglines and their line ranges to establish a lightweight Scene queue. From the repository root, use `node .agents/skills/shotlist-breakdown-workflow/scripts/index-screenplay-scenes.mjs <script-path>` when the source is a local Markdown screenplay. Then load the selected Scene body plus the immediately preceding/following boundary headers. Do not place the full screenplay body in the same directing or prompt-generation context, and do not draft Shot Rows or Prompt Envelopes for the whole screenplay in one pass. If the script has no explicit Scene IDs, derive stable labels from screenplay order and report the lightweight Scene queue before starting the first Scene.
+For a long script, first scan only Scene IDs/sluglines and their line ranges to establish a lightweight Scene queue. From the repository root, use `node .agents/skills/shotlist-breakdown-workflow/scripts/index-screenplay-scenes.mjs <script-path> --state deliverables/0_admin/workflow_state.json` when the source is a local Markdown screenplay. Then load the selected Scene body plus the immediately preceding/following boundary headers. Do not place the full screenplay body in the same directing or prompt-generation context, and do not draft Shot Rows or Prompt Envelopes for the whole screenplay in one pass. On first registration, establish Scene identities; after that, consume the stored mapping for this exact script hash. Stable source numbers are retained; positional numbers use persistent identities. Insertion must not renumber old Scenes; ambiguous duplicate/renamed/deleted scopes require concrete mapping choices.
 
 Before Scene work, verify that the audit names the same script version and has no unresolved P0/P1. If the audit is missing, stale, or blocking, stop and return the exact script/audit paths to `script.primary` for revision or re-audit.
 

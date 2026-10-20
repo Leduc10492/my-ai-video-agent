@@ -12,7 +12,8 @@ This role is normally executed by the parent Codex thread rather than spawned. S
 
 - `deliverables/`
 - `deliverables/0_admin/locks.md`
-- latest versioned deliverables relevant to the requested stage
+- `deliverables/0_admin/workflow_state.json`, when initialized
+- exact working/production artifact references relevant to the requested stage
 - user request
 
 # Outputs
@@ -27,6 +28,7 @@ This role is normally executed by the parent Codex thread rather than spawned. S
 - `AGENTS.md`
 - `.agents/skill_registry.md`
 - `deliverables/**`
+- `archives/**` only for explicitly referenced versions, source comparison, or recovery
 - `.codex/agents/**`
 - `.agents/skills/**`
 
@@ -34,6 +36,12 @@ This role is normally executed by the parent Codex thread rather than spawned. S
 
 - `deliverables/0_admin/qa_reports/**`
 - `deliverables/0_admin/changelog.md`
+- `deliverables/0_admin/workflow_state*.json`
+- `deliverables/0_admin/.workflow-state.lock`
+- `deliverables/0_admin/script_decisions/**`
+- `deliverables/0_admin/recovery/**`
+- `archives/1_story/notion_imports/**`
+- script/audit files and compatibility archive links only through the deterministic save transaction after the owning Skill returns its content
 
 # Relevant Skill Slots
 
@@ -53,13 +61,20 @@ This role is normally executed by the parent Codex thread rather than spawned. S
 - Resolve `interaction_mode` before routing work. Default to `interactive`; use `autonomous` only when the user explicitly grants autonomous execution. Never infer autonomy from a broad request to "execute the workflow".
 - In `interactive`, stop at the script/audit, asset/reference, first-Scene, and per-Scene/batch QA gates and wait for user acceptance. In `autonomous`, run diagnose -> repair -> QA -> recheck at every stage and do not carry fixable P0-P2 into the next stage.
 - Treat an explicit autonomous project-workflow request as authorization for reversible local design completion and required reference-image generation within scope. Final video generation requires that video/generation is included in the requested scope; publishing, payment, permission changes, and destructive actions remain outside implicit autonomy.
-- Treat `deliverables/` as current truth and `archives/` as historical reference.
+- Use the selected local script as source truth. Resolve exact archived references when still used by production; do not load unrelated history.
 - Use `.agents/skill_registry.md` to resolve replaceable skill implementations before routing stage work.
 - Route visual planning through `shotlist.breakdown`, Prompt writing through `shotlist.prompt_compiler`, and final HTML assembly through `shotlist.html_assembler` in that order.
-- Do not route guides or shotlist production until the current script has a same-version audit with no unresolved P0/P1.
+- Do not route guides or shotlist production until the selected production script has a same-version, hash-bound audit with no unresolved P0/P1 and a matching acceptance/autonomous scope record.
 - Route long scripts from a lightweight Scene index one Scene at a time; pass only the selected Scene and its boundary evidence into Breakdown, Prompt compilation, and HTML assembly.
 - Do not split an active production scope across board-prompt, art-prompt, or standalone video-prompt stages.
-- Select latest numeric versions for all current inputs.
+- Own workflow state as the sole writer in the main thread. Follow `.agents/skills/version-management/references/local-script-workflow.md` and its local helper for initialization, import, edit, explicit selection, and safe archive. A subagent returns candidates, hashes, exact changes, and impact; it never commits workflow state.
+- Resolve `working_script` for writing and `production_inputs` for production by exact version/hash. If the request targets the working draft but production still selects an older draft, require that requested draft's audit and decision; never fall back silently.
+- Without state, prefer a user-specified file, then a verified existing current reference, then the sole candidate. List ambiguous candidates without guessing acceptance. Maximum versions across active and archived files are used only to allocate new filenames.
+- On the first Notion import, verify page identity and complete body/children/pagination/properties/appendices, then preserve exact text, properties, attachment gaps, and provenance. With an existing local draft, continuation and repeated links do not fetch Notion.
+- Fetch Notion only for an explicit source update. Partial updates advance only selected range baselines; full updates retain earlier local versions. Direct dialogue/story edits remain local. Never write Notion without a separate explicit sync request.
+- Do not turn ordinary import/local editing into the full screenplay quality gate. New canon decisions and entry into production still follow AGENTS.md.
+- Save and verify a new file before switching state, then archive with a resolver/compatibility link. Failed writes keep the previous valid references; recover never promotes the highest orphan version.
+- Persist actual audit/acceptance or autonomous scope evidence for the selected script and audit hashes. Structural validation cannot supply creative approval.
 - Do not hardcode project-specific title, character names, shot counts, durations, or reference paths.
 - If a stage is blocked, name the missing prerequisite and the exact path pattern expected.
 - Do not defer a detectable stage issue to final QA. Route it immediately to the owning Skill, then verify the repaired artifact before advancing.
@@ -70,7 +85,7 @@ This role is normally executed by the parent Codex thread rather than spawned. S
 When assigning work to another subagent, provide:
 
 - task scope
-- input files
+- exact input paths, artifact IDs, versions, and hashes; working versus production intent
 - owned write paths
 - relevant locks
 - expected output files

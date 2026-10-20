@@ -1,6 +1,6 @@
 ---
 name: version-management
-description: Archive old versions and update version numbers for active deliverables. Use when saving a new version of scripts, audits, guides, Scene shotlist packages, or QA reports.
+description: Safely save versioned deliverables and resolve exact working or production references. Use for local script imports, edits, explicit selection, recovery, and archive operations.
 ---
 
 # Version Management
@@ -12,155 +12,50 @@ description: Archive old versions and update version numbers for active delivera
 - canonical_outputs:
   - `archives/<stage>/ plus the next deliverables/<stage>/ version`
 - qa_handoff: `qa.primary`
-- state_contract: `n/a`
+- state_contract: `local-script-state-v1`
 
-Archive old versions and update version numbers for active deliverable files.
+Preserve existing artifact families, stage paths, and creative content. Deterministic helpers handle files and references; the owning Skill and user supply creative decisions and real review evidence.
 
-Stage directories use the same single-digit contract in both active and archived trees: `1_story`, `2_assets`, and `3_shotlist`; admin state remains `deliverables/0_admin`. Artifact filenames retain their existing `01_`, `02_`, and `03_` prefixes.
+## Local Scripts
 
-## When to Use
+Read [references/local-script-workflow.md](references/local-script-workflow.md) for initialization, Notion capture, local editing, production selection, Scene identity, and recovery. The executable entry is `scripts/workflow-state.mjs`; only the main-thread project-director invokes its mutations. Other roles return candidate artifacts, base hashes, exact differences, and affected ranges.
 
-- Saving a new version of any active production deliverable
-- User requests "save new version" or "archive current version"
-- After major revisions are approved
-- Migrating a legacy planning file into a Scene-scoped Breakdown
+- First Notion import creates local source truth. Continue, repeat a link, and direct dialogue/story edits use local files without remote reads. Only an explicit Notion update permits reading the source; a sync/writeback request is separate.
+- `working_script` and `production_inputs` are distinct exact references. Never choose either by highest filename suffix. Production requires the selected script's same-version audit and hash-bound acceptance/autonomous scope.
+- Partial refresh advances only the requested range baselines. Full refresh preserves old files. No text change means no new script version or downstream invalidation.
+- Explicitly selected archived scripts/audits remain valid inputs. Read only the named versions, not all history.
 
-## Quick Reference
+## Safe Save Order
 
-| Parameter | Description | Example |
-| --- | --- | --- |
-| file_path | Current file path with version | `deliverables/1_story/01_script_v2.md` |
-| change_description | What changed | `Added prompt-envelope batch gates` |
-| stage_name | Workflow stage | `Shotlist Breakdown` |
+1. Resolve the selected input and verify its hash. In an old project, use the user's exact file or a verified current reference; register a sole candidate, or list ambiguous candidates.
+2. For a changed artifact, allocate the next unused number across its active and archived family. Include candidate files left by interrupted saves. Maximum suffix is a naming tool only.
+3. Write a new file/package without overwriting the selected version. Verify readable content and hashes. Preserve the artifact ID, locks, upstream dependencies, tags, and metadata.
+4. The coordinator atomically switches the intended reference only after new files are complete. Saving a draft does not switch production or transfer acceptance.
+5. Archive only after the switch, if useful. Copy and verify first, update exact references, then preserve original-path compatibility. Never move the only valid input before a potentially failing save. Record the transition in state and, when useful, the changelog.
 
-## Core Workflow
+For script/audit archives, the helper preserves an original-path symlink and the resolver also supports the canonical archive path. Older HTML/manifest links continue to resolve. Do not delete these compatibility links while existing production packages still use them. On filesystems without symlinks, retain the original verified file copy; report that archival cleanup is incomplete.
 
-### Step 1: Read Current Version
+For other stage artifacts, use the same save-before-switch order with their explicit handoff/manifest references. Do not imply the phase-1 script helper implements a complete Scene-package transaction or run scheduler.
 
-Extract version from file frontmatter:
+## Paths And Versions
 
-```markdown
-- version: v2
-```
+All stage directories use single digits: `1_story`, `2_assets`, `3_shotlist`; admin state stays in `deliverables/0_admin`. Filenames keep `01_`, `02_`, `03_` prefixes and simple `_v{N}` suffixes.
 
-### Step 2: Archive Current File
-
-Archive with version suffix:
-
-```text
-deliverables/1_story/01_script_v2.md -> archives/1_story/01_script_v2.md
-```
-
-For a scene package, archive the entire directory:
-
-```text
-deliverables/3_shotlist/scene-021_v1/
-  -> archives/3_shotlist/scene-021_v1/
-```
-
-### Step 3: Save New Version
-
-Save new file with incremented version in filename:
-
-- Filename: `01_script_v2.md` -> `01_script_v3.md`
-- Frontmatter version: `v2` -> `v3`
-- Keep same artifact ID
-- Inherit or consciously update locks
-
-### Step 4: Update Changelog
-
-Append to `deliverables/0_admin/changelog.md`:
-
-```markdown
-## [2026-01-21] - Scene Shotlist Package
-
-### Changed
-- `scene-021_v2/` -> `scene-021_v3/`
-  - Tightened batch ranges and spatial-blocking gates for scene-021.
-  - Archived: `archives/3_shotlist/scene-021_v2/`
-  - Current: `deliverables/3_shotlist/scene-021_v3/`
-```
-
-### Step 5: Confirm
-
-Output confirmation message with:
-
-- file updated
-- old version archived location
-- new version number
-
-## Version Number Format
-
-| Frontmatter | Filename Suffix | Example |
-| --- | --- | --- |
-| version: v1 | `_v1` | both use simple numbers |
-| version: v2 | `_v2` | v2, not v002 |
-| version: v10 | `_v10` | v10, not v010 |
-
-## Archive Directory Structure
-
-All archived files go to `archives/`, not `deliverables/*/archive/`.
-
-```text
-archives/
-├── 1_story/
-│   ├── 01_script_v1.md
-│   └── 01_script_v2.md
-├── 3_shotlist/
-│   └── scene-021_v1/
-│       ├── 03_shotlist_breakdown_scene-021_v1.md
-│       └── Shotlist_scene-021_ZH_v1.html
-
-deliverables/
-├── 1_story/
-│   └── 01_script_v3.md
-└── 3_shotlist/
-    └── scene-021_v2/
-        ├── 03_shotlist_breakdown_scene-021_v2.md
-        └── Shotlist_scene-021_ZH_v2.html
-```
-
-## Active File Paths
-
-| Stage | Current Path Pattern | Example |
-| --- | --- | --- |
-| Script | `deliverables/1_story/01_script_v{N}.md` | `01_script_v3.md` |
-| Audit | `deliverables/1_story/01_audit_report_v{N}.md` | `01_audit_report_v3.md` for `01_script_v3.md` |
-| Asset Guide | `deliverables/2_assets/02_asset_guide_v{N}.md` | `02_asset_guide_v2.md` |
-| Style Guide | `deliverables/2_assets/02_style_guide_v{N}.md` | `02_style_guide_v1.md` |
-| Scene Breakdown | `deliverables/3_shotlist/<scene-label>_v{N}/03_shotlist_breakdown_<scene-label>_v{N}.md` | `scene-021_v1/03_shotlist_breakdown_scene-021_v1.md` |
-| Shotlist HTML | `deliverables/3_shotlist/<scene-label>_v{N}/Shotlist_<scene-label>_ZH_v{N}.html` | `scene-021_v1/Shotlist_scene-021_ZH_v1.html` |
-
-The Scene package folder, Breakdown, HTML, manifest, assets, and generated-test mappings share the same package version. Never increment only the HTML suffix.
-
-## Legacy Migration
-
-When migrating an existing `03_storyboard_v{N}.md`, global Breakdown, or multi-Scene planning file:
-
-1. Treat it as source input, not the new output name.
-2. Preserve the artifact ID if it is the same planning artifact family.
-3. Select one screenplay Scene and save it as `<scene-label>_v1/03_shotlist_breakdown_<scene-label>_v1.md`.
-4. Archive the old planning file under `archives/3_shotlist/` without using it as a new-production naming example.
-5. Record the migration in changelog.
-
-## Error Handling
-
-| Scenario | Action |
+| Family | Active path |
 | --- | --- |
-| File not found | Skip archive, save as `v1` |
-| Archive dir missing | Create automatically |
-| Archive exists | Stop and ask before overwrite unless user explicitly approved force |
+| Script | `deliverables/1_story/01_script_v{N}.md` |
+| Audit | `deliverables/1_story/01_audit_report_v{N}.md` |
+| Asset/style guide | `deliverables/2_assets/02_asset_guide_v{N}.md`, `02_style_guide_v{N}.md` |
+| Scene package | `deliverables/3_shotlist/<scene-label>_v{N}/` |
 
-## Version Rollback
+Scene folder, Breakdown, HTML, manifest, and generated-test mappings share a package version. Archive the package as a whole; never increment only its HTML suffix. Preserve relative links to shared assets and upstream inputs when moving a package.
 
-When user requests "restore to v2":
+## Legacy And Recovery
 
-1. Archive current version.
-2. Copy `archives/.../file_v2.*` to the matching deliverables stage.
-3. Rename to the next version number.
-4. Update frontmatter version.
-5. Log in changelog as restored.
+- A legacy `03_storyboard_v{N}.md` is migration input. New planning remains one direct Scene folder, with the same artifact family when appropriate.
+- To restore a script, explicitly select a verified archived version as working, or save its content as a new unused version. Production stays independently selected. The next edit scans active and archived names, so rollback cannot reuse an existing version number.
+- Missing input: list exact available candidates; do not silently create `v1` while other family versions exist.
+- Existing archive with different content: preserve both and report the conflict. Do not overwrite it.
+- Interrupted save: inspect state and candidate files with `status`; `recover` releases only a demonstrably dead local writer lock. Uncommitted files are not promoted. Use explicit previous-state restoration only after verifying that backup.
 
-**Detailed specs**: See `references/versioning-spec.md`
-
-**Changelog format**: See `references/changelog-format.md`
+See [references/versioning-spec.md](references/versioning-spec.md) for the cross-stage naming contract and [references/changelog-format.md](references/changelog-format.md) for optional human-readable history.

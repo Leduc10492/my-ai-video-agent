@@ -1,0 +1,30 @@
+{
+  "scene": "scene-081",
+  "version": "v2",
+  "compiler": "cinedance",
+  "compiler_skill_sha256": "2172a63b3a4143ceb19caccf3a21255b2dd29930a96b3f436a1fd94e30f83fb2",
+  "mode": "COMPILE MODE",
+  "source_script": "/Users/miniled/Developer/my-ai-video-agent/test/deliverables/1_story/01_script_v10.md",
+  "source_sha256": "bdab7109d8cd66837a405c8b655ba4260671bebb3ee49549ffc2cb454602f3e4",
+  "prompts": [
+    {
+      "id": "P001",
+      "source_rows": [
+        "scene-081-R01",
+        "scene-081-R02"
+      ],
+      "duration_seconds": 5,
+      "text": "场景与风格\n夜间山村桥梁检查点，农用cart载着五位老人上坡撤离，被Officer拦在检查线外。观察式自然主义，真实摄影材质与自然运动模糊。深蓝黑天空、湿桥面和山体暗部约60%；人物与车身暖光约30%；flare和反光片红光约10%。\n\n当前参考\n@image1：DAICHI的身份、短刺黑发和脏白衬衫。\n@image2：OFFICER的身份、深蓝警服、反光背心、警帽及红色flare外形；燃烧与持握状态服从当前镜头。\n@image3：一辆农用cart的结构、五位老人的外观与衣物；驾驶位和乘坐位置服从当前调度。\n@image4：夜桥、锥桶、湿路面和道路层次。\n@image5：深蓝校服外套的织物、黄铜扣和折叠体积；包手姿态服从镜头2。\n\n镜头形式\n5.0秒，21:9。两个连续动作的中景，以Officer台词结束为切点。\n\n镜头1\n50mm中景，摄影机在道路右侧路肩、cart侧面看向上坡。车头窄边留在前景，Officer站在检查线中央偏左，距车头约3米，面向驾驶位上的Daichi。Officer一手将flare垂向路面，另一只手抬至胸前示停；目光落在Daichi身上，下颌收紧，肩线保持平稳。cart停稳，五位老人坐在后方货斗，手扶栏杆。机位保持，车辆前灯和远处暖灯使阴影侧的眼神与口型可读，flare红光落在持握手与反光背心上。切镜前，抬掌和对视仍保持。\n\n镜头2\n硬切至道路同一侧的50mm反打中景。Officer的肩部和向下的flare在柔焦前景，Daichi坐在驾驶位，五位老人沿他的指向在后景可读。Daichi上身前倾，深蓝校服外套完整包住右手，右手留在驾驶控制处；裸露的左手指向货斗老人，目光稳住Officer。动作落点是一次明确指向，回应后仍保持指向与对视，cart留在检查线外。暖车灯托起Daichi脸部和白衬衫的烟尘纹理。\n\n声音\n镜头1，OFFICER面向Daichi，以短促、程序化的语气说：{This road is closed.} 口型只对应这一句，Daichi听完再回应。\n镜头2，在指向老人后，DAICHI面向Officer，克制而急迫地说：{Then arrest me uphill.} 口型与原句同步，Officer安静听完。\n\n连续性\n两镜保持同一道路侧与上坡方向；flare始终在Officer同一只手中，另手承担阻挡；车辆和老人维持接触与承重。",
+      "sha256": "f5d37eb90fdb16d4cca0fa3df6ca40b14bf9babbe91c3b0a00aba6f00c2c5279"
+    },
+    {
+      "id": "P002",
+      "source_rows": [
+        "scene-081-R03"
+      ],
+      "duration_seconds": 5,
+      "text": "场景与风格\n夜间山村桥梁检查点，Officer面对停在检查线外的cart，从阻挡转为放行。观察式自然主义，真实摄影材质与自然运动模糊。深蓝黑天空、湿桥面和山体暗部约60%；人物与车身暖光约30%；flare和反光片红光约10%。\n\n当前参考\n@image1：DAICHI的身份、短刺黑发和脏白衬衫。\n@image2：OFFICER的身份、深蓝警服、反光背心、警帽及红色flare外形；燃烧与持握状态服从当前镜头。\n@image3：同一辆农用cart的结构、五位老人的外观与衣物；Daichi占驾驶位，老人坐在后方货斗。\n@image4：夜桥、锥桶、湿路面和道路层次。\n\n镜头形式\n5.0秒，21:9。单镜头连续拍摄。\n\n镜头1\n65mm，从道路右侧路肩的同侧机位看向Officer，先以他的中近景反应为视觉中心；构图保留检查线、cart前部及远处夜空。Officer面对下坡的Daichi，持flare的手垂在身侧，另一手仍抬掌示停；cart在检查线外约3米处停稳、车头朝上坡，五位老人扶着货斗栏杆。\nOfficer的目光越过Daichi抬向远处夜空，一道高亮彗星碎片带短尾迹掠过。他的呼吸停半拍，下颌松开。摄影机只作一次低幅度短推近，持续跟随这次判断；车辆前灯与远处暖灯使眼神和下颌变化可读，彗星保持为远景局部亮点。\nOfficer抬起的手掌沿上坡方向转成明确放行手势，身体侧开半步让出通路；flare仍垂在原持握手中。注意力从面部转到放行手势和仍在构图中的cart前部。Daichi沿既定上坡方向启动车辆，包着深蓝外套的右手保持在驾驶控制处；车轮贴地滚动，车身承重随起步轻微变化，五位老人握住栏杆、上身随加速略向后移。结束时cart前轮刚开始越过检查线，Officer保持放行手势。\n\n声音\n这一段没有对白。",
+      "sha256": "3276cb16a3e94667d9f065d38c879b9e4b65761861b447e2e21700e9f8547d51"
+    }
+  ]
+}

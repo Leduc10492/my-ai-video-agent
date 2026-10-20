@@ -26,14 +26,18 @@
 
 所有实现只通过 `.agents/skill_registry.md` 解析。主控 Agent 先调用 `shotlist.prompt_compiler` 取得 Prompt，再把完整中间产物交给 `shotlist.html_assembler` 汇总为 HTML。替换 Prompt 写法只改 compiler 映射，不改 Scene、Shot Row、Prompt Envelope、资产路由或 HTML 契约。
 
-阶段目录前缀固定使用单个数字：`0_admin`、`1_story`、`2_assets`、`3_shotlist`。不要扩展成两位数。文件名继续使用既有的 `01_`、`02_`、`03_` 前缀，以保持同一阶段内部的产物排序。
+阶段目录前缀固定使用单个数字：`0_admin`、`1_story`、`2_assets`、`3_shotlist`、`4_edit`。不要扩展成两位数。文件名继续使用既有的 `01_`、`02_`、`03_` 前缀，以保持同一阶段内部的产物排序。`4_edit` 由本地影视工作台保存时间轴版本、导出 MP4、可编辑工程 JSON 与媒体引用清单，不改变已有前期产物规范。
 
 ## 长剧本与 Scene 生产规则
 
-- 进入资产与分镜阶段前，当前剧本必须有对应版本的审计报告，且没有未解决的 P0/P1；否则返回 `script.primary` 修订或复审。
+- 剧本首次从 Notion 导入后，本地文件持续作为基础；只有明确的来源更新请求才重新读取 Notion。普通台词／剧情修改只产生本地工作版本，不自动回写来源，也不强制运行完整创作审核。
+- 使用 `workflow_state.json` 的 `working_script` 创作，使用 `production_inputs` 中精确的剧本、同版审计及决定记录进入生产。新工作稿不继承旧版接受；用户指定制作新版本时必须核对该版本，不能静默退回旧生产稿。版本上限只用于分配新文件名。
+- 进入资产与分镜阶段前，所选生产剧本必须有覆盖该内容哈希的同版本审计报告，且没有未解决的 P0/P1；否则返回 `script.primary` 修订或复审。未变化范围可明确复用旧审核证据，但新版本仍需要完整可追溯的审计结论。
 - `interactive` 模式还必须有用户对当前剧本 / 审核的明确接受；`autonomous` 模式必须完成审计—修复—复审闭环，并清除会影响下游的可修 P2。
 - 长剧本先只扫描 Scene 标题、编号和行范围，确认轻量 Scene 顺序；进入导演拆解时只加载选中 Scene 及前后边界，不把全剧本正文带入同一次 Shot Row / Prompt 上下文。
+- 索引使用所选剧本的已登记 Scene 映射。稳定来源编号沿用；顺序编号使用持久身份，插入场景不重命名旧 Scene。重复标题或场景删并无法唯一对应时列出候选，仅暂停依赖该歧义的部分。
 - 一次只完成一个 Scene：先保存该 Scene 的 Breakdown，通过 QA 后，再在同一 Scene 文件夹内生成 Prompt 和 HTML。`interactive` 在门点等待用户；`autonomous` 修复本 Scene 的可修问题并复审后自动进入下一个 Scene。
+- 工作台的已授权分镜批次可把独立 Scene 作为独立任务有限并发，每个任务仍只产出本场设计；依赖未确定空间/连续性决策的场次按依赖顺序处理。服务统一分配编号、渲染既有产物并做增量合并，整批审阅后保存，不把其他场的设计重复交给模型重写。该调度不代替创作 QA、参考确认或后续 Prompt/媒体生成授权。
 - 稳定生产单元是 `Scene -> Shot Row -> Prompt Envelope`。文件夹只建到 Scene；Shot Row 与 Prompt Envelope 保存在 Breakdown、HTML 和 manifest 中，不再各建一层目录。
 - 推荐一次质量审查处理 4-8 个 Prompt Envelope。单个 Scene 超过 10 个 Envelope 时，必须按动作阶段、机位族或参考资产变化分批处理并逐批 QA；最终仍合并回同一个 Scene 文件夹，不发明新的批次文件夹体系。
 
@@ -52,8 +56,10 @@
 - `deliverables/1_story/`：剧本与剧本审计
 - `deliverables/2_assets/`：共享人物、场景、道具和风格资料
 - `deliverables/3_shotlist/<scene-label>_v{N}/`：该 Scene 的 Breakdown、HTML、manifest 和另行授权的视频测试记录
-- `deliverables/0_admin/`：锁定条件、变更记录和用户明确要求保存的 QA 报告
-- `archives/`：历史产物，只在比较或恢复时读取
+- `deliverables/0_admin/`：锁定条件、变更记录、本地工作流状态、接受／自主范围证据和用户明确要求保存的 QA 报告
+- `archives/`：历史产物，以及仍被生产引用的确定版本；按精确引用读取，不默认加载全部历史。来源快照只用于追溯与范围比较。
+
+剧本保存、迁移、来源完整性与归档采用 [本地剧本协议](skills/version-management/references/local-script-workflow.md)。先安全保存并核验新文件，再切换引用，最后归档。归档保留旧路径的兼容引用；剧本、同版审计和接受记录必须持续可解析。状态、LUT、Style Prefix、素材来源和剧本文字分别记录，保留原有 `asset_origin`、`reference_binding`、`reference_approval`、`output_status`。
 
 共享资产只放在 `2_assets`；Scene 目录只保存该场景的生产文件和场景独有补充资产。不要在 `3_shotlist` 与 Scene 目录之间再增加 `scenes/` 中间层。
 

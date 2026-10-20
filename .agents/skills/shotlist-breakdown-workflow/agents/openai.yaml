@@ -1,0 +1,3 @@
+interface:
+  display_name: "项目测试 · Shotlist Breakdown Workflow"
+  short_description: "项目测试专用：规划单场分镜、素材与空间调度；项目外仅在用户显式调用时使用。"

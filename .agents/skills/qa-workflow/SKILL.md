@@ -79,7 +79,9 @@ Always check:
 - required upstream files exist
 - the current script and audit versions match, and unresolved P0/P1 findings block guides and shotlist production
 - `locks` are not contradicted
-- latest numeric version is used
+- exact working/production version and hash match the task; a newer draft does not inherit an old decision
+- archived script/audit/decision references resolve; source refresh changes only authorized ranges
+- normal local continuation does not read Notion
 - default skills listed in `.agents/skill_registry.md` exist and preserve canonical output paths
 
 For shotlist work, also check:
@@ -104,9 +106,12 @@ For a local Scene package or multi-Scene replay, run:
 ```bash
 node .agents/skills/qa-workflow/scripts/validate-shotlist-project.mjs \
   --script <script-path> \
+  --state deliverables/0_admin/workflow_state.json \
   --shotlist-root <deliverables/3_shotlist> \
   --require-complete
 ```
+
+For a state-managed script, pass `--state` so the expected labels come from the hash-bound persistent identity map while dialogue and content still come from the raw script. Omit `--state` only for an explicitly selected unregistered legacy source, whose initial index must be reviewed before production.
 
 Use `--require-complete` for a full-screenplay replay so any missing Scene package blocks the run. Omit it when intentionally validating only the available Scene package or a partial production batch; the missing remainder is then reported as a warning.
 

@@ -21,6 +21,13 @@ Newest entries should go near the top, below this format note.
 
 ---
 
+## [2026-10-11] - Rename HTML Assembly Skill
+
+### Changed
+- Renamed `sketch-shotlist-workflow` to `shotlist-html-assembler` to match its HTML and manifest assembly responsibility; updated the Skill directory, frontmatter, Registry, Agent defaults, and historical path references below to the current name.
+- Kept the stable `shotlist.html_assembler` slot, Scene output paths, templates, and byte-for-byte Prompt embedding contract unchanged. The compiler remains `cinedance`.
+- Storyboard image generation remains outside the active workflow.
+
 ## [2026-08-01] - Remove Storyboard Preview Generation
 
 ### Changed
@@ -41,7 +48,7 @@ Newest entries should go near the top, below this format note.
 - Added `.agents/skills/seedance-clean-zh/SKILL.md`, preserving the original `seedance-clean` directing method while changing model-facing block labels and direction to Simplified Chinese.
 
 ### Changed
-- `shotlist.prompt_compiler` owns final Prompt wording, while `sketch-shotlist-workflow` owns final HTML and manifest integration.
+- `shotlist.prompt_compiler` owns final Prompt wording, while `shotlist-html-assembler` owns final HTML and manifest integration.
 - Repository QA resolves the compiler from the Registry and records its implementation independently from the HTML Skill.
 
 ### Archived
@@ -50,7 +57,7 @@ Newest entries should go near the top, below this format note.
 ## [2026-07-30] - Shotlist Prompt Compiler Trial
 
 ### Changed
-- `.agents/skills/sketch-shotlist-workflow/`: trialed a project-routed Chinese adaptation of `seedance-clean_v2.skill` while preserving the HTML integration contract, Scene packages, Shot Rows, Prompt Envelopes, asset tags, manifests, and QA.
+- `.agents/skills/shotlist-html-assembler/`: trialed a project-routed Chinese adaptation of `seedance-clean_v2.skill` while preserving the HTML integration contract, Scene packages, Shot Rows, Prompt Envelopes, asset tags, manifests, and QA.
 - Added sealed-context, reference-fitness, FOV, visible-action, distributed-style, explicit 60:30:10, and positive-lock gates to the existing Prompt stage.
 - Source package SHA-256: `d07994192d04beb3b52d8e470f91bc2c86774c43f4c81b17096dc17ad5db901d`; internal `seedance-clean/SKILL.md` SHA-256: `482895ec5d731ea67f42d8d644454549c519f15ce2d08cf24e6fc33a874573d5`.
 

@@ -61,7 +61,7 @@ pnpm validate
 - 不使用硬编码 fixture 代替 Skill 运行。
 - QA 检查真实产物，不用结构通过冒充创作质量。
 
-Prompt 写法通过 Registry 的 `shotlist.prompt_compiler` 独立替换。当前默认实现是 `seedance-clean-zh`。主控 Agent 先取得每个 Prompt Envelope 的编译结果，再由 `shotlist.html_assembler` 将 Breakdown、Shot Rows、资产信息和 Prompt 原样汇集到最终 HTML。HTML Skill 不参与 Prompt 创作。
+Prompt 写法通过 Registry 的 `shotlist.prompt_compiler` 独立替换。当前默认实现是 `cinedance`。主控 Agent 先取得每个 Prompt Envelope 的编译结果，再由 `shotlist.html_assembler` 将 Breakdown、Shot Rows、资产信息和 Prompt 原样汇集到最终 HTML。HTML Skill 不参与 Prompt 创作。
 
 ## Shotlist 目录
 
@@ -81,3 +81,15 @@ deliverables/3_shotlist/
 生产层级是 `Scene -> Shot Row -> Prompt Envelope`。文件夹按 Scene 建；Shot Row 和 Prompt Envelope 是 Scene 文件内部的导演与生成映射，不再建立额外目录。
 
 长剧本只扫描 Scene 标题/编号和行范围来确认顺序，正式拆解时只加载选中 Scene 及边界，然后一次处理一个 Scene。单个 Scene 建议每批审查 4-8 个 Prompt Envelope，超过 10 个必须在该 Scene 内分批并逐批 QA。
+
+## 本地剧本与显式来源更新
+
+先首次导入 Notion 剧本，之后持续使用本地版本；只有明确来源更新请求才读取 Notion。台词／剧情修改只写本地，局部更新只改目标，全量更新保留旧版，不自动回写。`workflow_state.json` 明确区分工作稿与已选生产输入，最高版本号仅用于分配新文件名。
+
+操作见 [本地剧本协议](.agents/skills/version-management/references/local-script-workflow.md)。`pnpm workflow status` 检查本地状态；`pnpm test:workflow` 验证范围更新、失败恢复、版本选择和归档引用。完整运行恢复、Skill 版本锁定和视频生成留待后续。
+
+## 本地影视工作台
+
+新增 [workbench](workbench/README.md)：React / shadcn neutral 三模块界面、本地 SQLite、Codex App Server、Higgsfield 生成适配及 Twick 剪辑 / 渲染。沿用本仓库工作稿与生产版本契约，标准文件名作为资产标识。
+
+首次运行 `pnpm --dir workbench install`、`pnpm workbench:build`，然后 `pnpm workbench:start`。打开 `http://127.0.0.1:4310`。独立验收运行 `pnpm workbench:test` 和 `pnpm --dir workbench test:media`。完整说明与真实生成验收范围见工作台 README。

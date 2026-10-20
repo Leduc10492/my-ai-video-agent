@@ -36,15 +36,15 @@ When reporting checklist results to the user or saving a QA report, translate ch
 - [ ] `id` follows `A-yyyymmdd-nnn`.
 - [ ] `version` matches the filename suffix `_v{N}`.
 - [ ] `upstream` IDs exist in current or archived artifacts.
-- [ ] `locks` includes `must_keep`, `must_avoid`, and `budget_notes`.
+- [ ] `locks` includes the applicable constraints or, for a managed local script, references `locks.md` and its adopted hash.
 
 ### Path And Version
 
-- [ ] Current version is under `deliverables/<stage>/`.
-- [ ] Previous version is under `archives/<stage>/`.
+- [ ] The selected version resolves by exact path/version/hash, including archives when still referenced.
+- [ ] Previous versions remain recoverable; archiving preserves existing production links.
 - [ ] No `deliverables/*/archive/` directory is used.
-- [ ] The latest numeric version is selected as the current input.
-- [ ] Changelog records the change.
+- [ ] Working draft and selected production input are explicit; larger suffixes do not imply acceptance.
+- [ ] The state transaction records the change; append a human-readable changelog when useful without making it a second authority.
 
 ## Script Stage
 

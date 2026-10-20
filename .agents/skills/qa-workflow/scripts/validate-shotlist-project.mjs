@@ -3,17 +3,20 @@
 import { access, readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseScreenplay } from '../../shotlist-breakdown-workflow/scripts/index-screenplay-scenes.mjs';
+import { parseScreenplay, indexRegisteredScript } from '../../shotlist-breakdown-workflow/scripts/index-screenplay-scenes.mjs';
 
 const CUE_RE = /^[A-Z][A-Z0-9 ./'&()’\-]*$/;
 const GENERIC_ADDRESSEE_RE = /^(?:场景内明确听者|明确听者|对话对象|本Scene动作对象或对话对象)$/i;
 
 function parseArgs(argv) {
-  const args = { scriptPath: null, shotlistRoot: null, requireComplete: false };
+  const args = { scriptPath: null, shotlistRoot: null, requireComplete: false, statePath: null };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === '--script') {
       args.scriptPath = argv[index + 1] ?? null;
+      index += 1;
+    } else if (arg === '--state') {
+      args.statePath = argv[index + 1] ?? null;
       index += 1;
     } else if (arg === '--shotlist-root') {
       args.shotlistRoot = argv[index + 1] ?? null;
@@ -25,12 +28,13 @@ function parseArgs(argv) {
     }
   }
   if (!args.scriptPath || !args.shotlistRoot) {
-    throw new Error('Usage: validate-shotlist-project.mjs --script <script-path> --shotlist-root <deliverables/3_shotlist> [--require-complete]');
+    throw new Error('Usage: validate-shotlist-project.mjs --script <script-path> --shotlist-root <deliverables/3_shotlist> [--state <workflow_state.json>] [--require-complete]');
   }
   return {
     scriptPath: path.resolve(args.scriptPath),
     shotlistRoot: path.resolve(args.shotlistRoot),
     requireComplete: args.requireComplete,
+    statePath: args.statePath ? path.resolve(args.statePath) : null,
   };
 }
 
@@ -361,7 +365,9 @@ async function main() {
     readFile(args.scriptPath, 'utf8'),
     readdir(args.shotlistRoot, { withFileTypes: true }),
   ]);
-  const screenplay = parseScreenplay(scriptSource, args.scriptPath);
+  const screenplay = args.statePath
+    ? await indexRegisteredScript(scriptSource, args.scriptPath, args.statePath)
+    : parseScreenplay(scriptSource, args.scriptPath);
   const sourceByLabel = new Map(screenplay.scenes.map((scene) => [scene.label, scene]));
   const packages = entries
     .filter((entry) => entry.isDirectory() && /^scene-\d{3}[a-z]?_v\d+$/.test(entry.name))

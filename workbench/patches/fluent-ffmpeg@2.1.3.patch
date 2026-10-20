@@ -1,0 +1,14 @@
+diff --git a/lib/capabilities.js b/lib/capabilities.js
+index 1c89c02fc0b9246360cccf928d95c03a05e52bb8..7418639370225e50151802694a095fb54156aa76 100644
+--- a/lib/capabilities.js
++++ b/lib/capabilities.js
+@@ -15,7 +15,8 @@ var ffCodecRegexp = /^\s*([D\.])([E\.])([VAS])([I\.])([L\.])([S\.]) ([^ ]+) +(.*
+ var ffEncodersRegexp = /\(encoders:([^\)]+)\)/;
+ var ffDecodersRegexp = /\(decoders:([^\)]+)\)/;
+ var encodersRegexp = /^\s*([VAS\.])([F\.])([S\.])([X\.])([B\.])([D\.]) ([^ ]+) +(.*)$/;
+-var formatRegexp = /^\s*([D ])([E ])\s+([^ ]+)\s+(.*)$/;
++// FFmpeg 8 adds a device column (d), e.g. " D d lavfi".
++var formatRegexp = /^\s*([D ])([E ])(?:[ d])?\s+([^ ]+)\s+(.*)$/;
+ var lineBreakRegexp = /\r\n|\r|\n/;
+ var filterRegexp = /^(?: [T\.][S\.][C\.] )?([^ ]+) +(AA?|VV?|\|)->(AA?|VV?|\|) +(.*)$/;
+ 

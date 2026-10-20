@@ -1,6 +1,6 @@
 ---
 name: screenwriter-workflow
-description: Script-stage controller for this file-based AI video workflow. Use as the default script.primary skill when creating, revising, iterating, auditing, timing, cutting, polishing, or exporting script artifacts. It applies the Screenwriter writing mode as the main user-facing workflow, uses McKee skills as structure plugins, and preserves deliverables/1_story artifact versioning.
+description: "Project-only script.primary workflow for local screenplay creation, import, revision, audit, and export. Auto-select only in a project that registers this skill; elsewhere require explicit invocation."
 ---
 
 # Screenwriter Workflow
@@ -13,7 +13,7 @@ description: Script-stage controller for this file-based AI video workflow. Use 
   - `deliverables/1_story/01_script_v{N}.md`
   - `deliverables/1_story/01_audit_report_v{N}.md`
 - qa_handoff: `qa.primary`
-- state_contract: `n/a`
+- state_contract: `local-script-state-v1`
 
 This is the script-stage controller for `script-writer`.
 
@@ -30,12 +30,24 @@ Do not make `mckee-create` the default script-writing entrance. For new script c
 Before substantial script work, read:
 
 1. `deliverables/0_admin/locks.md`
-2. Latest `deliverables/1_story/01_script_v{N}.md`, if present
-3. Latest `deliverables/1_story/01_audit_report_v{N}.md`, if relevant
+2. `deliverables/0_admin/workflow_state.json` and its exact `working_script`, if present
+3. The selected same-version audit, only when relevant
 4. `.agents/skill_registry.md`
 5. The specific McKee skill only when needed
 
-Find the highest numeric version suffix. Do not assume `v1`.
+Use exact coordinator-selected path, version, and hash, including archived references. Without state, use the user-selected or verified existing current file; a sole candidate may be registered, multiple candidates need selection. Never infer acceptance from a version number.
+
+## Local Source Routes
+
+Follow [local-script-workflow.md](../version-management/references/local-script-workflow.md) for the capture packet and deterministic save protocol. The main-thread project-director is the sole state writer; this Skill returns content, hashes, exact differences, and affected Scene IDs.
+
+- First Notion link: the coordinator verifies identity and completeness, preserves the screenplay verbatim in a local version and source snapshot, and separately retains properties, LUT, Style Prefix, tags, attachment gaps, and provenance. Do not rewrite story during import.
+- Continue or repeat an imported link: use the local working script without fetching Notion, including when Notion is offline.
+- Explicit partial Notion refresh: compare the selected range’s last adopted snapshot, current local content, and incoming source; adopt only the selected ranges and advance only their baselines. List concrete candidates when identity/boundaries are ambiguous.
+- Explicit full Notion refresh: save source as the next local version and retain old files. No-change refresh updates the source/check record without a new screenplay or downstream invalidation.
+- Direct dialogue/story edit or user-supplied replacement: edit only the specified local content. “Update” alone does not imply a Notion refresh. Never write back unless the user explicitly requests Notion sync.
+
+Ordinary import, saving, and exact local edits bypass Story Bone intake and the full iteration gate. Apply the affected checks and report unresolved canon conflicts; full audit and matching acceptance/autonomous scope become prerequisites when the user requests production from that version. A new working draft never inherits an older production decision.
 
 ## Interaction Mode Contract
 
@@ -185,7 +197,7 @@ For a complete or near-complete draft:
 
 ## Iteration Quality Gate
 
-Use `templates/iteration-quality-gate.template.md` before creating a new script version or exporting a derived `.docx`.
+Use `templates/iteration-quality-gate.template.md` for substantial creative iteration, production review, or exporting a derived `.docx`. Routine source import and exact local edits do not require this whole gate.
 
 The gate decides whether to revise structure, expand density, cut runtime, polish dialogue/action, hold the current version, or export. It must check Story Bone readiness, main story engine, structure drift, story spine, causality, protagonist agency, second-side agency, copyright distance, runtime density, motif payoff, Screenwriter style, dialogue/texture constraints, concise Anti-AI risks, production feasibility, scene/transition count, screenplay body lines, dialogue cue count, overloaded scenes, and executable rescue/action chain where relevant.
 
@@ -208,8 +220,8 @@ When writing a production script artifact:
 
 - Path: `deliverables/1_story/01_script_v{N}.md`
 - Use artifact metadata at the top.
-- If no current script exists, create `v1`.
-- If revising a current script, archive the previous current file to `archives/1_story/` before saving `v{N+1}`.
+- Allocate a new version only when content changes; inspect both active and archived version names, including uncommitted candidates, to avoid collisions.
+- Save and verify the new file, let project-director atomically switch `working_script`, then optionally archive. Retain exact production references and old path compatibility. Never promote a new draft into `production_inputs` automatically.
 - Preserve the same artifact id across versions of the same script.
 - Append a short entry to `deliverables/0_admin/changelog.md`.
 
@@ -233,7 +245,8 @@ After script work, report:
 
 - active `interaction_mode`
 - files created, updated, or archived
-- current script and audit versions
+- exact working script and separately selected production script/audit paths, versions, hashes
+- base hash, selected source/local-edit route, exact differences, source baseline scope, and affected Scene IDs
 - P0—P3 findings, repairs applied, and re-audit result
 - unresolved assumptions
 - downstream artifacts to inspect or regenerate

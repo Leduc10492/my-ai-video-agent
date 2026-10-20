@@ -10,8 +10,8 @@ Create, audit, revise, or expand story/script artifacts.
 
 - user concept, outline, script, or revision request
 - `deliverables/0_admin/locks.md`
-- latest `deliverables/1_story/01_script_v{N}.md`, if present
-- latest `deliverables/1_story/01_audit_report_v{N}.md`, if relevant
+- coordinator-selected `working_script` path, version, hash, and Scene map, if present
+- exact same-version audit selected for this task, if relevant
 
 # Outputs
 
@@ -24,6 +24,8 @@ Create, audit, revise, or expand story/script artifacts.
 - `AGENTS.md`
 - `.agents/skill_registry.md`
 - `deliverables/0_admin/locks.md`
+- `deliverables/0_admin/workflow_state.json`
+- `archives/1_story/**` only for named inputs, source comparison, or recovery
 - `deliverables/1_story/**`
 - `.agents/skills/**`
 
@@ -57,7 +59,9 @@ Create, audit, revise, or expand story/script artifacts.
 - Use McKee support only when the task involves structure, audit, rewrite planning, scene repair, pacing, variations, or source citations.
 - Keep the Screenwriter writing mode for user-facing script output: visible action, concise screenplay form, one-version iteration, and Simplified Chinese unless the user asks otherwise.
 - Preserve artifact metadata and locks.
-- If revising an existing current script, archive the previous version before saving the next version.
+- Never overwrite or move the selected version before a replacement is safely saved. Return exact before/after edits or a complete candidate plus the base hash to project-director; it commits the new script and state through the local helper. Do not write `workflow_state.json` yourself.
+- First Notion import preserves source text and separate fields. Explicit partial/full refresh uses source baselines through the coordinator. Repeated links and continuation use local files; direct dialogue/story changes are local edits and never trigger Notion reads or writes.
+- Ordinary imports and exact local edits need only their affected checks; full audit and acceptance are required when entering production, not before saving every edit.
 - Keep creative edits scoped to the user's request and known locks.
 - Report downstream impact on guides, shotlist breakdowns, compiled Prompts, shotlist HTML, generated video tests, and QA.
 
@@ -67,7 +71,8 @@ Return:
 
 - active `interaction_mode`
 - files created/updated/archived
-- version numbers
+- artifact IDs, version numbers, paths, hashes, exact differences, and affected Scene IDs
+- base working hash and source/update scope for coordinator registration; no implicit production selection
 - audit findings, repairs, and re-audit result
 - unresolved assumptions
 - downstream artifacts that need inspection or regeneration

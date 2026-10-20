@@ -1,37 +1,30 @@
 # Versioning Spec
 
-## Version Pattern
+## Selection And Allocation
 
-Current and archived deliverables both use `_v{N}` suffixes.
+Use simple `_v{N}` suffixes (`v1`, `v2`, `v10`), with a stable artifact ID across versions of the same family. Select inputs by explicit path, version, and hash. Highest suffix never proves working status, audit validity, or acceptance.
 
-Example:
+For a new changed version, inspect the entire family under both `deliverables/<stage>/` and `archives/<stage>/`. Reserve a number above all existing versions, including interrupted candidates. Do not assume the selected version is the largest.
 
-- current: `deliverables/3_shotlist/scene-021_v2/03_shotlist_breakdown_scene-021_v2.md`
-- archived: `archives/3_shotlist/scene-021_v1/03_shotlist_breakdown_scene-021_v1.md`
+## Safe Save
 
-Use simple numeric suffixes: `v1`, `v2`, `v10`. Do not use `v001`.
+1. Verify the selected input and prepare a complete candidate without changing it.
+2. Save the new artifact in its active stage with a matching filename/header version and preserved ID, upstream references, locks, and source text.
+3. Read back and verify it before atomically switching the coordinator's explicit reference.
+4. Optionally archive the previous artifact after the switch: copy, verify, update resolver references, retain old-path compatibility, then remove redundant storage only when links remain valid.
+5. Record exact paths, hashes, and differences. Append a human-readable changelog when useful.
 
-## Save New Version
+A new working script does not acquire an old production decision. For managed scripts use [local-script-workflow.md](local-script-workflow.md); other stage owners follow this order with their explicit manifests/handoffs.
 
-1. Find the highest current version in `deliverables/<stage>/`.
-2. Move that current file to `archives/<stage>/`.
-3. Write the new file to `deliverables/<stage>/` with version number incremented by one.
-4. Update frontmatter `version`.
-5. Keep the same artifact `id`.
-6. Preserve or update `upstream` and `locks`.
-7. Append changelog entry.
+## Scene Packages
 
-## New Artifact
+The versioned unit is the entire directory:
 
-If no previous file exists, write `v1` directly to `deliverables/<stage>/` and create the archive directory if needed.
+- active: `deliverables/3_shotlist/scene-021_v2/`
+- archived: `archives/3_shotlist/scene-021_v1/`
 
-Scene shotlist HTML uses a package directory as the versioned unit:
+Keep Breakdown, `Shotlist_scene-021_ZH_v{N}.html`, manifest, Scene assets, generated tests, and Scene QA together. Preserve relative upstream/shared-asset links after archival relocation; retain the original package until all used references resolve. Phase 1 does not automate package transactions or run resumption.
 
-- current: `deliverables/3_shotlist/scene-021_v2/Shotlist_scene-021_ZH_v2.html`
-- archived: `archives/3_shotlist/scene-021_v1/Shotlist_scene-021_ZH_v1.html`
+## Recovery
 
-Keep Scene-specific assets, generated tests, and Scene QA inside the same package version.
-
-## Rollback
-
-When restoring an archived version, do not overwrite history. Archive the current version first, then copy the selected archived content into a new highest version.
+Retain the last valid state until the new artifact is safely readable. After a failed write, do not select an orphan candidate just because it has the largest version number. Explicitly restoring an older working version keeps production independent; subsequent edits allocate a new unused number. Existing script/audit archive aliases and exact decision records stay readable.

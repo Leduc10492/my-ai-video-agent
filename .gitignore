@@ -37,3 +37,15 @@ deliverables/0_admin/qa_reports/qa_report_*.md
 deliverables/**/*.docx
 deliverables/**/*.pdf
 deliverables/**/*.png
+
+# Project-local source state, decisions, and recovery records stay private.
+deliverables/0_admin/workflow_state*.json
+deliverables/0_admin/.workflow-state.lock
+deliverables/0_admin/script_decisions/
+deliverables/0_admin/recovery/
+
+# Local workbench runtime and editable exports.
+deliverables/0_admin/workbench.sqlite*
+deliverables/0_admin/workbench/
+deliverables/4_edit/*
+!deliverables/4_edit/README.md
